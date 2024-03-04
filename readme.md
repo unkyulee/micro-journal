@@ -46,7 +46,7 @@ Second part of the problem was the rather chunky size. I used the cherry mx swit
 
 Probably, size issue could have been improved if I was using low profile switches. In my defense, I had very little knowledge about mechanical keyboards, and didn't know the difference between low profile switches to cherry mx swtiches.
 
-But, I loved the cherry mx switches and the how easy to get supplies of switches. Also, found a switch (Akko Cream Blue Pro) that felt so satisfying. So, I decided to stick with the cherry mx profile. 
+But, I loved the cherry mx format switches and the how easy to get supplies of switches. Also, I found one (Akko Cream Blue Pro) that felt so satisfying. So, I decided to stick with the cherry mx profile. 
 
 Collecting those problems. I went to make the newer revision. Removing hinges making a solid flat platform and for the size, just gave up pocketability. Reason being, it has been mostly used on the desk and occassionaly on the sofa. So, it didn't really need to be closeable box form. 
 
@@ -70,11 +70,16 @@ I write journal everyday with this device since the beginning of 2024. I missed 
 
 This means, average 30 minutes of use per day. Nothing compare to the daily driver laptops. Also, I wouldn't use it for work or any producitivy related tasks. It's not designed for that.
 
-This is absolutely amazing to write with this device. Provides shortcut to get into the flow. Those who writes text, or writes code, you guys know, how long it takes to get into the flow. Also, how easy to break the flow... by just receiving an email (or whatsapp) notification on the screen. 
+It is absolutely amazing to write with this device. Provides shortcut to get into the flow. Those who writes text, or writes code, you guys know, how long it takes to get into the flow. Also, how easy to break the flow... by just receiving an email (or whatsapp) notification on the screen. 
+
+
+[![Typing Test](/images/typing_test.png)](https://www.youtube.com/watch?v=NzVKRzpS2jA)
+
 
 Experience is pleasant. I would say, 80% of the pleasure is from the mechanical keyboard. Also, being able to write on the 30 keys, gives some weird satisfaction that no one would ever care, that it is a pervertiuous sensation for me and I like it. Also, the switches provides a cute girlfriend vibe. Cuddling with the keys... sometimes I just continue to type random words making no sense, just because I wanted to keep feel the switches. 
 
 Oh. right. The joural. I am not sure if I am on the device for writing a journal or just to use the keyboard. One thing for sure, this device, helps a lot to write. Mostly, due to pleasurable experience with keyboard and the fact with such a low power, it can't do anything else than that.
+
 
 
 # Keyboard
@@ -121,6 +126,8 @@ I used this parts to supply the power.
 
 If any soldering or wiring is a tough deal then, you can simply pass through a usb cable to power the device. Most of the time, you would be seating on the desk while using this device. Having a battery wasn't really mandatory anyways.
 
+
 # Conclusion
 
 Micro Journal, is a pursuit of a simple yet effective writing solution. Born from inspiration of many cyberdeck ideas from the internet, overcoming design challenges, and fueled by a passion for mechanical keyboards, this device has found its place as a cherished tool for daily journaling. While not a daily driver, it provides a delightful writing experience and serves as a proof that mechanical keyboards can indeed find a place in a portable writing device. For those seeking niche solution for the on-the-go writing pleasure, this can open up a new channel for creativity and expression.
+
