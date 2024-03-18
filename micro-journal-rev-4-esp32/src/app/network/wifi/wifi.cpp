@@ -132,7 +132,7 @@ bool _connect_wifi(JsonDocument &app, const char *ssid, const char *password)
         app["network"]["status"] = 1;
 
         // print info
-        app_log("Connected to WiFi: %s, %s\n", ssid, WiFi.localIP().toString().c_str());
+        app_log("\nConnected to WiFi: %s, %s\n", ssid, WiFi.localIP().toString().c_str());
 
         return true;
     }

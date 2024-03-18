@@ -12,15 +12,21 @@ TFT_eSPI tft = TFT_eSPI(); // Invoke library, pins defined in User_Setup.h
 //
 void display_setup_main()
 {
+}
+void display_setup_secondary()
+{
     tft.init();
     tft.setRotation(1);
 }
-void display_setup_secondary() {}
 
 ///
 void display_loop_main()
 {
-    //Serial.println("Hi");
+}
+
+void display_loop_secondary()
+{
+    // Serial.println("Hi");
 
     // Fill screen with grey so we can see the effect of printing with and without
     // a background colour defined
@@ -62,6 +68,4 @@ void display_loop_main()
     tft.println((int)fnumber, BIN); // Print as integer value in binary
     tft.print("Hexadecimal = ");
     tft.println((int)fnumber, HEX); // Print as integer number in Hexadecimal
-
 }
-void display_loop_secondary() {}
