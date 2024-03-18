@@ -1,0 +1,11 @@
+{
+  "network": {
+    "type": "wifi",
+    "access_points": [
+      {
+        "ssid": "WIFI AP NAME",
+        "password": "WIFIPASSWORD"
+      }
+    ]
+  }
+}
