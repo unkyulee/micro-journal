@@ -36,8 +36,11 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), colPins, rowPin
 
 #define FN 28
 #define SHIFT 29
-#define EMPTY 0
-#define MENU 1
+
+// special key
+#define EMPTY 0x0
+#define MENU 0x6
+#define BACKSPACE 0x8
 
 // layers
 // prettier-ignore
@@ -53,11 +56,11 @@ int layers[LAYERS][ROWS * COLS] = {
     {// when number layer key is pressed
      '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
      '`', '\\', '-', '=', '[', ']', ';', '\'', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, ' ', ',', '.', '/', FN, SHIFT},
+     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, ',', '.', '/', FN, SHIFT},
     {// when number layer key is pressed
      '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
      '~', '|', '_', '+', '{', '}', ':', '\"', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, ' ', '<', '>', '?', FN, SHIFT}};
+     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, '<', '>', '?', FN, SHIFT}};
 
 void keyboard_setup_main()
 {
@@ -82,15 +85,14 @@ void keyboard_loop_main()
             keypadEvent e = customKeypad.read();
             int key = keyboard_get_key(e);
             if(key == MENU) {
-                Serial.println("MENU KEY PRESSED");
+                Serial.println("MENU");
+            }
+            else if(key == BACKSPACE) {
+                Serial.write(12);
             }
             else if (key != EMPTY)
             {
                 Serial.print((char)key);
-                if (e.bit.EVENT == KEY_JUST_PRESSED)
-                    Serial.println(" pressed");
-                else if (e.bit.EVENT == KEY_JUST_RELEASED)
-                    Serial.println(" released");
             }
         }
     }
