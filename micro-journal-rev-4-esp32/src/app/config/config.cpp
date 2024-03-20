@@ -11,12 +11,15 @@ void config_setup()
     app_log("Config Setup\n");
     app_log("----------------------\n");
 
+    delay(1000);
+
     // Initialize SPIFFS
     if (!SPIFFS.begin(true))
     {
         app_log("An Error has occurred while mounting SPIFFS");
         return;
-    }
+    }    
+    app_log("SPIFF BEGIN\n");
 
     // load config
     config_load();
@@ -25,16 +28,25 @@ void config_setup()
 //
 void config_load()
 {
+    //
+    app_log("Loading config ...\n");
+
     // load app status
     JsonDocument &app = app_status();
+    app_log("App Status loaded\n");
 
     // load config.json
-    File configFile = SPIFFS.open("/config.json", "r");
+    app_log("Opening config.json file\n");
+    File configFile = SPIFFS.open("/config.json", "r");    
     if (configFile)
     {
         // read the file
+        app_log("Reading config.json file\n");
+        delay(100);
         String configString = configFile.readString();
+        app_log("Closing config.json file\n");
         configFile.close();
+        
 
         // check if configString is empty
         if (configString.isEmpty())
@@ -53,6 +65,7 @@ void config_load()
 
         // convert to JsonObject
         DeserializationError error = deserializeJson(configDoc, configString);
+        app_log("Deserializing config.json file\n");
         if (error)
         {
             //
@@ -61,6 +74,7 @@ void config_load()
         }
 
         // Assign the loaded configuration to "config" property of app
+        app_log("Loading app status config\n");
         app["config"] = configDoc.as<JsonObject>();
 
         // print out the configuration

@@ -8,12 +8,6 @@
 #define COLS 10  // columns
 
 // define the symbols on the buttons of the keypads
-/*
-char keys[ROWS][COLS] = {
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-    {10, 11, 12, 13, 14, 15, 16, 17, 18, 19},
-    {20, 21, 22, 23, 24, 25, 26, 27, 28, 29}};
-*/
 // prettier-ignore
 char keys[COLS][ROWS] = {
     {20, 10, 0},
@@ -28,9 +22,11 @@ char keys[COLS][ROWS] = {
     {29, 19, 9}};
 
 // connect to the row pinouts of the keypad
-byte rowPins[ROWS] = {23, 22, 21};
+byte rowPins[ROWS] = {32, 33, 25};
 // connect to the column pinouts of the keypad
-byte colPins[COLS] = {19, 18, 5, 17, 16, 12, 14, 27, 26, 25};
+byte colPins[COLS] = {
+    26, 27, 14, 12, 13,
+    15, 2, 4, 16, 17};
 
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), colPins, rowPins, COLS, ROWS);
 

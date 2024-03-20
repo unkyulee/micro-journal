@@ -12,11 +12,7 @@ TaskHandle_t TaskSecondary;
 // in order to perform stable and regular operation
 void TaskMainLoop(void *parameter)
 {
-  // app setup
-  app_setup_main();
-
-  // service setup
-  service_setup_main();
+  Serial.println("Task Main Started");
 
   for (;;)
   {
@@ -29,13 +25,7 @@ void TaskMainLoop(void *parameter)
 // Code for Core 2 - blocking loops
 void TaskSecondaryLoop(void *parameter)
 {
-  // app setup
-  app_setup_secondary();
-
-  // service setup
-  service_setup_secondary();
-
-  delay(5000);
+  Serial.println("Task Secondary Started");
 
   for (;;)
   {
@@ -53,26 +43,41 @@ void setup()
   while (!Serial)
     ; // Wait for the serial port to connect
 
+  delay(100);
+
   //
   app_log("\nDevice Started. Baud rate: %d\n", BAUD_RATE);
 
+  // app setup
+  app_setup_main();
+
+  // service setup
+  service_setup_main();
+
+  // app setup
+  app_setup_secondary();
+
+  // service setup
+  service_setup_secondary();
+
+  // generate dual core tasks
   xTaskCreatePinnedToCore(
-      TaskMainLoop,         /* Function to implement the task */
-      "TaskMainLoop",       /* Name of the task */
-      10000,                /* Stack size in words */
-      NULL,                 /* Task input parameter */
-      0,                    /* Priority of the task */
-      &TaskMain,            /* Task handle. */
-      0);                   /* Core where the task should run */
+      TaskMainLoop,   /* Function to implement the task */
+      "TaskMainLoop", /* Name of the task */
+      10000,          /* Stack size in words */
+      NULL,           /* Task input parameter */
+      0,              /* Priority of the task */
+      &TaskMain,      /* Task handle. */
+      0);             /* Core where the task should run */
 
   xTaskCreatePinnedToCore(
-      TaskSecondaryLoop,    /* Task function. */
-      "TaskSecondaryLoop",  /* name of task. */
-      10000,                /* Stack size of task */
-      NULL,                 /* parameter of the task */
-      1,                    /* priority of the task */
-      &TaskSecondary,       /* Task handle to keep track of created task */
-      1);                   /* pin task to core 1 */
+      TaskSecondaryLoop,   /* Task function. */
+      "TaskSecondaryLoop", /* name of task. */
+      10000,               /* Stack size of task */
+      NULL,                /* parameter of the task */
+      1,                   /* priority of the task */
+      &TaskSecondary,      /* Task handle to keep track of created task */
+      1);                  /* pin task to core 1 */
 }
 
 // Main loop is ignored as the tasks are separated per core
