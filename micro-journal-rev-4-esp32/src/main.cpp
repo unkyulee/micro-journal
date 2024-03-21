@@ -1,10 +1,6 @@
 #include "app/app.h"
 #include "service/service.h"
 
-// Dual Core
-TaskHandle_t TaskMain;
-TaskHandle_t TaskSecondary;
-
 #define BAUD_RATE 9600
 
 // runs once when the board is up

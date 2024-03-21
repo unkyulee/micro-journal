@@ -2,11 +2,35 @@
 #include "app/app.h"
 #include "app/network/network.h"
 #include "service/display/display.h"
+#include "service/WordProcessor/WordProcessor.h"
 
 //
 #define LAYERS 4 // layers
 #define ROWS 3   // rows
 #define COLS 10  // columns
+
+//
+// KEYBOARD LAYOUT
+//
+// layers
+// prettier-ignore
+int layers[LAYERS][ROWS * COLS] = {
+    {// normal layers
+     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\n',
+     'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', FN, SHIFT},
+    {// when shift is pressed
+     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
+     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\n',
+     'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', FN, SHIFT},
+    {// when number layer key is pressed
+     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+     '`', '\\', '-', '=', '[', ']', ';', '\'', EMPTY, '\n',
+     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, ',', '.', '/', FN, SHIFT},
+    {// when number layer key and shift is pressed
+     '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+     '~', '|', '_', '+', '{', '}', ':', '\"', EMPTY, '\n',
+     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, '<', '>', '?', FN, SHIFT}};
 
 // define the symbols on the buttons of the keypads
 // prettier-ignore
@@ -31,34 +55,7 @@ byte colPins[COLS] = {
 
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), colPins, rowPins, COLS, ROWS);
 
-#define FN 28
-#define SHIFT 29
-
-// special key
-#define EMPTY 0x0
-#define MENU 0x6
-#define BACKSPACE 0x8
-
-// layers
-// prettier-ignore
-int layers[LAYERS][ROWS * COLS] = {
-    {// normal layers
-     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\n',
-     'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', FN, SHIFT},
-    {// when shift is pressed
-     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\n',
-     'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', FN, SHIFT},
-    {// when number layer key is pressed
-     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-     '`', '\\', '-', '=', '[', ']', ';', '\'', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, ',', '.', '/', FN, SHIFT},
-    {// when number layer key is pressed
-     '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-     '~', '|', '_', '+', '{', '}', ':', '\"', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, '<', '>', '?', FN, SHIFT}};
-
+// initialize keymap
 void keyboard_setup()
 {
     customKeypad.begin();
@@ -80,16 +77,22 @@ void keyboard_loop()
         {
             keypadEvent e = customKeypad.read();
             int key = keyboard_get_key(e);
-            if(key == MENU) {
+            if (key == MENU)
+            {
+                // Update the screen to menu
                 Serial.println("MENU");
-            }
-            else if(key == BACKSPACE) {
-                Serial.write(12);
             }
             else if (key != EMPTY)
             {
-                Serial.print((char)key);
-                display_type((char)key);
+                // depending on the screen
+                // send the keystrokes
+                JsonDocument &app = app_status();
+                int screen = app["screen"].as<int>();
+
+                if(screen == WORDPROCESSOR) {
+                    // send the key stroke to word processor
+                    WP_keyboard((char)key);
+                }
             }
         }
     }
@@ -149,6 +152,6 @@ int keyboard_get_key(keypadEvent e)
         return layers[layer][e.bit.KEY];
     }
 
-    //Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
+    // Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
     return EMPTY;
 }

@@ -1,13 +1,17 @@
 #ifndef Display_h
 #define Display_h
 
+// TFT_eSPI setup
+#include <TFT_eSPI.h>
+#include <SPI.h>
+
+// Screen Type
+#define WORDPROCESSOR 0
+
 //
 void display_setup();
 
 ///
 void display_loop();
-
-//
-void display_type(char key);
 
 #endif
