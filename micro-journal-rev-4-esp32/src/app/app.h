@@ -7,7 +7,7 @@
 #define VERSION "1.0.0"
 
 // debug flag
-#define DEBUG
+//#define DEBUG
 
 // app life cycle
 void app_setup();
