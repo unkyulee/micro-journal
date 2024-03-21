@@ -4,14 +4,12 @@
 #include <SPI.h>
 #include <FS.h>
 #include <SD.h>
-#include <Adafruit_ILI9341.h>
 
 #define SD_CS 5
 
 //
-void SD_setup_main()
+void SD_setup()
 {
-    delay(100);
     if (!SD.begin(SD_CS))
     {
         Serial.println("Card Mount Failed");
@@ -29,13 +27,9 @@ void SD_setup_main()
 
     writeFile(SD, "/test.txt", "test test");
 }
-void SD_setup_secondary()
-{
-}
 
 ///
-void SD_loop_main() {}
-void SD_loop_secondary() {}
+void SD_loop() {}
 
 // File operation
 

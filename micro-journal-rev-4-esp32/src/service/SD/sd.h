@@ -4,12 +4,10 @@
 #include <FS.h>
 
 //
-void SD_setup_main();
-void SD_setup_secondary();
+void SD_setup();
 
 ///
-void SD_loop_main();
-void SD_loop_secondary();
+void SD_loop();
 
 // file operation
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels);

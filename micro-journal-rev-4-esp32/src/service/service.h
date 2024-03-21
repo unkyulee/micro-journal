@@ -2,11 +2,9 @@
 #define Service_h
 
 //
-void service_setup_main();
-void service_setup_secondary();
+void service_setup();
 
 ///
-void service_loop_main();
-void service_loop_secondary();
+void service_loop();
 
 #endif

@@ -9,13 +9,8 @@ JsonDocument status;
 // SETUP
 //
 // initialize main task setup
-void app_setup_main()
+void app_setup()
 {    
-}
-
-// initialize sedcondary task
-void app_setup_secondary() 
-{
     // initialize config
     config_setup();
 
@@ -26,16 +21,13 @@ void app_setup_secondary()
 //
 // LOOP
 //
-void app_loop_main()
-{
-}
-
-void app_loop_secondary()
+void app_loop()
 {
     // network
     // network setup runs in the secondary loop
     network_loop();
 }
+
 
 //
 // GLOBAL STATUS

@@ -10,11 +10,8 @@
 #define DEBUG
 
 // app life cycle
-void app_setup_main();
-void app_setup_secondary();
-
-void app_loop_main();
-void app_loop_secondary();
+void app_setup();
+void app_loop();
 
 // app status
 JsonDocument &app_status();

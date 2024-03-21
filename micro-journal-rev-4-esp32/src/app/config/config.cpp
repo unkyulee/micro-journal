@@ -55,10 +55,6 @@ void config_load()
             configString = "{}";
         }
 
-#ifdef DEBUG
-        app_log("configString: %s\n", configString.c_str());
-#endif
-
         // Prepare a JsonDocument for the configuration
         // The size should be adjusted according to your configuration's needs
         JsonDocument configDoc;

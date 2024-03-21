@@ -1,6 +1,7 @@
 #include "keyboard.h"
 #include "app/app.h"
 #include "app/network/network.h"
+#include "service/display/display.h"
 
 //
 #define LAYERS 4 // layers
@@ -58,14 +59,13 @@ int layers[LAYERS][ROWS * COLS] = {
      '~', '|', '_', '+', '{', '}', ':', '\"', EMPTY, '\n',
      MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, '<', '>', '?', FN, SHIFT}};
 
-void keyboard_setup_main()
+void keyboard_setup()
 {
     customKeypad.begin();
 }
-void keyboard_setup_secondary() {}
 
 ///
-void keyboard_loop_main()
+void keyboard_loop()
 {
     static unsigned int last = 0;
     if (millis() - last > 10)
@@ -89,11 +89,11 @@ void keyboard_loop_main()
             else if (key != EMPTY)
             {
                 Serial.print((char)key);
+                display_type((char)key);
             }
         }
     }
 }
-void keyboard_loop_secondary() {}
 
 bool _shift_pressed = false;
 bool _fn_pressed = false;

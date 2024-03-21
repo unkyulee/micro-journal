@@ -5,12 +5,10 @@
 #include <Adafruit_Keypad.h>
 
 //
-void keyboard_setup_main();
-void keyboard_setup_secondary();
+void keyboard_setup();
 
 ///
-void keyboard_loop_main();
-void keyboard_loop_secondary();
+void keyboard_loop();
 
 // 
 int keyboard_get_key(keypadEvent e);
