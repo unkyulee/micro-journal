@@ -8,27 +8,25 @@
 #include <SD.h>
 
 //
-#define FILENAME "/ujournal.txt"
 #define TEXT_BUFFER_SIZE 2900 // buffer size should be divisible by row character count (29)
 // #define TEXT_BUFFER_SIZE 348
 char text_buffer[TEXT_BUFFER_SIZE + 2];
 int text_pos = 0;
+int text_pos_prev = 0;
 size_t text_last_save_pos = 0;
+
+
 char *line_position[TEXT_BUFFER_SIZE / 13];
 
 //
 bool blink = false;
-int text_pos_prev = -1;
-int total_line_prev = -1;
+int total_line_prev = 0;
 int start_line_prev = 0;
 bool clear = true;
 size_t fileSize = 0;
 
-// function prototypes
-String formatNumberWithCommas(long num);
-
 //
-void WP_setup()
+void WP_setup(TFT_eSPI *ptft)
 {
   // when this is called
   // SD card should be ready
@@ -56,24 +54,12 @@ void WP_setup()
     Serial.println("File created");
   }
 
-#ifdef DEBUG
-  // always create a new file
-  {
-    // If the file doesn't exist, create it
-    File file = SD.open(FILENAME, FILE_WRITE);
-    if (!file)
-    {
-      Serial.println("Failed to create file");
-      return;
-    }
-    file.close();
-    Serial.println("File created");
-  }
-#endif
-
   // Initialize Word Processor
   // load file from the SD card
   WP_load_text();
+
+  // clear background
+  clear = true;
 }
 
 void WP_load_text()
@@ -118,36 +104,47 @@ void WP_load_text()
     text_buffer[pos++] = file.read();
     text_buffer[pos] = '\0';
   }
+
   // end with null
   text_pos = pos;
+  text_pos_prev = pos;
+
   // refresh the writing line
   start_line_prev = 0;
-  text_pos_prev = -1;
 
   //
   app_log("File loading completed: text_pos: %d\n", text_pos);
 
   // close file
   file.close();
+}
 
-  // debug print out entire text file
-  /*
-    {
-      File file = SD.open(FILENAME);
-      app_log("After saving file size is: %d\n", file.size());
-      while (file.available())
-      {
-        Serial.print((char)file.read());
-      }
-    }
-  */
+void WP_empty_file()
+{
+  // If the file doesn't exist, create it
+  File file = SD.open(FILENAME, FILE_WRITE);
+  if (!file)
+  {
+    Serial.println("Failed to create file");
+    JsonDocument &app = app_status();
+    app["screen"] = ERRORSCREEN;
+    return;
+  }
+  file.close();
+  app_log("File created\n");
 }
 
 void WP_save_text()
 {
-  // debounce 10 seconds
+  if(text_last_save_pos == text_pos) {
+    // no need to save.. nothing is changed
+    app_log("Nothing is changed\n");
+    return;
+  }
+
+  // debounce 1 seconds
   // too frequent save can break the SD communication
-  static unsigned int last = millis();
+  static unsigned int last = 0;
   if (millis() - last > 1000)
   {
     last = millis();
@@ -162,10 +159,13 @@ void WP_save_text()
       app["screen"] = ERRORSCREEN;
       return;
     }
-    if (file.print(&text_buffer[text_last_save_pos]))
+    size_t length = file.print(&text_buffer[text_last_save_pos]);
+    if(length > 0)
     {
       app_log("File written from %d\n", text_last_save_pos);
       text_last_save_pos = text_pos;
+      // increase the file size
+      fileSize += length;
     }
     else
     {
@@ -183,6 +183,10 @@ void WP_keyboard(char key)
   // check if menu key is pressed
   if (key == MENU)
   {
+    // save before transition to the menu
+    WP_save_text();
+
+    //
     JsonDocument &app = app_status();
     app["screen"] = MENUSCREEN;
     return;
@@ -247,6 +251,7 @@ void clear_trails(TFT_eSPI *ptft)
   // remove the previous carrot blink
   if (text_pos_prev != text_pos)
   {
+    //
     int cursorX = ptft->getCursorX();
     int cursorY = ptft->getCursorY();
     ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_BLACK);
@@ -257,6 +262,9 @@ void clear_trails(TFT_eSPI *ptft)
       // clear the trailing line
       ptft->fillRect(cursorX - 12, cursorY - 12, 320, 24, TFT_BLACK);
     }
+
+    // while typing always show the carrot
+    blink = true;
 
     // only when the new text is written from previous render
     text_pos_prev = text_pos;

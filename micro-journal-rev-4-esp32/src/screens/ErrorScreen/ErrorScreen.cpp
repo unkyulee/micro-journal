@@ -3,7 +3,9 @@
 
 
 //
-void ErrorScreen_setup() {}
+void ErrorScreen_setup(TFT_eSPI* ptft) {
+    ptft->fillScreen(TFT_BLACK);
+}
 
 //
 void ErrorScreen_render(TFT_eSPI *ptft)

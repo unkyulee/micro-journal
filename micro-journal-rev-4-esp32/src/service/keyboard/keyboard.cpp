@@ -2,7 +2,11 @@
 #include "app/app.h"
 #include "app/network/network.h"
 #include "service/display/display.h"
+
+//
 #include "screens/WordProcessor/WordProcessor.h"
+#include "screens/ErrorScreen/ErrorScreen.h"
+#include "screens/Menu/Menu.h"
 
 //
 #define LAYERS 4 // layers
@@ -87,6 +91,10 @@ void keyboard_loop()
                 if(screen == WORDPROCESSOR) {
                     // send the key stroke to word processor
                     WP_keyboard((char)key);
+                } else if(screen == MENUSCREEN) {
+                    Menu_keyboard((char)key);
+                } else if(screen == ERRORSCREEN) {
+                    ErrorScreen_keyboard((char)key);
                 }
             }
         }

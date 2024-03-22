@@ -65,16 +65,27 @@ void network_loop()
 
         //
         JsonDocument &app = app_status();
+        String network_type = app["config"]["network"]["type"].as<String>();
 
         // by default network is not enabled
         bool network_enabled = app["network"]["enabled"].as<bool>();
         if (network_enabled)
         {
             //
-            String network_type = app["config"]["network"]["type"].as<String>();
             if (network_type == "wifi")
             {
                 network_wifi_loop();
+            }
+        }
+        else
+        {
+            if (network_type == "wifi")
+            {
+                // turn off if the network is on
+                if (app["network"]["status"].as<int>() > 0)
+                {
+                    network_wifi_off();
+                }
             }
         }
     }

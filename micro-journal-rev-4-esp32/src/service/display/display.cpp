@@ -51,7 +51,7 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        WP_setup();
+        WP_setup(&tft);
 
       // loop
       WP_render(&tft);
@@ -62,7 +62,7 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        ErrorScreen_setup();
+        ErrorScreen_setup(&tft);
 
       // loop
       ErrorScreen_render(&tft);
@@ -73,7 +73,7 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        Menu_setup();
+        Menu_setup(&tft);
 
       // loop
       Menu_render(&tft);

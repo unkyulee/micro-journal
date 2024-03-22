@@ -1,8 +1,8 @@
 #include "config.h"
 #include "../app.h"
+#include "app/SD/sd.h"
 
-// to save the config.json
-#include <SPIFFS.h>
+#include <SD.h>
 
 //
 void config_setup()
@@ -10,16 +10,6 @@ void config_setup()
     app_log("\n");
     app_log("Config Setup\n");
     app_log("----------------------\n");
-
-    delay(1000);
-
-    // Initialize SPIFFS
-    if (!SPIFFS.begin(true))
-    {
-        app_log("An Error has occurred while mounting SPIFFS");
-        return;
-    }    
-    app_log("SPIFF BEGIN\n");
 
     // load config
     config_load();
@@ -37,16 +27,14 @@ void config_load()
 
     // load config.json
     app_log("Opening config.json file\n");
-    File configFile = SPIFFS.open("/config.json", "r");    
+    File configFile = SD.open("/config.json", "r");    
     if (configFile)
     {
         // read the file
         app_log("Reading config.json file\n");
-        delay(100);
         String configString = configFile.readString();
         app_log("Closing config.json file\n");
-        configFile.close();
-        
+        configFile.close();       
 
         // check if configString is empty
         if (configString.isEmpty())
@@ -92,7 +80,7 @@ void config_save()
 
     // save config
     // Open the file for writing
-    File configFile = SPIFFS.open("/config.json", FILE_WRITE);
+    File configFile = SD.open("/config.json", FILE_WRITE);
     if (!configFile)
     {
         app_log("Failed to open config.json file for writing.\n");

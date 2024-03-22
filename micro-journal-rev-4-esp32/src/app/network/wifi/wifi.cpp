@@ -11,6 +11,17 @@ bool _connect_wifi(JsonDocument &app, const char *ssid, const char *password);
 //
 void _verify_connection(JsonDocument &app);
 
+void network_wifi_off()
+{
+    WiFi.disconnect();
+    WiFi.mode(WIFI_OFF);
+
+    app_log("WiFi Disconnected. \n");
+
+    JsonDocument &app = app_status();
+    app["network"]["status"] = 0;
+}
+
 void network_wifi_loop()
 {
     // read the configuration
@@ -52,6 +63,7 @@ void network_wifi_loop()
 void _scan_wifi_networks(JsonDocument &app)
 {
     // Scan for available networks
+    WiFi.mode(WIFI_STA);
     int networksFound = WiFi.scanNetworks();
     app_log("Found %d networks:\n");
 
