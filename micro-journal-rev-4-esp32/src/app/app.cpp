@@ -1,6 +1,7 @@
 #include "app.h"
 #include "config/config.h"
 #include "network/network.h"
+#include "SD/sd.h"
 
 // global status
 JsonDocument status;
@@ -10,7 +11,10 @@ JsonDocument status;
 //
 // initialize main task setup
 void app_setup()
-{    
+{
+    // SD must be initialized before display
+    SD_setup();
+
     // initialize config
     config_setup();
 
@@ -26,8 +30,9 @@ void app_loop()
     // network
     // network setup runs in the secondary loop
     network_loop();
-}
 
+    SD_loop();
+}
 
 //
 // GLOBAL STATUS
@@ -37,7 +42,6 @@ JsonDocument &app_status()
 {
     return status;
 }
-
 
 //
 // APP LOG

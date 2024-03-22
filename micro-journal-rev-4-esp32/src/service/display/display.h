@@ -7,6 +7,8 @@
 
 // Screen Type
 #define WORDPROCESSOR 0
+#define ERRORSCREEN 1
+#define MENUSCREEN 2
 
 //
 void display_setup();

@@ -1,6 +1,7 @@
 #include "WordProcessor.h"
 #include "app/app.h"
-#include "service/SD/sd.h"
+#include "app/SD/sd.h"
+#include "service/display/display.h"
 #include "service/keyboard/keyboard.h"
 
 #include <FS.h>
@@ -20,7 +21,7 @@ bool blink = false;
 int text_pos_prev = -1;
 int total_line_prev = -1;
 int start_line_prev = 0;
-bool clear = false;
+bool clear = true;
 size_t fileSize = 0;
 
 // function prototypes
@@ -35,6 +36,8 @@ void WP_setup()
   if (app["SD"].as<bool>() == false)
   {
     app_log("SD card is not ready. Not initializing WordProcessor\n");
+    app["screen"] = ERRORSCREEN;
+    return;
   }
 
   //
@@ -73,23 +76,6 @@ void WP_setup()
   WP_load_text();
 }
 
-///
-void WP_loop()
-{
-  // every 30 seconds check if anything needs to be saved
-  static unsigned int last = millis();
-  if (millis() - last > 30000)
-  {
-    last = millis();
-
-    // needs to be saved?
-    if (text_pos != text_last_save_pos)
-    {
-      WP_save_text();
-    }
-  }
-}
-
 void WP_load_text()
 {
   app_log("Reading file: %s ... ", FILENAME);
@@ -97,6 +83,8 @@ void WP_load_text()
   if (!file)
   {
     app_log("Failed to open file for reading\n");
+    JsonDocument &app = app_status();
+    app["screen"] = ERRORSCREEN;
     return;
   }
 
@@ -107,6 +95,8 @@ void WP_load_text()
     if (!file.seek(-TEXT_BUFFER_SIZE / 2, SeekEnd))
     {
       app_log("Failed to seek file pointer\n");
+      JsonDocument &app = app_status();
+      app["screen"] = ERRORSCREEN;
       file.close();
       return;
     }
@@ -158,7 +148,7 @@ void WP_save_text()
   // debounce 10 seconds
   // too frequent save can break the SD communication
   static unsigned int last = millis();
-  if (millis() - last > 10000)
+  if (millis() - last > 1000)
   {
     last = millis();
 
@@ -168,6 +158,8 @@ void WP_save_text()
     if (!file)
     {
       app_log("Failed to open file for writing\n");
+      JsonDocument &app = app_status();
+      app["screen"] = ERRORSCREEN;
       return;
     }
     if (file.print(&text_buffer[text_last_save_pos]))
@@ -178,6 +170,8 @@ void WP_save_text()
     else
     {
       app_log("Write failed\n");
+      JsonDocument &app = app_status();
+      app["screen"] = ERRORSCREEN;
     }
     file.close();
   }
@@ -186,9 +180,18 @@ void WP_save_text()
 //
 void WP_keyboard(char key)
 {
+  // check if menu key is pressed
+  if (key == MENU)
+  {
+    JsonDocument &app = app_status();
+    app["screen"] = MENUSCREEN;
+    return;
+  }
+
+  //
   if (key == BACKSPACE)
   {
-    if (text_pos > 0)
+    if (text_pos > 0 && text_pos > text_last_save_pos)
     {
       // reduce the pos
       text_buffer[--text_pos] = '\0';
@@ -237,7 +240,6 @@ void clear_background(TFT_eSPI *ptft)
   }
 }
 
-
 //
 void clear_trails(TFT_eSPI *ptft)
 {
@@ -261,7 +263,8 @@ void clear_trails(TFT_eSPI *ptft)
   }
 }
 
-void blink_carrot(TFT_eSPI *ptft) {
+void blink_carrot(TFT_eSPI *ptft)
+{
   // display the blink key
   static unsigned int last = millis();
   if (millis() - last > 500)
@@ -286,6 +289,33 @@ void blink_carrot(TFT_eSPI *ptft) {
   }
 }
 
+void check_saved()
+{
+  //
+  static unsigned int last = millis();
+
+  //
+  static unsigned int text_pos_last = -1;
+  if (text_pos_last != text_pos)
+  {
+    // something has been typed
+    text_pos_last = text_pos;
+    last = millis();
+  }
+
+  // when there is 5000 pause then try to save
+  if (millis() - last > 5000)
+  {
+    last = millis();
+
+    // needs to be saved?
+    if (text_pos != text_last_save_pos)
+    {
+      WP_save_text();
+    }
+  }
+}
+
 //
 void WP_render(TFT_eSPI *ptft)
 {
@@ -294,6 +324,9 @@ void WP_render(TFT_eSPI *ptft)
 
   // clear trails
   clear_trails(ptft);
+
+  // check saved
+  check_saved();
 
   // when displaying the text, it should make that the cursor is always displayed at the bottom line
   // 320 x 240 space with 24 height characters
@@ -370,8 +403,10 @@ void WP_render(TFT_eSPI *ptft)
   ptft->printf(" %s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
   if (text_pos == text_last_save_pos)
   {
-    ptft->fillCircle(310, statusbar_y + 8, 5, TFT_GREEN);    
-  } else {
+    ptft->fillCircle(310, statusbar_y + 8, 5, TFT_GREEN);
+  }
+  else
+  {
     ptft->fillCircle(310, statusbar_y + 8, 5, TFT_RED);
   }
   ptft->drawCircle(310, statusbar_y + 8, 5, TFT_BLACK);
@@ -398,8 +433,6 @@ void WP_render(TFT_eSPI *ptft)
   //
   blink_carrot(ptft);
 }
-
-
 
 String formatNumberWithCommas(long num)
 {

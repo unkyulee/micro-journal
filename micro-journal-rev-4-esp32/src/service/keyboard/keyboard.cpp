@@ -2,7 +2,7 @@
 #include "app/app.h"
 #include "app/network/network.h"
 #include "service/display/display.h"
-#include "service/WordProcessor/WordProcessor.h"
+#include "screens/WordProcessor/WordProcessor.h"
 
 //
 #define LAYERS 4 // layers
@@ -77,12 +77,7 @@ void keyboard_loop()
         {
             keypadEvent e = customKeypad.read();
             int key = keyboard_get_key(e);
-            if (key == MENU)
-            {
-                // Update the screen to menu
-                Serial.println("MENU");
-            }
-            else if (key != EMPTY)
+            if (key != EMPTY)
             {
                 // depending on the screen
                 // send the keystrokes
