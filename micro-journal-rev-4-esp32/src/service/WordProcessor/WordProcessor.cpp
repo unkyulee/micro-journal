@@ -21,6 +21,10 @@ int text_pos_prev = -1;
 int total_line_prev = -1;
 int start_line_prev = 0;
 bool clear = false;
+size_t fileSize = 0;
+
+// function prototypes
+String formatNumberWithCommas(long num);
 
 //
 void WP_setup()
@@ -70,7 +74,21 @@ void WP_setup()
 }
 
 ///
-void WP_loop() {}
+void WP_loop()
+{
+  // every 30 seconds check if anything needs to be saved
+  static unsigned int last = millis();
+  if (millis() - last > 30000)
+  {
+    last = millis();
+
+    // needs to be saved?
+    if (text_pos != text_last_save_pos)
+    {
+      WP_save_text();
+    }
+  }
+}
 
 void WP_load_text()
 {
@@ -82,7 +100,7 @@ void WP_load_text()
     return;
   }
 
-  size_t fileSize = file.size();
+  fileSize = file.size();
   if (fileSize > TEXT_BUFFER_SIZE / 2)
   {
     // read the last 500 characters from the file
@@ -174,9 +192,6 @@ void WP_keyboard(char key)
     {
       // reduce the pos
       text_buffer[--text_pos] = '\0';
-
-      // refresh the screen
-      clear = true;
     }
     else
     {
@@ -209,17 +224,23 @@ void WP_keyboard(char key)
   // app_log("key: %c text_pos: %d\n", key, text_pos);
 }
 
-//
-void WP_render(TFT_eSPI *ptft)
+const int statusbar_y = 224;
+#define STATUSBAR_COLOR TFT_BROWN
+void clear_background(TFT_eSPI *ptft)
 {
-  // clear screen
   if (clear)
   {
     clear = false;
     // refresh the screen
     ptft->fillScreen(TFT_BLACK);
+    ptft->fillRect(0, statusbar_y, 320, 240, STATUSBAR_COLOR);
   }
+}
 
+
+//
+void clear_trails(TFT_eSPI *ptft)
+{
   // in case when a new character is entered or backspace comes.
   // remove the previous carrot blink
   if (text_pos_prev != text_pos)
@@ -228,9 +249,51 @@ void WP_render(TFT_eSPI *ptft)
     int cursorY = ptft->getCursorY();
     ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_BLACK);
 
+    // when backspace is pressed
+    if (text_pos_prev > text_pos)
+    {
+      // clear the trailing line
+      ptft->fillRect(cursorX - 12, cursorY - 12, 320, 24, TFT_BLACK);
+    }
+
     // only when the new text is written from previous render
     text_pos_prev = text_pos;
   }
+}
+
+void blink_carrot(TFT_eSPI *ptft) {
+  // display the blink key
+  static unsigned int last = millis();
+  if (millis() - last > 500)
+  {
+    last = millis();
+
+    // toggle cursor blink every second
+    blink = !blink;
+  }
+
+  int cursorX = ptft->getCursorX();
+  int cursorY = ptft->getCursorY();
+  if (blink)
+  {
+    // Draw a white line
+    ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_WHITE);
+  }
+  else
+  {
+    // Draw a black line
+    ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_BLACK);
+  }
+}
+
+//
+void WP_render(TFT_eSPI *ptft)
+{
+  // clear screen
+  clear_background(ptft);
+
+  // clear trails
+  clear_trails(ptft);
 
   // when displaying the text, it should make that the cursor is always displayed at the bottom line
   // 320 x 240 space with 24 height characters
@@ -245,7 +308,6 @@ void WP_render(TFT_eSPI *ptft)
 
   // first line will be always the same
   line_position[0] = &text_buffer[0];
-
   for (int i = 0; i < TEXT_BUFFER_SIZE; i++)
   {
     // scan all the text to calculate the line
@@ -294,21 +356,29 @@ void WP_render(TFT_eSPI *ptft)
   // refresh the screen if the line count has changed
   if (total_line_prev != total_line)
   {
-    // save file whenever new line is added
-    if (total_line_prev >= 0)
-      WP_save_text();
-
     //
     total_line_prev = total_line;
   }
 
-  // Write debug status bar
-  /*
-  ptft->setCursor(0, 0, 2);
-  ptft->setTextColor(TFT_WHITE, TFT_RED);
-  ptft->printf("TL: %d, SL: %d, R: %d, T: %d\n", total_line, start_line, row_character_count, text_pos);
-  */
+  //
+  // Status Bar
+  //
+  // Show if the text is saved or not
+  ptft->setCursor(0, statusbar_y, 2);
+  ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
+  ptft->setTextSize(1);
+  ptft->printf(" %s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
+  if (text_pos == text_last_save_pos)
+  {
+    ptft->fillCircle(310, statusbar_y + 8, 5, TFT_GREEN);    
+  } else {
+    ptft->fillCircle(310, statusbar_y + 8, 5, TFT_RED);
+  }
+  ptft->drawCircle(310, statusbar_y + 8, 5, TFT_BLACK);
 
+  //
+  // TEXT CONTENT
+  //
   // https://github.com/Bodmer/TFT_eSPI/blob/master/examples/320%20x%20240/Free_Font_Demo/Free_Fonts.h
   ptft->setFreeFont(&FreeMono9pt7b);
   ptft->setCursor(0, 36);
@@ -325,26 +395,33 @@ void WP_render(TFT_eSPI *ptft)
     ptft->println("");
   }
 
-  // display the blink key
-  static unsigned int last = millis();
-  if (millis() - last > 500)
-  {
-    last = millis();
+  //
+  blink_carrot(ptft);
+}
 
-    // toggle cursor blink every second
-    blink = !blink;
+
+
+String formatNumberWithCommas(long num)
+{
+  String formattedNumber = "";
+  int digitCount = 0;
+
+  if (num < 0)
+  {
+    formattedNumber += "-";
+    num = -num;
   }
 
-  int cursorX = ptft->getCursorX();
-  int cursorY = ptft->getCursorY();
-  if (blink)
+  do
   {
-    // Draw a white line
-    ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_WHITE);
-  }
-  else
-  {
-    // Draw a black line
-    ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_BLACK);
-  }
+    if (digitCount > 0 && digitCount % 3 == 0)
+    {
+      formattedNumber = "," + formattedNumber;
+    }
+    formattedNumber = String(num % 10) + formattedNumber;
+    num /= 10;
+    digitCount++;
+  } while (num > 0);
+
+  return formattedNumber;
 }
