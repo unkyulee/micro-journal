@@ -15,7 +15,6 @@ int text_pos = 0;
 int text_pos_prev = 0;
 size_t text_last_save_pos = 0;
 
-
 char *line_position[TEXT_BUFFER_SIZE / 13];
 
 //
@@ -121,7 +120,21 @@ void WP_load_text()
 
 void WP_empty_file()
 {
-  // If the file doesn't exist, create it
+  // Rename the existing file to the other
+  char newName[30]; // Create a buffer to hold the new filename
+  snprintf(newName, sizeof(newName), "/%lu.txt", millis());
+
+  if (SD.rename(FILENAME, newName))
+  {
+    app_log("File renamed successfully: %s.\n", newName);
+  }
+  else
+  {
+    app_log("Error renaming file. %s\n", newName);
+    return;
+  }
+
+  // Create an empty file
   File file = SD.open(FILENAME, FILE_WRITE);
   if (!file)
   {
@@ -136,7 +149,8 @@ void WP_empty_file()
 
 void WP_save_text()
 {
-  if(text_last_save_pos == text_pos) {
+  if (text_last_save_pos == text_pos)
+  {
     // no need to save.. nothing is changed
     app_log("Nothing is changed\n");
     return;
@@ -160,7 +174,7 @@ void WP_save_text()
       return;
     }
     size_t length = file.print(&text_buffer[text_last_save_pos]);
-    if(length > 0)
+    if (length > 0)
     {
       app_log("File written from %d\n", text_last_save_pos);
       text_last_save_pos = text_pos;
