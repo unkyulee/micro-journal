@@ -167,6 +167,42 @@ Once all the wires are soldered to each component. Not it is just a matter of cr
 [![Typing Test](/micro-journal-rev-4-esp32/doc/001.webp)](https://youtu.be/S1f8ps_NdyE)
 
 
+# Google Drive Sync
+
+Once all the builds are done, and SD card is ready.
+Place this file inside the sd card and call it "config.json"
+
+```config.json
+{
+  "network": {
+    "type": "wifi",
+    "access_points": [
+      {
+        "ssid": "WIFI AP NAME",
+        "password": "WIFIPASSWORD"
+      }
+    ]
+  },
+  "sync": {
+    "url": "Google App Script URL goes here"
+  }
+}
+```
+
+Update the contents according to your WIFI connection information. This config will be saved inside the SD card and will be used when sync is activated. 
+
+You'd need to install a google apps script on your google drive and get the url of the script in order to have the file uploaded to your own google drive.
+
+Code for the apps script is located in the following path
+
+[/micro-journal-rev-4-esp32/google/sync.js](/micro-journal-rev-4-esp32/google/sync.js)
+
+You need to create a google apps script document in your google drive. 
+Once it is created, copy the code that is provided above, and then deploy as a web app.
+That will give you an url that is linked to your google drive. 
+Place that link in the config.json and then the device should be able to sync files to your google drive.
+
+
 # Enjoy
 
 I hope this project gives some idea or vision that creating an ESP32 based writerDeck is possible. I hope to provide an initiatives to take the ESP32 projects into rather standalone human useable territory. I really hope that community picks up bits and pieces that are provided here and bring up more positivity to the creators world. 
