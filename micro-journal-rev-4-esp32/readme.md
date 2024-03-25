@@ -1,4 +1,4 @@
-# Distraction Free writing device 
+# Distraction-Free writing device: WriterDeck 
 
 This is a build guide for a writerDeck based on ESP32, and ILI9341 display with 30 keys hand wired keyboard. 
 
@@ -6,33 +6,34 @@ This is a build guide for a writerDeck based on ESP32, and ILI9341 display with 
 
 > Turn on and type immediately. Sync with Google Drive. Simple. Let your draft kept always recorded.
 
-WriterDeck is a device that is dedicated for writing. Simply putting it as digital typewriter. One of the main purpose of writerDeck is to provide you the focused and distraction free writing environment. 
+WriterDeck is a dedicated writing device, essentially a digital typewriter. One of its key features is providing a distraction-free writing environment.
 
-The build here utilizes ESP32, a rather power micro controller that has wifi connectivity on board. This means, you don't have to wait for any boot time, it will prompt you to write immediately as it powers on.
-
+The build utilizes the ESP32, a powerful microcontroller equipped with onboard WiFi connectivity. This means there's no need to wait for boot time; it prompts you to write immediately upon powering on.
 
 ## Motivation
 
-I was looking for a writerDeck builds on the internet. That maybe using ESP32 or other type of micro controllers. Something that would turn on immediately and provide writing environment. Also possible to sync with Google Drive. 
+I've been scouring the internet for WriterDeck builds that incorporate microcontrollers like the ESP32 or similar options. Ideally, I'm seeking a device that powers on instantly, creating a conducive writing environment, and has the added convenience of syncing with Google Drive.
 
-I was not able to find such a solution on the internet. Probably, because it is such a niche demands on the market. WriterDeck is already a niche demand, and DIY on a micro controller, sounded like extremely rare occasion to be rather general idea that anyone would have. 
+I couldn't find such a solution online, likely because it caters to a niche demand in the market. WriterDeck itself represents a niche interest, and the idea of a DIY solution using a microcontroller seemed like an exceptionally rare occurrence rather than a widely recognized concept.
 
-I wanted to have a dedicated device that I can type on immediately, to collect notes during the meeting, or draft and idea that is sparked on and about to dim out from my brain. I do have other iterations for a writerDeck. But none of it does the immediate turn on feature.
+I aimed to acquire a dedicated device that allows me to type immediately, facilitating the collection of meeting notes or capturing fleeting ideas before they fade. While I've explored various iterations of a WriterDeck, none of them offer the crucial feature of instant powering on.
 
 So, I decided to build one by myself. 
 
 
 ## Cost of it
 
-You can buy something that costs around 120 euros? or something quite fancy at around 600 euros. Which should work really well fit for your writing needs. I think the commercial product price is rather on the high side. It's totally understandable. Only few people would be wanting to have those type of devices... less demands, high prices to make it up to the production. 
+There are commercial products available, ranging from around 120 euros to more high-end options priced at around 600 euros, which should meet your writing needs effectively. However, I understand that the price of commercial products may seem quite steep. This is likely due to the niche demand for such devices, resulting in lower production volumes and higher prices to compensate for production costs.
 
-DIY the writerDeck, will cost much less. Key components to buy would be ESP32, Display, and the keyboard components. Should possibly end in 50 euros in total. 
+Indeed, DIYing the WriterDeck would likely result in a significantly lower cost. The key components to purchase would include the ESP32, a display, and keyboard components. With careful selection and sourcing, the total cost should ideally end up around 50 euros. 
+
+Comparing costs alone, DIYing a WriterDeck can be much more economical than purchasing commercial products. However, it's important to note that commercial products typically offer higher quality management, better enclosure quality, and overall finished goods. DIY projects may not directly replace commercial products in terms of quality and finish, but they can still provide a cost-effective solution for those willing to trade off some polish for affordability.
 
 ![Had it all](/micro-journal-rev-4-esp32/doc/002.jpg)
 
 > I had all the components to build this, so for me was 0 cost. But should be cheap overall, even buying all those parts.
 
-I had all the components at hand as the spare parts of other projects. So, it cost me nothing to build one. I am sure, some of you guys who already has access to ESP32 in your diy arsenal... the components that I used, you may already have it in your inventory. 
+With all the components readily available as spare parts from previous projects, building one cost me nothing. I'm certain that some of you who already have access to an ESP32 in your DIY arsenal might already have the necessary components in your inventory as well.
 
 * [ESP32 DEVKIT 38 PINS](https://www.amazon.it/dp/B071P98VTG/ref=sspa_dk_detail_3?psc=1&pd_rd_i=B071P98VTG&pd_rd_w=ElqhN&content-id=amzn1.sym.7ef04998-a968-4397-9cab-635d55e2c83b&pf_rd_p=7ef04998-a968-4397-9cab-635d55e2c83b&pf_rd_r=0XFB2NG9Y7T80TEE0NH3&pd_rd_wg=BxnW7&pd_rd_r=fb934b1f-5c03-4e3e-8b9e-9b08944b0c92&s=industrial&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw)
 
@@ -45,32 +46,27 @@ I had all the components at hand as the spare parts of other projects. So, it co
 
 ## Challenges - finding a software
 
-I tried to find a open source solution that has already done this type of device before. Micro controller with keyboard, and a little word processing software to handle the typing experiece on the go. 
+I searched for an open-source solution that had previously developed a device similar to what I envisioned: a microcontroller with a keyboard and integrated word processing software for typing on the go. While I found a few projects related to keyboards and microcontrollers, none of them included the necessary software to handle display and word processing. This presented a considerable challenge. In theory, I considered that terminal-based word processors from the past could potentially be ported to the ESP32. Perhaps someone had already attempted it, but I couldn't find any such project.
 
-There are few projects that has to do with the keyboard and micro controller, but not the software that can handle the display and the word processing experience. This was really a challenge. In theory, those terminal based word processors that existed quite some time ago, could be ported to ESP32? ... Anyone would have done it? Maybe, but I couldn't find one. 
-
-So, I decided to build a ESP32 firmware that can handle some word processing experience, and also handle the google drive sync, that can sync files to the personal drive. 
+Consequently, I made the decision to develop an ESP32 firmware myself. This firmware would not only provide basic word processing capabilities but also include functionality for syncing files with Google Drive, enabling seamless integration with personal cloud storage.
 
 ![word processor](/micro-journal-rev-4-esp32/doc/003.jpg)
 
-> To make ESP32 behave like a writerDeck, you need a software to do so. I couldn't find the one. So I built one myself.
+> In order to transform the ESP32 into a WriterDeck, it required specialized software, which I couldn't find available. Therefore, I took it upon myself to develop the necessary software from scratch.
 
-This is the biggest challenge of the project. Software that I built, is not anywhere going to be close to the commercially built devices. At least at the moment. But this was the best shot I had. 
-
+The most significant challenge of the project was developing the software. While the software I built may not yet match the sophistication of commercially produced devices, it was the best solution available to me at the time.
 
 # Step 1. Handwired Keyboard
 
 ![Handwired Keyboard](/micro-journal-rev-4-esp32/doc/004.jpg)
 
-DIY with micro controller means, you may need to wire things on your own. One of the things that I went on building by hand is the keyboard. I wanted to split the keyboard and put the display in the middle. 
+DIY projects involving microcontrollers often require hands-on wiring and assembly. One aspect I tackled personally was building the keyboard from scratch. My vision was to split the keyboard and position the display in the center, which required careful manual construction.
 
 ![Split Keyboard](/micro-journal-rev-4-esp32/doc/005.jpg)
 
-The dimension of the keyboard, and being it splitted and also the the display. I didn't even look for an option that I could buy off the shelf. 
+I didn't even consider purchasing off-the-shelf options for the dimensions of the split keyboard and display. Instead, I relied on resources available on platforms like YouTube for guidance on building a hand-wired keyboard. For me, the simpler approach involved 3D printing the keyboard plate and installing the switches manually, while others might prefer the PCB method.
 
-You can find many resources from the youtube for building a hand wired keyboard. The easier approach for me was to print the keyboard plate and place the switches. Others may find the PCB approach easier. This is really up to you to find the build method that fits your needs. 
-
-Things that you need to do, is to place the switches, and wired each legs one in horizontal direction and the others in vertical direction. Creating columns and rows matrix. One of the horizontal or vertical needs to have diodes installed to prevent the ghosting. 
+The key steps involve placing the switches and wiring each leg horizontally and vertically to create a matrix of columns and rows. To prevent ghosting, it's necessary to install diodes on either the horizontal or vertical connections. The specific build method chosen depends on individual preferences and needs.
 
 STL files for the keyboard can be found that the following folder in the repository
 
@@ -79,7 +75,7 @@ STL files for the keyboard can be found that the following folder in the reposit
 
 # Step 2. ESP32
 
-I have used devkit that has 38 pins. You can use other types of ESP32 boards. It is built based on GPIO interactions only, so shouldn't be a problem if you use other ESP32 board such as S2 or S3. Make sure that they have sufficient GPIO pins available. 
+I utilized a devkit with 38 pins for this project, but other ESP32 boards can also be used. As long as the board supports GPIO interactions, like the S2 or S3 variants, compatibility shouldn't be an issue. Just ensure that the selected board has a sufficient number of GPIO pins available for the project's requirements.
 
 ## Pin out
 
@@ -107,20 +103,25 @@ I have used devkit that has 38 pins. You can use other types of ESP32 boards. It
 
 ![ESP32](/micro-journal-rev-4-esp32/doc/006.jpg)
 
-I have used a break out board to wire them up and tested before getting into the enclosure. Some of the pins may be rearranged depending on your project needs. In my case, most of the ... or actaully all the pins were used that was allowed through the breakout board... so was really close call to putting all the components. But I noticed that some pins are still available directly on the ESP32 board. So, it is still possible to use other availble pins for additional sensors or enabling touch pad for your project.
+I opted to use a breakout board to wire up the components and tested them before proceeding to the enclosure stage. Depending on the specific requirements of your project, you may need to rearrange some of the pins. In my case, I utilized nearly all the available pins allowed through the breakout board, which made it a tight fit for all the components. However, I observed that some pins remained available directly on the ESP32 board. This means there's still the possibility to utilize these additional pins for integrating extra sensors or enabling touchpad functionality for future enhancements to the project.
+
 
 ## Solder the wire
 
-Once you have all the wiring and pin out figured out. Solder them on the ESP32 board. I have removed the metal pins that were on the esp32 in order to make more space. 
+Once you have finalized all the wiring and pin configurations, it's time to solder them onto the ESP32 board. To create more space for the components, I removed the metal pins that were originally on the ESP32 board. This step ensures a snug fit and optimal layout within the device.
 
 
 ## Installing the firmware
 
-You can clone the respository (https://github.com/unkyulee/micro-journal) and the find the platformio source project in the following folder. "/micro-journal-rev-4-esp32"
+To access the project repository for the micro-journal firmware, you can clone the repository from the following link: 
 
-You need to open this project with the visual studio, having the platformio plugin installed, then you should be able to compile and upload the firmware to the ESP32 micro controller. 
+https://github.com/unkyulee/micro-journal. 
 
-You may want to modify the keyboard layout codes. 
+Once cloned, navigate to the "/micro-journal-rev-4-esp32" folder to find the PlatformIO source project.
+
+To work with the project, you'll need to open it using Visual Studio with the PlatformIO plugin installed. From there, you'll be able to compile and upload the firmware to the ESP32 microcontroller.
+
+Feel free to modify the keyboard layout codes as needed to suit your preferences.
 
 ## Keyboard Layout
 
@@ -144,7 +145,8 @@ You may want to modify the keyboard layout codes.
 
 ![Power Supply](/micro-journal-rev-4-esp32/doc/007.jpg)
 
-I have harvested one 18650 from old laptop battery pack. It was very old, so I monitored very closed while it was charging up. It was able to charge up to 4.2 volts and complete one charge cycle. I think it should provide in the level of 3000 mAh... and I have been using it for a week (1 hour per session) and still working without needing to charge. I think this type of battery system should provide very decent writing time. I think at least 5 hours even with the old battery. 
+I salvaged an 18650 battery from an old laptop battery pack. Due to its age, I closely monitored it during charging. It reached a full charge of 4.2 volts and completed a single charge cycle, suggesting a capacity around 3000 mAh. Over the past week, I've been using it for one-hour sessions without needing to recharge, indicating its reliability. With this performance, I expect this battery system to provide a very decent writing time, likely around 5 hours or more, even with the aged battery.
+
 
 * [LiPo Charge Controller and 5V output module](https://www.amazon.it/Ouitble-caricabatteria-integrato-scarico-caricabatterie/dp/B09MQ6ND2Q/ref=sr_1_12?crid=8O78303YIA7M&dib=eyJ2IjoiMSJ9.ogstJhP7PWO-g81-wnxKh6VUbIZRJhLdyBc18r5jSRC5YsVWLrFZEKaf5mNfcg3UK9LZdo_N8zQ_iPBbUhlwr3lt_ZKxrB8_a-TVVGLO5m8y3xMHqBYbCl5NF8diqwd4Kg68cxOloVVTeY8NWgio7k0ON1HuFfkIrApVw4revVO-RqwcBmSR8IBHGI2L8TYDwmDItWB_bpQt9TZzSWhU2c5RgGiAslF4rDhHRQsu67HdDcQBRHaJdhroxiRJUNBHL3CnXyxrpiOCMKIH7pG8nBPgcX4mhEASN-Sw3NmjFsQ.qikh6iFDKhjEch8EOAYNdKsQmJk30ucZsf9OFwOfRzg&dib_tag=se&keywords=lipo+charger+module&qid=1711365173&sprefix=lipo+charger+module%2Caps%2C145&sr=8-12)
 
@@ -152,7 +154,7 @@ I bought the charge module that provides 5V output.
 
 # Step 4. Enclosure
 
-Once all the wires are soldered to each component. Not it is just a matter of cramming all the components into the enclosure. I have used... quite a few hot glue in order to place the display and esp32. and some cable ties to make sure that the display case, doesn't step on the cables. Using 2.5M threaded inserts and screws, I was able to close then inside the enclosure.
+Once all the wires were soldered to each component, the next step was cramming all the components into the enclosure. I utilized a fair amount of hot glue to secure the display and ESP32 in place, along with some cable ties to prevent the display case from pressing down on the cables. Using 2.5mm threaded inserts and screws, I successfully closed them inside the enclosure, ensuring a secure fit.
 
 ![Enclosure](/micro-journal-rev-4-esp32/doc/009.jpg)
 ![ESP32](/micro-journal-rev-4-esp32/doc/008.jpg)
@@ -169,8 +171,7 @@ Once all the wires are soldered to each component. Not it is just a matter of cr
 
 # Google Drive Sync
 
-Once all the builds are done, and SD card is ready.
-Place this file inside the sd card and call it "config.json"
+Once all the components are assembled and the SD card is prepared, place a file named "config.json" inside the SD card with the following content:
 
 ```config.json
 {
@@ -189,22 +190,17 @@ Place this file inside the sd card and call it "config.json"
 }
 ```
 
-Update the contents according to your WIFI connection information. This config will be saved inside the SD card and will be used when sync is activated. 
+Update the contents of the file with your WiFi connection information. This configuration will be saved on the SD card and utilized when sync is activated.
 
-You'd need to install a google apps script on your google drive and get the url of the script in order to have the file uploaded to your own google drive.
-
-Code for the apps script is located in the following path
+To enable syncing to your Google Drive, you'll need to install a Google Apps Script on your Google Drive and obtain its URL. The code for the Google Apps Script can be found in the following path:
 
 [/micro-journal-rev-4-esp32/google/sync.js](/micro-journal-rev-4-esp32/google/sync.js)
 
-You need to create a google apps script document in your google drive. 
-Once it is created, copy the code that is provided above, and then deploy as a web app.
-That will give you an url that is linked to your google drive. 
-Place that link in the config.json and then the device should be able to sync files to your google drive.
+Create a new Google Apps Script document in your Google Drive, then copy the provided code into it. Deploy the script as a web app, which will generate a URL linked to your Google Drive. Place this URL in the "url" field of the config.json file. Once configured, the device should be able to sync files to your Google Drive seamlessly.
 
 
 # Enjoy
 
-I hope this project gives some idea or vision that creating an ESP32 based writerDeck is possible. I hope to provide an initiatives to take the ESP32 projects into rather standalone human useable territory. I really hope that community picks up bits and pieces that are provided here and bring up more positivity to the creators world. 
+I'm confident that this project will inspire others and demonstrate that creating an ESP32-based WriterDeck is indeed possible. Your initiative to push ESP32 projects into more user-friendly, standalone territory is commendable. By sharing your experience and insights, you're paving the way for more creativity and innovation within the community. I believe that others will pick up on the ideas and contributions presented here, fostering a more positive and collaborative environment for creators worldwide. Your efforts are sure to make a meaningful impact in the DIY and maker communities.
 
 Thanks for reading up to here.

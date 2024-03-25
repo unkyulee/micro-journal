@@ -1,26 +1,17 @@
-# Micro Journal
+# Micro Journal: Distraction-Free Writing Device: WriterDeck
 
-I wanted to make a device that can be specialized in writing. Particularly with the mechanical keyboards. A portable, or rather small form factor device that helps you to write and in a focused environment. A distraction free writing device. 
+I aimed to create a specialized writing device, focusing on the tactile experience of mechanical keyboards. This device would be portable, with a compact form factor, designed to enhance the writing process in a focused environment. The goal was to provide a distraction-free writing experience, allowing users to immerse themselves fully in their creative work.
 
-Recommended Sites:
-
-https://new.reddit.com/r/writerDeck
-
-https://www.writerdeck.org/
 
 ## First iteration: Using Raspberry Pi and 30 Keys mechanical keyboards. 
 
-I have tried several iteration to explore each options that I can try. First version was using a Raspberry PI 2W, which is a small linux computer that is coupled with 30 keys mechanical keyboard. 
+I experimented with various iterations to explore different options for creating a distraction-free writing device. The initial version involved using a Raspberry Pi 2W, a small Linux computer, paired with a 30-key mechanical keyboard.
 
 ![Micro Journal Rev.2](/micro-journal-rev-2-raspberypi/images/rev2_6.png)
 
-Important factor of the distraction free writing. Is the distraction free. That you should be forced not to be distracted. 
+A crucial aspect of achieving distraction-free writing is to eliminate all possible distractions. The Raspberry Pi 2W excelled in this regard due to its Linux terminal-based interface, devoid of any graphical user interface. This meant there were no avenues for distractions like YouTube or other similar distractions.
 
-Raspberry Pi 2W, does a very good job on the distraction. Because, it is based on linux terminal. Without Graphical user interface. So, there is no possibilities to run youtube or other type of distrations. 
-
-When I turn this device on, I use mid night commander to reach the folder I want to work on and use "micro" editor (something like nano, or vi) to start writing on it. The screen becomes black and white with just texts that I write and you can't do anything else then writing. 
-
-It helps to you get into the flow very quickly. And the sheer amount of texts that you can write down in the flow is amazing. also, the quality is pretty good. When your brain is constrained to do just one thing. It does deliver pretty awesome results. 
+Upon powering on the device, I utilized the midnight commander to navigate to the desired folder and used the "micro" editor (similar to nano or vi) to begin writing. The screen transformed into a simple black-and-white display, solely focused on the text being written. This immersive environment facilitated quick entry into the flow state, resulting in remarkable productivity and quality of writing. When the brain is compelled to focus solely on one task, the results can be truly impressive.
 
 This is the write up for the build guide of ths raspberry pi build.
 
@@ -30,15 +21,15 @@ This is the write up for the build guide of ths raspberry pi build.
 
 ## Second iteration: Using an old phone to make a writerDeck
 
-Next iteration was to build a writing device using the component that can be easily acquired. Like a phone. Old phone still has pretty good power to be used as a writer. And getting connected to the keyboard. This can be a great solution for many of you, that can be built rather easily without going through looking for too techy components like linux or raspberry pi.
+In the next iteration, I explored building a writing device using easily accessible components, such as an old phone. Old phones still possess sufficient power to serve as effective writing tools when coupled with a keyboard.
 
 ![Micro Journal Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/images/001.jpg)
 
-Focus of the build was to be able for my daughter to write journals. And not having to go through difficulties of searhcing for a linux commands. She was used to the table environment. So this build actually fitting well with the purpose. She could pick it up and start writing on it.
+The primary focus of this build was to provide a platform for my daughter to write journals without the complexities associated with Linux commands. Since she was accustomed to tablet environments, this solution aligned well with her needs. She could simply pick up the device and begin writing.
 
-This build specifically has 3d prints and hand wired keyboards, so itself may not be the perfect example of an easy build. But just taking the idea of combining an old phone, and a keyboard. You can build the similar purposed device on your own.
+This particular build involved 3D prints and hand-wired keyboards, making it slightly more complex. However, the core idea of combining an old phone with a keyboard can be easily replicated for similar purposes.
 
-One thing to note that. Distraction Free can't be achieved with this build. Phone is such a versatile device and it provide so much entertainment that, it is almost impossible to focus on writing. You can constantly distracted to youtube or media streaming such as spotify and so on. I didn't have so much success on this, but was a good enough device to help my daughter to continue writing journals on it.
+It's important to note that achieving a distraction-free environment was challenging with this build. Phones are inherently versatile devices, offering access to various forms of entertainment like YouTube and music streaming services. Consequently, maintaining focus on writing proved difficult. Despite this limitation, the device still served its purpose well by assisting my daughter in continuing her journal writing.
 
 Here are build guides:
 
@@ -49,19 +40,21 @@ Here are build guides:
 
 ## Third iteraction: Immeidate power on and writing
 
-One of the nice thing about the previous old phone iteration is that, it can be turned on immediately and start writing. Compared to thge raspberry pi version, where you need to wait for around 15 seconds before able to type on. 
-
-So, I thought about a solution that can handle such instant writing experience. 
-
-Using ESP32 (a micro controller) this experience of instant writing can be achieved. With a screen and the keyboard attached to it. It can become a nice device that helps you writing. Almost similar to the [commercial WriterDecks](https://www.writerdeck.org/).
+Transitioning from the previous iteration using an old phone, I sought a solution that would provide an instant writing experience similar to commercial WriterDecks, utilizing an ESP32 microcontroller.
 
 ![Micro Journal Rev.4](/micro-journal-rev-4-esp32/doc/001.webp)
 
-It is most challenging DIY build among the other iterations. Handwired keyboard is necessary as you need to attach the keyboard wiring directly to the ESP32. Also, Display needs to be wired to the board. This is rather hardcore DIY path, as you may not find much resources on the internet. It may not be simply a follow the steps and you are done. You may need to have some prior knowledge in order to get this running. 
+This version represents the most challenging DIY build among my iterations. Handwiring the keyboard directly to the ESP32 and connecting the display to the board required a hardcore DIY approach, as resources and guides for this specific setup were scarce. It demanded some prior knowledge and experimentation to get it up and running.
 
-With that said, this is the version as close to the ideal writing device I can think of. It turns on immediately when powered on (1 second?) and prompts you to write on. Also provides Google Drive sync so it can sync your files to your own cloud system. With that achieved. I would say, it is quite useful build. It is something that I can pull out when I have a spark of an idea that needs to be recorded. Or if a boss passes by to drop a big idea or tasks, I can start writing on it without a delay. This would be a fastest device and methods that I can think of to start writing.
+Despite the challenges, this version comes closest to my ideal writing device. It powers on almost instantaneously (within 1 second) and prompts you to start writing immediately. Additionally, it offers Google Drive sync functionality, allowing seamless file synchronization with your cloud storage.
 
-You can leave it on the bed stand and be a device that can record your dreams. It requires you to just able to find the power switch before writing your weirdest dream ever. 
+With these features in place, this build proves to be highly practical. It's perfect for capturing sudden bursts of inspiration or quickly jotting down important tasks or ideas. It's a device that can be kept on your bedside table, ready to record your dreams at a moment's notice. All you need to do is find the power switch before immortalizing your weirdest dream ever in writing.
 
 [Micro Journal Rev.4 Build Details](/micro-journal-rev-4-esp32/readme.md)
 
+
+# Further Information
+
+https://new.reddit.com/r/writerDeck
+
+https://www.writerdeck.org/
