@@ -195,6 +195,8 @@ void stop_sync()
 
     //
     sync_started = false;
+    status_prev = 0;
+    status = 0;
 
     //
     back();
