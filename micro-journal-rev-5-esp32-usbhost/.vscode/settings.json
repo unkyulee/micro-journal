@@ -1,0 +1,20 @@
+{
+  "cmake.sourceDirectory": "C:/Project/IoT/iot_clock/lib/TFT_eSPI",
+  "files.associations": {
+    "cmath": "cpp",
+    "*.tcc": "cpp",
+    "optional": "cpp",
+    "istream": "cpp",
+    "ostream": "cpp",
+    "system_error": "cpp",
+    "array": "cpp",
+    "functional": "cpp",
+    "regex": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "utility": "cpp",
+    "bitset": "cpp",
+    "algorithm": "cpp",
+    "random": "cpp"
+  }
+}
