@@ -70,6 +70,7 @@ void Menu_render(TFT_eSPI *ptft)
 // 1: waiting for the network
 
 int status_prev = -1;
+int status = 0;
 int response;
 void Menu_sync(TFT_eSPI *ptft)
 {
@@ -77,7 +78,6 @@ void Menu_sync(TFT_eSPI *ptft)
     JsonDocument &app = app_status();
 
     //
-    static int status = 0;
     if (status_prev != status)
     {
         ptft->fillScreen(TFT_BLACK);
@@ -195,6 +195,8 @@ void stop_sync()
 
     //
     sync_started = false;
+    status_prev = 0;
+    status = 0;
 
     //
     back();
