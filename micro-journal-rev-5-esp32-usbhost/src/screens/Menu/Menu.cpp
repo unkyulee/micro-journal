@@ -203,14 +203,19 @@ void stop_sync()
 //
 void Menu_keyboard(char key)
 {
+    JsonDocument &app = app_status();
+
     // every key will refresh the screen
     clear_menu = true;
 
     // sync
     if (sync_started)
     {
-        if (key == 'x')
+        if (key == 'x' || app["stop"].as<bool>() == true) {
+            app["stop"] = false;
             stop_sync();
+        }
+            
         return;
     }
 
@@ -241,9 +246,10 @@ void Menu_keyboard(char key)
     {
         sync_started = true;
     }
-    else if (key == 'b')
+    else if (key == 'b' || app["stop"].as<bool>() == true)
     {
         // go back to wordprocessor
+        app["stop"] = false;
         back();
     }
 }

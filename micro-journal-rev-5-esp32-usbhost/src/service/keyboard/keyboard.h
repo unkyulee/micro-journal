@@ -2,6 +2,7 @@
 #define Keyboard_h
 
 //
+#include <Arduino.h>
 
 #define FN 28
 #define SHIFT 29
@@ -16,6 +17,8 @@ void keyboard_setup();
 
 ///
 void keyboard_loop();
+static void keyboard_connected(uint8_t usbNum, void *dev);
+static void keyboard_print(uint8_t usbNum, uint8_t byte_depth, uint8_t *data, uint8_t data_len);
 
 
 #endif
