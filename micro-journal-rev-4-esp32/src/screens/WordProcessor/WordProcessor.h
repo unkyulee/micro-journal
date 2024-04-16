@@ -25,8 +25,8 @@ private:
 
     // Constants
     // buffer size should be divisible by row character count (29)
-    //static const int TEXT_BUFFER_SIZE = 2900;
-    static const int TEXT_BUFFER_SIZE = 58;
+    static const int TEXT_BUFFER_SIZE = 2900;
+    //static const int TEXT_BUFFER_SIZE = 58;
     static const int MAX_ROW_CHARACTERS = 29;
     static const int MAX_LINES = 10;
     static const int STATUSBAR_Y = 224;
@@ -51,7 +51,7 @@ private:
     
     void clearBackground();
     void clearTrails();
-    void blinkCarrot();
+    void blinkCursor();
     void checkSaved();
     String formatNumberWithCommas(long num);
 };

@@ -95,8 +95,10 @@ void WordProcessor::render()
             start_line = 0;
 
         clear = true;
-
         start_line_prev = start_line;
+
+        // screen refresh saves
+        saveText();
     }
 
     if (total_line_prev != total_line)
@@ -129,7 +131,7 @@ void WordProcessor::render()
         ptft->println("");
     }
 
-    blinkCarrot();
+    blinkCursor();
 }
 
 // Load text from file
@@ -239,7 +241,8 @@ void WordProcessor::saveText()
         size_t offset = fileSize - (TEXT_BUFFER_SIZE - text_last_save_pos);
         if (fileSize < (TEXT_BUFFER_SIZE - text_last_save_pos))
             offset = 0;
-        app_log("file size: %d file offset: %d text_last_save: %d\n", fileSize, offset, text_last_save_pos);
+        app_log("file size: %d file offset: %d text_last_save: %d text_pos: %d\n",
+                fileSize, offset, text_last_save_pos, text_pos);
         if (!file.seek(offset))
         {
             app_log("Failed to seek file pointer\n");
@@ -261,6 +264,9 @@ void WordProcessor::saveText()
             app["screen"] = ERRORSCREEN;
         }
         file.close();
+
+        // save operation takes time before loading is available
+        delay(250);
     }
 }
 
@@ -289,7 +295,6 @@ void WordProcessor::keyboard(char key)
             text_pos = 0;
             text_buffer[0] = '\0';
             saveText();
-            delay(100);
             loadText();
         }
     }
@@ -302,7 +307,6 @@ void WordProcessor::keyboard(char key)
     if (text_pos >= TEXT_BUFFER_SIZE)
     {
         saveText();
-        delay(100);
         loadText();
         clear = true;
     }
@@ -324,22 +328,34 @@ void WordProcessor::clearTrails()
 {
     if (text_pos_prev != text_pos)
     {
+        // get current cursor position
         int cursorX = ptft->getCursorX();
         int cursorY = ptft->getCursorY();
-        ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_BLACK);
 
-        if (text_pos_prev > text_pos)
+        // remove previous cursor
+        for (int i = 0; i < text_pos - text_pos_prev; i++)
         {
-            ptft->fillRect(cursorX - 12, cursorY - 12, 320, 24, TFT_BLACK);
+            ptft->drawLine(cursorX + 2 - (10 * (i + 1)), cursorY + 2, cursorX + 24 - (10 * (i + 1)), cursorY + 2, TFT_BLACK);
         }
 
+        // in case when back space is pressed
+        if (text_pos_prev > text_pos)
+        {
+            // delete the character
+            ptft->fillRect(cursorX - 12, cursorY - 12, 320, 24, TFT_BLACK);
+            app_log("text_pos_prev: %d, text_pos: %d\n", text_pos_prev, text_pos);
+        }
+
+        // always show the cursor when typing
         blink = true;
+
+        // update the text_pos
         text_pos_prev = text_pos;
     }
 }
 
-// Blink carrot
-void WordProcessor::blinkCarrot()
+// Blink Cursor
+void WordProcessor::blinkCursor()
 {
     static unsigned int last = millis();
     if (millis() - last > 500)
@@ -350,13 +366,15 @@ void WordProcessor::blinkCarrot()
 
     int cursorX = ptft->getCursorX();
     int cursorY = ptft->getCursorY();
+
+    //
     if (blink)
     {
-        ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_WHITE);
+        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, TFT_WHITE);
     }
     else
     {
-        ptft->drawLine(cursorX, cursorY, cursorX + 10, cursorY, TFT_BLACK);
+        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, TFT_BLACK);
     }
 }
 
