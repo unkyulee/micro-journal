@@ -4,25 +4,53 @@
 #include <TFT_eSPI.h>
 #define FILENAME "/ujournal.txt"
 
-//
-void WP_setup(TFT_eSPI* ptft);
+class WordProcessor
+{
+public:
+    // Static method to get the instance of the WordProcessor
+    static WordProcessor& getInstance(TFT_eSPI *ptft);
 
-// 
-void WP_render(TFT_eSPI* ptft);
+    // Public methods
+    void setup();
+    void render();
+    void keyboard(char key);
 
-// 
-void WP_keyboard(char key);
+private:
+    // Private constructor to prevent instantiation
+    WordProcessor(TFT_eSPI *ptft) : ptft(ptft) {}
 
-//
-void WP_load_text();
-void WP_save_text();
-void WP_empty_file();
+    // Static instance of WordProcessor
+    static WordProcessor* instance;
 
-//
-void clear_background(TFT_eSPI *ptft);
-void clear_trails(TFT_eSPI *ptft);
-void blink_carrot(TFT_eSPI *ptft);
-void check_saved();
-String formatNumberWithCommas(long num);
+    // Constants
+    static const int TEXT_BUFFER_SIZE = 2900;
+    static const int MAX_ROW_CHARACTERS = 29;
+    static const int MAX_LINES = 10;
+    static const int STATUSBAR_Y = 224;
+    static const int STATUSBAR_COLOR = TFT_BROWN;
+
+    // Member variables
+    TFT_eSPI *ptft;
+    char text_buffer[TEXT_BUFFER_SIZE + 2];
+    int text_pos = 0;
+    int text_pos_prev = 0;
+    size_t text_last_save_pos = 0;
+    char *line_position[TEXT_BUFFER_SIZE / MAX_ROW_CHARACTERS];
+    bool blink = false;
+    int total_line_prev = 0;
+    int start_line_prev = 0;
+    bool clear = true;
+    size_t fileSize = 0;
+
+    // Private methods
+    void loadText();
+    void saveText();
+    void emptyFile();
+    void clearBackground();
+    void clearTrails();
+    void blinkCarrot();
+    void checkSaved();
+    String formatNumberWithCommas(long num);
+};
 
 #endif

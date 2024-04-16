@@ -186,7 +186,7 @@ char map_usb_hid_to_ascii(uint8_t key_code, bool shift_pressed)
     }
     else if (key_code == 0x2A)
     {
-        return BACKSPACE;
+        return '\b';
     }
     else if (key_code == 0x28)
     {
@@ -237,7 +237,7 @@ static void keyboard_print(uint8_t usbNum, uint8_t byte_depth, uint8_t *data, ui
             if (screen == WORDPROCESSOR)
             {
                 // send the key stroke to word processor
-                WP_keyboard((char)key);
+                WordProcessor::getInstance(nullptr).keyboard((char)key);
             }
             else if (screen == MENUSCREEN)
             {

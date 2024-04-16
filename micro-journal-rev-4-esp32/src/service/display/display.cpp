@@ -51,10 +51,10 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        WP_setup(&tft);
+        WordProcessor::getInstance(&tft).setup();
 
       // loop
-      WP_render(&tft);
+      WordProcessor::getInstance(&tft).render();
     }
 
     // ERROR SCREEN

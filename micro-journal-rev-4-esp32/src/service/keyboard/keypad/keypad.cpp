@@ -91,7 +91,8 @@ void keyboard_loop()
 
                 if(screen == WORDPROCESSOR) {
                     // send the key stroke to word processor
-                    WP_keyboard((char)key);
+                    WordProcessor::getInstance(nullptr).keyboard((char)key);
+                    //
                 } else if(screen == MENUSCREEN) {
                     Menu_keyboard((char)key);
                 } else if(screen == ERRORSCREEN) {
