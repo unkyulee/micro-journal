@@ -227,7 +227,7 @@ void WordProcessor::keyboard(char key) {
         return;
     }
 
-    if (key == BACKSPACE) {
+    if (key == '\b') {
         if (text_pos > 0 && text_pos > text_last_save_pos) {
             text_buffer[--text_pos] = '\0';
         } else {

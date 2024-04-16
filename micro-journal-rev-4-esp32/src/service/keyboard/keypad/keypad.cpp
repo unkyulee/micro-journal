@@ -27,15 +27,15 @@ int layers[LAYERS][ROWS * COLS] = {
     {// when shift is pressed
      'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
      'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\n',
-     'Z', 'X', 'C', 'V', BACKSPACE, 'B', 'N', 'M', FN, SHIFT},
+     'Z', 'X', 'C', 'V', '\b', 'B', 'N', 'M', FN, SHIFT},
     {// when number layer key is pressed
      '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
      '`', '\\', '-', '=', '[', ']', ';', '\'', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, ',', '.', '/', FN, SHIFT},
+     MENU, EMPTY, EMPTY, EMPTY, '\b', ',', '.', '/', FN, SHIFT},
     {// when number layer key and shift is pressed
      '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
      '~', '|', '_', '+', '{', '}', ':', '\"', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, '<', '>', '?', FN, SHIFT}};
+     MENU, EMPTY, EMPTY, EMPTY, '\b', '<', '>', '?', FN, SHIFT}};
 
 // define the symbols on the buttons of the keypads
 // prettier-ignore
