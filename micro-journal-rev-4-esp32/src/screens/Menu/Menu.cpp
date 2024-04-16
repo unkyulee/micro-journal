@@ -7,90 +7,271 @@
 #include <HTTPClient.h>
 #include <SD.h>
 
+// properties
+#define MENUBAR_COLOR TFT_RED
+
+// state
+bool menu_clear = false;
+
+// 0 - home
+// 1 - sync
+// 2 - delete file confirm
+int menu_state = 0;
+
+// 0 - starting
+// 1 - waiting
+// 2 - sending
+int sync_state = 0;
+
+// prototypes
+void menu_tooolbar(TFT_eSPI *ptft);
+void menu_home(TFT_eSPI *ptft);
+
+//
+void menu_sync(TFT_eSPI *ptft);
+void menu_sync_start(TFT_eSPI *ptft);
+void menu_sync_waiting(TFT_eSPI *ptft);
+void menu_sync_send(TFT_eSPI *ptft);
+
+void menu_delete(TFT_eSPI *ptft);
+
+//
+void menu_sync_operation();
+
 //
 void Menu_setup(TFT_eSPI *ptft)
 {
-    ptft->fillScreen(TFT_BLACK);
+    // refresh the background
+    menu_clear = true;
 }
 
-//
-bool clear_menu = false;
-bool delete_confirm = false;
-bool sync_started = false;
 void Menu_render(TFT_eSPI *ptft)
 {
-    if (clear_menu)
+    // clear background when necessary
+    if (menu_clear)
     {
+        //
         ptft->fillScreen(TFT_BLACK);
-        clear_menu = false;
+
+        // toolbr
+        ptft->fillRect(0, 0, 320, 20, MENUBAR_COLOR);
+        menu_clear = false;
     }
 
-    if (sync_started)
+    // display tool bar
+    menu_tooolbar(ptft);
+
+    //
+    if (menu_state == 0)
     {
-        Menu_sync(ptft);
+        menu_home(ptft);
     }
-    else
+    else if (menu_state == 1)
     {
-        JsonDocument &app = app_status();
-
-        // Text to be displayed
-        ptft->setCursor(0, 30, 2);
-
-        //
-        ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-        ptft->println(" SELECT AN OPERATION ");
-        ptft->println();
-
-        //
-        if (app["config"]["sync"]["url"].as<String>().isEmpty() == false)
-        {
-            ptft->println(" (S) SYNC ");
-        }
-
-        //
-        ptft->println(" (D) DELETE ALL ");
-
-        ptft->println();
-        ptft->println(" (B) BACK ");
-        ptft->println();
-        ptft->println();
-
-        //
-        if (delete_confirm)
-        {
-            ptft->setTextColor(TFT_WHITE, TFT_RED);
-            ptft->println("(Y) ARE YOU SURE TO DELETE ALL?");
-        }
+        menu_sync(ptft);
+    }
+    else if (menu_state == 2)
+    {
+        menu_delete(ptft);
     }
 }
 
 //
-// -1: not started
-// 0: network start
-// 1: waiting for the network
+void Menu_keyboard(char key)
+{
+    // clear background for every key stroke
+    menu_clear = true;
 
-int status_prev = -1;
-int response;
-void Menu_sync(TFT_eSPI *ptft)
+    //
+    JsonDocument &app = app_status();
+
+    // based on the current menu state
+    if (menu_state == 0)
+    {
+        // home
+        if (key == 'S' || key == 's')
+        {
+            if (app["config"]["sync"]["url"].as<String>().isEmpty() == false)
+            {
+                // to sync
+                menu_state = 1;
+                sync_state = 0;
+
+                //
+                app["network"]["enabled"] = true;
+            }
+        }
+
+        else if (key == 'D' || key == 'd')
+        {
+            // to delete
+            menu_state = 2;
+        }
+    }
+
+    else if (menu_state == 1)
+    {
+        if (key == '\b' || key == 'b' || key == 'B')
+        {
+            //
+            app["network"]["enabled"] = false;
+
+            //
+            menu_state = 0;
+            sync_state = -1;
+        }
+
+        return;
+    }
+
+    else if (menu_state == 2)
+    {
+        // delete confirmed
+        if (key == 'Y' || key == 'y')
+        {
+            // empty the file
+            WordProcessor::getInstance(nullptr).emptyFile();
+
+            // go back to the word processor
+            app["screen"] = WORDPROCESSOR;
+        }
+        else
+        {
+            // go back to home menu
+            menu_state = 0;
+        }
+    }
+}
+
+// draw toolbar
+void menu_tooolbar(TFT_eSPI *ptft)
+{
+    ptft->setCursor(0, 2, 2);
+    ptft->setTextColor(TFT_WHITE, MENUBAR_COLOR);
+    ptft->setTextSize(1);
+    ptft->print(" MENU ");
+}
+
+//
+void menu_home(TFT_eSPI *ptft)
+{
+    JsonDocument &app = app_status();
+
+    // Text to be displayed
+    ptft->setCursor(0, 30, 2);
+    ptft->setTextSize(1);
+
+    //
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println();
+
+    //
+    if (app["config"]["sync"]["url"].as<String>().isEmpty() == false)
+    {
+        ptft->println(" (S) SYNC ");
+    }
+
+    //
+    ptft->println(" (D) START NEW ");
+    ptft->println();
+    ptft->println(" (B) BACK ");
+    ptft->println();
+    ptft->println();
+}
+
+//
+void menu_sync(TFT_eSPI *ptft)
 {
     //
     JsonDocument &app = app_status();
 
-    //
-    static int status = 0;
-    if (status_prev != status)
+    // caulcate current sync state
+    if (sync_state < 2)
     {
-        ptft->fillScreen(TFT_BLACK);
-        status_prev = status;
+        // when network becomes online
+        // convert the state to 1
+        if (app["network"]["status"].as<int>() == 0)
+        {
+            sync_state = 1;
+        }
+
+        else if (app["network"]["status"].as<int>() == 1)
+        {
+            sync_state = 2;
+        }
     }
 
-    // Text to be displayed
+    // when sync state changes
+    // clear background
+    static int sync_state_prev = -1;
+    if (sync_state_prev != sync_state)
+    {
+        //
+        menu_clear = true;
+
+        //
+        sync_state_prev = sync_state;
+    }
+
+    // header
     ptft->setCursor(0, 30, 2);
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println(" SYNC IN PROGRESS ");
 
     //
+    if (sync_state == 0)
+    {
+        menu_sync_start(ptft);
+    }
+    else if (sync_state == 1)
+    {
+        menu_sync_waiting(ptft);
+    }
+    else if (sync_state == 2)
+    {
+        menu_sync_send(ptft);
+    }
+
+    ptft->println("");
+    ptft->println(" press (B) to stop ");
+}
+
+void menu_sync_start(TFT_eSPI *ptft)
+{
+    //
+    JsonDocument &app = app_status();
+
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println(" Sync Process ");
-    ptft->println();
+    ptft->println(" - Starting network ...");
+}
+
+void menu_sync_waiting(TFT_eSPI *ptft)
+{
+    //
+    JsonDocument &app = app_status();
+
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println(" - Waiting ... ");
+}
+
+void menu_sync_send(TFT_eSPI *ptft)
+{
+    /*
+
+        //
+    String ip = app["network"]["IP"].as<String>();
+    const char *ssid = app["network"]["ssid"].as<const char *>();
+
+    ptft->printf("SSID: %s\n", ssid);
+    ptft->printf("IP: %s\n", ip);
+    */
+}
+
+/*
+
+
+void menu_sync_operation()
+{
 
     // display network information
     if (app["network"]["status"].as<int>() == 1)
@@ -138,33 +319,6 @@ void Menu_sync(TFT_eSPI *ptft)
         {
             //
             ptft->println(" - Sync starting ...");
-            String url = app["config"]["sync"]["url"].as<String>();
-            app_log("Requesting sync ... \n");
-            app_log("%s\n", url.c_str());
-
-            // prepare http client
-            HTTPClient http;
-            http.begin(url);
-            http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
-
-            // Read file in chunks and send via POST request
-            File file = SD.open(FILENAME, FILE_READ);
-            if (!file)
-            {
-                ptft->println("Failed to open file");
-                http.end();
-                return;
-            }
-
-            //
-            response = http.sendRequest("POST", &file, file.size());
-            app_log("Response: %d\n", response);
-
-            // Close file
-            file.close();
-
-            // close http connection
-            http.end();
 
             // update the status
             status = 3;
@@ -176,15 +330,36 @@ void Menu_sync(TFT_eSPI *ptft)
         ptft->println("Sync Completed.");
     }
 
-    ptft->println("");
-    ptft->println(" press (x) to stop ");
-}
-
-void back()
-{
-    // go back to wordprocessor
+    //
     JsonDocument &app = app_status();
-    app["screen"] = WORDPROCESSOR;
+
+    String url = app["config"]["sync"]["url"].as<String>();
+    app_log("Requesting sync ... \n");
+    app_log("%s\n", url.c_str());
+
+    // prepare http client
+    HTTPClient http;
+    http.begin(url);
+    http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
+
+    // Read file in chunks and send via POST request
+    File file = SD.open(FILENAME, FILE_READ);
+    if (!file)
+    {
+        ptft->println("Failed to open file");
+        http.end();
+        return;
+    }
+
+    //
+    response = http.sendRequest("POST", &file, file.size());
+    app_log("Response: %d\n", response);
+
+    // Close file
+    file.close();
+
+    // close http connection
+    http.end();
 }
 
 void stop_sync()
@@ -197,59 +372,26 @@ void stop_sync()
     sync_started = false;
 
     //
-    back();
+    // back();
 }
 
+*/
+
 //
-void Menu_keyboard(char key)
+void menu_delete(TFT_eSPI *ptft)
 {
-    JsonDocument &app = app_status();
-
-    // every key will refresh the screen
-    clear_menu = true;
-
-    // sync
-    if (sync_started)
-    {
-        if (key == 'x' || app["stop"].as<bool>() == true) {
-            app["stop"] = false;
-            stop_sync();
-        }
-            
-        return;
-    }
-
-    // delete confirm
-    if (delete_confirm)
-    {
-        if (key == 'Y' || key == 'y')
-        {
-            WordProcessor::getInstance(nullptr).emptyFile();
-            back();
-        }
-        else
-        {
-            back();
-        }
-
-        delete_confirm = false;
-
-        return;
-    }
+    ptft->setCursor(0, 30, 2);
+    ptft->setTextSize(1);
 
     //
-    if (key == 'D' || key == 'd')
-    {
-        delete_confirm = true;
-    }
-    else if (key == 'S' || key == 's')
-    {
-        sync_started = true;
-    }
-    else if (key == 'b' || app["stop"].as<bool>() == true)
-    {
-        // go back to wordprocessor
-        app["stop"] = false;
-        back();
-    }
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println();
+    ptft->setTextColor(TFT_WHITE, TFT_RED);
+    ptft->println(" (Y) ARE YOU SURE?");
+
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println();
+    ptft->println("WARNING: This action will delete all text. Make sure to sync your content before confirming to prevent loss of data.");
+    ptft->println();
+    ptft->println(" (B) BACK ");
 }

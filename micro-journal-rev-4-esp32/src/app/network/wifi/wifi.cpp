@@ -62,6 +62,8 @@ void network_wifi_loop()
 //
 void _scan_wifi_networks(JsonDocument &app)
 {
+    app_log("Scanning wifi networks.\n");
+
     // Scan for available networks
     WiFi.mode(WIFI_STA);
     int networksFound = WiFi.scanNetworks();

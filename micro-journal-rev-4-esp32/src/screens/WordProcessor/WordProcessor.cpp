@@ -210,6 +210,9 @@ void WordProcessor::emptyFile()
     }
     file.close();
     app_log("File created\n");
+
+    // after write operation make sure to give some delay for safe operation
+    delay(250);
 }
 
 // Save text to file
@@ -276,7 +279,10 @@ void WordProcessor::keyboard(char key)
     // Check if menu key is pressed
     if (key == MENU)
     {
-        saveText(); // Save before transitioning to the menu
+        // Save before transitioning to the menu
+        saveText(); 
+
+        //
         JsonDocument &app = app_status();
         app["screen"] = MENUSCREEN;
         return;

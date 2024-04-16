@@ -12,6 +12,7 @@
 // special key
 #define EMPTY 0x0
 #define MENU 0x6
+#define BACK 0x5
 
 //
 void keyboard_setup();

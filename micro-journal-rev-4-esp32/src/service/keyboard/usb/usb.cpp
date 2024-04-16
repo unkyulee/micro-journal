@@ -1,3 +1,5 @@
+#define USBHOST 1
+
 #ifdef USBHOST
 
 #include "usb.h"
@@ -16,10 +18,13 @@
 #define DP_P0 12 // always enabled
 #define DM_P0 14 // always enabled
 
-#define MENU_KEY 25
-#define BACK_KEY 26
+#define MENU_PIN 25
+#define BACK_PIN 26
 
 usb_pins_config_t USB_Pins_Config = {DP_P0, DM_P0};
+
+//
+static void keyboard_key(char key);
 
 // initialize USB HOST
 void keyboard_setup()
@@ -32,8 +37,8 @@ void keyboard_setup()
     USH.init(USB_Pins_Config, keyboard_connected, keyboard_print);
 
     // setup two buttons on the device
-    pinMode(MENU_KEY, INPUT_PULLUP);
-    pinMode(BACK_KEY, INPUT_PULLUP);
+    pinMode(MENU_PIN, INPUT_PULLUP);
+    pinMode(BACK_PIN, INPUT_PULLUP);
 }
 
 ///
@@ -46,26 +51,20 @@ void keyboard_loop()
         last = millis();
 
         // check menu key and back key press
-        int menuKey = digitalRead(MENU_KEY);
-        int backKey = digitalRead(BACK_KEY);
+        int menuKey = digitalRead(MENU_PIN);
+        int backKey = digitalRead(BACK_PIN);
 
         // 0 means pressed
         // 1 means released
         if (menuKey == 0)
         {
             // open up the menu
-            JsonDocument &app = app_status();
-            app["screen"] = MENUSCREEN;
+            keyboard_key(MENU);
         }
 
         if (backKey == 0)
         {
-            // stop flag
-            JsonDocument &app = app_status();
-            app["stop"] = true;
-
-            // trigger stop action
-            Menu_keyboard(0);
+            keyboard_key('\b');
         }
     }
 }
@@ -127,61 +126,72 @@ char map_usb_hid_to_ascii(uint8_t key_code, bool shift_pressed)
     else if (key_code == 0x36)
     {
         // Handle comma key
-        if(shift_pressed) return '<';
+        if (shift_pressed)
+            return '<';
         return ',';
     }
     else if (key_code == 0x37)
     {
         // Handle period key
-        if(shift_pressed) return '>';
+        if (shift_pressed)
+            return '>';
         return '.';
     }
     else if (key_code == 0x38)
     {
         // Handle slash key
-        if(shift_pressed) return '?';
+        if (shift_pressed)
+            return '?';
         return '/';
     }
     else if (key_code == 0x2D)
     {
-        if(shift_pressed) return '_';
+        if (shift_pressed)
+            return '_';
         return '-';
     }
     else if (key_code == 0x2E)
     {
-        if(shift_pressed) return '+';
+        if (shift_pressed)
+            return '+';
         return '=';
     }
     else if (key_code == 0x2F)
     {
-        if(shift_pressed) return '{';
+        if (shift_pressed)
+            return '{';
         return '[';
     }
     else if (key_code == 0x30)
     {
-        if(shift_pressed) return '}';
+        if (shift_pressed)
+            return '}';
         return ']';
     }
     else if (key_code == 0x31)
     {
-        if(shift_pressed) return '|';
+        if (shift_pressed)
+            return '|';
         return '\\';
     }
     else if (key_code == 0x33)
     {
-        if(shift_pressed) return ':';
+        if (shift_pressed)
+            return ':';
         return ';';
     }
     else if (key_code == 0x34)
     {
         // Handle left bracket key
-        if(shift_pressed) return '\"';
+        if (shift_pressed)
+            return '\"';
         return '\'';
     }
     else if (key_code == 0x35)
     {
         // Handle right bracket key
-        if(shift_pressed) return '~';
+        if (shift_pressed)
+            return '~';
         return '`';
     }
     else if (key_code == 0x2A)
@@ -201,6 +211,29 @@ char map_usb_hid_to_ascii(uint8_t key_code, bool shift_pressed)
     }
 }
 
+static void keyboard_key(char key)
+{
+    //
+    // depending on the screen
+    // send the keystrokes
+    JsonDocument &app = app_status();
+    int screen = app["screen"].as<int>();
+
+    if (screen == WORDPROCESSOR)
+    {
+        // send the key stroke to word processor
+        WordProcessor::getInstance(nullptr).keyboard(key);
+    }
+    else if (screen == MENUSCREEN)
+    {
+        Menu_keyboard(key);
+    }
+    else if (screen == ERRORSCREEN)
+    {
+        ErrorScreen_keyboard(key);
+    }
+}
+
 static void keyboard_print(uint8_t usbNum, uint8_t byte_depth, uint8_t *data, uint8_t data_len)
 {
     /*
@@ -212,7 +245,6 @@ static void keyboard_print(uint8_t usbNum, uint8_t byte_depth, uint8_t *data, ui
     printf("\n");
     */
 
-    
     // previous data buffer
     static uint8_t previous[8] = {0};
 
@@ -228,30 +260,12 @@ static void keyboard_print(uint8_t usbNum, uint8_t byte_depth, uint8_t *data, ui
             if (key == 0)
                 continue;
 
-            //
-            // depending on the screen
-            // send the keystrokes
-            JsonDocument &app = app_status();
-            int screen = app["screen"].as<int>();
-
-            if (screen == WORDPROCESSOR)
-            {
-                // send the key stroke to word processor
-                WordProcessor::getInstance(nullptr).keyboard((char)key);
-            }
-            else if (screen == MENUSCREEN)
-            {
-                Menu_keyboard((char)key);
-            }
-            else if (screen == ERRORSCREEN)
-            {
-                ErrorScreen_keyboard((char)key);
-            }
+            keyboard_key(key);
         }
     }
 
     // keep the previous
-    memcpy(previous, data, sizeof(previous));    
+    memcpy(previous, data, sizeof(previous));
 }
 
 static void keyboard_connected(uint8_t usbNum, void *dev)
