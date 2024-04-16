@@ -14,6 +14,7 @@ public:
     void setup();
     void render();
     void keyboard(char key);
+    void emptyFile();
 
 private:
     // Private constructor to prevent instantiation
@@ -23,7 +24,9 @@ private:
     static WordProcessor* instance;
 
     // Constants
-    static const int TEXT_BUFFER_SIZE = 2900;
+    // buffer size should be divisible by row character count (29)
+    //static const int TEXT_BUFFER_SIZE = 2900;
+    static const int TEXT_BUFFER_SIZE = 58;
     static const int MAX_ROW_CHARACTERS = 29;
     static const int MAX_LINES = 10;
     static const int STATUSBAR_Y = 224;
@@ -45,7 +48,7 @@ private:
     // Private methods
     void loadText();
     void saveText();
-    void emptyFile();
+    
     void clearBackground();
     void clearTrails();
     void blinkCarrot();

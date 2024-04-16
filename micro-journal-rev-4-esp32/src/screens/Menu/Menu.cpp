@@ -224,7 +224,7 @@ void Menu_keyboard(char key)
     {
         if (key == 'Y' || key == 'y')
         {
-            //WP_empty_file();
+            WordProcessor::getInstance(nullptr).emptyFile();
             back();
         }
         else
