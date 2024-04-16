@@ -10,8 +10,7 @@ TaskHandle_t Task1;
 void Core0(void *parameter)
 {
   for (;;)
-  {
-    
+  {    
     service_loop();
   }
 }
@@ -32,10 +31,6 @@ void setup()
   Serial.begin(BAUD_RATE);
   while (!Serial)
     ; // Wait for the serial port to connect
-
-  delay(100);
-
-  //
   app_log("\nDevice Started. Baud rate: %d\n", BAUD_RATE);
 
   // app setup
@@ -50,7 +45,7 @@ void setup()
       10000,     /* Stack size in words */
       NULL,      /* Task input parameter */
       0,         /* Priority of the task */
-      &Core0,    /* Task handle. */
+      &Task0,    /* Task handle. */
       0);        /* Core where the task should run */
 
   xTaskCreatePinnedToCore(
@@ -59,7 +54,7 @@ void setup()
       10000,     /* Stack size of task */
       NULL,      /* parameter of the task */
       1,         /* priority of the task */
-      &Core1,    /* Task handle to keep track of created task */
+      &Task1,    /* Task handle to keep track of created task */
       1);        /* pin task to core 1 */
 }
 

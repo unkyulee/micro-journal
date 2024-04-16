@@ -1,4 +1,6 @@
-#include "keyboard.h"
+#ifdef USBHOST
+
+#include "usb.h"
 #include "app/app.h"
 #include "app/network/network.h"
 #include "service/display/display.h"
@@ -269,3 +271,5 @@ static void keyboard_connected(uint8_t usbNum, void *dev)
     printf("desc.iSerialNumber      = 0x%02x\n", device->iSerialNumber);
     printf("desc.bNumConfigurations = 0x%02x\n", device->bNumConfigurations);
 }
+
+#endif
