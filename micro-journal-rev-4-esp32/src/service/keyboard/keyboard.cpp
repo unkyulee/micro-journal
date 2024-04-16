@@ -9,152 +9,263 @@
 #include "screens/Menu/Menu.h"
 
 //
-#define LAYERS 4 // layers
-#define ROWS 3   // rows
-#define COLS 10  // columns
+#include <ESP32-USB-Soft-Host.h>
 
-//
-// KEYBOARD LAYOUT
-//
-// layers
-// prettier-ignore
-int layers[LAYERS][ROWS * COLS] = {
-    {// normal layers
-     'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\n',
-     'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', FN, SHIFT},
-    {// when shift is pressed
-     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
-     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\n',
-     'Z', 'X', 'C', 'V', BACKSPACE, 'B', 'N', 'M', FN, SHIFT},
-    {// when number layer key is pressed
-     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-     '`', '\\', '-', '=', '[', ']', ';', '\'', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, ',', '.', '/', FN, SHIFT},
-    {// when number layer key and shift is pressed
-     '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
-     '~', '|', '_', '+', '{', '}', ':', '\"', EMPTY, '\n',
-     MENU, EMPTY, EMPTY, EMPTY, BACKSPACE, '<', '>', '?', FN, SHIFT}};
+#define DP_P0 12 // always enabled
+#define DM_P0 14 // always enabled
 
-// define the symbols on the buttons of the keypads
-// prettier-ignore
-char keys[COLS][ROWS] = {
-    {20, 10, 0},
-    {21, 11, 1},
-    {22, 12, 2},
-    {23, 13, 3},
-    {24, 14, 4},
-    {25, 15, 5},
-    {26, 16, 6},
-    {27, 17, 7},
-    {28, 18, 8},
-    {29, 19, 9}};
+#define MENU_KEY 25
+#define BACK_KEY 26
 
-// connect to the row pinouts of the keypad
-byte rowPins[ROWS] = {32, 33, 25};
-// connect to the column pinouts of the keypad
-byte colPins[COLS] = {
-    26, 27, 14, 12, 13,
-    15, 2, 4, 16, 17};
+usb_pins_config_t USB_Pins_Config = {DP_P0, DM_P0};
 
-Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), colPins, rowPins, COLS, ROWS);
-
-// initialize keymap
+// initialize USB HOST
 void keyboard_setup()
 {
-    customKeypad.begin();
+    USH.setOnConfigDescCB(Default_USB_ConfigDescCB);
+    USH.setOnIfaceDescCb(Default_USB_IfaceDescCb);
+    USH.setOnHIDDevDescCb(Default_USB_HIDDevDescCb);
+    USH.setOnEPDescCb(Default_USB_EPDescCb);
+
+    USH.init(USB_Pins_Config, keyboard_connected, keyboard_print);
+
+    // setup two buttons on the device
+    pinMode(MENU_KEY, INPUT_PULLUP);
+    pinMode(BACK_KEY, INPUT_PULLUP);
 }
 
 ///
 void keyboard_loop()
 {
     static unsigned int last = 0;
-    if (millis() - last > 10)
+    if (millis() - last > 1000)
     {
         //
         last = millis();
 
-        // put your main code here, to run repeatedly:
-        customKeypad.tick();
+        // check menu key and back key press
+        int menuKey = digitalRead(MENU_KEY);
+        int backKey = digitalRead(BACK_KEY);
 
-        while (customKeypad.available())
+        // 0 means pressed
+        // 1 means released
+        if (menuKey == 0)
         {
-            keypadEvent e = customKeypad.read();
-            int key = keyboard_get_key(e);
-            if (key != EMPTY)
-            {
-                // depending on the screen
-                // send the keystrokes
-                JsonDocument &app = app_status();
-                int screen = app["screen"].as<int>();
+            // open up the menu
+            JsonDocument &app = app_status();
+            app["screen"] = MENUSCREEN;
+        }
 
-                if(screen == WORDPROCESSOR) {
-                    // send the key stroke to word processor
-                    WP_keyboard((char)key);
-                } else if(screen == MENUSCREEN) {
-                    Menu_keyboard((char)key);
-                } else if(screen == ERRORSCREEN) {
-                    ErrorScreen_keyboard((char)key);
-                }
-            }
+        if (backKey == 0)
+        {
+            // stop flag
+            JsonDocument &app = app_status();
+            app["stop"] = true;
+
+            // trigger stop action
+            Menu_keyboard(0);
         }
     }
 }
 
-bool _shift_pressed = false;
-bool _fn_pressed = false;
-int keyboard_get_key(keypadEvent e)
+// USB keyboard scan code to ASCII mapping for a standard US keyboard
+char map_usb_hid_to_ascii(uint8_t key_code, bool shift_pressed)
 {
-    //
-    // step 1. layer processing
-    //
-    if (e.bit.KEY == FN)
+    // Check if the key code is within the range of printable ASCII characters
+    if (key_code >= 0x04 && key_code <= 0x1d)
     {
-        if (e.bit.EVENT == KEY_JUST_PRESSED)
+        // If Shift is pressed, map to uppercase letters, otherwise lowercase
+        if (shift_pressed)
+            return key_code + 'A' - 0x04;
+        else
+            return key_code + 'a' - 0x04;
+    }
+    else if (key_code >= 0x1e && key_code <= 0x27)
+    {
+        // If Shift is pressed, map to symbols above numbers
+        if (shift_pressed)
         {
-            _fn_pressed = true;
+            switch (key_code)
+            {
+            case 0x1e:
+                return '!'; // 1
+            case 0x1f:
+                return '@'; // 2
+            case 0x20:
+                return '#'; // 3
+            case 0x21:
+                return '$'; // 4
+            case 0x22:
+                return '%'; // 5
+            case 0x23:
+                return '^'; // 6
+            case 0x24:
+                return '&'; // 7
+            case 0x25:
+                return '*'; // 8
+            case 0x26:
+                return '('; // 9
+            case 0x27:
+                return ')'; // 0
+            default:
+                return 0; // Invalid key code
+            }
         }
         else
         {
-            _fn_pressed = false;
+            // If Shift is not pressed, map to numbers
+            return key_code + '1' - 0x1e;
         }
     }
-    else if (e.bit.KEY == SHIFT)
+    else if (key_code == 0x2C)
     {
-        if (e.bit.EVENT == KEY_JUST_PRESSED)
+        // Handle space key
+        return ' ';
+    }
+    else if (key_code == 0x36)
+    {
+        // Handle comma key
+        if(shift_pressed) return '<';
+        return ',';
+    }
+    else if (key_code == 0x37)
+    {
+        // Handle period key
+        if(shift_pressed) return '>';
+        return '.';
+    }
+    else if (key_code == 0x38)
+    {
+        // Handle slash key
+        if(shift_pressed) return '?';
+        return '/';
+    }
+    else if (key_code == 0x2D)
+    {
+        if(shift_pressed) return '_';
+        return '-';
+    }
+    else if (key_code == 0x2E)
+    {
+        if(shift_pressed) return '+';
+        return '=';
+    }
+    else if (key_code == 0x2F)
+    {
+        if(shift_pressed) return '{';
+        return '[';
+    }
+    else if (key_code == 0x30)
+    {
+        if(shift_pressed) return '}';
+        return ']';
+    }
+    else if (key_code == 0x31)
+    {
+        if(shift_pressed) return '|';
+        return '\\';
+    }
+    else if (key_code == 0x33)
+    {
+        if(shift_pressed) return ':';
+        return ';';
+    }
+    else if (key_code == 0x34)
+    {
+        // Handle left bracket key
+        if(shift_pressed) return '\"';
+        return '\'';
+    }
+    else if (key_code == 0x35)
+    {
+        // Handle right bracket key
+        if(shift_pressed) return '~';
+        return '`';
+    }
+    else if (key_code == 0x2A)
+    {
+        return BACKSPACE;
+    }
+    else if (key_code == 0x28)
+    {
+        // Handle enter key
+        return '\n';
+    }
+    else
+    {
+        // Key code doesn't correspond to a printable ASCII character
+        Serial.printf("Not registered: %02x\n", key_code);
+        return 0; // Return null character to indicate invalid key
+    }
+}
+
+static void keyboard_print(uint8_t usbNum, uint8_t byte_depth, uint8_t *data, uint8_t data_len)
+{
+    /*
+    printf("in: ");
+    for (int k = 0; k < data_len; k++)
+    {
+        printf("0x%02x ", data[k]);
+    }
+    printf("\n");
+    */
+
+    
+    // previous data buffer
+    static uint8_t previous[8] = {0};
+
+    // 0x02 and 0x22 are shift keys
+    bool shift = (data[0] & 0x02) || (data[0] & 0x22);
+    for (int i = 2; i < data_len; i++)
+    {
+        // report only when it is pressed
+        if (data[i] != 0 && previous[i] == 0 && data[i] < 128)
         {
-            _shift_pressed = true;
+            // Type
+            char key = map_usb_hid_to_ascii(data[i], shift);
+            if (key == 0)
+                continue;
+
+            //
+            // depending on the screen
+            // send the keystrokes
+            JsonDocument &app = app_status();
+            int screen = app["screen"].as<int>();
+
+            if (screen == WORDPROCESSOR)
+            {
+                // send the key stroke to word processor
+                WP_keyboard((char)key);
+            }
+            else if (screen == MENUSCREEN)
+            {
+                Menu_keyboard((char)key);
+            }
+            else if (screen == ERRORSCREEN)
+            {
+                ErrorScreen_keyboard((char)key);
+            }
         }
-
-        else if (e.bit.EVENT == KEY_JUST_RELEASED)
-        {
-            _shift_pressed = false;
-        }
     }
 
-    // stop here
-    if (e.bit.KEY == SHIFT || e.bit.KEY == FN)
-    {
-        return EMPTY;
-    }
+    // keep the previous
+    memcpy(previous, data, sizeof(previous));    
+}
 
-    // step 2. process the key
-    if (e.bit.EVENT == KEY_JUST_PRESSED)
-    {
-        // define the layer
-        int layer = 0;
-
-        // check if the layer key is pressed
-        if (_fn_pressed)
-            layer = 2;
-        // check if the shift key is pressed
-        if (_shift_pressed)
-            layer += 1;
-
-        // return the corresponding key
-        return layers[layer][e.bit.KEY];
-    }
-
-    // Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
-    return EMPTY;
+static void keyboard_connected(uint8_t usbNum, void *dev)
+{
+    sDevDesc *device = (sDevDesc *)dev;
+    printf("New device detected on USB#%d\n", usbNum);
+    printf("desc.bcdUSB             = 0x%04x\n", device->bcdUSB);
+    printf("desc.bDeviceClass       = 0x%02x\n", device->bDeviceClass);
+    printf("desc.bDeviceSubClass    = 0x%02x\n", device->bDeviceSubClass);
+    printf("desc.bDeviceProtocol    = 0x%02x\n", device->bDeviceProtocol);
+    printf("desc.bMaxPacketSize0    = 0x%02x\n", device->bMaxPacketSize0);
+    printf("desc.idVendor           = 0x%04x\n", device->idVendor);
+    printf("desc.idProduct          = 0x%04x\n", device->idProduct);
+    printf("desc.bcdDevice          = 0x%04x\n", device->bcdDevice);
+    printf("desc.iManufacturer      = 0x%02x\n", device->iManufacturer);
+    printf("desc.iProduct           = 0x%02x\n", device->iProduct);
+    printf("desc.iSerialNumber      = 0x%02x\n", device->iSerialNumber);
+    printf("desc.bNumConfigurations = 0x%02x\n", device->bNumConfigurations);
 }

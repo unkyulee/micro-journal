@@ -70,7 +70,6 @@ void Menu_render(TFT_eSPI *ptft)
 // 1: waiting for the network
 
 int status_prev = -1;
-int status_curr = 0;
 int response;
 void Menu_sync(TFT_eSPI *ptft)
 {
@@ -78,10 +77,11 @@ void Menu_sync(TFT_eSPI *ptft)
     JsonDocument &app = app_status();
 
     //
-    if (status_prev != status_curr)
+    static int status = 0;
+    if (status_prev != status)
     {
         ptft->fillScreen(TFT_BLACK);
-        status_prev = status_curr;
+        status_prev = status;
     }
 
     // Text to be displayed
@@ -97,8 +97,8 @@ void Menu_sync(TFT_eSPI *ptft)
     {
         // network is connected
         // move to the next step
-        if (status_curr == 1)
-            status_curr = 2;
+        if (status == 1)
+            status = 2;
 
         //
         String ip = app["network"]["IP"].as<String>();
@@ -110,23 +110,23 @@ void Menu_sync(TFT_eSPI *ptft)
     }
 
     // turn on the network
-    if (status_curr == 0)
+    if (status == 0)
     {
         ptft->println(" - Starting network ...");
         app["network"]["enabled"] = true;
-        status_curr = 1;
+        status = 1;
         response = 0;
     }
 
     // wait for the network to connect
-    if (status_curr == 1)
+    if (status == 1)
     {
         ptft->println(" - Waiting for the network ...");
     }
 
     // network is connected
     // perform sync
-    if (status_curr == 2)
+    if (status == 2)
     {
         // check if configuration exists
         if (!app["config"]["sync"].containsKey("url"))
@@ -167,7 +167,7 @@ void Menu_sync(TFT_eSPI *ptft)
             http.end();
 
             // update the status
-            status_curr = 3;
+            status = 3;
         }
     }
 
@@ -195,8 +195,6 @@ void stop_sync()
 
     //
     sync_started = false;
-    status_prev = 0;
-    status_curr = 0;
 
     //
     back();
@@ -205,14 +203,19 @@ void stop_sync()
 //
 void Menu_keyboard(char key)
 {
+    JsonDocument &app = app_status();
+
     // every key will refresh the screen
     clear_menu = true;
 
     // sync
     if (sync_started)
     {
-        if (key == 'x')
+        if (key == 'x' || app["stop"].as<bool>() == true) {
+            app["stop"] = false;
             stop_sync();
+        }
+            
         return;
     }
 
@@ -243,9 +246,10 @@ void Menu_keyboard(char key)
     {
         sync_started = true;
     }
-    else if (key == 'b')
+    else if (key == 'b' || app["stop"].as<bool>() == true)
     {
         // go back to wordprocessor
+        app["stop"] = false;
         back();
     }
 }
