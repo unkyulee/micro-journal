@@ -1,5 +1,3 @@
-#define USBHOST 1
-
 #ifdef USBHOST
 
 #include "usb.h"

@@ -32,6 +32,7 @@ void menu_sync(TFT_eSPI *ptft);
 void menu_sync_start(TFT_eSPI *ptft);
 void menu_sync_waiting(TFT_eSPI *ptft);
 void menu_sync_send(TFT_eSPI *ptft);
+void menu_sync_completed(TFT_eSPI *ptft);
 
 void menu_delete(TFT_eSPI *ptft);
 
@@ -106,6 +107,12 @@ void Menu_keyboard(char key)
         {
             // to delete
             menu_state = 2;
+        }
+
+        else if (key == 'B' || key == 'b')
+        {
+            // go back to the word processor
+            app["screen"] = WORDPROCESSOR;
         }
     }
 
@@ -231,6 +238,10 @@ void menu_sync(TFT_eSPI *ptft)
     {
         menu_sync_send(ptft);
     }
+    else if (sync_state == 3)
+    {
+        menu_sync_completed(ptft);
+    }
 
     ptft->println("");
     ptft->println(" press (B) to stop ");
@@ -256,15 +267,56 @@ void menu_sync_waiting(TFT_eSPI *ptft)
 
 void menu_sync_send(TFT_eSPI *ptft)
 {
-    /*
+    //
+    JsonDocument &app = app_status();
 
-        //
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println(" - Sending file to drive ... ");
+    ptft->println("");
+
+    // show ip and ssid information
     String ip = app["network"]["IP"].as<String>();
     const char *ssid = app["network"]["ssid"].as<const char *>();
 
     ptft->printf("SSID: %s\n", ssid);
     ptft->printf("IP: %s\n", ip);
-    */
+
+    // send file to google drive
+    String url = app["config"]["sync"]["url"].as<String>();
+    app_log("Requesting sync ... \n");
+    app_log("%s\n", url.c_str());
+
+    // prepare http client
+    HTTPClient http;
+    http.begin(url);
+    http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
+
+    // Read file in chunks and send via POST request
+    File file = SD.open(FILENAME, FILE_READ);
+    if (!file)
+    {
+        ptft->println("Failed to open file");
+        http.end();
+        return;
+    }
+
+    //
+    http.sendRequest("POST", &file, file.size());
+
+    // Close file
+    file.close();
+
+    // close http connection
+    http.end();
+
+    sync_state = 3;
+}
+
+void menu_sync_completed(TFT_eSPI *ptft)
+{
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println(" - Sync completed ");
+    ptft->println("");
 }
 
 /*
@@ -333,33 +385,7 @@ void menu_sync_operation()
     //
     JsonDocument &app = app_status();
 
-    String url = app["config"]["sync"]["url"].as<String>();
-    app_log("Requesting sync ... \n");
-    app_log("%s\n", url.c_str());
 
-    // prepare http client
-    HTTPClient http;
-    http.begin(url);
-    http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
-
-    // Read file in chunks and send via POST request
-    File file = SD.open(FILENAME, FILE_READ);
-    if (!file)
-    {
-        ptft->println("Failed to open file");
-        http.end();
-        return;
-    }
-
-    //
-    response = http.sendRequest("POST", &file, file.size());
-    app_log("Response: %d\n", response);
-
-    // Close file
-    file.close();
-
-    // close http connection
-    http.end();
 }
 
 void stop_sync()

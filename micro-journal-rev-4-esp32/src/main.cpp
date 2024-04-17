@@ -1,5 +1,6 @@
 #include "app/app.h"
 #include "service/service.h"
+#include "service/keyboard/keyboard.h"
 
 #define BAUD_RATE 9600
 
@@ -61,4 +62,5 @@ void setup()
 // Main loop is ignored as the tasks are separated per core
 void loop()
 {
+  keyboard_loop();
 }

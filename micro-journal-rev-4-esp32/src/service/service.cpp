@@ -17,7 +17,4 @@ void service_loop()
 {
     //
     display_loop();
-
-    //
-    keyboard_loop();
 }
