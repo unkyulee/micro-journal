@@ -349,7 +349,6 @@ void WordProcessor::clearTrails()
         {
             // delete the character
             ptft->fillRect(cursorX - 12, cursorY - 12, 320, 24, TFT_BLACK);
-            app_log("text_pos_prev: %d, text_pos: %d\n", text_pos_prev, text_pos);
         }
 
         // always show the cursor when typing

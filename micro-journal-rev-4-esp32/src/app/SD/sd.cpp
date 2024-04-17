@@ -5,17 +5,22 @@
 #include <FS.h>
 #include <SD.h>
 
+#ifdef USBHOST
+#define SD_CS 9
+#else
 #define SD_CS 5
+#endif
 
 //
 void SD_setup()
 {
+    app_log("SD Device CS: %d\n", SD_CS);
     if (!SD.begin(SD_CS))
     {
         Serial.println("Card Mount Failed");
         return;
     }
-    Serial.println("SD Device Initialized");
+    app_log("SD Device Initialized\n");
     uint8_t cardType = SD.cardType();
 
     if (cardType == CARD_NONE)
