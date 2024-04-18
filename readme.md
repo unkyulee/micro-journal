@@ -53,8 +53,21 @@ With these features in place, this build proves to be highly practical. It's per
 [Micro Journal Rev.4 Build Details](/micro-journal-rev-4-esp32/readme.md)
 
 
+# To Buy
+
+https://www.tindie.com/stores/unkyulee/
+
+
 # Further Information
 
-https://new.reddit.com/r/writerDeck
-
+https://new.reddit.com/r/writerDeck\
 https://www.writerdeck.org/
+
+
+# Press
+
+KBD NEWS\
+https://kbd.news/Micro-Journal-2332.html
+
+Hackaday\
+https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/

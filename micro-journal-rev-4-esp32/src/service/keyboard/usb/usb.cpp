@@ -80,7 +80,7 @@ void keyboard_loop()
 
     if (backKey == 0)
     {
-      keyboard_key('\b');
+      keyboard_key('b');
     }
   }
 }
