@@ -19,6 +19,7 @@ class MyEspUsbHost : public EspUsbHost
 {
   void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
   {
+
     if (' ' <= ascii && ascii <= '~')
     {
       keyboard_key(ascii);
@@ -30,6 +31,10 @@ class MyEspUsbHost : public EspUsbHost
     else if (ascii == '\b')
     {
       keyboard_key('\b');
+    }
+    else if (ascii == 27)
+    {
+      keyboard_key(MENU);
     }
   };
 };
@@ -82,25 +87,25 @@ void keyboard_loop()
 
 void keyboard_key(char key)
 {
-    //
-    // depending on the screen
-    // send the keystrokes
-    JsonDocument &app = app_status();
-    int screen = app["screen"].as<int>();
+  //
+  // depending on the screen
+  // send the keystrokes
+  JsonDocument &app = app_status();
+  int screen = app["screen"].as<int>();
 
-    if (screen == WORDPROCESSOR)
-    {
-        // send the key stroke to word processor
-        WordProcessor::getInstance(nullptr).keyboard(key);
-    }
-    else if (screen == MENUSCREEN)
-    {
-        Menu_keyboard(key);
-    }
-    else if (screen == ERRORSCREEN)
-    {
-        ErrorScreen_keyboard(key);
-    }
+  if (screen == WORDPROCESSOR)
+  {
+    // send the key stroke to word processor
+    WordProcessor::getInstance(nullptr).keyboard(key);
+  }
+  else if (screen == MENUSCREEN)
+  {
+    Menu_keyboard(key);
+  }
+  else if (screen == ERRORSCREEN)
+  {
+    ErrorScreen_keyboard(key);
+  }
 }
 
 #endif
