@@ -52,6 +52,9 @@ void keyboard_setup()
 
   // usb host setup
   usbHost.begin();
+
+  // update the locale depending on your keyboard layout
+  //usbHost.setHIDLocal(HID_LOCAL_Japan_Katakana);
 }
 
 ///
