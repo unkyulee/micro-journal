@@ -3,11 +3,9 @@
 I aimed to create a specialized writing device, focusing on the tactile experience of mechanical keyboards. This device would be portable, with a compact form factor, designed to enhance the writing process in a focused environment. The goal was to provide a distraction-free writing experience, allowing users to immerse themselves fully in their creative work.
 
 
-## Fourth iteration: Connect to any USB mechanical keyboards
+## Fourth iteration: writerDeck with any mechanical keyboard
 
-I appreciated the attention the previous iteration received, even the negative feedback. Many inquiries revolved around the keyboard form factor. Some requested a 60% size, while others preferred a full-sized keyboard or had specific layout requirements due to special needs. One individual even asked for USB ports.
-
-A writing device like this, capable of connecting to any mechanical keyboard via USB port, could address these feedbacks.
+In this iteration, I delved into exploring the potential of utilizing the USB port to enable connectivity with a wide range of mechanical keyboards. This enhancement offers the flexibility for users to employ their preferred keyboard for writing purposes, thereby enhancing the personalized experience and comfort level during usage.
 
 ![Micro Journal Rev.5](/micro-journal-rev-5-esp32-usbhost/images/001.jpg)
 
