@@ -13,9 +13,12 @@ A writing device like this, capable of connecting to any mechanical keyboard via
 
 So, I proceeded to design an enclosure to sit next to the keyboard, utilizing the ESP32-S3, which boasts native USB host features. I then updated the code, and voilà! The new version was born.
 
+There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
+
 [Micro Journal Rev.5 Build Details](/micro-journal-rev-5-esp32-usbhost/readme.md)
 
-There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
+[Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
+
 
 
 ## Third iteration: Immeidate power on and writing
