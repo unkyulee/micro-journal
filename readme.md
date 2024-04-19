@@ -38,7 +38,7 @@ Here are build guides:
 [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1bfhnfz/writerdeck_with_samsung_s8_using_an_old_mobile/)
 
 
-## Third iteraction: Immeidate power on and writing
+## Third iteration: Immeidate power on and writing
 
 Transitioning from the previous iteration using an old phone, I sought a solution that would provide an instant writing experience similar to commercial WriterDecks, utilizing an ESP32 microcontroller.
 
@@ -53,9 +53,19 @@ With these features in place, this build proves to be highly practical. It's per
 [Micro Journal Rev.4 Build Details](/micro-journal-rev-4-esp32/readme.md)
 
 
-# To Buy
+## Fourth iteration: Connect to any USB mechanical keyboards
 
-https://www.tindie.com/stores/unkyulee/
+I appreciated the attention the previous iteration received, even the negative feedback. Many inquiries revolved around the keyboard form factor. Some requested a 60% size, while others preferred a full-sized keyboard or had specific layout requirements due to special needs. One individual even asked for USB ports.
+
+A writing device like this, capable of connecting to any mechanical keyboard via USB port, could address these feedbacks.
+
+![Micro Journal Rev.5](/micro-journal-rev-5-esp32-usbhost/images/001.jpg)
+
+So, I proceeded to design an enclosure to sit next to the keyboard, utilizing the ESP32-S3, which boasts native USB host features. I then updated the code, and voilà! The new version was born.
+
+[Micro Journal Rev.5 Build Details](/micro-journal-rev-5-esp32-usbhost/readme.md)
+
+There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
 
 
 # Further Information
@@ -71,3 +81,22 @@ https://kbd.news/Micro-Journal-2332.html
 
 Hackaday\
 https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/
+
+
+# Did not Read, Just want to Buy
+
+I opened an online shop to host DIY projects. Each should have a write-up to assist you in building it on your own. I encourage you to take your time, adjust the design to your needs, and follow the step-by-step instructions. If my guides are missing key steps or fail to address the problems you encounter, feel free to reach out to me. However, please attempt to solve the issue yourself first. I likely faced similar challenges and found solutions that work.
+
+With that said, if you're still interested in paying someone you've never met to acquire the product, online shop might be worth considering. Your payment won't reach me until I ship the item, so let's hope I won't be broke by the time you place an order.
+
+https://www.tindie.com/stores/unkyulee/
+
+To emphasize, I will craft each item with my own hands. At some point, my YouTube videos should demonstrate my techniques such as soldering or gluing. If you're still inclined to pay me, I encourage you to watch my YouTube videos beforehand. This may help you save your money and invest it where it truly belongs.
+
+Once, I stumbled upon a quirky product online that I really wanted. Since it wasn't available for purchase, I took it upon myself to build one. I invested in a 3D printer, learned CAD, and went through numerous trials and errors.
+
+I'm only offering this shop so you have the option to purchase with money, sparing you from making the same mistakes I did. Now, I find myself eyeing for a better and more expensive 3D printer and various crafting tools, which will likely cost me a fortune in the future. If simply paying me can prevent you from encountering such troubles, then that would be my rightful mission.
+
+Yours sincerely,
+
+Un Kyu Lee
