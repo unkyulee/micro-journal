@@ -254,8 +254,6 @@ https://youtu.be/zcHL68JWXqc
 
 # Shop
 
-In case you're urgently in need of such a product and can't or don't want to follow the DIY steps, fear not. If getting your wife's or parents' approval for a 3D printer and soldering stations seems unlikely, or if you're concerned about the financial risk of investing in these tools for just one project, or if you're simply looking for a way to spend your money for no apparent reason, I've got you covered.
-
-You can check out the link below to purchase the product directly:
+In case if you want me to build this writerDeck for you:
 
 https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/

@@ -89,20 +89,9 @@ Hackaday\
 https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/
 
 
-# Did not Read, Just want to Buy
+# Online shop
 
-I've launched an online shop to showcase my DIY projects, each accompanied by a detailed guide to assist you in building it yourself. I urge you to take your time, customize the design to suit your needs, and carefully follow the step-by-step instructions provided. Should you encounter any issues or find that my guides lack crucial information, don't hesitate to reach out to me. However, I encourage you to try solving the problem independently first, as I've likely faced similar challenges and discovered effective solutions.
+You can find my shop at the following link: 
 
-That being said, if you're still interested in purchasing the product from someone you've never met, my online shop might be worth considering. Rest assured, your payment won't reach me until I've shipped the item, so let's hope I won't be flat broke by the time you decide to place an order.
+https://www.tindie.com/stores/unkyulee/
 
-You can find my shop at the following link: https://www.tindie.com/stores/unkyulee/
-
-It's important to note that I personally handcraft each item. Additionally, I plan to showcase my techniques, such as soldering and gluing, through YouTube videos. If you're still inclined to purchase from me, I recommend watching my videos beforehand. This may help you make an informed decision and potentially save your hard-earned money for more worthwhile investments.
-
-I recall stumbling upon a quirky product online that I desperately wanted. Since it wasn't available for purchase, I took matters into my own hands and embarked on a journey of building it myself. This endeavor led me to invest in a 3D printer, learn CAD, and navigate through numerous trials and errors.
-
-I've established this shop to offer you the opportunity to purchase with ease, sparing you from the same challenges I faced. As I find myself eyeing better and more expensive 3D printers and various crafting tools for future projects, I realize the potential financial burden it may bring. If simply purchasing from me can prevent you from encountering similar troubles, then I consider that my rightful mission.
-
-Yours sincerely,
-
-Un Kyu Lee
