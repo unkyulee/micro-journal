@@ -17,6 +17,36 @@
 
 class MyEspUsbHost : public EspUsbHost
 {
+  //
+  uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift)
+  {
+    //
+    app_log("%d %d\n", keycode, shift);
+
+    //
+    static uint8_t const keyboard_conv_table[128][2] = {HID_KEYCODE_TO_ASCII};
+    static uint8_t const keyboard_conv_table_ja[128][2] = {HID_KEYCODE_TO_ASCII_JA};
+
+    //
+    if (shift > 1)
+    {
+      shift = 1;
+    }
+
+    if (hidLocal == HID_LOCAL_Japan_Katakana)
+    {
+      // Japan
+      return keyboard_conv_table_ja[keycode][shift];
+    }
+    else
+    {
+      // US
+      return keyboard_conv_table[keycode][shift];
+    }
+  }
+
+
+  //
   void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
   {
 
@@ -54,7 +84,7 @@ void keyboard_setup()
   usbHost.begin();
 
   // update the locale depending on your keyboard layout
-  //usbHost.setHIDLocal(HID_LOCAL_Japan_Katakana);
+  // usbHost.setHIDLocal(HID_LOCAL_Japan_Katakana);
 }
 
 ///
