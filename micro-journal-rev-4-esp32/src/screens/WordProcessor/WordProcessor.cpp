@@ -11,11 +11,11 @@
 WordProcessor *WordProcessor::instance = nullptr;
 
 // Get instance of WordProcessor
-WordProcessor &WordProcessor::getInstance(TFT_eSPI *ptft)
+WordProcessor &WordProcessor::getInstance(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     if (!instance)
     {
-        instance = new WordProcessor(ptft);
+        instance = new WordProcessor(ptft, pu8f);
     }
     return *instance;
 }
@@ -120,6 +120,7 @@ void WordProcessor::render()
     }
     ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
 
+    // Render the user text
     ptft->setFreeFont(&FreeMono9pt7b);
     ptft->setCursor(0, 36);
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);

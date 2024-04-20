@@ -6,12 +6,16 @@
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
+U8g2_for_TFT_eSPI u8f;       // U8g2 font instance
 
 //
 void display_setup()
 {
   // Initialise the TFT screen
   tft.begin();
+
+  // connect u8g2 procedures to TFT_eSPI
+  u8f.begin(tft);                     
 
   //
   tft.setRotation(3);
@@ -51,10 +55,10 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        WordProcessor::getInstance(&tft).setup();
+        WordProcessor::getInstance(&tft, &u8f).setup();
 
       // loop
-      WordProcessor::getInstance(&tft).render();
+      WordProcessor::getInstance(&tft, &u8f).render();
     }
 
     // ERROR SCREEN
@@ -62,10 +66,10 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        ErrorScreen_setup(&tft);
+        ErrorScreen_setup(&tft, &u8f);
 
       // loop
-      ErrorScreen_render(&tft);
+      ErrorScreen_render(&tft, &u8f);
     }
 
     // MENU SCREEN
@@ -73,10 +77,10 @@ void display_loop()
     {
       // setup only once
       if (screen != screen_prev)
-        Menu_setup(&tft);
+        Menu_setup(&tft, &u8f);
 
       // loop
-      Menu_render(&tft);
+      Menu_render(&tft, &u8f);
     }
 
     //

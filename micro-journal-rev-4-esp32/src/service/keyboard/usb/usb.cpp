@@ -99,7 +99,7 @@ void keyboard_key(char key)
   if (screen == WORDPROCESSOR)
   {
     // send the key stroke to word processor
-    WordProcessor::getInstance(nullptr).keyboard(key);
+    WordProcessor::getInstance(nullptr, nullptr).keyboard(key);
   }
   else if (screen == MENUSCREEN)
   {

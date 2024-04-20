@@ -91,7 +91,7 @@ void keyboard_loop()
 
                 if(screen == WORDPROCESSOR) {
                     // send the key stroke to word processor
-                    WordProcessor::getInstance(nullptr).keyboard((char)key);
+                    WordProcessor::getInstance(nullptr, nullptr).keyboard((char)key);
                     //
                 } else if(screen == MENUSCREEN) {
                     Menu_keyboard((char)key);

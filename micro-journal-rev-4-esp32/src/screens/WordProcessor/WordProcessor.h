@@ -2,13 +2,15 @@
 #define WORDPROCESSOR_h
 
 #include <TFT_eSPI.h>
+#include <U8g2_for_TFT_eSPI.h>
+
 #define FILENAME "/ujournal.txt"
 
 class WordProcessor
 {
 public:
     // Static method to get the instance of the WordProcessor
-    static WordProcessor& getInstance(TFT_eSPI *ptft);
+    static WordProcessor& getInstance(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 
     // Public methods
     void setup();
@@ -18,7 +20,7 @@ public:
 
 private:
     // Private constructor to prevent instantiation
-    WordProcessor(TFT_eSPI *ptft) : ptft(ptft) {}
+    WordProcessor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f) : ptft(ptft), pu8f(pu8f) {}
 
     // Static instance of WordProcessor
     static WordProcessor* instance;
@@ -32,8 +34,11 @@ private:
     static const int STATUSBAR_Y = 224;
     static const int STATUSBAR_COLOR = TFT_BROWN;
 
-    // Member variables
+    //
     TFT_eSPI *ptft;
+    U8g2_for_TFT_eSPI *pu8f;
+
+    // Member variables    
     char text_buffer[TEXT_BUFFER_SIZE + 2];
     int text_pos = 0;
     int text_pos_prev = 0;
