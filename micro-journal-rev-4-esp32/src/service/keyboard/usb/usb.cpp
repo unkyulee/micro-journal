@@ -1,3 +1,5 @@
+#define USBHOST 1
+
 #ifdef USBHOST
 
 #include "usb.h"
@@ -13,7 +15,7 @@
 #define MENU_PIN 15
 #define BACK_PIN 16
 
-#include "EspUsbHost.h"
+#include <EspUsbHost.h>
 
 class MyEspUsbHost : public EspUsbHost
 {

@@ -109,19 +109,25 @@ void Menu_keyboard(char key)
             menu_state = 2;
         }
 
-        else if (key == 'B' || key == 'b')
+        else if (key == '\b' || key == 'B' || key == 'b')
         {
             // go back to the word processor
             app["screen"] = WORDPROCESSOR;
+
+            //
+            menu_state = 0;
         }
     }
 
+    // SYNC MENU
     else if (menu_state == 1)
     {
+        // when pressed B
         if (key == '\b' || key == 'b' || key == 'B')
         {
             //
             app["network"]["enabled"] = false;
+            app["screen"] = WORDPROCESSOR;
 
             //
             sync_state = -1;
@@ -244,7 +250,7 @@ void menu_sync(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     ptft->println("");
-    ptft->println(" press (B) to stop ");
+    ptft->println(" press (B) to exit ");
 }
 
 void menu_sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
