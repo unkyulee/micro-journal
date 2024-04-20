@@ -98,13 +98,14 @@ void WordProcessor::render()
 
             //
             line_position[total_line] = &text_buffer[i + 1];
-            line_length[total_line-1] = row_character_count;
+            line_length[total_line - 1] = row_character_count;
 
             // if last character is new line don't count in
-            if(text_buffer[i] == '\n') {
-                line_length[total_line-1] = row_character_count-1;
+            if (text_buffer[i] == '\n')
+            {
+                line_length[total_line - 1] = row_character_count - 1;
             }
-            
+
             //
             row_character_count = 0;
         }
@@ -173,11 +174,12 @@ void WordProcessor::render()
     pu8f->setForegroundColor(TFT_WHITE);   // apply color
     pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
     pu8f->setCursor(0, 24);                // start writing at this position
-    
+
     for (int i = start_line; i <= total_line; i++)
     {
         // print new line
-        if(i != start_line) pu8f->println("");
+        if (i != start_line)
+            pu8f->println("");
 
         //
         if (line_position[i] == nullptr)
@@ -186,14 +188,14 @@ void WordProcessor::render()
         //
         char line[MAX_ROW_CHARACTERS + 1];
         int length = line_length[i];
-                
+
         strncpy(line, line_position[i], length);
         line[length] = '\0';
 
         // render
         pu8f->print(line);
     }
-    
+
     /////
     blinkCursor();
 }
@@ -416,7 +418,7 @@ void WordProcessor::clearTrails()
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX - 14, cursorY - 14, 320, 40, TFT_BLACK);
+            ptft->fillRect(cursorX, cursorY - 14, 320, 40, TFT_BLACK);
         }
 
         // always show the cursor when typing
@@ -439,7 +441,7 @@ void WordProcessor::blinkCursor()
 
     int cursorX = pu8f->getCursorX();
     int cursorY = pu8f->getCursorY();
-    
+
     //
     if (blink)
     {
