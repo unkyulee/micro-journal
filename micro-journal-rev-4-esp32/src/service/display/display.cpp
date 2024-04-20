@@ -43,7 +43,7 @@ int screen_prev = -1;
 void display_loop()
 {
   static unsigned int last = millis();
-  if (millis() - last > 100)
+  if (millis() - last > 30)
   {
     last = millis();
 

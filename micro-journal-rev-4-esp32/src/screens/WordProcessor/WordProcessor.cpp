@@ -60,47 +60,94 @@ void WordProcessor::render()
     clearTrails();
     checkSaved();
 
+    // Calculate the screen text lines
+    // try to display from the second line when possible
+    // then when cursor reaches the end refresh the screen
     int total_line = 0;
     int row_character_count = 0;
     char last_char;
 
     line_position[0] = &text_buffer[0];
+    line_length[0] = MAX_ROW_CHARACTERS;
     for (int i = 0; i < TEXT_BUFFER_SIZE; i++)
     {
+        // when reaching end of text
+        // break
         if (text_buffer[i] == '\0')
-            break;
-
-        if (row_character_count == 0 && text_buffer[i] == ' ')
         {
-            line_position[total_line] = &text_buffer[i + 1];
-            continue;
+            //
+            line_length[total_line] = row_character_count;
+
+            //
+            line_position[total_line + 1] = nullptr;
+            line_length[total_line + 1] = 0;
+
+            //
+            break;
         }
 
+        // count total characters in a line
         row_character_count++;
 
+        // when receiving a \n or max character reached
+        // start a new line
         if (text_buffer[i] == '\n' || row_character_count == MAX_ROW_CHARACTERS)
         {
-            line_position[++total_line] = &text_buffer[i + 1];
+            //
+            total_line += 1;
+
+            //
+            line_position[total_line] = &text_buffer[i + 1];
+            line_length[total_line-1] = row_character_count;
+
+            // if last character is new line don't count in
+            if(text_buffer[i] == '\n') {
+                line_length[total_line-1] = row_character_count-1;
+            }
+            
+            //
             row_character_count = 0;
         }
 
+        //
         last_char = text_buffer[i];
     }
 
+    // determine where the current editing line will be
     int start_line = start_line_prev;
+
+    // when reached the max line
+    // refresh the screen to the 2nd line
     if (total_line - start_line_prev >= MAX_LINES)
     {
+        // very start of the writing, there is nothing to show
+        // so line starts from the first row
         start_line = total_line - 2;
         if (start_line < 0)
             start_line = 0;
 
+        // refresh the screen
         clear = true;
         start_line_prev = start_line;
-
-        // screen refresh saves
-        saveText();
     }
 
+    // with backspace, reaches the first character of the screen
+    // means there will be no more character displayed on the screen
+    if (total_line_prev > total_line && total_line == start_line - 1)
+    {
+        app_log("%d %d %d\n", total_line_prev, total_line, start_line);
+
+        // clear screen
+        clear = true;
+
+        start_line -= MAX_LINES - 1;
+        if (start_line < 0)
+            start_line = 0;
+
+        start_line_prev = start_line;
+    }
+
+    //
     if (total_line_prev != total_line)
     {
         total_line_prev = total_line;
@@ -120,18 +167,34 @@ void WordProcessor::render()
     }
     ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
 
+    /////
     // Render the user text
-    ptft->setFreeFont(&FreeMono9pt7b);
-    ptft->setCursor(0, 36);
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->setTextSize(1);
-    ptft->print(line_position[start_line]);
-
-    if (row_character_count == 0 && total_line > 0 && last_char != '\n')
+    pu8f->setFont(u8g2_font_profont22_mf); // extended font
+    pu8f->setForegroundColor(TFT_WHITE);   // apply color
+    pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
+    pu8f->setCursor(0, 24);                // start writing at this position
+    
+    for (int i = start_line; i <= total_line; i++)
     {
-        ptft->println("");
-    }
+        // print new line
+        if(i != start_line) pu8f->println("");
 
+        //
+        if (line_position[i] == nullptr)
+            break;
+
+        //
+        char line[MAX_ROW_CHARACTERS + 1];
+        int length = line_length[i];
+                
+        strncpy(line, line_position[i], length);
+        line[length] = '\0';
+
+        // render
+        pu8f->print(line);
+    }
+    
+    /////
     blinkCursor();
 }
 
@@ -281,7 +344,7 @@ void WordProcessor::keyboard(char key)
     if (key == MENU)
     {
         // Save before transitioning to the menu
-        saveText(); 
+        saveText();
 
         //
         JsonDocument &app = app_status();
@@ -289,9 +352,11 @@ void WordProcessor::keyboard(char key)
         return;
     }
 
+    ///
+    // handling BACKSPACE
     if (key == '\b')
     {
-        if (text_pos > 10)
+        if (text_pos > 0)
         {
             text_buffer[--text_pos] = '\0';
         }
@@ -305,6 +370,8 @@ void WordProcessor::keyboard(char key)
             loadText();
         }
     }
+    ///
+
     else
     {
         text_buffer[text_pos++] = key;
@@ -336,11 +403,11 @@ void WordProcessor::clearTrails()
     if (text_pos_prev != text_pos)
     {
         // get current cursor position
-        int cursorX = ptft->getCursorX();
-        int cursorY = ptft->getCursorY();
+        int cursorX = pu8f->getCursorX();
+        int cursorY = pu8f->getCursorY();
 
         // remove previous cursor
-        for (int i = 0; i < text_pos - text_pos_prev; i++)
+        for (int i = 0; i <= text_pos - text_pos_prev; i++)
         {
             ptft->drawLine(cursorX + 2 - (10 * (i + 1)), cursorY + 2, cursorX + 24 - (10 * (i + 1)), cursorY + 2, TFT_BLACK);
         }
@@ -349,7 +416,7 @@ void WordProcessor::clearTrails()
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX - 12, cursorY - 12, 320, 24, TFT_BLACK);
+            ptft->fillRect(cursorX - 14, cursorY - 14, 320, 40, TFT_BLACK);
         }
 
         // always show the cursor when typing
@@ -370,9 +437,9 @@ void WordProcessor::blinkCursor()
         blink = !blink;
     }
 
-    int cursorX = ptft->getCursorX();
-    int cursorY = ptft->getCursorY();
-
+    int cursorX = pu8f->getCursorX();
+    int cursorY = pu8f->getCursorY();
+    
     //
     if (blink)
     {
@@ -395,7 +462,7 @@ void WordProcessor::checkSaved()
         last = millis();
     }
 
-    if (millis() - last > 5000)
+    if (millis() - last > 3000)
     {
         last = millis();
         if (text_pos != text_last_save_pos)

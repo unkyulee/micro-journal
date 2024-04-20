@@ -29,7 +29,7 @@ private:
     // buffer size should be divisible by row character count (29)
     static const int TEXT_BUFFER_SIZE = 2900;
     //static const int TEXT_BUFFER_SIZE = 58;
-    static const int MAX_ROW_CHARACTERS = 29;
+    static const int MAX_ROW_CHARACTERS = 26;
     static const int MAX_LINES = 10;
     static const int STATUSBAR_Y = 224;
     static const int STATUSBAR_COLOR = TFT_BROWN;
@@ -43,7 +43,8 @@ private:
     int text_pos = 0;
     int text_pos_prev = 0;
     size_t text_last_save_pos = 0;
-    char *line_position[TEXT_BUFFER_SIZE / MAX_ROW_CHARACTERS];
+    char *line_position[TEXT_BUFFER_SIZE / MAX_ROW_CHARACTERS + 1];
+    int line_length[TEXT_BUFFER_SIZE / MAX_ROW_CHARACTERS + 1];
     bool blink = false;
     int total_line_prev = 0;
     int start_line_prev = 0;
