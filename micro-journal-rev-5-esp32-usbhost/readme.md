@@ -79,6 +79,8 @@ The reason for the default lack of voltage supply is to protect the board from p
 
 Once I supplied power to the USB female connector from an external source, everything started working flawlessly. Keyboard strokes were successfully registered by the ESP32, and all features functioned as expected.
 
+* https://github.com/tanakamasayuki/EspUsbHost
+* Credit goes to the respository owner tanakamasayuki and also, **Vince_Gill** who help me to point to the repository. Thanks!
 
 
 # Build Guide
