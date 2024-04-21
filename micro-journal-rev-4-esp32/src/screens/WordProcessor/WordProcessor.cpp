@@ -457,7 +457,7 @@ void WordProcessor::clearTrails()
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX, cursorY - 16, 320, 40, TFT_BLACK);
+            ptft->fillRect(cursorX - 16, cursorY - 16, 320, 40, TFT_BLACK);
         }
 
         // always show the cursor when typing

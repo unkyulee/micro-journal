@@ -69,13 +69,11 @@ class MyEspUsbHost : public EspUsbHost
     static uint8_t const keyboard_conv_table_it[128][3] = {HID_KEYCODE_TO_ASCII_IT};
 
     // debug
-    // app_log("%d %d %d %d\n", character, keycode, shift, altgr);
+    // app_log("%d %d %d\n", keycode, shift, altgr);
 
     //
     if (shift > 1)
-    {
       shift = 1;
-    }
 
     if (hidLocal == HID_LOCAL_Italian)
     {
@@ -88,9 +86,6 @@ class MyEspUsbHost : public EspUsbHost
     else
     {
       // US
-      if (shift >= 2)
-        shift -= 2;
-
       return keyboard_conv_table_us[keycode][shift];
     }
   }
@@ -126,7 +121,7 @@ void keyboard_setup()
   usbHost.begin();
 
   // update the locale depending on your keyboard layout
-  //usbHost.setHIDLocal(HID_LOCAL_Italian);
+  // usbHost.setHIDLocal(HID_LOCAL_Italian);
 }
 
 ///

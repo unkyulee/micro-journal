@@ -2,7 +2,6 @@
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 
-
 void service_setup()
 {
     //
@@ -17,4 +16,7 @@ void service_loop()
 {
     //
     display_loop();
+
+    //
+    keyboard_loop();
 }
