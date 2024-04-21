@@ -17,9 +17,7 @@
 
 #include <EspUsbHost.h>
 
-
 /*
-
   HID_LOCAL_NotSupported = 0   , ///< NotSupported
   HID_LOCAL_Arabic             , ///< Arabic
   HID_LOCAL_Belgian            , ///< Belgian
@@ -56,20 +54,22 @@
   HID_LOCAL_US                 , ///< US
   HID_LOCAL_Yugoslavia         , ///< Yugoslavia
   HID_LOCAL_Turkish_F            ///< Turkish-F
-
 */
+
+#include "locale/us.h"
+#include "locale/it.h"
 
 class MyEspUsbHost : public EspUsbHost
 {
   //
-  uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift)
+  uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
   {
     //
-    app_log("%d %d\n", keycode, shift);
+    static uint8_t const keyboard_conv_table_us[128][2] = {HID_KEYCODE_TO_ASCII_US};
+    static uint8_t const keyboard_conv_table_it[128][3] = {HID_KEYCODE_TO_ASCII_IT};
 
-    //
-    static uint8_t const keyboard_conv_table[128][2] = {HID_KEYCODE_TO_ASCII};
-    static uint8_t const keyboard_conv_table_ja[128][2] = {HID_KEYCODE_TO_ASCII_JA};
+    // debug
+    // app_log("%d %d %d %d\n", character, keycode, shift, altgr);
 
     //
     if (shift > 1)
@@ -77,38 +77,36 @@ class MyEspUsbHost : public EspUsbHost
       shift = 1;
     }
 
-    if (hidLocal == HID_LOCAL_Japan_Katakana)
+    if (hidLocal == HID_LOCAL_Italian)
     {
-      // Japan
-      return keyboard_conv_table_ja[keycode][shift];
+      if (altgr > 0)
+        shift = 2;
+
+      // Italian
+      return keyboard_conv_table_it[keycode][shift];
     }
     else
     {
       // US
-      return keyboard_conv_table[keycode][shift];
+      if (shift >= 2)
+        shift -= 2;
+
+      return keyboard_conv_table_us[keycode][shift];
     }
   }
-
 
   //
   void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
   {
-
-    if (' ' <= ascii && ascii <= '~')
-    {
-      keyboard_key(ascii);
-    }
-    else if (ascii == '\r')
-    {
-      keyboard_key('\n');
-    }
-    else if (ascii == '\b')
-    {
-      keyboard_key('\b');
-    }
-    else if (ascii == 27)
+    if (ascii == 27)
     {
       keyboard_key(MENU);
+    }
+
+    else if (ascii != 0)
+    {
+
+      keyboard_key(ascii);
     }
   };
 };
@@ -128,7 +126,7 @@ void keyboard_setup()
   usbHost.begin();
 
   // update the locale depending on your keyboard layout
-  // usbHost.setHIDLocal(HID_LOCAL_Japan_Katakana);
+  //usbHost.setHIDLocal(HID_LOCAL_Italian);
 }
 
 ///

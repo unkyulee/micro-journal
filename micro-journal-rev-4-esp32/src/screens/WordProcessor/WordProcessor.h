@@ -59,7 +59,10 @@ private:
     void clearTrails();
     void blinkCursor();
     void checkSaved();
+
+    //
     String formatNumberWithCommas(long num);
+    String convertExtendedAsciiToString(u_int8_t ascii);
 };
 
 #endif
