@@ -170,6 +170,60 @@ void WordProcessor::render()
 
     /////
     // Render the user text
+    pu8f->setFont(u8g2_font_profont22_mf); // extended font
+    pu8f->setForegroundColor(TFT_WHITE);   // apply color
+    pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
+    pu8f->setCursor(0, 24);                // start writing at this position
+
+    for (int i = start_line; i <= total_line; i++)
+    {
+        // print new line
+        if (i != start_line)
+            pu8f->println("");
+
+        //
+        if (line_position[i] != nullptr)
+        {
+            //
+            if (line_position[i] == nullptr)
+                break;
+
+            //
+            String line;
+            int length = line_length[i];
+
+            // render
+            for (int j = 0; j < length; j++)
+            {
+                // convert extended ascii into a streamlined string
+                uint8_t value = *(line_position[i] + j);
+                if (value < 128)
+                {
+                    line += (char)value;
+                }
+                else
+                {
+                    line += convertExtendedAsciiToString(value);
+                }
+            }
+
+            pu8f->print(line);
+
+            /*
+            // debug
+            for(int j = 0; j < MAX_ROW_CHARACTERS; j++) {
+                if(line[j] == '\0') {
+                    break;
+                }
+
+                app_log(" %d ", line[j]);
+            }
+            app_log("\n");
+            */
+        }
+    }
+
+    /*
     ptft->setFreeFont(&FreeMono9pt7b);
     ptft->setCursor(0, 36);
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
@@ -177,10 +231,9 @@ void WordProcessor::render()
     ptft->print(line_position[start_line]);
 
     if (row_character_count == 0 && total_line > 0 && last_char != '\n')
-    {
         ptft->println("");
-    }
-    
+
+    */
 
     /////
     blinkCursor();

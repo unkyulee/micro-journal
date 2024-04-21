@@ -91,7 +91,6 @@ class MyEspUsbHost : public EspUsbHost
       if (shift >= 2)
         shift -= 2;
 
-      app_log("%c", keyboard_conv_table_us[keycode][shift]);
       return keyboard_conv_table_us[keycode][shift];
     }
   }
