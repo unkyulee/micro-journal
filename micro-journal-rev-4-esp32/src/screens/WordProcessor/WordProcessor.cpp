@@ -170,31 +170,17 @@ void WordProcessor::render()
 
     /////
     // Render the user text
-    pu8f->setFont(u8g2_font_profont22_mf); // extended font
-    pu8f->setForegroundColor(TFT_WHITE);   // apply color
-    pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
-    pu8f->setCursor(0, 24);                // start writing at this position
+    ptft->setFreeFont(&FreeMono9pt7b);
+    ptft->setCursor(0, 36);
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->setTextSize(1);
+    ptft->print(line_position[start_line]);
 
-    for (int i = start_line; i <= total_line; i++)
+    if (row_character_count == 0 && total_line > 0 && last_char != '\n')
     {
-        // print new line
-        if (i != start_line)
-            pu8f->println("");
-
-        //
-        if (line_position[i] == nullptr)
-            break;
-
-        //
-        char line[MAX_ROW_CHARACTERS + 1];
-        int length = line_length[i];
-
-        strncpy(line, line_position[i], length);
-        line[length] = '\0';
-
-        // render
-        pu8f->print(line);
+        ptft->println("");
     }
+    
 
     /////
     blinkCursor();
@@ -418,7 +404,7 @@ void WordProcessor::clearTrails()
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX, cursorY - 14, 320, 40, TFT_BLACK);
+            ptft->fillRect(cursorX, cursorY - 16, 320, 40, TFT_BLACK);
         }
 
         // always show the cursor when typing
@@ -498,4 +484,68 @@ String WordProcessor::formatNumberWithCommas(long num)
     } while (num > 0);
 
     return formattedNumber;
+}
+
+// https://www.ascii-code.com/
+String WordProcessor::convertExtendedAsciiToString(u_int8_t ascii)
+{
+    switch (ascii)
+    {
+    case 163:
+        return "£";
+    case 167:
+        return "§";
+    case 176:
+        return "°";
+    case 191:
+        return "¿";
+    case 192:
+        return "À";
+    case 193:
+        return "Á";
+    case 194:
+        return "Â";
+    case 195:
+        return "Â";
+    case 196:
+        return "Ä";
+    case 197:
+        return "Å";
+    case 198:
+        return "Æ";
+    case 199:
+        return "Ç";
+    case 200:
+        return "È";
+    case 201:
+        return "É";
+    case 202:
+        return "Ê";
+    case 203:
+        return "Ë";
+    case 204:
+        return "Ì";
+    case 205:
+        return "Í";
+    case 206:
+        return "Î";
+    case 207:
+        return "Ï";
+    case 224:
+        return "à";
+    case 231:
+        return "ç";
+    case 232:
+        return "è";
+    case 233:
+        return "é";
+    case 236:
+        return "ì";
+    case 242:
+        return "ò";
+    case 249:
+        return "ù";
+    }
+
+    return "";
 }
