@@ -185,10 +185,6 @@ Once the wiring is completed, it may resemble a tangled mess of wires, often ref
 
 STL files can be found in the folder "STL".
 
-**PLEASE NOTE THAT WHEN PRINTING THE JOINT ADJUST THE SCALE TO 108%**
-
-The hole in the enclosure and the bolt may not fit well initially due to tolerance issues with your printer. In such cases, you can adjust the scale of the bolt when printing. For example, I printed the bolt with a 108% scale increase, and it fit perfectly in my case. Keep in mind that your printer may require different adjustments depending on its tolerance.
-
 [STL FILES](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-5-esp32-usbhost/STL)
 
 
