@@ -215,6 +215,7 @@ void menu_tooolbar(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextColor(TFT_WHITE, MENUBAR_COLOR);
     ptft->setTextSize(1);
     ptft->print(" MENU ");
+    ptft->print(VERSION);
 }
 
 //
