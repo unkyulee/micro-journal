@@ -1,5 +1,3 @@
-#ifdef USBHOST
-
 #ifndef Keyboard_USB_h
 #define Keyboard_USB_h
 
@@ -13,7 +11,5 @@
 void keyboard_setup();
 void keyboard_loop();
 void keyboard_key(char key);
-
-#endif
 
 #endif

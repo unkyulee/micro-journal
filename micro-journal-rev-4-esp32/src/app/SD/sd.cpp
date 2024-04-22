@@ -5,10 +5,10 @@
 #include <FS.h>
 #include <SD.h>
 
-#ifdef USBHOST
-#define SD_CS 9
-#else
+#ifdef KEYPAD
 #define SD_CS 5
+#else
+#define SD_CS 9
 #endif
 
 //

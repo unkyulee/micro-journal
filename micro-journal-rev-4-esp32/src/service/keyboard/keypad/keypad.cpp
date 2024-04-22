@@ -1,4 +1,4 @@
-#ifndef USBHOST
+#ifdef KEYPAD
 
 #include "keypad.h"
 #include "app/app.h"
@@ -160,5 +160,7 @@ int keyboard_get_key(keypadEvent e)
     // Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
     return EMPTY;
 }
+
+void keyboard_key(char key) {}
 
 #endif

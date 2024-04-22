@@ -182,6 +182,10 @@ void WordProcessor::render()
         if (i != start_line)
             pu8f->println("");
 
+        // partial refresh
+        if (total_line - i > 2)
+            continue;
+
         //
         if (line_position[i] != nullptr)
         {
@@ -469,7 +473,7 @@ void WordProcessor::clearTrails()
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX - 16, cursorY - 16, 320, 40, TFT_BLACK);
+            ptft->fillRect(cursorX - 12, cursorY - 16, 320, 40, TFT_BLACK);
         }
 
         // always show the cursor when typing

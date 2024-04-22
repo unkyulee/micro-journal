@@ -1,4 +1,4 @@
-#ifndef USBHOST
+#ifdef KEYPAD
 #ifndef Keyboard_Keypad_h
 #define Keyboard_Keypad_h
 
@@ -19,6 +19,7 @@ void keyboard_loop();
 
 // 
 int keyboard_get_key(keypadEvent e);
+void keyboard_key(char key);
 
 #endif
 #endif
