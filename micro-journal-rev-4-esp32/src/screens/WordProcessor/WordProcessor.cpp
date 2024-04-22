@@ -544,10 +544,28 @@ String WordProcessor::convertExtendedAsciiToString(u_int8_t ascii)
 {
     switch (ascii)
     {
+    case 128:
+        return "€";
+    case 140:
+        return "Œ";
+    case 145:
+        return "‘";
+    case 146:
+        return "’";
+    case 147:
+        return "“";
+    case 148:
+        return "”";
+    case 162:
+        return "¢";
     case 163:
         return "£";
     case 167:
         return "§";
+    case 169:
+        return "©";
+    case 170:
+        return "ª";
     case 176:
         return "°";
     case 191:
@@ -584,6 +602,12 @@ String WordProcessor::convertExtendedAsciiToString(u_int8_t ascii)
         return "Î";
     case 207:
         return "Ï";
+    case 208:
+        return "Ð";
+    case 217:
+        return "Ù";
+    case 223:
+        return "ß";
     case 224:
         return "à";
     case 231:

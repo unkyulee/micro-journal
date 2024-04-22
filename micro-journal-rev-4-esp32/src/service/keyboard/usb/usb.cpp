@@ -56,8 +56,9 @@
   HID_LOCAL_Turkish_F            ///< Turkish-F
 */
 
-#include "locale/us.h"
+#include "locale/ca-bi.h"
 #include "locale/it.h"
+#include "locale/us.h"
 
 class MyEspUsbHost : public EspUsbHost
 {
@@ -67,6 +68,7 @@ class MyEspUsbHost : public EspUsbHost
     //
     static uint8_t const keyboard_conv_table_us[128][2] = {HID_KEYCODE_TO_ASCII_US};
     static uint8_t const keyboard_conv_table_it[128][3] = {HID_KEYCODE_TO_ASCII_IT};
+    static uint8_t const keyboard_conv_table_ca_bi[128][5] = {HID_KEYCODE_TO_ASCII_CA_BI};
 
     // debug
     // app_log("%d %d %d\n", keycode, shift, altgr);
@@ -82,6 +84,14 @@ class MyEspUsbHost : public EspUsbHost
 
       // Italian
       return keyboard_conv_table_it[keycode][shift];
+    }
+    else if (hidLocal == HID_LOCAL_Canadian_Bilingual)
+    {
+      if (altgr > 0)
+        shift = 2;
+
+      // Canadian Bilingual
+      return keyboard_conv_table_ca_bi[keycode][shift];
     }
     else
     {
@@ -121,7 +131,7 @@ void keyboard_setup()
   usbHost.begin();
 
   // update the locale depending on your keyboard layout
-  // usbHost.setHIDLocal(HID_LOCAL_Italian);
+  usbHost.setHIDLocal(HID_LOCAL_Canadian_Bilingual);
 }
 
 ///
