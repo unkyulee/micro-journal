@@ -96,6 +96,7 @@ class MyEspUsbHost : public EspUsbHost
   //
   void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
   {
+
     if (ascii == 27)
     {
       keyboard_key(MENU);
@@ -103,10 +104,14 @@ class MyEspUsbHost : public EspUsbHost
 
     else if (ascii != 0)
     {
-
       keyboard_key(ascii);
     }
   };
+
+  void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
+  {
+    //app_log("%02x %02x %02x %02x %02x %02x\n", report.modifier, report.keycode[0], report.keycode[1], report.keycode[2], report.keycode[3], report.keycode[4], report.keycode[5]);
+  }
 };
 
 MyEspUsbHost usbHost;
