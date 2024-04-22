@@ -154,10 +154,11 @@ void WordProcessor::render()
         total_line_prev = total_line;
     }
 
+    // STATUS BAR
     ptft->setCursor(0, STATUSBAR_Y, 2);
     ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
     ptft->setTextSize(1);
-    ptft->printf(" %s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
+    ptft->printf("%s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
     if (text_pos == text_last_save_pos)
     {
         ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
@@ -435,6 +436,17 @@ void WordProcessor::clearBackground()
         clear = false;
         ptft->fillScreen(TFT_BLACK);
         ptft->fillRect(0, STATUSBAR_Y, 320, 240, STATUSBAR_COLOR);
+
+        // write keyboard layout
+        JsonDocument &app = app_status();
+        String layout = app["config"]["keyboard_layout"].as<String>();
+        if (layout == "null" || layout.isEmpty())
+            layout = "US"; // defaults to US layout
+
+        ptft->setCursor(280, STATUSBAR_Y, 2);
+        ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
+        ptft->setTextSize(1);
+        ptft->print(layout);
     }
 }
 

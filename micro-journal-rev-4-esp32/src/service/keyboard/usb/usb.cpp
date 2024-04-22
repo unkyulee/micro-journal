@@ -119,6 +119,29 @@ class MyEspUsbHost : public EspUsbHost
 MyEspUsbHost usbHost;
 
 // initialize USB HOST
+String keyboard_layout_prev;
+void keyboard_layout(String layout)
+{
+  Serial.println(layout);
+
+  if (layout == "US")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_US);
+  }
+
+  else if (layout == "IT")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_Italian);
+  }
+  else if (layout == "CA")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_Canadian_Bilingual);
+  }
+
+  //
+  keyboard_layout_prev = layout;
+}
+
 void keyboard_setup()
 {
   app_log("Init Keyboard\n");
@@ -131,7 +154,13 @@ void keyboard_setup()
   usbHost.begin();
 
   // update the locale depending on your keyboard layout
-  usbHost.setHIDLocal(HID_LOCAL_Canadian_Bilingual);
+  //
+  JsonDocument &app = app_status();
+  String layout = app["config"]["keyboard_layout"].as<String>();
+  if (layout == "null" || layout.isEmpty())
+    layout = "US"; // defaults to US layout
+
+  keyboard_layout(layout);
 }
 
 ///
@@ -145,6 +174,15 @@ void keyboard_loop()
   {
     //
     last = millis();
+
+    // check if layout is changed
+    JsonDocument &app = app_status();
+    String layout = app["config"]["keyboard_layout"].as<String>();
+    if (!layout.equals(keyboard_layout_prev))
+    {
+      app_log("Keyboard layout changed %s\n", layout);
+      keyboard_layout(layout);
+    }
 
     // check menu key and back key press
     int menuKey = digitalRead(MENU_PIN);

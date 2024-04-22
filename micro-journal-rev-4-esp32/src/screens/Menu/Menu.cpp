@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "app/app.h"
+#include "app/config/config.h"
 #include "screens/WordProcessor/WordProcessor.h"
 #include "service/display/display.h"
 
@@ -16,6 +17,7 @@ bool menu_clear = false;
 // 0 - home
 // 1 - sync
 // 2 - delete file confirm
+// 3 - keyboard layout
 int menu_state = 0;
 
 // 0 - starting
@@ -34,7 +36,11 @@ void menu_sync_waiting(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 void menu_sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 void menu_sync_completed(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 
+//
 void menu_delete(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
+
+//
+void menu_layout(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 
 //
 void menu_sync_operation();
@@ -74,6 +80,10 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     else if (menu_state == 2)
     {
         menu_delete(ptft, pu8f);
+    }
+    else if (menu_state == 3)
+    {
+        menu_layout(ptft, pu8f);
     }
 }
 
@@ -117,6 +127,12 @@ void Menu_keyboard(char key)
             //
             menu_state = 0;
         }
+
+        else if (key == 'k')
+        {
+            // move to keyboard layout
+            menu_state = 3;
+        }
     }
 
     // SYNC MENU
@@ -139,6 +155,7 @@ void Menu_keyboard(char key)
         return;
     }
 
+    // Delete file
     else if (menu_state == 2)
     {
         // delete confirmed
@@ -147,6 +164,37 @@ void Menu_keyboard(char key)
             // empty the file
             WordProcessor::getInstance(nullptr, nullptr).emptyFile();
 
+            // go back to the word processor
+            app["screen"] = WORDPROCESSOR;
+        }
+
+        // go back to home menu
+        menu_state = 0;
+    }
+
+    // Keyboard Layout
+    else if (menu_state == 3)
+    {
+        if(key == 'c') {
+            // canadian multiligual
+            app["config"]["keyboard_layout"] = "CA";
+            config_save();
+            // go back to the word processor
+            app["screen"] = WORDPROCESSOR;
+        }
+
+        else if(key == 'i') {
+            // italian
+            app["config"]["keyboard_layout"] = "IT";
+            config_save();
+            // go back to the word processor
+            app["screen"] = WORDPROCESSOR;
+        }
+
+        else if(key == 'u') {
+            // us
+            app["config"]["keyboard_layout"] = "US";
+            config_save();
             // go back to the word processor
             app["screen"] = WORDPROCESSOR;
         }
@@ -170,6 +218,11 @@ void menu_home(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     JsonDocument &app = app_status();
 
+    //
+    String keyboard_layout = app["config"]["keyboard_layout"].as<String>();
+    if (keyboard_layout == "null" || keyboard_layout.isEmpty())
+        keyboard_layout = "US";
+
     // Text to be displayed
     ptft->setCursor(0, 30, 2);
     ptft->setTextSize(1);
@@ -186,6 +239,7 @@ void menu_home(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     //
     ptft->println(" (D) START NEW ");
+    ptft->println(" (K) KEYBOARD LAYOUT - " + keyboard_layout);
     ptft->println();
     ptft->println(" (B) BACK ");
     ptft->println();
@@ -342,4 +396,19 @@ void menu_delete(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println("WARNING: This action will delete all text. Make sure to sync your content before confirming to prevent loss of data.");
     ptft->println();
     ptft->println(" (B) BACK ");
+}
+
+void menu_layout(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    //
+    JsonDocument &app = app_status();
+
+    ptft->setCursor(0, 30, 2);
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println(" - Choose Keyboard Layout");
+    ptft->println();
+
+    ptft->println("(c) Canadian Multiligual");
+    ptft->println("(i) Italian");
+    ptft->println("(u) US");
 }
