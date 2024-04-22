@@ -6,20 +6,14 @@
 
 // Dual Core Support
 TaskHandle_t Task0;
-TaskHandle_t Task1;
 
 void Core0(void *parameter)
 {
   for (;;)
   {
+    //
     service_loop();
-  }
-}
 
-void Core1(void *parameter)
-{
-  for (;;)
-  {
     // code for task 1
     app_loop();
   }
@@ -52,14 +46,6 @@ void setup()
       &Task0,  // Task handle.
       0);      // Core where the task should run
 
-  xTaskCreatePinnedToCore(
-      Core1,   // Task function.
-      "Core1", // name of task.
-      10000,   // Stack size of task
-      NULL,    // parameter of the task
-      1,       // priority of the task
-      &Task1,  // Task handle to keep track of created task
-      1);      // pin task to core 1
 }
 
 // Main loop is ignored as the tasks are separated per core

@@ -7,6 +7,7 @@
 //
 #include <HTTPClient.h>
 #include <SD.h>
+#include <base64.h>
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -175,7 +176,8 @@ void Menu_keyboard(char key)
     // Keyboard Layout
     else if (menu_state == 3)
     {
-        if(key == 'c') {
+        if (key == 'c')
+        {
             // canadian multiligual
             app["config"]["keyboard_layout"] = "CA";
             config_save();
@@ -183,7 +185,8 @@ void Menu_keyboard(char key)
             app["screen"] = WORDPROCESSOR;
         }
 
-        else if(key == 'i') {
+        else if (key == 'i')
+        {
             // italian
             app["config"]["keyboard_layout"] = "IT";
             config_save();
@@ -191,7 +194,8 @@ void Menu_keyboard(char key)
             app["screen"] = WORDPROCESSOR;
         }
 
-        else if(key == 'u') {
+        else if (key == 'u')
+        {
             // us
             app["config"]["keyboard_layout"] = "US";
             config_save();
@@ -325,12 +329,51 @@ void menu_sync_waiting(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" - Waiting ... ");
 }
 
+#define BASE64FILE "/base64.txt"
 void menu_sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     //
     JsonDocument &app = app_status();
 
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+
+    // preparing the file
+    ptft->println(" - Preparing the file ... ");
+    {
+        File inputFile = SD.open(FILENAME);
+        if (!inputFile)
+        {
+            Serial.println("Error opening input file!");
+            return;
+        }
+
+        File outputFile = SD.open(BASE64FILE, FILE_WRITE);
+        if (!outputFile)
+        {
+            Serial.println("Error opening output file!");
+            inputFile.close();
+            return;
+        }
+
+        //
+        const int bufferSize = 4000;
+        uint8_t buffer[bufferSize];
+        while (inputFile.available())
+        {
+            size_t bytesRead = inputFile.read(buffer, bufferSize);
+            if (bytesRead > 0)
+            {
+                // Encode buffer to base64 and write to output file
+                String txtBase64 = base64::encode(buffer, bytesRead);
+                outputFile.print(txtBase64);
+            }
+        }
+
+        inputFile.close();
+        outputFile.close();
+    }
+
+    //
     ptft->println(" - Sending file to drive ... ");
     ptft->println("");
 
@@ -352,7 +395,7 @@ void menu_sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
 
     // Read file in chunks and send via POST request
-    File file = SD.open(FILENAME, FILE_READ);
+    File file = SD.open(BASE64FILE, FILE_READ);
     if (!file)
     {
         ptft->println("Failed to open file");
@@ -374,9 +417,20 @@ void menu_sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 void menu_sync_completed(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    //
+    JsonDocument &app = app_status();
+
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
     ptft->println(" - Sync completed ");
     ptft->println("");
+
+    // clear status
+    app["network"]["enabled"] = false;
+    menu_state = 0;
+    sync_state = 0;
+
+    // move to word processor
+    app["screen"] = WORDPROCESSOR;
 }
 
 //

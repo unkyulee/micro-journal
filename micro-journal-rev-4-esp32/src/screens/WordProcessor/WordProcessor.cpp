@@ -183,8 +183,10 @@ void WordProcessor::render()
             pu8f->println("");
 
         // partial refresh
-        if (total_line - i > 2)
+        if (total_line - i > 2 && total_line > LINE_MAX)
+        {
             continue;
+        }
 
         //
         if (line_position[i] != nullptr)
