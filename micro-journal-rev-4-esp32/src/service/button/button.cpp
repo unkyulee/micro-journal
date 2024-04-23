@@ -37,7 +37,20 @@ void button_loop()
 
         if (backKey == 0)
         {
-            keyboard_key('b');
+            JsonDocument &app = app_status();
+            int screen = app["screen"].as<int>();
+
+            if (screen == MENUSCREEN)
+            {
+                //
+                keyboard_key('b'); // send back button when menu
+            }
+
+            else
+            {
+                // go to sleep
+                app["screen"] = SLEEPSCREEN;
+            }
         }
     }
 }

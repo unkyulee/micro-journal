@@ -13,6 +13,12 @@ void config_setup()
 
     // load config
     config_load();
+
+    //
+    app_log("Total heap: %d\n", ESP.getHeapSize());
+    app_log("Free heap: %d\n", ESP.getFreeHeap());
+    app_log("Total PSRAM: %d\n", ESP.getPsramSize());
+    app_log("Free PSRAM: %d\n", ESP.getFreePsram());
 }
 
 //
@@ -27,14 +33,14 @@ void config_load()
 
     // load config.json
     app_log("Opening config.json file\n");
-    File configFile = SD.open("/config.json", "r");    
+    File configFile = SD.open("/config.json", "r");
     if (configFile)
     {
         // read the file
         app_log("Reading config.json file\n");
         String configString = configFile.readString();
         app_log("Closing config.json file\n");
-        configFile.close();       
+        configFile.close();
 
         // check if configString is empty
         if (configString.isEmpty())

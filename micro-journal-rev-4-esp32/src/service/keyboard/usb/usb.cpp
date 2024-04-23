@@ -7,6 +7,7 @@
 #include "screens/WordProcessor/WordProcessor.h"
 #include "screens/ErrorScreen/ErrorScreen.h"
 #include "screens/Menu/Menu.h"
+#include "screens/WakeUp/WakeUp.h"
 
 #include <EspUsbHost.h>
 
@@ -200,5 +201,9 @@ void keyboard_key(char key)
   else if (screen == ERRORSCREEN)
   {
     ErrorScreen_keyboard(key);
+  }
+  else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
+  {
+    WakeUp_keyboard(key);
   }
 }

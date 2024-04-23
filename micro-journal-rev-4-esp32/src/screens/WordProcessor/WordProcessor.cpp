@@ -51,6 +51,9 @@ void WordProcessor::setup()
 
     // Clear background
     clear = true;
+
+    // sleep timer reset
+    last_sleep = millis();
 }
 
 // Render text on screen
@@ -59,6 +62,7 @@ void WordProcessor::render()
     clearBackground();
     clearTrails();
     checkSaved();
+    checkSleep();
 
     // Calculate the screen text lines
     // try to display from the second line when possible
@@ -215,32 +219,8 @@ void WordProcessor::render()
             }
 
             pu8f->print(line);
-
-            /*
-            // debug
-            for(int j = 0; j < MAX_ROW_CHARACTERS; j++) {
-                if(line[j] == '\0') {
-                    break;
-                }
-
-                app_log(" %d ", line[j]);
-            }
-            app_log("\n");
-            */
         }
     }
-
-    /*
-    ptft->setFreeFont(&FreeMono9pt7b);
-    ptft->setCursor(0, 36);
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->setTextSize(1);
-    ptft->print(line_position[start_line]);
-
-    if (row_character_count == 0 && total_line > 0 && last_char != '\n')
-        ptft->println("");
-
-    */
 
     /////
     blinkCursor();
@@ -528,6 +508,28 @@ void WordProcessor::checkSaved()
         {
             saveText();
         }
+    }
+}
+
+//
+void WordProcessor::checkSleep()
+{
+    static unsigned int text_pos_last = -1;
+    if (text_pos_last != text_pos)
+    {
+        // when typed then reset sleep timer
+        text_pos_last = text_pos;
+        last_sleep = millis();
+    }
+
+    if (millis() - last_sleep > 60000)
+    {
+        // if no action for 1 minute go to sleep
+        last_sleep = -1;
+
+        //
+        JsonDocument &app = app_status();
+        app["screen"] = SLEEPSCREEN;
     }
 }
 

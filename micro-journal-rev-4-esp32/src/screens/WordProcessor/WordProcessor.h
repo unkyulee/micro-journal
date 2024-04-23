@@ -17,6 +17,7 @@ public:
     void render();
     void keyboard(char key);
     void emptyFile();
+    void checkSleep();
 
 private:
     // Private constructor to prevent instantiation
@@ -50,6 +51,8 @@ private:
     int start_line_prev = 0;
     bool clear = true;
     size_t fileSize = 0;
+
+    unsigned int last_sleep = millis();
 
     // Private methods
     void loadText();

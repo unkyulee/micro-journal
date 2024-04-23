@@ -3,10 +3,11 @@
 #include "screens/WordProcessor/WordProcessor.h"
 #include "screens/ErrorScreen/ErrorScreen.h"
 #include "screens/Menu/Menu.h"
+#include "screens/WakeUp/WakeUp.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
-U8g2_for_TFT_eSPI u8f;       // U8g2 font instance
+U8g2_for_TFT_eSPI u8f; // U8g2 font instance
 
 //
 void display_setup()
@@ -15,7 +16,7 @@ void display_setup()
   tft.begin();
 
   // connect u8g2 procedures to TFT_eSPI
-  u8f.begin(tft);                     
+  u8f.begin(tft);
 
   //
   tft.setRotation(3);
@@ -34,7 +35,7 @@ void display_setup()
   }
   else
   {
-    app["screen"] = WORDPROCESSOR;
+    app["screen"] = WAKEUPSCREEN;
   }
 }
 
@@ -81,6 +82,28 @@ void display_loop()
 
       // loop
       Menu_render(&tft, &u8f);
+    }
+
+    // WAKEUP SCREEN
+    else if (screen == WAKEUPSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        WakeUp_setup(&tft, &u8f, true);
+
+      // loop
+      WakeUp_render(&tft, &u8f);
+    }
+
+    // SLEEP SCREEN
+    else if (screen == SLEEPSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        WakeUp_setup(&tft, &u8f, false);
+
+      // loop
+      WakeUp_render(&tft, &u8f);
     }
 
     //

@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <FS.h>
 #include <SD.h>
+#include <SPIFFS.h>
 #include <Update.h> // Required for firmware update
 
 #ifdef KEYPAD
@@ -15,6 +16,18 @@
 //
 void SD_setup()
 {
+    // Mount SPIFFS
+    if (!SPIFFS.begin())
+    {
+        Serial.println("SPIFFS mount failed!");
+        return;
+    }
+    else
+    {
+        Serial.println("SPIFFS mount succeeded!");
+    }
+
+    // initialize SD card
     app_log("SD Device CS: %d\n", SD_CS);
     if (!SD.begin(SD_CS))
     {
@@ -31,6 +44,19 @@ void SD_setup()
     }
     Serial.println("SD Card detected");
 
+    // check firmware update
+    SD_firwamre_update();
+
+    // mark the status that SD card is ready
+    JsonDocument &app = app_status();
+    app["SD"] = true;
+}
+
+///
+void SD_loop() {}
+
+void SD_firwamre_update()
+{
     // Check if there are firmware.bin in the SD card
     if (SD.exists("/firmware.bin"))
     {
@@ -50,7 +76,7 @@ void SD_setup()
         // Perform firmware update
         size_t fileSize = firmwareFile.size();
         if (Update.begin(fileSize))
-        {            
+        {
             if (Update.writeStream(firmwareFile) == fileSize)
             {
                 if (Update.end())
@@ -82,11 +108,4 @@ void SD_setup()
         // Close firmware file
         firmwareFile.close();
     }
-
-    // mark the status that SD card is ready
-    JsonDocument &app = app_status();
-    app["SD"] = true;
 }
-
-///
-void SD_loop() {}

@@ -10,6 +10,8 @@
 #define WORDPROCESSOR 0
 #define ERRORSCREEN 1
 #define MENUSCREEN 2
+#define WAKEUPSCREEN 3
+#define SLEEPSCREEN 4
 
 //
 void display_setup();
