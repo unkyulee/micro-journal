@@ -4,11 +4,9 @@
 
 Introducing a distraction-free writing device powered by ESP32-S3 and featuring a 3-inch display. Simply connect any USB keyboard, and you're ready to start writing. The device comes in a simple enclosure designed to sit neatly next to your keyboard, and it's easily portable for on-the-go use.
 
-
 # What made you to make the four devices that does the same thing?
 
 Introducing the fourth iteration of writerDeck. In the previous version, I have introduced the ESP32, enabling instant power-on and seamless access to a minimalist writing environment. Personally, I found enjoyment in using this device. On numerous occasions, I simply picked it up and began writing, resulting in rather satisfying texts.
-
 
 ![Micro Journal Rev.4](/micro-journal-rev-4-esp32/doc/001.webp)_My previous iteration_
 
@@ -20,17 +18,13 @@ I envisioned the writerDeck as a tool that could benefit a wider audience. Howev
 
 Now, any mechanical keyboard with a USB interface can connect to it, opening up possibilities for a broader range of users. Additionally, by utilizing a 2.4 GHz dongle, typing remotely without cables becomes a fascinating option. Inspired by this potential, I began working on implementing these features.
 
-
 # USB HOST
 
 To receive signals from a USB keyboard, the connecting device must function as a host. A host device is responsible for supplying voltage and current to connected devices, as well as managing the hierarchy of connections, especially when connected via hubs and multiple series of devices.
 
-![Micro Journal Rev.5](./images/006.jpg)*Is this the right side?*
+![Micro Journal Rev.5](./images/006.jpg)_Is this the right side?_
 
 While most PCs and smartphones possess USB host functionality natively, allowing keyboards to be plugged in and work seamlessly, the ESP32 operates differently. Unlike PCs and smartphones, the ESP32, particularly the ESP32 Wroom modules, does not inherently support these features. As a result, even if you were to connect a USB keyboard to an ESP32, it would not recognize key presses.
-
-
-
 
 ## ESP32 and Soft USB HOST
 
@@ -39,7 +33,6 @@ Initially, I didn't have an ESP32-S3 board on hand. However, during my research,
 The repository, found at https://github.com/tobozo/ESP32-USB-Soft-Host, provided the necessary library for implementing USB host functionality on the ESP32. Excitedly, I integrated the library into my project, wired up a USB female port on the board, and conducted initial tests. To my delight, it worked.
 
 Looking back, I realize I should have conducted more thorough testing at this stage, as I soon encountered unforeseen challenges.
-
 
 ### This keyboard worked with USB SOFT HOST
 
@@ -51,7 +44,6 @@ Looking back, I realize I should have conducted more thorough testing at this st
 
 Unfortunately, I only noticed this error after I had already printed the enclosure and finalized the assembly. Excited to put the device to the test, I plugged in my main keyboard into the writerDeck, only to discover that it didn't work at all. It was a devastating realization.
 
-
 ## Software version of USB HOST ONLY works with USB Low Speed
 
 According to the documentation on the ESP32-USB-Soft-Host GitHub repository, the Soft USB Host implementation only supports USB Low Speed, which corresponds to USB 1.0 devices. This limitation became apparent when I discovered that the keyboard that initially worked with the ESP32 Soft USB Host was an older USB 1.0 model. In contrast, the keyboard that didn't work was a USB 2.0 device.
@@ -59,7 +51,6 @@ According to the documentation on the ESP32-USB-Soft-Host GitHub repository, the
 Initially, I misunderstood "USB Low Speed" to simply mean slower devices, rather than being specific to USB 1.0. This led to the realization that the ESP32 Soft USB Host cannot be used with USB 2.0 devices, which are more prevalent nowadays.
 
 Upon realizing this limitation, I decided to purchase an ESP32-S3 devkit board. This required redesigning the enclosure and rewiring the pins to accommodate the new board. Eventually, after these adjustments, it worked.
-
 
 ## ESP32-S3 and Hardware USB HOST
 
@@ -79,9 +70,8 @@ The reason for the default lack of voltage supply is to protect the board from p
 
 Once I supplied power to the USB female connector from an external source, everything started working flawlessly. Keyboard strokes were successfully registered by the ESP32, and all features functioned as expected.
 
-* https://github.com/tanakamasayuki/EspUsbHost
-* Credit goes to the respository owner tanakamasayuki and also, **Vince_Gill** who help me to point to the repository. Thanks!
-
+- https://github.com/tanakamasayuki/EspUsbHost
+- Credit goes to the respository owner tanakamasayuki and also, **Vince_Gill** who help me to point to the repository. Thanks!
 
 # Build Guide
 
@@ -93,16 +83,13 @@ This document serves as a build guide to assist anyone in constructing this devi
 
 Any ESP32-S3 devkit board can be utilized, and there's no necessity for it to be restricted to the specific postfix N16R8. These postfixes specify the flash space and PSRAM. The firmware is designed to operate with ESP32 Wroom boards, which have less flash and RAM, so any choice of S3 boards should suffice.
 
-
 - [ILI9341 2.8" ILI9341 240 \* 320 TFT LCD Screen](https://www.amazon.it/ILI9341-Display-seriale-Arduino-Raspberry/dp/B07YTWRZGR/ref=sr_1_1?dib=eyJ2IjoiMSJ9.UQY1rH8qtdwW9a5QPrG3Tb0myeb_jE8vdzWnejFGWDF3RMdaKR2OYT2rD4zTsk5tRCPYmq4ARJ2DOFTW3cxicAmdQunZ0KTyhWrjZR2bVFiKfQjQvtB_BBvMuu2iOIYuM5oSUVJbFG4PloP041StmO_S7FB3SfJmuK9EX6EGx2Dkl0-VV2hkXMS2zlSrDwb7tUdrxbFU4Xl3W1rrLyoCOELgsObCdZHV0HMCGTORkiuCulcPIQpaLsI-kV6qgcPjFT8sMMJxv6foRX9yQPRCQHX4yDZGiHglS-64ot6zReg.JuwwXYaGqgeyWqYPXEaeERt-l1lEKuZ_2eHDJDNbUe4&dib_tag=se&keywords=ili9431&qid=1713525525&sr=8-1)
 
 The display module includes an integrated SD card slot, eliminating the need for an additional SD card module. My 3D design utilizes the SD card slot located in the middle of the board. There are several variations of the ILI9341, so if you plan to use the provided STL files, ensure compatibility by checking dimensions with the linked product.
 
-
 - [LiPo Charge Controller and 5V output module](https://www.amazon.it/Ouitble-caricabatteria-integrato-scarico-caricabatterie/dp/B09MQ6ND2Q/ref=sr_1_12?crid=8O78303YIA7M&dib=eyJ2IjoiMSJ9.ogstJhP7PWO-g81-wnxKh6VUbIZRJhLdyBc18r5jSRC5YsVWLrFZEKaf5mNfcg3UK9LZdo_N8zQ_iPBbUhlwr3lt_ZKxrB8_a-TVVGLO5m8y3xMHqBYbCl5NF8diqwd4Kg68cxOloVVTeY8NWgio7k0ON1HuFfkIrApVw4revVO-RqwcBmSR8IBHGI2L8TYDwmDItWB_bpQt9TZzSWhU2c5RgGiAslF4rDhHRQsu67HdDcQBRHaJdhroxiRJUNBHL3CnXyxrpiOCMKIH7pG8nBPgcX4mhEASN-Sw3NmjFsQ.qikh6iFDKhjEch8EOAYNdKsQmJk30ucZsf9OFwOfRzg&dib_tag=se&keywords=lipo+charger+module&qid=1711365173&sprefix=lipo+charger+module%2Caps%2C145&sr=8-12)
 
 This is the simplest solution I found for resolving power supply issues for any 5V projects with batteries. It's straightforward and highly versatile for other voltage projects beyond 5V. This module is incredibly useful to have on hand.
-
 
 - SD Card
 
@@ -173,11 +160,14 @@ For VCC and GND, wire them to VIN and GND respectively.
 | 9   | CS - SD                |
 | 15  | MENU BUTTON (OPTIONAL) |
 | 16  | BACK BUTTON (OPTIONAL) |
+| 20  | USB D+                 |
+| 19  | USB D-                 |
+| Vin | USB VCC                |
+| 3v3 | DISPLAY VCC            |
 
 ![Micro Journal Rev.5](./images/005.jpg)
 
 Once the wiring is completed, it may resemble a tangled mess of wires, often referred to as "spaghetti."
-
 
 ## Step 4. Enclosure
 
@@ -187,13 +177,11 @@ STL files can be found in the folder "STL".
 
 [STL FILES](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-5-esp32-usbhost/STL)
 
-
-
 ## Step 5. Compile and upload Firmware
 
-The firmware for this iteration utilizes the same codebase as the previous version. To access the project repository for the micro-journal firmware, clone the repository from the following link: 
+The firmware for this iteration utilizes the same codebase as the previous version. To access the project repository for the micro-journal firmware, clone the repository from the following link:
 
-https://github.com/unkyulee/micro-journal. 
+https://github.com/unkyulee/micro-journal.
 
 Once cloned, navigate to the "/micro-journal-rev-4-esp32" folder to find the PlatformIO source project.
 
@@ -203,8 +191,6 @@ To work with the project, open it using Visual Studio with the PlatformIO plugin
 
 You may need to modify the /src/service/keyboard/usb/usb.cpp file and adjust the usbHost.setHIDLocal() function call to match your keyboard layout.
 
-
-
 ## Step 6. Setup Google Apps Script for Drive Sync
 
 To enable syncing to your Google Drive, you'll need to install a Google Apps Script on your Google Drive and obtain its URL. The code for the Google Apps Script can be found in the following path:
@@ -212,7 +198,6 @@ To enable syncing to your Google Drive, you'll need to install a Google Apps Scr
 [/micro-journal-rev-4-esp32/install/google/sync.js](/micro-journal-rev-4-esp32/google/sync.js)
 
 Create a new Google Apps Script document in your Google Drive, then copy the provided code into it. Deploy the script as a web app, which will generate a URL linked to your Google Drive. Place this URL in the "url" field of the config.json file. Once configured, the device should be able to sync files to your Google Drive seamlessly.
-
 
 ## Step 7. Steup SD card for WIFI access
 
@@ -236,7 +221,6 @@ Once all the components are assembled and the SD card is prepared, place a file 
 ```
 
 Update the contents of the file with your WiFi connection information. This configuration will be saved on the SD card and utilized when sync is activated.
-
 
 # Conclusion
 

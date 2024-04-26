@@ -1,6 +1,5 @@
 #include "app.h"
 #include "config/config.h"
-#include "network/network.h"
 #include "SD/sd.h"
 
 // global status
@@ -17,9 +16,6 @@ void app_setup()
 
     // initialize config
     config_setup();
-
-    // network setup
-    network_setup();
 }
 
 //
@@ -27,10 +23,6 @@ void app_setup()
 //
 void app_loop()
 {
-    // network
-    // network setup runs in the secondary loop
-    network_loop();
-
     SD_loop();
 }
 

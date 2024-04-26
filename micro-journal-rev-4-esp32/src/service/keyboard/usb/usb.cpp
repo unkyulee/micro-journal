@@ -1,6 +1,5 @@
 #include "usb.h"
 #include "app/app.h"
-#include "app/network/network.h"
 #include "service/display/display.h"
 
 //
