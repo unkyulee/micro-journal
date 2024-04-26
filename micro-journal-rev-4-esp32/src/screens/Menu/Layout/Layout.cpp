@@ -6,10 +6,28 @@
 #include "screens/WordProcessor/WordProcessor.h"
 
 //
-void Layout_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f) {}
+void Layout_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    // when entering the screen
+    // clear the screen
+    Menu_clear();
+}
 
 //
-void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f) {}
+void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    //
+    JsonDocument &app = app_status();
+
+    ptft->setCursor(0, 30, 2);
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    ptft->println(" - Choose Keyboard Layout");
+    ptft->println();
+
+    ptft->println("[c] Canadian Multiligual");
+    ptft->println("[i] Italian");
+    ptft->println("[u] US");
+}
 
 //
 void Layout_keyboard(char key)
@@ -49,17 +67,3 @@ void Layout_keyboard(char key)
     app["menu"]["state"] = MENU_HOME;
 }
 
-void menu_layout(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
-{
-    //
-    JsonDocument &app = app_status();
-
-    ptft->setCursor(0, 30, 2);
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println(" - Choose Keyboard Layout");
-    ptft->println();
-
-    ptft->println("(c) Canadian Multiligual");
-    ptft->println("(i) Italian");
-    ptft->println("(u) US");
-}

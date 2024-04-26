@@ -1,6 +1,7 @@
 #include "app/app.h"
 #include "service/service.h"
 #include "service/keyboard/keyboard.h"
+#include "service/storage/storage.h"
 
 #define BAUD_RATE 9600
 
@@ -37,6 +38,9 @@ void setup()
   // keyboard setup
   keyboard_setup();
 
+  // storage setup
+  storage_setup();
+
   xTaskCreatePinnedToCore(
       Core0,   // Function to implement the task
       "Core0", // Name of the task
@@ -53,4 +57,7 @@ void loop()
 {
   //
   keyboard_loop();
+
+  // 
+  storage_loop();
 }

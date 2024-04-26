@@ -1,5 +1,6 @@
 #include "usb.h"
 #include "app/app.h"
+#include "app/config/config.h"
 #include "service/display/display.h"
 
 //
@@ -8,7 +9,10 @@
 #include "screens/Menu/Menu.h"
 #include "screens/WakeUp/WakeUp.h"
 
+//
 #include <EspUsbHost.h>
+#include "USB.h"
+#include "USBMSC.h"
 
 /*
   HID_LOCAL_NotSupported = 0   , ///< NotSupported
@@ -110,11 +114,12 @@ class MyEspUsbHost : public EspUsbHost
 
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
-    //app_log("%02x %02x %02x %02x %02x %02x\n", report.modifier, report.keycode[0], report.keycode[1], report.keycode[2], report.keycode[3], report.keycode[4], report.keycode[5]);
+    // app_log("%02x %02x %02x %02x %02x %02x\n", report.modifier, report.keycode[0], report.keycode[1], report.keycode[2], report.keycode[3], report.keycode[4], report.keycode[5]);
   }
 };
 
 MyEspUsbHost usbHost;
+bool mass_drive_mode = false;
 
 // initialize USB HOST
 String keyboard_layout_prev;
@@ -140,42 +145,63 @@ void keyboard_layout(String layout)
   keyboard_layout_prev = layout;
 }
 
+static const uint32_t DISK_SECTOR_COUNT = 2 * 8;  // 8KB is the smallest size that windows allow to mount
+static const uint16_t DISK_SECTOR_SIZE = 512;     // Should be 512
+static const uint16_t DISC_SECTORS_PER_TABLE = 1; // each table sector can fit 170KB (340 sectors)
+
 void keyboard_setup()
 {
-  app_log("Init Keyboard\n");
-
-  // usb host setup
-  usbHost.begin();
-
-  // update the locale depending on your keyboard layout
-  //
   JsonDocument &app = app_status();
-  String layout = app["config"]["keyboard_layout"].as<String>();
-  if (layout == "null" || layout.isEmpty())
-    layout = "US"; // defaults to US layout
+  if (app["config"]["drive"].as<bool>())
+  {
+    //
+    mass_drive_mode = true;
+  }
 
-  keyboard_layout(layout);
+  else
+  {
+    //
+    app_log("Init Keyboard\n");
+
+    // usb host setup
+    usbHost.begin();
+
+    // update the locale depending on your keyboard layout
+    //
+    String layout = app["config"]["keyboard_layout"].as<String>();
+    if (layout == "null" || layout.isEmpty())
+      layout = "US"; // defaults to US layout
+
+    keyboard_layout(layout);
+  }
 }
 
 ///
 void keyboard_loop()
 {
-  //
-  usbHost.task();
-
-  static unsigned int last = 0;
-  if (millis() - last > 1000)
+  if (mass_drive_mode)
   {
-    //
-    last = millis();
+    // as a thumb drive don't initiate usb host mode
+  }
+  else
+  {
+    // as a usb host
+    usbHost.task();
 
-    // check if layout is changed
-    JsonDocument &app = app_status();
-    String layout = app["config"]["keyboard_layout"].as<String>();
-    if (!layout.equals(keyboard_layout_prev))
+    static unsigned int last = 0;
+    if (millis() - last > 1000)
     {
-      app_log("Keyboard layout changed %s\n", layout);
-      keyboard_layout(layout);
+      //
+      last = millis();
+
+      // check if layout is changed
+      JsonDocument &app = app_status();
+      String layout = app["config"]["keyboard_layout"].as<String>();
+      if (!layout.equals(keyboard_layout_prev))
+      {
+        app_log("Keyboard layout changed %s\n", layout);
+        keyboard_layout(layout);
+      }
     }
   }
 }

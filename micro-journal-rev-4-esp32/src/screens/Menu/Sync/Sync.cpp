@@ -75,7 +75,7 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     ptft->println("");
-    ptft->println(" press (B) to exit ");
+    ptft->println(" press [B] to exit ");
 
     //
     sync_state_prev = sync_state;

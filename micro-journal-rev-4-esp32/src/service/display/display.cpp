@@ -1,9 +1,12 @@
 #include "display.h"
 #include "app/app.h"
+
+// screens
 #include "screens/WordProcessor/WordProcessor.h"
 #include "screens/ErrorScreen/ErrorScreen.h"
 #include "screens/Menu/Menu.h"
 #include "screens/WakeUp/WakeUp.h"
+#include "screens/USBDRIVE/USBDRIVE.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
@@ -104,6 +107,17 @@ void display_loop()
 
       // loop
       WakeUp_render(&tft, &u8f);
+    }
+
+    // USB DRIVE
+    else if (screen == USBDRIVESCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        USBDRIVE_setup(&tft, &u8f);
+
+      // loop
+      USBDRIVE_render(&tft, &u8f);
     }
 
     //

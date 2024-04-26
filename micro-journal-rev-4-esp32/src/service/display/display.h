@@ -12,6 +12,7 @@
 #define MENUSCREEN 2
 #define WAKEUPSCREEN 3
 #define SLEEPSCREEN 4
+#define USBDRIVESCREEN 5
 
 //
 void display_setup();
