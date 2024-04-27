@@ -8,6 +8,7 @@
 //
 void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    //
     Menu_clear();
 }
 
@@ -38,7 +39,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     ptft->println(" [D] START NEW ");
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
-    //ptft->println(" [W] WIFI");
+    ptft->println(" [W] WIFI");
     //ptft->println(" [U] USB DRIVE");
     ptft->println();
     ptft->println(" [B] BACK ");
@@ -48,10 +49,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 //
 void Home_keyboard(char key)
-{
-    //
-    Menu_clear();
-    
+{   
     //
     JsonDocument &app = app_status();
 
