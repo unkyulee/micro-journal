@@ -49,7 +49,6 @@ void setup()
       0,       // Priority of the task
       &Task0,  // Task handle.
       0);      // Core where the task should run
-
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -57,7 +56,4 @@ void loop()
 {
   //
   keyboard_loop();
-
-  // 
-  storage_loop();
 }

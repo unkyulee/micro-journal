@@ -15,6 +15,8 @@ U8g2_for_TFT_eSPI u8f; // U8g2 font instance
 //
 void display_setup()
 {
+  app_log("DISPLAY SETUP\n");
+  
   // Initialise the TFT screen
   tft.begin();
 

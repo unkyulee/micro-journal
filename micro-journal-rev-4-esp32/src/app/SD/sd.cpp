@@ -7,12 +7,6 @@
 #include <SPIFFS.h>
 #include <Update.h> // Required for firmware update
 
-#ifdef KEYPAD
-#define SD_CS 5
-#else
-#define SD_CS 9
-#endif
-
 //
 void SD_setup()
 {

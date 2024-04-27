@@ -11,8 +11,6 @@
 
 //
 #include <EspUsbHost.h>
-#include "USB.h"
-#include "USBMSC.h"
 
 /*
   HID_LOCAL_NotSupported = 0   , ///< NotSupported
@@ -145,10 +143,6 @@ void keyboard_layout(String layout)
   keyboard_layout_prev = layout;
 }
 
-static const uint32_t DISK_SECTOR_COUNT = 2 * 8;  // 8KB is the smallest size that windows allow to mount
-static const uint16_t DISK_SECTOR_SIZE = 512;     // Should be 512
-static const uint16_t DISC_SECTORS_PER_TABLE = 1; // each table sector can fit 170KB (340 sectors)
-
 void keyboard_setup()
 {
   JsonDocument &app = app_status();
@@ -156,6 +150,7 @@ void keyboard_setup()
   {
     //
     mass_drive_mode = true;
+    app_log("Loaded as mass drive. USB Host disabled.\n");
   }
 
   else
@@ -179,29 +174,26 @@ void keyboard_setup()
 ///
 void keyboard_loop()
 {
+  // when booted as mass storage then skip usb host
   if (mass_drive_mode)
-  {
-    // as a thumb drive don't initiate usb host mode
-  }
-  else
-  {
-    // as a usb host
-    usbHost.task();
+    return;
 
-    static unsigned int last = 0;
-    if (millis() - last > 1000)
+  // as a usb host
+  usbHost.task();
+
+  static unsigned int last = 0;
+  if (millis() - last > 1000)
+  {
+    //
+    last = millis();
+
+    // check if layout is changed
+    JsonDocument &app = app_status();
+    String layout = app["config"]["keyboard_layout"].as<String>();
+    if (!layout.equals(keyboard_layout_prev))
     {
-      //
-      last = millis();
-
-      // check if layout is changed
-      JsonDocument &app = app_status();
-      String layout = app["config"]["keyboard_layout"].as<String>();
-      if (!layout.equals(keyboard_layout_prev))
-      {
-        app_log("Keyboard layout changed %s\n", layout);
-        keyboard_layout(layout);
-      }
+      app_log("Keyboard layout changed %s\n", layout);
+      keyboard_layout(layout);
     }
   }
 }

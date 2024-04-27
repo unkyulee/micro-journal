@@ -4,7 +4,4 @@
 //
 void storage_setup();
 
-///
-void storage_loop();
-
 #endif
