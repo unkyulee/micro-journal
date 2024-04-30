@@ -59,3 +59,27 @@ Once the SD card is formatted. Put it inside the writerDeck and the writerDeck s
 Please refer to the Build Guide to setup the Google Apps Script. 
 
 https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5-esp32-usbhost/readme.md
+
+
+# Changing Animation
+
+If you want to change the Startup and Sleep animation. You can place the gif files directly in the SD card. Filename should be exactly the same in order to have the effect. 
+
+* wakeup.gif
+
+Startup animation file. When the device boots. It will play the wakeup.gif
+
+* sleep.gif
+
+When no key press for one minute. Device goes into sleep mode and will play the sleep.gif animation.
+
+* File size 
+
+Width: 320 px \
+Height: 240 px
+
+Each file should not exceed 1 MB 
+
+Use the following web site to create your own animation files.
+
+https://ezgif.com/
