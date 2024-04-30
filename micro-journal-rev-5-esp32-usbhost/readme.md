@@ -4,6 +4,8 @@
 
 Introducing a distraction-free writing device powered by ESP32-S3 and featuring a 3-inch display. Simply connect any USB keyboard, and you're ready to start writing. The device comes in a simple enclosure designed to sit neatly next to your keyboard, and it's easily portable for on-the-go use.
 
+![Micro Journal Rev.5](./images/smile.png)
+
 # What made you to make the four devices that does the same thing?
 
 Introducing the fourth iteration of writerDeck. In the previous version, I have introduced the ESP32, enabling instant power-on and seamless access to a minimalist writing environment. Personally, I found enjoyment in using this device. On numerous occasions, I simply picked it up and began writing, resulting in rather satisfying texts.
@@ -15,6 +17,8 @@ However, it's worth noting that the device features a fixed 30-key keyboard, met
 ![Micro Journal Rev.5](./images/002.jpg)_This iteration_
 
 I envisioned the writerDeck as a tool that could benefit a wider audience. However, the fixed keyboard layout posed a significant obstacle to this goal. What if this keyboard component could be separated and offer a USB interface?
+
+![Micro Journal Rev.5](./images/pink.png)
 
 Now, any mechanical keyboard with a USB interface can connect to it, opening up possibilities for a broader range of users. Additionally, by utilizing a 2.4 GHz dongle, typing remotely without cables becomes a fascinating option. Inspired by this potential, I began working on implementing these features.
 
@@ -147,23 +151,27 @@ Connect the BATT port to any battery case. In my build, I used an 18650 battery,
 
 Solder wires to the ESP32 board according to the pinout.
 
-For VCC and GND, wire them to VIN and GND respectively.
+| PIN  | PURPOSE                    |
+| ---- | -------------------------- |
+| GND  | Power supply (5V rail) GND |
+| 5Vin | Power supply               |
+| 13   | MISO - SD, DISPLAY         |
+| 12   | SCLK - SD, DISPLAY         |
+| 11   | MOSI - SD, DISPLAY         |
+| 10   | CS - DISPLAY               |
+| 9    | CS - SD                    |
+| 46   | DC - DISPLAY               |
+| 3    | RST - DISPLAY              |
+| 16   | BACK BUTTON (OPTIONAL)     |
+| 15   | MENU BUTTON (OPTIONAL)     |
+| 3V3  | DISPLAY VCC                |
 
-| PIN | PURPOSE                |
-| --- | ---------------------- |
-| 13  | MISO - SD, DISPLAY     |
-| 11  | MOSI - SD              |
-| 12  | SCLK - SD, DISPLAY     |
-| 46  | DC - DISPLAY           |
-| 3   | RST - DISPLAY          |
-| 10  | CS - DISPLAY           |
-| 9   | CS - SD                |
-| 15  | MENU BUTTON (OPTIONAL) |
-| 16  | BACK BUTTON (OPTIONAL) |
-| 20  | USB D+                 |
-| 19  | USB D-                 |
-| Vin | USB VCC                |
-| 3v3 | DISPLAY VCC            |
+| PIN | PURPOSE                   |
+| --- | ------------------------- |
+| GND | GND of BACK, MENU BUTTONS |
+| GND | DISPLAY GND               |
+| 19  | USB D-                    |
+| 20  | USB D+                    |
 
 ![Micro Journal Rev.5](./images/005.jpg)
 
@@ -190,6 +198,8 @@ To work with the project, open it using Visual Studio with the PlatformIO plugin
 ![Micro Journal Rev.5](./images/017.jpg)
 
 You may need to modify the /src/service/keyboard/usb/usb.cpp file and adjust the usbHost.setHIDLocal() function call to match your keyboard layout.
+
+* Make sure to run Platform -> Upload Filesystem Image at least once, in order to set SPIFFS
 
 ## Step 6. Setup Google Apps Script for Drive Sync
 
