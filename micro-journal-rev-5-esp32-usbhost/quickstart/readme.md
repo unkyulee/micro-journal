@@ -12,15 +12,17 @@ When you receive the writerDeck, you need to first install a battery and SD card
 
 ![Battery](./images/battery.png)
 
-writerDeck requires one 18650 3.7V Lithium ion Battery.
-This is not AA battery or AAA battery.
+writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one.
+
+**This is not AA battery or AAA battery.**
+
 Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
 
 # SD card
 
 ![SD](./images/sd.jpg)
 
-writerDeck taks a SD card. Try to buy lower capacity as possible. If the size is bigger than 32 GB... you need to setup a special partition to make it recognized in the writerDeck. I believe 1GB should be more than enough.
+writerDeck takes a SD card. Try to buy lower capacity as possible. If the size is bigger than 32 GB... you need to setup a special partition to make it recognized in the writerDeck. I believe 1 GB should be more than enough.
 
 Some ultra fast sanDisk micro SD cards were not recognized. So, try to buy something not that fancy.
 
@@ -32,7 +34,7 @@ Make sure to buy the one that has the adapter to the bigger size. writerDeck tak
 
 **PLEASE BE EXTRA CAREFUL TO + and - POLARITY OF THE BATTERY**
 
-Install the battery when the enclosure is open.
+Install the battery when the enclosure is open. Battery holder should have the polarity written on the bottom. Please check carefully before inserting the battery.
 
 ![SD](./images/battery_install.jpg)
 
@@ -42,7 +44,7 @@ When installed the battery with the wrong polarity, it can cause a fire.
 
 # Step 2. Prepare SD card
 
-SD card needs to be formatted before inserted into the writerDeck.
+SD card needs to be formatted before inserted into the writerDeck. Connect the SD card to your computer, and initiate formatting process. 
 
 ![format](./images/format.png)
 
@@ -90,7 +92,9 @@ Choose the deployment type as "Web app"
 
 ![drive](./images/drive_006.png)
 
-Configure as the following. Execute as "Me". This will allow the script to access to your drive.
+Configure as the following. Execute as "Me". This will allow the script to access to your drive. 
+
+![drive](./images/drive_007.png)
 
 Who has access as "Anyone". This way writerDeck can access to the drive. As long as you don't share the link that is provided. Only the writerDeck should have access to the drive.
 
@@ -138,7 +142,7 @@ If config.json file doesn't exists. Then create one yourself and paste the copie
 
 ```
 
-Save the sd card. Safely remove the card from the PC and then you should have your Google Sync working.
+Save the sd card. Safely remove the card from the PC and then you place the SD card back to the writerDeck. After that you should have your Google Sync working with the writerDeck.
 
 While you are on the writerDeck. Press "ESC" on the keyboard then press S to see if it is working.
 
