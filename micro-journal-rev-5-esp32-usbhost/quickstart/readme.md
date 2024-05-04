@@ -20,6 +20,8 @@ writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18
 
 Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
 
+In case, you don't have the battery yet. You can plug in a usb cable to the charging port. The device should be able to turn on with it. 
+
 # SD card
 
 ![SD](./images/sd.jpg)
