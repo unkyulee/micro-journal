@@ -167,12 +167,23 @@ To check the current firmware version. You can press "ESC" on the keyboard or "M
 
 **!!IF YOU SEE 1.0.0 ON YOUR SCREEN PLEASE UPDATE THE FIRMWARE!!**
 
+## 1. Check latest release
+
 You can check the latest firmware from the following link. 
 
 https://github.com/unkyulee/micro-journal/releases
 
-Download the file from Assets "firmware.bin" and place it inside the SD card. When you restart the device. It will show white screen for 10 seconds then boot to the updated firmware.
 
+## 2. Download the "firmware.bin"
+
+Download the file from Assets "firmware.bin" 
+
+## 3. Place "firmware.bin" inside the SD card
+
+Pull out the SD card from the device. \
+Copy "firmware.bin" file inside the SD card. ''
+Restart the device. \
+When you restart the device, it will show white screen for 10 seconds then automatically boot again to the updated firmware.
 
 
 # Changing Animation
