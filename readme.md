@@ -13,9 +13,11 @@ So, I proceeded to design an enclosure to sit next to the keyboard, utilizing th
 
 There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
 
-[Micro Journal Rev.5 Build Details](/micro-journal-rev-5-esp32-usbhost/readme.md)
+For those who wants to build on your own: [Micro Journal Rev.5 Build Details](/micro-journal-rev-5-esp32-usbhost/readme.md)
 
-[Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
+For those who already have the device: [Quick Start User Guide](/micro-journal-rev-5-esp32-usbhost/quickstart/readme.md)
+
+If you want to buy one: [Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
 
 
 
