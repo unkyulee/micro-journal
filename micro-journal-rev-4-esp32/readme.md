@@ -194,7 +194,7 @@ Update the contents of the file with your WiFi connection information. This conf
 
 To enable syncing to your Google Drive, you'll need to install a Google Apps Script on your Google Drive and obtain its URL. The code for the Google Apps Script can be found in the following path:
 
-[/micro-journal-rev-4-esp32/install/google/sync.js](/micro-journal-rev-4-esp32/google/sync.js)
+[Google Apps Script Code](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-4-esp32/install/google/sync.js)
 
 Create a new Google Apps Script document in your Google Drive, then copy the provided code into it. Deploy the script as a web app, which will generate a URL linked to your Google Drive. Place this URL in the "url" field of the config.json file. Once configured, the device should be able to sync files to your Google Drive seamlessly.
 
