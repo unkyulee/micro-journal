@@ -8,6 +8,8 @@
 
 When you receive the writerDeck, you need to first install a battery and SD card. Please, follow the steps below to complete the setup.
 
+Also, please update the firmware when you receive the device. The firmware on the device is still under development and you may not have the latest releases. You can find the guide how to update the firmware on this document.
+
 # Battery
 
 ![Battery](./images/battery.png)
@@ -154,6 +156,24 @@ Most of the USB keyboard should work by connecting to the writerDeck.
 - Wireless keyboard with 2.4 Ghz USB dongle should work
 - Wired USB keyboard should work
 - Some keyboards that has USB Hub on board may not work.
+
+# Firmware Update
+
+Please, make sure that you have the latest firmware on the device. The firmware is still under a development and your device may have shipped with outdated firmware.
+
+To check the current firmware version. You can press "ESC" on the keyboard or "M" button on the device to see the version.
+
+![drive](./images/firmware_001.jpg)
+
+**!!IF YOU SEE 1.0.0 ON YOUR SCREEN PLEASE UPDATE THE FIRMWARE!!**
+
+You can check the latest firmware from the following link. 
+
+https://github.com/unkyulee/micro-journal/releases
+
+Download the file from Assets "firmware.bin" and place it inside the SD card. When you restart the device. It will show white screen for 10 seconds then boot to the updated firmware.
+
+
 
 # Changing Animation
 
