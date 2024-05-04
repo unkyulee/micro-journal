@@ -45,7 +45,7 @@ void WakeUp_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // Put your main code here, to run repeatedly:
     if (gif.open((uint8_t *)gif_image, gif_image_size, GIFDraw))
     {
-        Serial.printf("Successfully opened GIF; Canvas size = %d x %d\n", gif.getCanvasWidth(), gif.getCanvasHeight());
+        //Serial.printf("Successfully opened GIF; Canvas size = %d x %d\n", gif.getCanvasWidth(), gif.getCanvasHeight());
         ptft->startWrite(); // The TFT chip select is locked low
         while (gif.playFrame(true, NULL) && stop != true)
         {

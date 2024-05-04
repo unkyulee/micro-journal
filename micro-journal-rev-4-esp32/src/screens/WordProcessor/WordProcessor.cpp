@@ -349,8 +349,8 @@ void WordProcessor::saveText()
         if (length >= 0)
         {
             app_log("File written from %d at length %d\n", offset, length);
+            //
             text_last_save_pos = text_pos;
-            fileSize += length;
         }
         else
         {
@@ -358,10 +358,31 @@ void WordProcessor::saveText()
             JsonDocument &app = app_status();
             app["screen"] = ERRORSCREEN;
         }
+
+        //
         file.close();
 
         // save operation takes time before loading is available
-        delay(250);
+        delay(100);
+
+        // recalculate the file size
+        // calculate the file size
+        file = SD.open(FILENAME, FILE_READ);
+        if (!file)
+        {
+            app_log("Failed to open file for writing\n");
+            JsonDocument &app = app_status();
+            app["screen"] = ERRORSCREEN;
+            return;
+        }
+        fileSize = file.size();
+        file.close();
+
+        // save operation takes time before loading is available
+        delay(100);
+
+        app_log("after save file size: %d file offset: %d text_last_save: %d text_pos: %d\n",
+                fileSize, offset, text_last_save_pos, text_pos);
     }
 }
 
