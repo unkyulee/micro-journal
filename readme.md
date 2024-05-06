@@ -88,6 +88,9 @@ https://kbd.news/Micro-Journal-2332.html
 Hackaday\
 https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/
 
+Hackster.io\
+https://www.hackster.io/news/micro-journal-offers-a-customizable-writerdeck-experience-4ffbf773f3ec
+
 
 # Online shop
 
