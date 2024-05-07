@@ -40,7 +40,7 @@ private:
     U8g2_for_TFT_eSPI *pu8f;
 
     // Member variables    
-    char text_buffer[TEXT_BUFFER_SIZE + 2];
+    char text_buffer[TEXT_BUFFER_SIZE + 24]; // give buffer more space for the key inputs may arrive even the buffer is full
     int text_pos = 0;
     int text_pos_prev = 0;
     size_t text_last_save_pos = 0;

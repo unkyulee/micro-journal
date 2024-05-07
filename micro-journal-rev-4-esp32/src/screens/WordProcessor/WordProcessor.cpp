@@ -273,6 +273,7 @@ void WordProcessor::loadText()
     app_log("File loading completed: text_pos: %d, fileSize: %d\n", text_pos, fileSize);
 
     file.close();
+    delay(100);
 }
 
 // Empty the file
@@ -427,8 +428,12 @@ void WordProcessor::keyboard(char key)
         text_buffer[text_pos] = '\0';
     }
 
+    //
     if (text_pos >= TEXT_BUFFER_SIZE)
     {
+        app_log("Text buffer full\n");
+        
+        // when the buffer is about to finish try to save
         saveText();
         loadText();
         clear = true;

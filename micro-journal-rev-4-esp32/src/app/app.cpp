@@ -55,5 +55,5 @@ void app_log(const char *format, ...)
     va_end(args);
 
     // Print to Serial
-    Serial.print(message);
+    Serial.printf("[%d] %s", millis(), message);
 }
