@@ -122,10 +122,19 @@ Allow the Drive access at the next screen. Your account name should appear. (Not
 
 ## 9. Open the SD card of the writerDeck
 
-connect the SD card to the PC and find config.json.
-If config.json file doesn't exists. Then create one yourself and paste the copied link in the following section. "sync" -> "url"
+Connect the SD card to the PC and create a file "config.json" \
+If the file already exists then no need to create one \
+Open the file with a text editor (notepad) from PC. 
 
-(If possible, also setup the WiFi at this point)
+If aren't familiar with the JSON format. Then delete the existing content and replace it with the following json. Then edit 3 parts. 
+
+1) !!!COPY YOUR WEB APP URL HERE!!!!!
+2) Your WIFI SSID
+3) WIFI PASSWORD
+
+Make sure to not to remove / add any comma (,) or bracket ({, }) or quotes (") while you are editing. If by any chance, the format gets broken. Start over by removing all texts inside config.json file and copy & paste the following template.
+
+If you are familiar with the JSON format. One thing you need to add is the "sync" property as the root property in the JSON and leave the rest of the property as it is.
 
 ```json
 {
@@ -135,26 +144,20 @@ If config.json file doesn't exists. Then create one yourself and paste the copie
   "network": {
     "access_points": [
       {
-        "ssid": "test",
-        "password": "helloworld"
+        "ssid": "Your WIFI SSID",
+        "password": "WIFI PASSWORD"
       }
     ]
   }
 }
 ```
 
-Save the sd card. Safely remove the card from the PC and then you place the SD card back to the writerDeck. After that you should have your Google Sync working with the writerDeck.
+Save the file to the sd card. Safely remove the card from the PC and then you place the SD card back to the writerDeck. After that you should have your Google Sync working with the writerDeck.
 
-While you are on the writerDeck. Press "ESC" on the keyboard then press S to see if it is working.
+While you are on the writerDeck. Press "ESC" on the keyboard then press "S" to see if it is working.
 
-# USB Keyboard
+**NOTE THAT WIFI IS LIMITED TO 2.4 Ghz. ESP32 doesn't support 5 Ghz wifi at this moment**
 
-Most of the USB keyboard should work by connecting to the writerDeck.
-
-- Bluetooth keyboard is not able to connect to the writerDeck. (Should be possible in the future development)
-- Wireless keyboard with 2.4 Ghz USB dongle should work
-- Wired USB keyboard should work
-- Some keyboards that has USB Hub on board may not work.
 
 # Firmware Update
 
@@ -178,12 +181,23 @@ Download the file from Assets "firmware.bin"
 
 ## 3. Place "firmware.bin" inside the SD card
 
-Pull out the SD card from the device. \
-Copy "firmware.bin" file inside the SD card. ''
-Restart the device. \
-When you restart the device, it will show white screen for 10 seconds then automatically boot again to the updated firmware.
+Turn off the writerDeck. \
+Pull out the SD card from the writerDeck. \
+Copy "firmware.bin" file inside the SD card. \
+Put back the SD card to the writerDeck. \
+Turn on the writerDeck. \
+writerDeck will show white screen for 10 seconds then automatically boot again to the updated firmware.
 
-# Changing Animation
+# USB Keyboard
+
+Most of the USB keyboard should work by connecting to the writerDeck.
+
+- Bluetooth keyboard is not able to connect to the writerDeck. (Should be possible in the future development)
+- Wireless keyboard with 2.4 Ghz USB dongle should work
+- Wired USB keyboard should work
+- Some keyboards that has USB Hub on board may not work.
+
+# Customizing Start and Sleep Animation
 
 If you want to change the Startup and Sleep animation. You can place the gif files directly in the SD card. Filename should be exactly the same in order to have the effect.
 
