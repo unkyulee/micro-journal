@@ -26,6 +26,7 @@ void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     ptft->println("[c] Canadian Multiligual");
     ptft->println("[i] Italian");
+    ptft->println("[a] US - International");
     ptft->println("[u] US");
 }
 
@@ -62,8 +63,16 @@ void Layout_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
+    else if (key == 'a')
+    {
+        // us
+        app["config"]["keyboard_layout"] = "INT";
+        config_save();
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
+    }
+
     //
     // go back to home menu
     app["menu"]["state"] = MENU_HOME;
 }
-

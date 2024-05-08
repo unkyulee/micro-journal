@@ -428,7 +428,7 @@ void WordProcessor::keyboard(char key)
     if (text_pos >= TEXT_BUFFER_SIZE)
     {
         app_log("Text buffer full\n");
-        
+
         // when the buffer is about to finish try to save
         saveText();
         loadText();
@@ -619,7 +619,7 @@ String WordProcessor::convertExtendedAsciiToString(u_int8_t ascii)
     case 194:
         return "Â";
     case 195:
-        return "Â";
+        return "Ã";
     case 196:
         return "Ä";
     case 197:
@@ -646,24 +646,66 @@ String WordProcessor::convertExtendedAsciiToString(u_int8_t ascii)
         return "Ï";
     case 208:
         return "Ð";
+    case 209:
+        return "Ñ";
+    case 210:
+        return "Ò";
+    case 212:
+        return "Ô";
+    case 213:
+        return "Õ";
+    case 214:
+        return "Ö";
     case 217:
         return "Ù";
+    case 219:
+        return "Û";
+    case 220:
+        return "Ü";
     case 223:
         return "ß";
     case 224:
         return "à";
+    case 227:
+        return "ã";
+    case 226:
+        return "â";
+    case 228:
+        return "ä";
     case 231:
         return "ç";
     case 232:
         return "è";
     case 233:
         return "é";
+     case 234:
+        return "ê";
+    case 235:
+        return "ë";
     case 236:
         return "ì";
+    case 238:
+        return "î";
+    case 239:
+        return "ï";
+    case 241:
+        return "ñ";
     case 242:
         return "ò";
+     case 244:
+        return "ô";
+    case 245:
+        return "õ";
+    case 246:
+        return "ö";
     case 249:
         return "ù";
+    case 252:
+        return "ü";
+    case 251:
+        return "û";
+    case 255:
+        return "ÿ";
     }
 
     return "";

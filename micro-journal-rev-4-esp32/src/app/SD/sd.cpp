@@ -21,7 +21,7 @@ void SD_setup()
     if (!SPIFFS.begin())
     {
         //
-        Serial.println("SPIFFS mount failed!");
+        app_log("SPIFFS mount failed!\n");
 
         //
         app["error"] = "ESP32 NOT FORMATTED";
@@ -53,8 +53,7 @@ void SD_setup()
     if (cardType == CARD_NONE)
     {
         //
-        Serial.println("No SD card attached");
-
+        app_log("No SD card attached\n");
         //
         app["error"] = " SD CARD NOT DETECTED ";
         app["screen"] = ERRORSCREEN;
@@ -63,7 +62,7 @@ void SD_setup()
     }
 
     //
-    Serial.println("SD Card detected");
+    app_log("SD Card detected\n");
 
     // check firmware update
     SD_firwamre_update();
