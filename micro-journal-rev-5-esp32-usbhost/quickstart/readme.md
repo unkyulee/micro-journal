@@ -20,7 +20,7 @@ writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18
 
 Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
 
-In case, you don't have the battery yet. You can plug in a usb cable to the charging port. The device should be able to turn on with it. 
+In case, you don't have the battery yet. You can plug in a usb cable to the charging port. The device should be able to turn on with it.
 
 # SD card
 
@@ -48,7 +48,7 @@ When installed the battery with the wrong polarity, it can cause a fire.
 
 # Step 2. Prepare SD card
 
-SD card needs to be formatted before inserted into the writerDeck. Connect the SD card to your computer, and initiate formatting process. 
+SD card needs to be formatted before inserted into the writerDeck. Connect the SD card to your computer, and initiate formatting process.
 
 ![format](./images/format.png)
 
@@ -96,7 +96,7 @@ Choose the deployment type as "Web app"
 
 ![drive](./images/drive_006.png)
 
-Configure as the following. Execute as "Me". This will allow the script to access to your drive. 
+Configure as the following. Execute as "Me". This will allow the script to access to your drive.
 
 ![drive](./images/drive_007.png)
 
@@ -141,7 +141,6 @@ If config.json file doesn't exists. Then create one yourself and paste the copie
     ]
   }
 }
-
 ```
 
 Save the sd card. Safely remove the card from the PC and then you place the SD card back to the writerDeck. After that you should have your Google Sync working with the writerDeck.
@@ -169,14 +168,13 @@ To check the current firmware version. You can press "ESC" on the keyboard or "M
 
 ## 1. Check latest release
 
-You can check the latest firmware from the following link. 
+You can check the latest firmware from the following link.
 
 https://github.com/unkyulee/micro-journal/releases
 
-
 ## 2. Download the "firmware.bin"
 
-Download the file from Assets "firmware.bin" 
+Download the file from Assets "firmware.bin"
 
 ## 3. Place "firmware.bin" inside the SD card
 
@@ -184,7 +182,6 @@ Pull out the SD card from the device. \
 Copy "firmware.bin" file inside the SD card. ''
 Restart the device. \
 When you restart the device, it will show white screen for 10 seconds then automatically boot again to the updated firmware.
-
 
 # Changing Animation
 
