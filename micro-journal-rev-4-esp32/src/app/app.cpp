@@ -11,6 +11,7 @@ JsonDocument status;
 // initialize main task setup
 void app_setup()
 {
+    
     // SD must be initialized before display
     SD_setup();
 

@@ -176,6 +176,25 @@ void _wifi_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     JsonDocument &app = app_status();
 
+    // initialize the config
+    if (!app.containsKey("config"))
+    {
+        JsonObject config = app["config"].to<JsonObject>(); 
+        app["config"] = config;
+    }
+
+    if (!app["config"].containsKey("network"))
+    {
+        JsonObject network = app["config"]["network"].to<JsonObject>();
+        app["config"]["network"] = network;
+    }
+
+    if (!app["config"]["network"].containsKey("access_points"))
+    {
+        JsonArray access_points = app["config"]["network"]["access_points"].to<JsonArray>();
+        app["config"]["network"]["access_points"] = access_points;
+    }
+
     // Load saved WiFi connection information from the app["config"]["access_points"] array
     JsonArray savedAccessPoints = app["config"]["network"]["access_points"].as<JsonArray>();
 

@@ -26,12 +26,6 @@ void WordProcessor::setup()
     //
     // Check SD card status
     JsonDocument &app = app_status();
-    if (app["SD"].as<bool>() == false)
-    {
-        app_log("SD card is not ready. Not initializing WordProcessor\n");
-        app["screen"] = ERRORSCREEN;
-        return;
-    }
 
     // Check if the file exists, create if not
     if (!SD.exists(FILENAME))
@@ -39,7 +33,9 @@ void WordProcessor::setup()
         File file = SD.open(FILENAME, FILE_WRITE);
         if (!file)
         {
+            //
             Serial.println("Failed to create file");
+
             return;
         }
         file.close();

@@ -1,9 +1,9 @@
 #include "ErrorScreen.h"
 #include "app/app.h"
 
-
 //
-void ErrorScreen_setup(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f) {
+void ErrorScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
     ptft->fillScreen(TFT_BLACK);
 }
 
@@ -11,7 +11,8 @@ void ErrorScreen_setup(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f) {
 void ErrorScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     // Text to be displayed
-    const char *text = " SD CARD MISSING ";
+    JsonDocument &app = app_status();
+    String text = app["error"].as<String>();
 
     ///
     ptft->setCursor(0, 0, 2);
@@ -19,7 +20,7 @@ void ErrorScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextColor(TFT_WHITE, TFT_RED);
 
     // Calculate text dimensions
-    uint16_t textWidth = ptft->textWidth(text);
+    uint16_t textWidth = ptft->textWidth(text.c_str());
     uint16_t textHeight = ptft->fontHeight();
 
     // Calculate the position to draw text in the middle of the screen

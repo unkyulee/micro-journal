@@ -34,7 +34,8 @@ void display_setup()
   JsonDocument &app = app_status();
 
   // check SD card status
-  if (app["SD"].as<bool>() != true)
+  
+  if (app.containsKey("error"))
   {
     app["screen"] = ERRORSCREEN;
   }

@@ -19,11 +19,13 @@
 #define SYNC_COMPLETED 2
 int sync_state = 0;
 int sync_state_prev = -1;
+String sync_error = "";
 
 //
 void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 bool _connect_wifi(JsonDocument &app, const char *ssid, const char *password);
 void _sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
+void _network_stop();
 
 //
 void Sync_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -34,6 +36,9 @@ void Sync_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // reset sync state
     sync_state = 0;
+
+    //
+    sync_error = "";
 }
 
 //
@@ -54,10 +59,15 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (sync_state == SYNC_ERROR)
     {
         // error
+        //
+        ptft->setTextColor(TFT_WHITE, TFT_RED);
+        ptft->println(sync_error);
+        ptft->setTextColor(TFT_WHITE, TFT_BLACK);
     }
     else if (sync_state == SYNC_START)
     {
         // start network
+        sync_error = "";
         _sync_start(ptft, pu8f);
     }
     else if (sync_state == SYNC_SEND)
@@ -67,8 +77,7 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     else if (sync_state == SYNC_COMPLETED)
     {
         // close WIFI
-        WiFi.disconnect();
-        WiFi.mode(WIFI_OFF);
+        _network_stop();
 
         //
         ptft->println(" - SYNC Completed");
@@ -91,15 +100,14 @@ void Sync_keyboard(char key)
     if (key == '\b' || key == 'b' || key == 'B')
     {
         // stop network
-        app["network"]["enabled"] = false;
-        app["screen"] = WORDPROCESSOR;
+        _network_stop();
 
         //
         sync_state = -1;
     }
 
     //
-    app["menu"]["statue"] = MENU_HOME;
+    app["menu"]["state"] = MENU_HOME;
 }
 
 // start WIFI
@@ -175,7 +183,10 @@ void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     //
-    ptft->println(" - WIFI failed to connect");
+    _network_stop();
+
+    //
+    sync_error = "NOT ABLE TO CONNECT TO WIFI";
     sync_state = -1;
     //
 }
@@ -212,6 +223,12 @@ bool _connect_wifi(JsonDocument &app, const char *ssid, const char *password)
         // You may add additional handling here if needed
         return false; // Failed to connect
     }
+}
+
+void _network_stop()
+{
+    WiFi.disconnect();
+    WiFi.mode(WIFI_OFF);
 }
 
 #define BASE64FILE "/base64.txt"
@@ -290,15 +307,19 @@ void _sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         // Close file
         file.close();
+
+        //
+        sync_state = SYNC_COMPLETED;
+        Menu_clear();
     }
     else
     {
-        ptft->setTextColor(TFT_WHITE, TFT_RED);
-        ptft->println(" - Sync URL not found");
-        ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    }
+        // close WIFI
+        _network_stop();
 
-    //
-    sync_state = SYNC_COMPLETED;
-    Menu_clear();
+        //
+        sync_error = "SYNC URL NOT FOUND";
+        sync_state = SYNC_ERROR;
+        Menu_clear();
+    }
 }

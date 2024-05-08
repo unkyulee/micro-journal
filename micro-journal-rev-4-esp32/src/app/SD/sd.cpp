@@ -1,5 +1,7 @@
 #include "sd.h"
 #include "app/app.h"
+#include "service/display/display.h"
+
 //
 #include <SPI.h>
 #include <FS.h>
@@ -7,25 +9,42 @@
 #include <SPIFFS.h>
 #include <Update.h> // Required for firmware update
 
+#define FORMAT_SPIFFS_IF_FAILED true
+
 //
 void SD_setup()
 {
+    //
+    JsonDocument &app = app_status();
+
     // Mount SPIFFS
     if (!SPIFFS.begin())
     {
+        //
         Serial.println("SPIFFS mount failed!");
+
+        //
+        app["error"] = "ESP32 NOT FORMATTED";
+        app["screen"] = ERRORSCREEN;
+
         return;
     }
     else
     {
-        Serial.println("SPIFFS mount succeeded!");
+        app_log("SPIFFS mount succeeded!\n");
     }
 
     // initialize SD card
     app_log("SD Device CS: %d\n", SD_CS);
     if (!SD.begin(SD_CS))
     {
-        Serial.println("Card Mount Failed");
+        //
+        app_log("Card Mount Failed\n");
+
+        //
+        app["error"] = " SD CARD MISSING ";
+        app["screen"] = ERRORSCREEN;
+
         return;
     }
     app_log("SD Device Initialized\n");
@@ -33,17 +52,21 @@ void SD_setup()
 
     if (cardType == CARD_NONE)
     {
+        //
         Serial.println("No SD card attached");
+
+        //
+        app["error"] = " SD CARD NOT DETECTED ";
+        app["screen"] = ERRORSCREEN;
+
         return;
     }
+
+    //
     Serial.println("SD Card detected");
 
     // check firmware update
     SD_firwamre_update();
-
-    // mark the status that SD card is ready
-    JsonDocument &app = app_status();
-    app["SD"] = true;
 }
 
 ///
@@ -51,6 +74,9 @@ void SD_loop() {}
 
 void SD_firwamre_update()
 {
+    //
+    JsonDocument &app = app_status();
+
     // Check if there are firmware.bin in the SD card
     if (SD.exists("/firmware.bin"))
     {
@@ -61,10 +87,17 @@ void SD_firwamre_update()
         File firmwareFile = SD.open("/firmware.bin");
         if (!firmwareFile)
         {
+            //
             Serial.println("Error opening firmware file!");
+
+            //
+            app["error"] = "ERROR FIRMWARE.BIN";
+            app["screen"] = ERRORSCREEN;
+
             return;
         }
 
+        // delay before next file operations
         delay(100);
 
         // Perform firmware update
@@ -85,18 +118,30 @@ void SD_firwamre_update()
                 {
                     Update.printError(Serial);
                     Serial.println("Error ending update!");
+
+                    //
+                    app["error"] = "UPDATE FAILED AT THE END";
+                    app["screen"] = ERRORSCREEN;
                 }
             }
             else
             {
                 Update.printError(Serial);
                 Serial.println("Error writing firmware!");
+
+                //
+                app["error"] = "UPDATE FAILED TO APPLY";
+                app["screen"] = ERRORSCREEN;
             }
         }
         else
         {
             Update.printError(Serial);
             Serial.println("Error beginning update!");
+
+            //
+            app["error"] = "UPDATE FAILED TO BEGIN";
+            app["screen"] = ERRORSCREEN;
         }
 
         // Close firmware file

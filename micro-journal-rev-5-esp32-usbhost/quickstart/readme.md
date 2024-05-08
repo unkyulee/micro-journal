@@ -127,21 +127,19 @@ If config.json file doesn't exists. Then create one yourself and paste the copie
 
 (If possible, also setup the WiFi at this point)
 
-```javascript
+```json
 {
   "sync": {
-    "url": "!!!COPY YOUR WEB APP SCRIPT URL HERE!!!!!"
+    "url": "!!!COPY YOUR WEB APP URL HERE!!!!!"
   },
   "network": {
-    "type": "wifi",
     "access_points": [
       {
-        "ssid": "WIFI ACCESS POINT NAME",
-        "password": "WIFI KEY"
+        "ssid": "test",
+        "password": "helloworld"
       }
     ]
   }
-
 }
 
 ```

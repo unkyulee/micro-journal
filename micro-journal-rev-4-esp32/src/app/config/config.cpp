@@ -1,6 +1,7 @@
 #include "config.h"
 #include "../app.h"
 #include "app/SD/sd.h"
+#include "service/display/display.h"
 
 #include <SD.h>
 
@@ -60,6 +61,11 @@ void config_load()
         {
             //
             app_log("config.json deserializeJson() failed: %s\n", error.c_str());
+
+            //
+            app["error"] = "Wrong format config.json";
+            app["screen"] = ERRORSCREEN;
+
             return;
         }
 
