@@ -219,3 +219,11 @@ Each file should not exceed 1 MB
 Use the following web site to create your own animation files.
 
 https://ezgif.com/
+
+
+- Example
+
+![wakeup](../gif/wakeup_balls.gif)
+
+![wakeup](../gif/wakeup_system.gif)
+
