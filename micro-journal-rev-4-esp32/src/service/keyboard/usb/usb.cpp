@@ -55,6 +55,7 @@
 #include "locale/ca-bi.h"
 #include "locale/it.h"
 #include "locale/us.h"
+#include "locale/ge.h"
 
 class MyEspUsbHost : public EspUsbHost
 {
@@ -65,6 +66,7 @@ class MyEspUsbHost : public EspUsbHost
     static uint8_t const keyboard_conv_table_us[128][2] = {HID_KEYCODE_TO_ASCII_US};
     static uint8_t const keyboard_conv_table_it[128][3] = {HID_KEYCODE_TO_ASCII_IT};
     static uint8_t const keyboard_conv_table_ca_bi[128][5] = {HID_KEYCODE_TO_ASCII_CA_BI};
+    static uint8_t const keyboard_conv_table_ge[128][3] = {HID_KEYCODE_TO_ASCII_GE};
 
     //
     static uint8_t pre_cursor_ascii = 0;
@@ -101,6 +103,20 @@ class MyEspUsbHost : public EspUsbHost
     }
 
     //
+    // HID_LOCAL_German
+    //
+    else if (hidLocal == HID_LOCAL_German)
+    {
+      //Serial.println(keycode, HEX);
+
+      if (altgr > 0)
+        shift = 2;
+
+      // German
+      return keyboard_conv_table_ge[keycode][shift];
+    }
+
+    //
     // International
     //
     else if (hidLocal == HID_LOCAL_International)
@@ -117,7 +133,7 @@ class MyEspUsbHost : public EspUsbHost
         {
           //
           onKeyboardKey(pre_cursor_ascii, 0, 0);
-          
+
           // then clear the precursor and send out the key stroke
           pre_cursor_ascii = 0;
         }
@@ -218,6 +234,10 @@ void keyboard_layout(String layout)
   else if (layout == "IT")
   {
     usbHost.setHIDLocal(HID_LOCAL_Italian);
+  }
+  else if (layout == "GE")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_German);
   }
   else if (layout == "CA")
   {

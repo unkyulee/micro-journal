@@ -233,6 +233,8 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "ª";
     case 176:
         return "°";
+    case 181:
+        return "µ";
     case 191:
         return "¿";
     case 192:

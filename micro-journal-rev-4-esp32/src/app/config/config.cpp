@@ -5,6 +5,24 @@
 
 #include <SD.h>
 
+void _set_default_config()
+{
+    app_log("Creating default config.json template\n");
+
+    //
+    JsonDocument &app = app_status();
+
+    // create a default config
+    app["config"]["sync"]["url"] = "";
+    
+    JsonArray access_points = app["config"]["network"]["access_points"].to<JsonArray>();
+    access_points[0]["ssid"] = "";
+    access_points[0]["password"] = "";
+
+    //
+    config_save();
+}
+
 //
 void config_setup()
 {
@@ -46,7 +64,10 @@ void config_load()
         // check if configString is empty
         if (configString.isEmpty())
         {
-            // assign empty object
+            delay(100);
+            _set_default_config();
+
+            // to avoid deserialization failure whem empty
             configString = "{}";
         }
 
@@ -80,6 +101,9 @@ void config_load()
     {
         // file doesn't exist
         app_log("config.json file doens't exist\n");
+        delay(100);
+        _set_default_config();
+        
         return;
     }
 }

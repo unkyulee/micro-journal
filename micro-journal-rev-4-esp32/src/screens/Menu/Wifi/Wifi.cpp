@@ -76,9 +76,6 @@ void Wifi_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     {
         _wifi_edit(ptft, pu8f);
     }
-
-    ptft->println();
-    ptft->println(" [B] BACK ");
 }
 
 //
@@ -179,7 +176,7 @@ void _wifi_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // initialize the config
     if (!app.containsKey("config"))
     {
-        JsonObject config = app["config"].to<JsonObject>(); 
+        JsonObject config = app["config"].to<JsonObject>();
         app["config"] = config;
     }
 
@@ -212,6 +209,9 @@ void _wifi_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             ptft->printf(" [%d]\n", i + 1);
         }
     }
+
+    ptft->println();
+    ptft->println(" [B] BACK ");
 }
 
 void _wifi_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
