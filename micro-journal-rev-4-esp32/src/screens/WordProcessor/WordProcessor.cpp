@@ -3,6 +3,7 @@
 #include "app/SD/sd.h"
 #include "service/display/display.h"
 #include "service/keyboard/keyboard.h"
+#include "service/keyboard/ascii/ascii.h"
 
 #include <FS.h>
 #include <SD.h>
@@ -210,7 +211,7 @@ void WordProcessor::render()
                 }
                 else
                 {
-                    line += convertExtendedAsciiToString(value);
+                    line += ascii_convert_unicode(value);
                 }
             }
 
@@ -579,134 +580,4 @@ String WordProcessor::formatNumberWithCommas(long num)
     } while (num > 0);
 
     return formattedNumber;
-}
-
-// https://www.ascii-code.com/
-String WordProcessor::convertExtendedAsciiToString(u_int8_t ascii)
-{
-    switch (ascii)
-    {
-    case 128:
-        return "€";
-    case 140:
-        return "Œ";
-    case 145:
-        return "‘";
-    case 146:
-        return "’";
-    case 147:
-        return "“";
-    case 148:
-        return "”";
-    case 162:
-        return "¢";
-    case 163:
-        return "£";
-    case 167:
-        return "§";
-    case 169:
-        return "©";
-    case 170:
-        return "ª";
-    case 176:
-        return "°";
-    case 191:
-        return "¿";
-    case 192:
-        return "À";
-    case 193:
-        return "Á";
-    case 194:
-        return "Â";
-    case 195:
-        return "Ã";
-    case 196:
-        return "Ä";
-    case 197:
-        return "Å";
-    case 198:
-        return "Æ";
-    case 199:
-        return "Ç";
-    case 200:
-        return "È";
-    case 201:
-        return "É";
-    case 202:
-        return "Ê";
-    case 203:
-        return "Ë";
-    case 204:
-        return "Ì";
-    case 205:
-        return "Í";
-    case 206:
-        return "Î";
-    case 207:
-        return "Ï";
-    case 208:
-        return "Ð";
-    case 209:
-        return "Ñ";
-    case 210:
-        return "Ò";
-    case 212:
-        return "Ô";
-    case 213:
-        return "Õ";
-    case 214:
-        return "Ö";
-    case 217:
-        return "Ù";
-    case 219:
-        return "Û";
-    case 220:
-        return "Ü";
-    case 223:
-        return "ß";
-    case 224:
-        return "à";
-    case 227:
-        return "ã";
-    case 226:
-        return "â";
-    case 228:
-        return "ä";
-    case 231:
-        return "ç";
-    case 232:
-        return "è";
-    case 233:
-        return "é";
-     case 234:
-        return "ê";
-    case 235:
-        return "ë";
-    case 236:
-        return "ì";
-    case 238:
-        return "î";
-    case 239:
-        return "ï";
-    case 241:
-        return "ñ";
-    case 242:
-        return "ò";
-     case 244:
-        return "ô";
-    case 245:
-        return "õ";
-    case 246:
-        return "ö";
-    case 249:
-        return "ù";
-    case 252:
-        return "ü";
-    case 251:
-        return "û";
-    case 255:
-        return "ÿ";
-    }
-
-    return "";
 }

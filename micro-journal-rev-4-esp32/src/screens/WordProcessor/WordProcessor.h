@@ -65,7 +65,6 @@ private:
 
     //
     String formatNumberWithCommas(long num);
-    String convertExtendedAsciiToString(u_int8_t ascii);
 };
 
 #endif

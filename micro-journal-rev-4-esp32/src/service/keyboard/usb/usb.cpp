@@ -2,6 +2,7 @@
 #include "app/app.h"
 #include "app/config/config.h"
 #include "service/display/display.h"
+#include "service/keyboard/ascii/ascii.h"
 
 //
 #include "screens/WordProcessor/WordProcessor.h"
@@ -108,15 +109,15 @@ class MyEspUsbHost : public EspUsbHost
       uint8_t ascii = keyboard_conv_table_us[keycode][shift];
 
       //
-
       // when precursor keys are typed
-      if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == '^')
+      if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == '\'' || ascii == '^')
       {
         // check if previous precursor is set
         if (pre_cursor_ascii != 0)
         {
           //
           onKeyboardKey(pre_cursor_ascii, 0, 0);
+          
           // then clear the precursor and send out the key stroke
           pre_cursor_ascii = 0;
         }
@@ -130,168 +131,25 @@ class MyEspUsbHost : public EspUsbHost
       }
 
       // when precursor exists
-      if (pre_cursor_ascii != 0)
+      if (pre_cursor_ascii != 0 && ascii != 0)
       {
-        // ~  a n o
-        uint8_t found = 0;
-        if (pre_cursor_ascii == '~' && ascii == 'a')
-        {
-          found = 227; // ã
-        }
-        else if (pre_cursor_ascii == '~' && ascii == 'A')
-        {
-          found = 195; // Ã
-        }
-        else if (pre_cursor_ascii == '~' && ascii == 'n')
-        {
-          found = 241; // ñ
-        }
-        else if (pre_cursor_ascii == '~' && ascii == 'N')
-        {
-          found = 209; // Ñ
-        }
-        else if (pre_cursor_ascii == '~' && ascii == 'o')
-        {
-          found = 245; // õ
-        }
-        else if (pre_cursor_ascii == '~' && ascii == 'O')
-        {
-          found = 213; // Õ
-        }
+        uint8_t found = ascii_international(pre_cursor_ascii, ascii);
 
-        // ` a e i o u
-        else if (pre_cursor_ascii == '`' && ascii == 'a')
+        // type latin character
+        if (found > 0)
         {
-          found = 224; // à
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'A')
-        {
-          found = 192; // À
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'e')
-        {
-          found = 232; // è
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'E')
-        {
-          found = 200; // È
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'i')
-        {
-          found = 236; // ì
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'I')
-        {
-          found = 204; // Ì
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'o')
-        {
-          found = 242; // ò
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'O')
-        {
-          found = 210; // Ò
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'u')
-        {
-          found = 249; // ù
-        }
-        else if (pre_cursor_ascii == '`' && ascii == 'U')
-        {
-          found = 217; // Ù
-        }
+          // reset precursor
+          pre_cursor_ascii = 0;
 
-        // " a e i o u y
-        else if (pre_cursor_ascii == '\"' && ascii == 'a')
-        {
-          found = 228; // ä
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'A')
-        {
-          found = 196; // Ä
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'e')
-        {
-          found = 235; // ë
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'E')
-        {
-          found = 203; // Ë
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'i')
-        {
-          found = 239; // ï
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'I')
-        {
-          found = 207; // Ï
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'o')
-        {
-          found = 246; // ö
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'O')
-        {
-          found = 214; // Ö
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'u')
-        {
-          found = 252; // ü
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'U')
-        {
-          found = 220; // Ü
-        }
-        else if (pre_cursor_ascii == '\"' && ascii == 'y')
-        {
-          found = 255; // ÿ
-        }
+          // á
+          onKeyboardKey(found, 0, 0);
 
-        // ^ a e i o u
-        else if (pre_cursor_ascii == '^' && ascii == 'a')
-        {
-          found = 226; // â
+          //
+          return 0;
         }
-        else if (pre_cursor_ascii == '^' && ascii == 'A')
-        {
-          found = 194; // Â
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'e')
-        {
-          found = 234; // ê
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'E')
-        {
-          found = 202; // Ê
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'i')
-        {
-          found = 238; // î
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'I')
-        {
-          found = 206; // Î
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'o')
-        {
-          found = 244; // ô
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'O')
-        {
-          found = 212; // Ô
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'u')
-        {
-          found = 251; // û
-        }
-        else if (pre_cursor_ascii == '^' && ascii == 'U')
-        {
-          found = 219; // Û
-        }
-
-        //
         else
         {
+          //
           // precursor invalid just send out the key press
           //
           onKeyboardKey(pre_cursor_ascii, 0, 0);
@@ -302,19 +160,6 @@ class MyEspUsbHost : public EspUsbHost
           // if space is pressed then don't print
           if (ascii == ' ')
             return 0;
-        }
-
-        // type latin character
-        if (found > 0)
-        {
-          // reset precursor
-          pre_cursor_ascii = 0;
-
-          //
-          onKeyboardKey(found, 0, 0);
-
-          //
-          return 0;
         }
       }
 
