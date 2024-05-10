@@ -173,10 +173,9 @@ void Menu_keyboard(char key)
     */
 
     // Bluetooth Config
-    // Drive
     else if (menu_state == MENU_BLUETOOTH)
     {
-        Drive_keyboard(key);
+        BluetoothConfig_keyboard(key);
         return;
     }
 }

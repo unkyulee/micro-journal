@@ -26,10 +26,6 @@ void _set_default_config()
 //
 void config_setup()
 {
-    app_log("\n");
-    app_log("Config Setup\n");
-    app_log("----------------------\n");
-
     // load config
     config_load();
 

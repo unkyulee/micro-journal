@@ -258,7 +258,7 @@ void keyboard_usb_setup()
   JsonDocument &app = app_status();
 
   //
-  app_log("Init Keyboard\n");
+  app_log("Init USB Keyboard\n");
 
   // usb host setup
   usbHost.begin();

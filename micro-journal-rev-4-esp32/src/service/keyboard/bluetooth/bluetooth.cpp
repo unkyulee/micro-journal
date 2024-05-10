@@ -10,7 +10,16 @@
 #include "screens/Menu/Menu.h"
 #include "screens/WakeUp/WakeUp.h"
 
+void keyboard_bluetooth_setup()
+{
+    //
+    JsonDocument &app = app_status();
+    bool enabled = app["config"]["bluetooth_enabled"].as<bool>();
 
-void bluetooth_setup();
-void bluetooth_loop();
-void bluetooth_key(char key);
+    if (enabled)
+    {
+        app_log("Init Bluetooth Keyboard\n");
+    }
+}
+
+void keyboard_bluetooth_loop() {}

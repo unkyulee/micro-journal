@@ -16,20 +16,23 @@
 
 void keyboard_setup()
 {
-
     // usb keyboard setup
     keyboard_usb_setup();
+
+    // bluetooth keyboard setup
+    keyboard_bluetooth_setup();
 }
 
 void keyboard_loop()
 {
-
     // usb keyboard loop
     keyboard_usb_loop();
+
+    // bluetooth keyboard setup
+    keyboard_bluetooth_loop();
 }
 void keyboard_key(char key)
 {
-
     //
     // depending on the screen
     // send the keystrokes
