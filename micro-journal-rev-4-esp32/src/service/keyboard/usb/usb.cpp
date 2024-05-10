@@ -1,14 +1,10 @@
 #include "usb.h"
 #include "app/app.h"
 #include "app/config/config.h"
+#include "service/keyboard/keyboard.h"
 #include "service/display/display.h"
 #include "service/keyboard/ascii/ascii.h"
 
-//
-#include "screens/WordProcessor/WordProcessor.h"
-#include "screens/ErrorScreen/ErrorScreen.h"
-#include "screens/Menu/Menu.h"
-#include "screens/WakeUp/WakeUp.h"
 
 //
 #include <EspUsbHost.h>
@@ -107,7 +103,7 @@ class MyEspUsbHost : public EspUsbHost
     //
     else if (hidLocal == HID_LOCAL_German)
     {
-      //Serial.println(keycode, HEX);
+      // Serial.println(keycode, HEX);
 
       if (altgr > 0)
         shift = 2;
@@ -256,36 +252,28 @@ void keyboard_layout(String layout)
   keyboard_layout_prev = layout;
 }
 
-void keyboard_setup()
+void keyboard_usb_setup()
 {
+  //
   JsonDocument &app = app_status();
-  if (app["config"]["drive"].as<bool>())
-  {
-    //
-    mass_drive_mode = true;
-    app_log("Loaded as mass drive. USB Host disabled.\n");
-  }
 
-  else
-  {
-    //
-    app_log("Init Keyboard\n");
+  //
+  app_log("Init Keyboard\n");
 
-    // usb host setup
-    usbHost.begin();
+  // usb host setup
+  usbHost.begin();
 
-    // update the locale depending on your keyboard layout
-    //
-    String layout = app["config"]["keyboard_layout"].as<String>();
-    if (layout == "null" || layout.isEmpty())
-      layout = "US"; // defaults to US layout
+  // update the locale depending on your keyboard layout
+  //
+  String layout = app["config"]["keyboard_layout"].as<String>();
+  if (layout == "null" || layout.isEmpty())
+    layout = "US"; // defaults to US layout
 
-    keyboard_layout(layout);
-  }
+  keyboard_layout(layout);
 }
 
 ///
-void keyboard_loop()
+void keyboard_usb_loop()
 {
   // when booted as mass storage then skip usb host
   if (mass_drive_mode)
@@ -311,29 +299,3 @@ void keyboard_loop()
   }
 }
 
-void keyboard_key(char key)
-{
-  //
-  // depending on the screen
-  // send the keystrokes
-  JsonDocument &app = app_status();
-  int screen = app["screen"].as<int>();
-
-  if (screen == WORDPROCESSOR)
-  {
-    // send the key stroke to word processor
-    WordProcessor::getInstance(nullptr, nullptr).keyboard(key);
-  }
-  else if (screen == MENUSCREEN)
-  {
-    Menu_keyboard(key);
-  }
-  else if (screen == ERRORSCREEN)
-  {
-    ErrorScreen_keyboard(key);
-  }
-  else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
-  {
-    WakeUp_keyboard(key);
-  }
-}

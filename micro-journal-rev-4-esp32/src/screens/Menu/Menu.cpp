@@ -11,6 +11,7 @@
 #include "Layout/Layout.h"
 #include "Drive/Drive.h"
 #include "Wifi/Wifi.h"
+#include "BlueToothConfig/BluetoothConfig.h"
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -96,12 +97,21 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Wifi_render(ptft, pu8f);
     }
+    /*
     else if (menu_state == MENU_DRIVE)
     {
         if (menu_state_prev != menu_state)
             Drive_setup(ptft, pu8f);
 
         Drive_render(ptft, pu8f);
+    }
+    */
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        if (menu_state_prev != menu_state)
+            BluetoothConfig_setup(ptft, pu8f);
+
+        BluetoothConfig_render(ptft, pu8f);
     }
 
     // save prev state
@@ -152,9 +162,19 @@ void Menu_keyboard(char key)
         Wifi_keyboard(key);
         return;
     }
-
+    
+    /*
     // Drive
     else if (menu_state == MENU_DRIVE)
+    {
+        Drive_keyboard(key);
+        return;
+    }
+    */
+
+    // Bluetooth Config
+    // Drive
+    else if (menu_state == MENU_BLUETOOTH)
     {
         Drive_keyboard(key);
         return;

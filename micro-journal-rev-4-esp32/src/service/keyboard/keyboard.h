@@ -1,10 +1,15 @@
 #ifndef Keyboard_h
 #define Keyboard_h
 
-#ifdef KEYPAD
-#include "keypad/keypad.h"
-#else
-#include "usb/usb.h"
-#endif
+#define FN 28
+#define SHIFT 0x02
+
+// special key
+#define EMPTY 0x0
+#define MENU 0x6
+
+void keyboard_setup();
+void keyboard_loop();
+void keyboard_key(char key);
 
 #endif

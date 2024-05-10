@@ -40,6 +40,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [D] START NEW ");
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
     ptft->println(" [W] WIFI");
+    ptft->println(" [T] Bluetooth Keyboard");
     //ptft->println(" [U] USB DRIVE");
     ptft->println();
     ptft->println(" [B] BACK ");
@@ -91,5 +92,11 @@ void Home_keyboard(char key)
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_DRIVE;
+    }
+
+    else if (key == 't')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_BLUETOOTH;
     }
 }
