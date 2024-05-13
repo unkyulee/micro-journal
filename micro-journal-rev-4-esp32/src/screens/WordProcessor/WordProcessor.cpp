@@ -7,6 +7,7 @@
 
 #include <FS.h>
 #include <SD.h>
+#include <algorithm>
 
 // Initialize static instance
 WordProcessor *WordProcessor::instance = nullptr;
@@ -70,6 +71,7 @@ void WordProcessor::render()
 
     line_position[0] = &text_buffer[0];
     line_length[0] = MAX_ROW_CHARACTERS;
+
     for (int i = 0; i < TEXT_BUFFER_SIZE; i++)
     {
         // when reaching end of text
@@ -82,6 +84,9 @@ void WordProcessor::render()
             //
             line_position[total_line + 1] = nullptr;
             line_length[total_line + 1] = 0;
+
+            // debug message
+            // app_log("%d %d %d\n", total_line, line_length[total_line]);
 
             //
             break;
@@ -160,6 +165,15 @@ void WordProcessor::render()
     ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
     ptft->setTextSize(1);
     ptft->printf("%s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
+    /*
+    ptft->printf("%s, %d, %d, %d, %d, %d",
+                 formatNumberWithCommas(fileSize + text_pos - text_last_save_pos),
+                 text_pos,
+                 text_last_save_pos,
+                 total_line,
+                 start_line,
+                 line_length[total_line - 1]);
+    */
     if (text_pos == text_last_save_pos)
     {
         ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
@@ -247,13 +261,9 @@ void WordProcessor::loadText()
             app["screen"] = ERRORSCREEN;
             file.close();
             return;
-        }
-        text_last_save_pos = TEXT_BUFFER_SIZE / 2;
+        }        
     }
-    else
-    {
-        text_last_save_pos = fileSize;
-    }
+
 
     // Read file content into text buffer
     int pos = 0;
@@ -265,9 +275,10 @@ void WordProcessor::loadText()
     }
     text_pos = pos;
     text_pos_prev = pos;
+    text_last_save_pos = pos;
     start_line_prev = 0;
 
-    app_log("File loading completed: text_pos: %d, fileSize: %d\n", text_pos, fileSize);
+    app_log("File loading completed: text_pos: %d, text_last_save: %d, fileSize: %d\n", text_pos, text_last_save_pos, fileSize);
 
     file.close();
     delay(100);
@@ -387,11 +398,19 @@ void WordProcessor::saveText()
 // Handle keyboard input
 void WordProcessor::keyboard(char key)
 {
+    if (file_ongoing)
+    {
+        app_log("File operation on going. Skipping key press");
+
+        return;
+    }
     // Check if menu key is pressed
     if (key == MENU)
     {
         // Save before transitioning to the menu
+        file_ongoing = true;
         saveText();
+        file_ongoing = false;
 
         //
         JsonDocument &app = app_status();
@@ -410,11 +429,15 @@ void WordProcessor::keyboard(char key)
         else
         {
             // Load previous contents from the file if at the beginning of the buffer
+            app_log("Backspace reached the beginning of the buffer\n");
             clear = true;
             text_pos = 0;
             text_buffer[0] = '\0';
+
+            file_ongoing = true;
             saveText();
             loadText();
+            file_ongoing = false;
         }
     }
     ///
@@ -430,9 +453,12 @@ void WordProcessor::keyboard(char key)
     {
         app_log("Text buffer full\n");
 
-        // when the buffer is about to finish try to save
+        file_ongoing = true;
         saveText();
         loadText();
+        file_ongoing = false;
+
+        // when the buffer is about to finish try to save
         clear = true;
     }
 }
@@ -529,7 +555,10 @@ void WordProcessor::checkSaved()
         last = millis();
         if (text_pos != text_last_save_pos)
         {
+            file_ongoing = true;
             saveText();
+            file_ongoing = false;
+            // clear = true;
         }
     }
 }
