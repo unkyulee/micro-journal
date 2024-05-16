@@ -12,6 +12,7 @@
 #include "Drive/Drive.h"
 #include "Wifi/Wifi.h"
 #include "BlueToothConfig/BluetoothConfig.h"
+#include "FrontPanelButton/FrontPanelButton.h"
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -113,6 +114,13 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         BluetoothConfig_render(ptft, pu8f);
     }
+    else if (menu_state == MENU_BUTTONS)
+    {
+        if (menu_state_prev != menu_state)
+            FrontPanelButton_setup(ptft, pu8f);
+
+        FrontPanelButton_render(ptft, pu8f);
+    }
 
     // save prev state
     menu_state_prev = menu_state;
@@ -176,6 +184,13 @@ void Menu_keyboard(char key)
     else if (menu_state == MENU_BLUETOOTH)
     {
         BluetoothConfig_keyboard(key);
+        return;
+    }
+
+    // FrontPanelButton Config
+    else if (menu_state == MENU_BUTTONS)
+    {
+        FrontPanelButton_keyboard(key);
         return;
     }
 }

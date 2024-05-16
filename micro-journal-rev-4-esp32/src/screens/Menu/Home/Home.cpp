@@ -40,6 +40,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [D] START NEW ");
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
     ptft->println(" [W] WIFI");
+    ptft->println(" [F] DEVICE BUTTON");
     // ptft->println(" [T] Bluetooth Keyboard");
     ptft->println(" [R] REBOOT DEVICE");
     // ptft->println(" [U] USB DRIVE");
@@ -88,6 +89,7 @@ void Home_keyboard(char key)
         // move to keyboard layout
         app["menu"]["state"] = MENU_WIFI;
     }
+
     /*
     else if (key == 'u')
     {
@@ -106,5 +108,11 @@ void Home_keyboard(char key)
     {
         // restart
         ESP.restart();
+    }
+
+    else if (key == 'f')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_BUTTONS;
     }
 }

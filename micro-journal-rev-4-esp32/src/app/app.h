@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 // app version
-#define VERSION "1.0.6"
+#define VERSION "1.0.7"
 
 // debug flag
 //#define DEBUG

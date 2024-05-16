@@ -23,6 +23,10 @@ void button_loop()
         //
         last = millis();
 
+        JsonDocument &app = app_status();
+        bool disabled = app["config"]["front_panel_button_disabled"].as<bool>();
+        if(disabled) return;
+
         // check menu key and back key press
         int menuKey = digitalRead(MENU_PIN);
         int backKey = digitalRead(BACK_PIN);
