@@ -3,26 +3,50 @@
 const _FOLDER_PATH = "/uJournal";
 
 function doPost(e) {
-  //
-  var fileContent = e.postData.contents;
-  fileContent = Utilities.base64Decode(fileContent);
-  fileContent = Utilities.newBlob(fileContent).getDataAsString("ISO-8859-1"); // decode with extended ascii
-  fileContent = Utilities.newBlob(fileContent).getBytes(); // to byte array
-  fileContent = Utilities.newBlob(fileContent).getDataAsString("UTF-8"); // encode to utf-8
+  try {
+    //
+    var fileContent = e.postData.contents;
 
-  //
-  var fileName = getFormattedDate() + "_uJournal.txt";
+    fileContent = Utilities.base64Decode(fileContent);
+    fileContent = Utilities.newBlob(fileContent).getDataAsString("ISO-8859-1"); // decode with extended ascii
+    fileContent = Utilities.newBlob(fileContent).getBytes(); // to byte array
+    fileContent = Utilities.newBlob(fileContent).getDataAsString("UTF-8"); // encode to utf-8
 
-  // Create file in Google Drive
-  var folder = getFolder(_FOLDER_PATH);
-  var file = folder.createFile(fileName, fileContent, "text/plain; charset=utf-8");
+    //
+    var fileName = getFormattedDate() + "_uJournal.txt";
 
-  let jsonResponse = ContentService.createTextOutput(
-    JSON.stringify({ status: "OK" })
-  );
-  jsonResponse.setMimeType(ContentService.MimeType.JSON);
+    // Create file in Google Drive
+    var folder = getFolder(_FOLDER_PATH);
+    var file = folder.createFile(fileName, fileContent, "text/plain; charset=utf-8");
 
-  return jsonResponse;
+    let jsonResponse = ContentService.createTextOutput(
+      JSON.stringify({ status: "OK" })
+    );
+    jsonResponse.setMimeType(ContentService.MimeType.JSON);
+
+    return jsonResponse;
+
+    ///
+  } catch (error) {
+    // If an exception occurs, send an email notification
+    sendErrorEmail(error, e);
+
+    // Return error response
+    let errorResponse = ContentService.createTextOutput(
+      JSON.stringify({ status: "ERROR", message: "An error occurred" })
+    );
+    errorResponse.setMimeType(ContentService.MimeType.JSON);
+
+    return errorResponse;
+  }
+}
+
+function sendErrorEmail(error, e) {
+  var recipient = Session.getEffectiveUser().getEmail(); // Change this to your email address
+  var subject = "Error in Micro Journal Sync Process";
+  var body = error.stack + '\n\n' + JSON.stringify(e);
+
+  MailApp.sendEmail(recipient, subject, body);
 }
 
 function getFormattedDate() {
@@ -32,7 +56,7 @@ function getFormattedDate() {
   var day = padZero(now.getDate());
   var hours = padZero(now.getHours());
   var minutes = padZero(now.getMinutes());
-  return year + "." + month + "." + day + "." + hours + "." + minutes;
+  return year + "." + month + "." + day + "-" + hours + "." + minutes;
 }
 
 function padZero(num) {

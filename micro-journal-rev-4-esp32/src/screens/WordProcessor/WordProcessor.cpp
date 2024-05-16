@@ -237,53 +237,6 @@ void WordProcessor::render()
     blinkCursor();
 }
 
-// Load text from file
-void WordProcessor::loadText()
-{
-    app_log("Reading file: %s ... ", FILENAME);
-    File file = SD.open(FILENAME);
-    if (!file)
-    {
-        app_log("Failed to open file for reading\n");
-        JsonDocument &app = app_status();
-        app["screen"] = ERRORSCREEN;
-        return;
-    }
-
-    // Determine file size and set buffer accordingly
-    fileSize = file.size();
-    if (fileSize > TEXT_BUFFER_SIZE / 2)
-    {
-        if (!file.seek(-TEXT_BUFFER_SIZE / 2, SeekEnd))
-        {
-            app_log("Failed to seek file pointer\n");
-            JsonDocument &app = app_status();
-            app["screen"] = ERRORSCREEN;
-            file.close();
-            return;
-        }        
-    }
-
-
-    // Read file content into text buffer
-    int pos = 0;
-    text_buffer[pos] = '\0';
-    while (file.available())
-    {
-        text_buffer[pos++] = file.read();
-        text_buffer[pos] = '\0';
-    }
-    text_pos = pos;
-    text_pos_prev = pos;
-    text_last_save_pos = pos;
-    start_line_prev = 0;
-
-    app_log("File loading completed: text_pos: %d, text_last_save: %d, fileSize: %d\n", text_pos, text_last_save_pos, fileSize);
-
-    file.close();
-    delay(100);
-}
-
 // Empty the file
 void WordProcessor::emptyFile()
 {
@@ -316,6 +269,52 @@ void WordProcessor::emptyFile()
     delay(250);
 }
 
+// Load text from file
+void WordProcessor::loadText()
+{
+    app_log("Reading file: %s ... ", FILENAME);
+    File file = SD.open(FILENAME);
+    if (!file)
+    {
+        app_log("Failed to open file for reading\n");
+        JsonDocument &app = app_status();
+        app["screen"] = ERRORSCREEN;
+        return;
+    }
+
+    // Determine file size and set buffer accordingly
+    fileSize = file.size();
+    if (fileSize > TEXT_BUFFER_SIZE / 2)
+    {
+        if (!file.seek(-TEXT_BUFFER_SIZE / 2, SeekEnd))
+        {
+            app_log("Failed to seek file pointer\n");
+            JsonDocument &app = app_status();
+            app["screen"] = ERRORSCREEN;
+            file.close();
+            return;
+        }
+    }
+
+    // Read file content into text buffer
+    int pos = 0;
+    text_buffer[pos] = '\0';
+    while (file.available())
+    {
+        text_buffer[pos++] = file.read();
+        text_buffer[pos] = '\0';
+    }
+    text_pos = pos;
+    text_pos_prev = pos;
+    text_last_save_pos = pos;
+    start_line_prev = 0;
+
+    app_log("File loading completed: text_pos: %d, text_last_save: %d, fileSize: %d\n", text_pos, text_last_save_pos, fileSize);
+
+    file.close();
+    delay(100);
+}
+
 // Save text to file
 void WordProcessor::saveText()
 {
@@ -342,8 +341,8 @@ void WordProcessor::saveText()
         }
 
         // Seek to the specified offset
-        size_t offset = fileSize - (TEXT_BUFFER_SIZE - text_last_save_pos);
-        if (fileSize < (TEXT_BUFFER_SIZE - text_last_save_pos))
+        size_t offset = fileSize - (TEXT_BUFFER_SIZE / 2);
+        if (fileSize < (TEXT_BUFFER_SIZE / 2))
             offset = 0;
         app_log("file size: %d file offset: %d text_last_save: %d text_pos: %d\n",
                 fileSize, offset, text_last_save_pos, text_pos);

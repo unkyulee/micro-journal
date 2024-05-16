@@ -258,7 +258,7 @@ void _sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         }
 
         //
-        const int bufferSize = 4000;
+        const int bufferSize = 3000; // base64 encoding is done per 3 bytes
         uint8_t buffer[bufferSize];
         while (inputFile.available())
         {
