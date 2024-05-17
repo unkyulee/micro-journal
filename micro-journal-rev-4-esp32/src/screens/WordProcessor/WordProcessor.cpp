@@ -57,7 +57,7 @@ void WordProcessor::setup()
 // Render text on screen
 void WordProcessor::render()
 {
-    clearBackground();
+    bool cleared = clearBackground();
     clearTrails();
     checkSaved();
     checkSleep();
@@ -154,9 +154,11 @@ void WordProcessor::render()
         start_line_prev = start_line;
     }
 
+    // if the line has changed then clear the previous line
     //
     if (total_line_prev != total_line)
     {
+        // update the flag
         total_line_prev = total_line;
     }
 
@@ -191,7 +193,24 @@ void WordProcessor::render()
     pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
     pu8f->setCursor(0, 24);                // start writing at this position
 
-    for (int i = start_line; i <= total_line; i++)
+    // try to render only two lines at a time
+    // not to redraw the entire screen
+    // because when it reaches the end of the screen the typing speed slows down gradually
+    // provides the feeling that the system is sluggish
+
+    // to prevent this. Just skips the previous lines that are already rendered
+    if (!cleared)
+    {
+        for (int i = start_line + 1; i < total_line - 2; i++)
+        {
+            // print new line
+            pu8f->println("");
+        }
+    }
+
+    int buffer_start_line = max(total_line - 2, start_line);
+    if(cleared) buffer_start_line = start_line;
+    for (int i = buffer_start_line; i <= total_line; i++)
     {
         // print new line
         if (i != start_line)
@@ -211,7 +230,6 @@ void WordProcessor::render()
                 break;
 
             //
-            String line;
             int length = line_length[i];
 
             // render
@@ -221,15 +239,13 @@ void WordProcessor::render()
                 uint8_t value = *(line_position[i] + j);
                 if (value < 128)
                 {
-                    line += (char)value;
+                    pu8f->print((char)value);
                 }
                 else
                 {
-                    line += ascii_convert_unicode(value);
+                    pu8f->print(ascii_convert_unicode(value));
                 }
             }
-
-            pu8f->print(line);
         }
     }
 
@@ -272,7 +288,6 @@ void WordProcessor::emptyFile()
 // Load text from file
 void WordProcessor::loadText()
 {
-    app_log("Reading file: %s ... ", FILENAME);
     File file = SD.open(FILENAME);
     if (!file)
     {
@@ -284,17 +299,18 @@ void WordProcessor::loadText()
 
     // Determine file size and set buffer accordingly
     fileSize = file.size();
-    if (fileSize > TEXT_BUFFER_SIZE / 2)
+
+    // calcualte the file offset
+    int offset = 0;
+    if (fileSize > 0)
+        offset = (fileSize / TEXT_BUFFER_SIZE) * TEXT_BUFFER_SIZE;
+    if (!file.seek(offset))
     {
-        if (!file.seek(-TEXT_BUFFER_SIZE / 2, SeekEnd))
-        {
-            app_log("Failed to seek file pointer\n");
-            JsonDocument &app = app_status();
-            app["screen"] = ERRORSCREEN;
-            file.close();
-            return;
-        }
+        app_log("Failed to seek file pointer\n");
+        file.close();
+        return;
     }
+    app_log("Reading file from: %d\n", offset);
 
     // Read file content into text buffer
     int pos = 0;
@@ -309,7 +325,9 @@ void WordProcessor::loadText()
     text_last_save_pos = pos;
     start_line_prev = 0;
 
-    app_log("File loading completed: text_pos: %d, text_last_save: %d, fileSize: %d\n", text_pos, text_last_save_pos, fileSize);
+    app_log("File loaded: text_pos: %d, fileSize: %d\n",
+            text_pos,
+            fileSize);
 
     file.close();
     delay(100);
@@ -329,8 +347,6 @@ void WordProcessor::saveText()
     if (millis() - last > 1000)
     {
         last = millis();
-
-        app_log("Writing file: %s ...", FILENAME);
         File file = SD.open(FILENAME, FILE_WRITE);
         if (!file)
         {
@@ -341,22 +357,22 @@ void WordProcessor::saveText()
         }
 
         // Seek to the specified offset
-        size_t offset = fileSize - (TEXT_BUFFER_SIZE / 2);
-        if (fileSize < (TEXT_BUFFER_SIZE / 2))
-            offset = 0;
-        app_log("file size: %d file offset: %d text_last_save: %d text_pos: %d\n",
-                fileSize, offset, text_last_save_pos, text_pos);
+        int offset = 0;
+        if (fileSize > 0)
+            offset = (fileSize / TEXT_BUFFER_SIZE) * TEXT_BUFFER_SIZE;
         if (!file.seek(offset))
         {
             app_log("Failed to seek file pointer\n");
             file.close();
             return;
         }
+        app_log("Writing file at: %d\n", offset);
 
+        // writing the file content
         size_t length = file.print(text_buffer);
         if (length >= 0)
         {
-            app_log("File written from %d at length %d\n", offset, length);
+            app_log("File written: %d bytes\n", length);
             //
             text_last_save_pos = text_pos;
         }
@@ -378,7 +394,7 @@ void WordProcessor::saveText()
         file = SD.open(FILENAME, FILE_READ);
         if (!file)
         {
-            app_log("Failed to open file for writing\n");
+            app_log("Failed to open file for reading\n");
             JsonDocument &app = app_status();
             app["screen"] = ERRORSCREEN;
             return;
@@ -389,27 +405,26 @@ void WordProcessor::saveText()
         // save operation takes time before loading is available
         delay(100);
 
-        app_log("after save file size: %d file offset: %d text_last_save: %d text_pos: %d\n",
-                fileSize, offset, text_last_save_pos, text_pos);
+        app_log("File size: %d, text_pos: %d\n", fileSize, text_pos);
     }
 }
 
 // Handle keyboard input
 void WordProcessor::keyboard(char key)
 {
-    if (file_ongoing)
+    if (file_on_going)
     {
-        app_log("File operation on going. Skipping key press");
-
+        app_log("Skip Key Press. File Operation OnGonig.\n");
         return;
     }
+
     // Check if menu key is pressed
     if (key == MENU)
     {
         // Save before transitioning to the menu
-        file_ongoing = true;
+        file_on_going = true;
         saveText();
-        file_ongoing = false;
+        file_on_going = false;
 
         //
         JsonDocument &app = app_status();
@@ -433,10 +448,10 @@ void WordProcessor::keyboard(char key)
             text_pos = 0;
             text_buffer[0] = '\0';
 
-            file_ongoing = true;
+            file_on_going = true;
             saveText();
             loadText();
-            file_ongoing = false;
+            file_on_going = false;
         }
     }
     ///
@@ -452,10 +467,10 @@ void WordProcessor::keyboard(char key)
     {
         app_log("Text buffer full\n");
 
-        file_ongoing = true;
+        file_on_going = true;
         saveText();
         loadText();
-        file_ongoing = false;
+        file_on_going = false;
 
         // when the buffer is about to finish try to save
         clear = true;
@@ -463,7 +478,7 @@ void WordProcessor::keyboard(char key)
 }
 
 // Clear background
-void WordProcessor::clearBackground()
+bool WordProcessor::clearBackground()
 {
     if (clear)
     {
@@ -477,11 +492,16 @@ void WordProcessor::clearBackground()
         if (layout == "null" || layout.isEmpty())
             layout = "US"; // defaults to US layout
 
+        // draw status bar
         ptft->setCursor(280, STATUSBAR_Y, 2);
         ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
         ptft->setTextSize(1);
         ptft->print(layout);
+
+        return true;
     }
+
+    return false;
 }
 
 // Clear trails
@@ -503,7 +523,7 @@ void WordProcessor::clearTrails()
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX - 12, cursorY - 16, 320, 40, TFT_BLACK);
+            ptft->fillRect(cursorX - 12, cursorY - 17, 320, 40, TFT_BLACK);
         }
 
         // always show the cursor when typing
@@ -554,10 +574,9 @@ void WordProcessor::checkSaved()
         last = millis();
         if (text_pos != text_last_save_pos)
         {
-            file_ongoing = true;
+            file_on_going = true;
             saveText();
-            file_ongoing = false;
-            // clear = true;
+            file_on_going = false;
         }
     }
 }

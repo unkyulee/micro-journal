@@ -27,10 +27,10 @@ private:
     static WordProcessor *instance;
 
     // Constants
-    // buffer size should be divisible by row character count (29)
-    static const int TEXT_BUFFER_SIZE = 2900;
-    //static const int TEXT_BUFFER_SIZE = 116;
+    // buffer size should be divisible by row character count (26)
     static const int MAX_ROW_CHARACTERS = 26;
+    static const int TEXT_BUFFER_SIZE = MAX_ROW_CHARACTERS * 200;
+  
     int MAX_LINES = 10;
     static const int STATUSBAR_Y = 224;
     static const int STATUSBAR_COLOR = TFT_BROWN;
@@ -51,7 +51,7 @@ private:
     int start_line_prev = 0;
     bool clear = true;
     size_t fileSize = 0;
-    bool file_ongoing = false;
+    bool file_on_going = false;
 
     unsigned int last_sleep = millis();
 
@@ -59,7 +59,7 @@ private:
     void loadText();
     void saveText();
 
-    void clearBackground();
+    bool clearBackground();
     void clearTrails();
     void blinkCursor();
     void checkSaved();
