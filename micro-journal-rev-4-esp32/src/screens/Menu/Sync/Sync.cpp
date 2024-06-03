@@ -4,6 +4,7 @@
 #include "app/config/config.h"
 #include "service/display/display.h"
 #include "screens/WordProcessor/WordProcessor.h"
+#include "../Wifi/Wifi.h"
 
 //
 #include <HTTPClient.h>
@@ -33,6 +34,9 @@ void Sync_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // when entering the screen
     // clear the screen
     Menu_clear();
+
+    // load wifi
+    Wifi_load();
 
     // reset sync state
     sync_state = 0;
@@ -121,8 +125,13 @@ void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // Scan for available networks
     WiFi.mode(WIFI_STA);
+
+    // wait for decent amount of time before using wifi
+    delay(3000);
+
+    //
     int networksFound = WiFi.scanNetworks();
-    app_log("Found %d networks:\n");
+    app_log("Found %d networks:\n", networksFound);
 
     // reset the network.access_points array
     JsonArray access_points = app["network"]["access_points"].to<JsonArray>();
@@ -148,7 +157,7 @@ void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     JsonArray availableNetworks = app["network"]["access_points"].as<JsonArray>();
 
     // Load saved WiFi connection information from the app["config"]["access_points"] array
-    JsonArray savedAccessPoints = app["config"]["network"]["access_points"].as<JsonArray>();
+    JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
 
     // Iterate through each available network
     for (JsonVariant availableNetwork : availableNetworks)
@@ -173,6 +182,7 @@ void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
                     //
                     ptft->printf(" - Connected to: %s\n", savedSsid);
                     delay(1000);
+
                     //
                     sync_state = SYNC_SEND;
 
@@ -194,7 +204,11 @@ void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 bool _connect_wifi(JsonDocument &app, const char *ssid, const char *password)
 {
     // Connect to WiFi
+    delay(1000);
+    app_log("trying to connect to %s\n", ssid);
     WiFi.begin(ssid, password);
+    delay(1000);
+
     int attempt = 0;
     while (WiFi.status() != WL_CONNECTED && attempt < 100)
     {
@@ -221,6 +235,11 @@ bool _connect_wifi(JsonDocument &app, const char *ssid, const char *password)
     {
         app_log("Failed to connect to WiFi. Please check your credentials.\n");
         // You may add additional handling here if needed
+        //
+        sync_error = "NOT ABLE TO CONNECT TO WIFI ";
+        sync_error = sync_error + ssid;
+        sync_state = -1;
+
         return false; // Failed to connect
     }
 }

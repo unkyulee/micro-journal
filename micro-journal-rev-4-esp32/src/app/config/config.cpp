@@ -13,11 +13,7 @@ void _set_default_config()
     JsonDocument &app = app_status();
 
     // create a default config
-    app["config"]["sync"]["url"] = "";
-    
-    JsonArray access_points = app["config"]["network"]["access_points"].to<JsonArray>();
-    access_points[0]["ssid"] = "";
-    access_points[0]["password"] = "";
+    app["config"]["sync"]["url"] = "";    
 
     //
     config_save();
