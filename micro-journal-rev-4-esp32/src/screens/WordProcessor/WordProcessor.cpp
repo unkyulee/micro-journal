@@ -569,7 +569,8 @@ void WordProcessor::checkSaved()
         last = millis();
     }
 
-    if (millis() - last > 3000)
+    // when idle for 30 seconds then auto save
+    if (millis() - last > 30000)
     {
         last = millis();
         if (text_pos != text_last_save_pos)
@@ -592,9 +593,9 @@ void WordProcessor::checkSleep()
         last_sleep = millis();
     }
 
-    if (millis() - last_sleep > 60000)
+    if (millis() - last_sleep > 600000)
     {
-        // if no action for 1 minute go to sleep
+        // if no action for 10 minute go to sleep
         last_sleep = -1;
 
         //
