@@ -149,6 +149,16 @@ While you are on the writerDeck. Press "ESC" on the keyboard then press "S" to s
 **NOTE THAT WIFI IS LIMITED TO 2.4 Ghz. ESP32 doesn't support 5 Ghz wifi at this moment**
 
 
+## 10. Wifi Setup
+
+* Press ESC on the keyboard
+* When you see the menu screen press W 
+* In the wifi settings page press the number of the slot where you want to place the wifi information
+* type in WIFI SSID then press enter
+* type in WIFI password then press enter
+* wifi information is saved to the device
+
+
 # Firmware Update
 
 Please, make sure that you have the latest firmware on the device. The firmware is still under a development and your device may have shipped with outdated firmware.
