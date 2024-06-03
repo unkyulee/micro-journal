@@ -126,11 +126,9 @@ Connect the SD card to the PC and create a file "config.json" \
 If the file already exists then no need to create one \
 Open the file with a text editor (notepad) from PC. 
 
-If aren't familiar with the JSON format. Then delete the existing content and replace it with the following json. Then edit 3 parts. 
+If aren't familiar with the JSON format. Then delete the existing content and replace it with the following json. Then edit the following part only. 
 
-1) !!!COPY YOUR WEB APP URL HERE!!!!!
-2) Your WIFI SSID
-3) WIFI PASSWORD
+!!!COPY YOUR WEB APP URL HERE!!!!!
 
 Make sure to not to remove / add any comma (,) or bracket ({, }) or quotes (") while you are editing. If by any chance, the format gets broken. Start over by removing all texts inside config.json file and copy & paste the following template.
 
@@ -140,21 +138,13 @@ If you are familiar with the JSON format. One thing you need to add is the "sync
 {
   "sync": {
     "url": "!!!COPY YOUR WEB APP URL HERE!!!!!"
-  },
-  "network": {
-    "access_points": [
-      {
-        "ssid": "Your WIFI SSID",
-        "password": "WIFI PASSWORD"
-      }
-    ]
   }
 }
 ```
 
 Save the file to the sd card. Safely remove the card from the PC and then you place the SD card back to the writerDeck. After that you should have your Google Sync working with the writerDeck.
 
-While you are on the writerDeck. Press "ESC" on the keyboard then press "S" to see if it is working.
+While you are on the writerDeck. Press "ESC" on the keyboard then press "S" to see if it is working. Make sure to have the wifi information set before the sync.
 
 **NOTE THAT WIFI IS LIMITED TO 2.4 Ghz. ESP32 doesn't support 5 Ghz wifi at this moment**
 
