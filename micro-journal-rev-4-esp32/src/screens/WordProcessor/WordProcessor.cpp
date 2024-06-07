@@ -569,8 +569,8 @@ void WordProcessor::checkSaved()
         last = millis();
     }
 
-    // when idle for 30 seconds then auto save
-    if (millis() - last > 30000)
+    // when idle for 5 seconds then auto save
+    if (millis() - last > 5000)
     {
         last = millis();
         if (text_pos != text_last_save_pos)
