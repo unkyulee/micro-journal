@@ -227,6 +227,8 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "£";
     case 167:
         return "§";
+    case 168:
+        return "¨";
     case 169:
         return "©";
     case 170:

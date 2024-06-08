@@ -80,7 +80,7 @@ class MyEspUsbHost : public EspUsbHost
     if (hidLocal == HID_LOCAL_Italian)
     {
       if (altgr > 0)
-        shift = 2;
+        shift += 2;
 
       // Italian
       return keyboard_conv_table_it[keycode][shift];
@@ -92,7 +92,7 @@ class MyEspUsbHost : public EspUsbHost
     else if (hidLocal == HID_LOCAL_Canadian_Bilingual)
     {
       if (altgr > 0)
-        shift = 2;
+        shift += 2;
 
       // Canadian Bilingual
       return keyboard_conv_table_ca_bi[keycode][shift];
@@ -106,7 +106,7 @@ class MyEspUsbHost : public EspUsbHost
       // Serial.println(keycode, HEX);
 
       if (altgr > 0)
-        shift = 2;
+        shift += 2;
 
       // German
       return keyboard_conv_table_ge[keycode][shift];

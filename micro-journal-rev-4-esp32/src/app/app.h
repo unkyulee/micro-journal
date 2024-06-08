@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 // app version
-#define VERSION "1.0.11"
+#define VERSION "1.0.11.pascal"
 
 // debug flag
 //#define DEBUG
