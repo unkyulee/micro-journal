@@ -8,12 +8,13 @@
 
 //
 #define LAYERS 4 // layers
-#define ROWS 4   // rows
-#define COLS 12  // columns
 
 // GPIO PINS
-byte rowPins[ROWS] = {42, 41, 40, 39};
-byte colPins[COLS] = {38, 37, 36, 4, 5, 6, 7, 15, 16, 17, 18, 8};
+#define ROWS 4 // rows
+byte rowPins[ROWS] = {15, 16, 17, 18};
+
+#define COLS 12 // columns
+byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 
 //
 // KEYBOARD LAYOUT
@@ -26,58 +27,55 @@ byte colPins[COLS] = {38, 37, 36, 4, 5, 6, 7, 15, 16, 17, 18, 8};
 // SHIFT - 14
 // DEL - 127
 // SPECIAL LAYER - 17
+#define FN 17
+#define SHIFT 14
 
 // layers
 // prettier-ignore
 int layers[LAYERS][ROWS * COLS] = {
 
     {// normal layers
-    '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
-    127, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 8,
-    17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\'', 13,
-    14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', '.', '/', 14},
+     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
+     127, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 8,
+     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\'', 13,
+     14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', '.', '/', 14},
 
     {// when shift is pressed
-    '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<',
-    127, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 8,
-    9, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', 13,
-    14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
-    
-    {// special layer 
-    '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-    127, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 8,
-    17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 13,
-    14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', ',', '/', 14},
+     '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<',
+     127, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 8,
+     9, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', 13,
+     14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
+
+    {// special layer
+     '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
+     127, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 8,
+     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 13,
+     14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', ',', '/', 14},
 
     {// special layer shift
-    '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
-    127, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 8,
-    9, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', 13,
-    14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '<', '?', 14},
+     '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
+     127, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 8,
+     9, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', 13,
+     14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '<', '?', 14},
 
 };
 
 // define the symbols on the buttons of the keypads
 // prettier-ignore
-char keys[COLS][ROWS] = {
-    {20, 10, 0},
-    {21, 11, 1},
-    {22, 12, 2},
-    {23, 13, 3},
-    {24, 14, 4},
-    {25, 15, 5},
-    {26, 16, 6},
-    {27, 17, 7},
-    {28, 18, 8},
-    {29, 19, 9}};
+char keys[ROWS][COLS] = {
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
+    {12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23},
+    {24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35},
+    {36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47},
+};
 
-Adafruit_Keypad customKeypad;
+Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // initialize keymap
 void keyboard_keypad_setup()
 {
-    customKeypad = Adafruit_Keypad(makeKeymap(keys), colPins, rowPins, COLS, ROWS);
     customKeypad.begin();
+    app_log("Keypad initialized\n");
 }
 
 ///
@@ -96,12 +94,14 @@ void keyboard_keypad_loop()
         {
             keypadEvent e = customKeypad.read();
             int key = keyboard_get_key(e);
-            if (key != EMPTY)
+            if (key != 0)
             {
                 // depending on the screen
                 // send the keystrokes
                 JsonDocument &app = app_status();
                 int screen = app["screen"].as<int>();
+
+                app_log("%c %d\n", key, e.bit.KEY);
             }
         }
     }
@@ -109,46 +109,48 @@ void keyboard_keypad_loop()
 
 bool _shift_pressed = false;
 bool _fn_pressed = false;
+int layer = 0;
 int keyboard_get_key(keypadEvent e)
 {
     //
     // step 1. layer processing
     //
-    if (e.bit.KEY == FN)
+    int key = layers[layer][e.bit.KEY];
+    if (key == FN)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
+            app_log("FN\n");
             _fn_pressed = true;
+            return 0;
         }
         else
         {
             _fn_pressed = false;
+            return 0;
         }
     }
-    else if (e.bit.KEY == SHIFT)
+    else if (key == SHIFT)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
+            app_log("Shift\n");
             _shift_pressed = true;
+            return 0;
         }
 
         else if (e.bit.EVENT == KEY_JUST_RELEASED)
         {
             _shift_pressed = false;
+            return 0;
         }
-    }
-
-    // stop here
-    if (e.bit.KEY == SHIFT || e.bit.KEY == FN)
-    {
-        return EMPTY;
     }
 
     // step 2. process the key
     if (e.bit.EVENT == KEY_JUST_PRESSED)
     {
         // define the layer
-        int layer = 0;
+        layer = 0;
 
         // check if the layer key is pressed
         if (_fn_pressed)
@@ -162,5 +164,5 @@ int keyboard_get_key(keypadEvent e)
     }
 
     // Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
-    return EMPTY;
+    return 0;
 }
