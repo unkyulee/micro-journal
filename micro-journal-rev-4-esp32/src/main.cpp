@@ -1,24 +1,15 @@
 #include "app/app.h"
-#include "service/service.h"
-#include "service/keyboard/keyboard.h"
-#include "service/storage/storage.h"
+#include "SD/sd.h"
+#include "config/config.h"
+#include "display/display.h"
+#include "keyboard/keyboard.h"
+
 
 #define BAUD_RATE 9600
 
 // Dual Core Support
 TaskHandle_t Task0;
-
-void Core0(void *parameter)
-{
-  for (;;)
-  {
-    //
-    service_loop();
-
-    // code for task 1
-    app_loop();
-  }
-}
+void Core0(void *parameter);
 
 // runs once when the board is up
 void setup()
@@ -29,17 +20,17 @@ void setup()
     ; // Wait for the serial port to connect
   app_log("\nDevice Started. Baud rate: %d\n", BAUD_RATE);
 
-  // app setup
-  app_setup();
+  // SD must be initialized before display
+  SD_setup();
 
-  // service setup
-  service_setup();
+  // initialize config
+  config_setup();
+
+  //
+  display_setup();
 
   // keyboard setup
   keyboard_setup();
-
-  // storage setup
-  storage_setup();
 
   xTaskCreatePinnedToCore(
       Core0,   // Function to implement the task
@@ -56,4 +47,16 @@ void loop()
 {
   //
   keyboard_loop();
+}
+
+void Core0(void *parameter)
+{
+  for (;;)
+  {
+    //
+    display_loop();
+
+    //
+    SD_loop();
+  }
 }

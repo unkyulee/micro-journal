@@ -4,14 +4,7 @@
 #include <ArduinoJson.h>
 
 // app version
-#define VERSION "1.0.11.pascal.2"
-
-// debug flag
-//#define DEBUG
-
-// app life cycle
-void app_setup();
-void app_loop();
+#define VERSION "1.0.12"
 
 // app status
 JsonDocument &app_status();

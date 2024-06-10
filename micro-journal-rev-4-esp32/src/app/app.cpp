@@ -6,28 +6,6 @@
 JsonDocument status;
 
 //
-// SETUP
-//
-// initialize main task setup
-void app_setup()
-{
-    
-    // SD must be initialized before display
-    SD_setup();
-
-    // initialize config
-    config_setup();
-}
-
-//
-// LOOP
-//
-void app_loop()
-{
-    SD_loop();
-}
-
-//
 // GLOBAL STATUS
 //
 // app status
