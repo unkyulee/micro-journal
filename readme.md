@@ -91,6 +91,7 @@ https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experien
 Hackster.io\
 https://www.hackster.io/news/micro-journal-offers-a-customizable-writerdeck-experience-4ffbf773f3ec
 
+https://x.com/Hacksterio/status/1782755796637417944?t=Y-wfez-u7MrAFzUVcOOIBw&s=08
 
 # Online shop
 

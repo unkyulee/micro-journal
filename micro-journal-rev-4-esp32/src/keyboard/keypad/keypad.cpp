@@ -1,6 +1,7 @@
 #include "keypad.h"
 #include "app/app.h"
 #include "display/display.h"
+#include "keyboard/keyboard.h"
 //
 #include "display/WordProcessor/WordProcessor.h"
 #include "display/ErrorScreen/ErrorScreen.h"
@@ -23,12 +24,8 @@ byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 // https://www.ascii-code.com/
 // ESC - 27
 // BACKSPACE - 8
-// RETURN - 13
 // SHIFT - 14
-// DEL - 127
 // SPECIAL LAYER - 17
-#define FN 17
-#define SHIFT 14
 
 // layers
 // prettier-ignore
@@ -36,26 +33,26 @@ int layers[LAYERS][ROWS * COLS] = {
 
     {// normal layers
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
-     127, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 8,
-     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\'', 13,
+     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 8,
+     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\'', '\n',
      14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', '.', '/', 14},
 
     {// when shift is pressed
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<',
-     127, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 8,
-     9, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', 13,
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 8,
+     17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
 
     {// special layer
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     127, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 8,
-     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 13,
+     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 8,
+     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\n',
      14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', ',', '/', 14},
 
     {// special layer shift
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
-     127, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 8,
-     9, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', 13,
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 8,
+     17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '<', '?', 14},
 
 };
@@ -93,15 +90,23 @@ void keyboard_keypad_loop()
         while (customKeypad.available())
         {
             keypadEvent e = customKeypad.read();
-            int key = keyboard_get_key(e);
-            if (key != 0)
+            int ascii = keyboard_get_key(e);
+            if (ascii != 0)
             {
                 // depending on the screen
                 // send the keystrokes
                 JsonDocument &app = app_status();
                 int screen = app["screen"].as<int>();
 
-                app_log("%c %d\n", key, e.bit.KEY);
+                if (ascii == 27)
+                {
+                    keyboard_key(MENU);
+                }
+
+                else if (ascii != 0)
+                {
+                    keyboard_key(ascii);
+                }
             }
         }
     }
@@ -116,7 +121,7 @@ int keyboard_get_key(keypadEvent e)
     // step 1. layer processing
     //
     int key = layers[layer][e.bit.KEY];
-    if (key == FN)
+    if (key == 17)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
@@ -130,7 +135,7 @@ int keyboard_get_key(keypadEvent e)
             return 0;
         }
     }
-    else if (key == SHIFT)
+    else if (key == 14)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
