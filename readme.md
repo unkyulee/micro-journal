@@ -2,6 +2,28 @@
 
 I aimed to create a specialized writing device, focusing on the tactile experience of mechanical keyboards. This device would be portable, with a compact form factor, designed to enhance the writing process in a focused environment. The goal was to provide a distraction-free writing experience, allowing users to immerse themselves fully in their creative work.
 
+## Fifth iteration: Write with Style
+
+[Buy from my Tindie shop](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
+
+[Micro Journal Rev.6 Build Story](/micro-journal-rev-6-one-piece/readme.md)
+
+[Quick Start Guid] TBD
+
+[Build Guide Video] TBD
+
+[Typing Test Video] TBD
+
+I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
+
+<img src="./micro-journal-rev-6-one-piece/images/005.png" width="400">
+
+Enter the Micro Journal Rev.6, now with Cherry MX hot-swappable sockets, letting users customize their mechanical keyboard setup. It features a 48-key ortholinear layout, with a custom configuration via SD card (still in the works). The leather strap makes it easy to carry, and the display protective case doubles as a hood for privacy while writing on the go.
+
+I'm having some feelings that might be akin to love. I'm trying to deny this affection for an object, but I can't ignore the joy and lightness I feel when holding the leather strap.
+
+<img src="./micro-journal-rev-6-one-piece/images/005.jpg" width="400">
+
 
 ## Fourth iteration: writerDeck with any mechanical keyboard
 
