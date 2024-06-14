@@ -67,3 +67,10 @@ https://www.youtube.com/watch?v=zcHL68JWXqc
 ## DIY Build Guide
 
 https://github.com/unkyulee/micro-journal
+
+
+## User Reviews
+
+[+1 for the Micro Journalk](https://www.reddit.com/r/writerDeck/comments/1cyvjsf/1_for_the_micro_journal/)
+
+[My first WriterDeck - the Micro Journal Rev 5.](https://www.reddit.com/r/writerDeck/comments/1cytyq6/my_first_writerdeck_the_micro_journal_rev_5/)

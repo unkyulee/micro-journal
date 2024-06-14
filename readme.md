@@ -41,6 +41,11 @@ For those who already have the device: [Quick Start User Guide](/micro-journal-r
 
 If you want to buy one: [Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
 
+User Reviews:
+
+[+1 for the Micro Journalk](https://www.reddit.com/r/writerDeck/comments/1cyvjsf/1_for_the_micro_journal/)
+
+[My first WriterDeck - the Micro Journal Rev 5.](https://www.reddit.com/r/writerDeck/comments/1cytyq6/my_first_writerdeck_the_micro_journal_rev_5/)
 
 
 ## Third iteration: Immeidate power on and writing
