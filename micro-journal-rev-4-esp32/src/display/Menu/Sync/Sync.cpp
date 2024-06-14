@@ -125,6 +125,7 @@ void _sync_start(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // Scan for available networks
     WiFi.mode(WIFI_STA);
+    WiFi.setHostname("MICROJOURNAL");
 
     // wait for decent amount of time before using wifi
     delay(3000);
