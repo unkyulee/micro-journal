@@ -45,7 +45,8 @@ void WordProcessor::setup()
     }
 
     // setup default color
-    if(!app["config"].containsKey("foreground_color")) {
+    if (!app["config"].containsKey("foreground_color"))
+    {
         app["config"]["foreground_color"] = TFT_WHITE;
     }
 
@@ -197,10 +198,10 @@ void WordProcessor::render()
 
     /////
     // Render the user text
-    pu8f->setFont(u8g2_font_profont22_mf); // extended font
-    pu8f->setForegroundColor(foreground_color);   // apply color
-    pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
-    pu8f->setCursor(0, 24);                // start writing at this position
+    pu8f->setFont(u8g2_font_profont22_mf);      // extended font
+    pu8f->setForegroundColor(foreground_color); // apply color
+    pu8f->setFontMode(1);                       // use u8g2 transparent mode (this is default)
+    pu8f->setCursor(0, 24);                     // start writing at this position
 
     // try to render only two lines at a time
     // not to redraw the entire screen
@@ -508,13 +509,12 @@ bool WordProcessor::clearBackground()
         String layout = app["config"]["keyboard_layout"].as<String>();
         if (layout == "null" || layout.isEmpty())
             layout = "US"; // defaults to US layout
-#endif
-
         // draw status bar
         ptft->setCursor(280, STATUSBAR_Y, 2);
         ptft->setTextColor(foreground_color, background_color);
         ptft->setTextSize(1);
         ptft->print(layout);
+#endif
 
         return true;
     }
