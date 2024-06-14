@@ -13,6 +13,8 @@
 #include "Wifi/Wifi.h"
 #include "BlueToothConfig/BluetoothConfig.h"
 #include "FrontPanelButton/FrontPanelButton.h"
+#include "Background/Background.h"
+#include "Foreground/Foreground.h"
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -84,13 +86,6 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Clear_render(ptft, pu8f);
     }
-    else if (menu_state == MENU_LAYOUT)
-    {
-        if (menu_state_prev != menu_state)
-            Layout_setup(ptft, pu8f);
-
-        Layout_render(ptft, pu8f);
-    }
     else if (menu_state == MENU_WIFI)
     {
         if (menu_state_prev != menu_state)
@@ -98,21 +93,28 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Wifi_render(ptft, pu8f);
     }
-    /*
-    else if (menu_state == MENU_DRIVE)
+    else if (menu_state == MENU_BACKGROUND)
     {
         if (menu_state_prev != menu_state)
-            Drive_setup(ptft, pu8f);
+            Background_setup(ptft, pu8f);
 
-        Drive_render(ptft, pu8f);
+        Background_render(ptft, pu8f);
     }
-    */
-    else if (menu_state == MENU_BLUETOOTH)
+    else if (menu_state == MENU_FOREGROUND)
     {
         if (menu_state_prev != menu_state)
-            BluetoothConfig_setup(ptft, pu8f);
+            Foreground_setup(ptft, pu8f);
 
-        BluetoothConfig_render(ptft, pu8f);
+        Foreground_render(ptft, pu8f);
+    }
+
+#ifdef ENV_USBHOST
+    else if (menu_state == MENU_LAYOUT)
+    {
+        if (menu_state_prev != menu_state)
+            Layout_setup(ptft, pu8f);
+
+        Layout_render(ptft, pu8f);
     }
     else if (menu_state == MENU_BUTTONS)
     {
@@ -121,6 +123,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         FrontPanelButton_render(ptft, pu8f);
     }
+#endif
 
     // save prev state
     menu_state_prev = menu_state;
@@ -157,42 +160,39 @@ void Menu_keyboard(char key)
         return;
     }
 
-    // Keyboard Layout
-    else if (menu_state == MENU_LAYOUT)
-    {
-        Layout_keyboard(key);
-        return;
-    }
-
     // Wifi
     else if (menu_state == MENU_WIFI)
     {
         Wifi_keyboard(key);
         return;
     }
-    
-    /*
-    // Drive
-    else if (menu_state == MENU_DRIVE)
-    {
-        Drive_keyboard(key);
-        return;
-    }
-    */
 
-    // Bluetooth Config
-    else if (menu_state == MENU_BLUETOOTH)
+    //
+    else if (menu_state == MENU_BACKGROUND)
     {
-        BluetoothConfig_keyboard(key);
-        return;
+         Background_keyboard(key);
     }
 
+    //
+    else if (menu_state == MENU_FOREGROUND)
+    {
+        Foreground_keyboard(key);
+    }
+
+#ifdef ENV_USBHOST
+    // Keyboard Layout
+    else if (menu_state == MENU_LAYOUT)
+    {
+        Layout_keyboard(key);
+        return;
+    }
     // FrontPanelButton Config
     else if (menu_state == MENU_BUTTONS)
     {
         FrontPanelButton_keyboard(key);
         return;
     }
+#endif
 }
 
 //

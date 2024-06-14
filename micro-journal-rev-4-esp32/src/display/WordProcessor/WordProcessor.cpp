@@ -44,6 +44,11 @@ void WordProcessor::setup()
         Serial.println("File created");
     }
 
+    // setup default color
+    if(!app["config"].containsKey("foreground_color")) {
+        app["config"]["foreground_color"] = TFT_WHITE;
+    }
+
     // Load text from file
     loadText();
 
@@ -61,6 +66,10 @@ void WordProcessor::render()
     clearTrails();
     checkSaved();
     checkSleep();
+
+    JsonDocument &app = app_status();
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // Calculate the screen text lines
     // try to display from the second line when possible
@@ -164,7 +173,7 @@ void WordProcessor::render()
 
     // STATUS BAR
     ptft->setCursor(0, STATUSBAR_Y, 2);
-    ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
+    ptft->setTextColor(foreground_color, background_color);
     ptft->setTextSize(1);
     ptft->printf("%s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
     /*
@@ -189,7 +198,7 @@ void WordProcessor::render()
     /////
     // Render the user text
     pu8f->setFont(u8g2_font_profont22_mf); // extended font
-    pu8f->setForegroundColor(TFT_WHITE);   // apply color
+    pu8f->setForegroundColor(foreground_color);   // apply color
     pu8f->setFontMode(1);                  // use u8g2 transparent mode (this is default)
     pu8f->setCursor(0, 24);                // start writing at this position
 
@@ -209,7 +218,8 @@ void WordProcessor::render()
     }
 
     int buffer_start_line = max(total_line - 2, start_line);
-    if(cleared) buffer_start_line = start_line;
+    if (cleared)
+        buffer_start_line = start_line;
     for (int i = buffer_start_line; i <= total_line; i++)
     {
         // print new line
@@ -482,19 +492,27 @@ bool WordProcessor::clearBackground()
 {
     if (clear)
     {
+        //
         clear = false;
-        ptft->fillScreen(TFT_BLACK);
-        ptft->fillRect(0, STATUSBAR_Y, 320, 240, STATUSBAR_COLOR);
 
-        // write keyboard layout
+        // apply background color
         JsonDocument &app = app_status();
+        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+        // clear screen
+        ptft->fillScreen(background_color);
+
+#ifdef ENV_USBHOST
+        // write keyboard layout
         String layout = app["config"]["keyboard_layout"].as<String>();
         if (layout == "null" || layout.isEmpty())
             layout = "US"; // defaults to US layout
+#endif
 
         // draw status bar
         ptft->setCursor(280, STATUSBAR_Y, 2);
-        ptft->setTextColor(TFT_WHITE, STATUSBAR_COLOR);
+        ptft->setTextColor(foreground_color, background_color);
         ptft->setTextSize(1);
         ptft->print(layout);
 
@@ -513,17 +531,21 @@ void WordProcessor::clearTrails()
         int cursorX = pu8f->getCursorX();
         int cursorY = pu8f->getCursorY();
 
+        JsonDocument &app = app_status();
+        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
         // remove previous cursor
         for (int i = 0; i <= text_pos - text_pos_prev; i++)
         {
-            ptft->drawLine(cursorX + 2 - (10 * (i + 1)), cursorY + 2, cursorX + 24 - (10 * (i + 1)), cursorY + 2, TFT_BLACK);
+            ptft->drawLine(cursorX + 2 - (10 * (i + 1)), cursorY + 2, cursorX + 24 - (10 * (i + 1)), cursorY + 2, background_color);
         }
 
         // in case when back space is pressed
         if (text_pos_prev > text_pos)
         {
             // delete the character
-            ptft->fillRect(cursorX - 12, cursorY - 17, 320, 40, TFT_BLACK);
+            ptft->fillRect(cursorX - 12, cursorY - 17, 320, 40, background_color);
         }
 
         // always show the cursor when typing
@@ -547,14 +569,18 @@ void WordProcessor::blinkCursor()
     int cursorX = pu8f->getCursorX();
     int cursorY = pu8f->getCursorY();
 
+    JsonDocument &app = app_status();
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
     //
     if (blink)
     {
-        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, TFT_WHITE);
+        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, foreground_color);
     }
     else
     {
-        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, TFT_BLACK);
+        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, background_color);
     }
 }
 

@@ -38,12 +38,14 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     //
     ptft->println(" [D] START NEW ");
+#ifdef ENV_USBHOST
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
+#endif
     ptft->println(" [W] WIFI");
+    ptft->println(" [G] BACKGROUND COLOR");
+    ptft->println(" [C] FOREGROUND COLOR");
     ptft->println(" [F] DEVICE BUTTON");
-    // ptft->println(" [T] Bluetooth Keyboard");
     ptft->println(" [R] REBOOT DEVICE");
-    // ptft->println(" [U] USB DRIVE");
     ptft->println();
     ptft->println(" [B] BACK ");
     ptft->println();
@@ -78,11 +80,13 @@ void Home_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
+#ifdef ENV_USBHOST
     else if (key == 'k')
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_LAYOUT;
     }
+#endif
 
     else if (key == 'w')
     {
@@ -90,19 +94,17 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
-    /*
-    else if (key == 'u')
+    else if (key == 'g')
     {
         // move to keyboard layout
-        app["menu"]["state"] = MENU_DRIVE;
+        app["menu"]["state"] = MENU_BACKGROUND;
     }
 
-
-    else if (key == 't')
+    else if (key == 'c')
     {
         // move to keyboard layout
-        app["menu"]["state"] = MENU_BLUETOOTH;
-    }*/
+        app["menu"]["state"] = MENU_FOREGROUND;
+    }
 
     else if (key == 'r')
     {
