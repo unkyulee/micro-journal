@@ -48,9 +48,7 @@ void config_load()
     if (configFile)
     {
         // read the file
-        app_log("Reading config.json file\n");
         String configString = configFile.readString();
-        app_log("Closing config.json file\n");
         configFile.close();
 
         // check if configString is empty

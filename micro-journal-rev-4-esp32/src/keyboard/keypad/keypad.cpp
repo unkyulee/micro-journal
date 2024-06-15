@@ -2,10 +2,14 @@
 #include "app/app.h"
 #include "display/display.h"
 #include "keyboard/keyboard.h"
+#include "keyboard/ascii/ascii.h"
 //
 #include "display/WordProcessor/WordProcessor.h"
 #include "display/ErrorScreen/ErrorScreen.h"
 #include "display/Menu/Menu.h"
+
+//
+#include <SD.h>
 
 //
 #define LAYERS 4 // layers
@@ -25,7 +29,7 @@ byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 // ESC - 27
 // BACKSPACE - 8
 // SHIFT - 14
-// SPECIAL LAYER - 17
+// ALT - 17
 
 // layers
 // prettier-ignore
@@ -71,6 +75,7 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPin
 // initialize keymap
 void keyboard_keypad_setup()
 {
+    keyboard_keypad_load_config();
     customKeypad.begin();
     app_log("Keypad initialized\n");
 }
@@ -170,4 +175,91 @@ int keyboard_get_key(keypadEvent e)
 
     // Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
     return 0;
+}
+
+// look for keyboard.json in SD card
+// if found load the configuration to the global variable
+#define KEYBOARD_FILE "/keyboard.json"
+
+bool load_keymap(int layer, JsonArray keyArray)
+{
+    if (keyArray.size() == 48)
+    {
+        // only when 48 elements are presented
+        int pos = 0;
+        for (JsonVariant obj : keyArray)
+        {
+            // check if it has extended ascii
+            if (obj.is<int>())
+            {
+                layers[layer][pos++] = obj.as<int>();
+            }
+            else
+            {
+                //
+                String key = obj.as<String>();
+                layers[layer][pos++] = unicode_convert_ascii(key);
+            }
+        }
+        return true;
+    }
+
+    return false;
+}
+
+void keyboard_keypad_load_config()
+{
+    // check if file exists in SD card
+    if (SD.exists(KEYBOARD_FILE))
+    {
+        app_log("Loading keyboard.json from SD\n");
+        // load image
+        File file = SD.open(KEYBOARD_FILE, "r");
+        if (!file)
+        {
+            app_log("Failed to open file for reading\n");
+            return;
+        }
+
+        String fileString = file.readString();
+        file.close();
+
+        //
+        // Prepare a JsonDocument for the keyboard configuration
+        // The size should be adjusted according to your configuration's needs
+        JsonDocument keyboardConfig;
+        // convert to JsonObject
+        DeserializationError error = deserializeJson(keyboardConfig, fileString);
+        app_log("Deserializing keyboard.json file\n");
+        if (error)
+        {
+            //
+            app_log("keyboard.jsondeserializeJson() failed: %s\n", error.c_str());
+            return;
+        }
+
+        // overwrite to layers
+        // int layers[LAYERS][ROWS * COLS]
+        const char *keys[] = {"main", "main-shift", "alt", "alt-shift"};
+        int keymapIndices[] = {0, 1, 2, 3};
+
+        for (int i = 0; i < 4; i++)
+        {
+            const char *key = keys[i];
+            int index = keymapIndices[i];
+
+            if (keyboardConfig.containsKey(key) && keyboardConfig[key].is<JsonArray>())
+            {
+                if (load_keymap(index, keyboardConfig[key].as<JsonArray>()))
+                {
+                    app_log("%s loaded\n", key);
+                }
+            }
+        }
+
+        // Close the file
+        file.close();
+
+        return;
+    }
 }

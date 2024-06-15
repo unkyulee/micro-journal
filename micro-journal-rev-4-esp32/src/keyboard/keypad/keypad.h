@@ -12,4 +12,7 @@ void keyboard_keypad_loop();
 // 
 int keyboard_get_key(keypadEvent e);
 
+//
+void keyboard_keypad_load_config();
+
 #endif
