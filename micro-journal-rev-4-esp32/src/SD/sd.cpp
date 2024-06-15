@@ -68,8 +68,6 @@ void SD_setup()
     SD_firwamre_update();
 }
 
-///
-void SD_loop() {}
 
 void SD_firwamre_update()
 {

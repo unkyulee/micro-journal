@@ -57,19 +57,9 @@ void display_loop()
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
 
-    // WORD PROCESSOR
-    if (screen == WORDPROCESSOR)
-    {
-      // setup only once
-      if (screen != screen_prev)
-        WordProcessor::getInstance(&tft, &u8f).setup();
-
-      // loop
-      WordProcessor::getInstance(&tft, &u8f).render();
-    }
 
     // ERROR SCREEN
-    else if (screen == ERRORSCREEN)
+    if (screen == ERRORSCREEN)
     {
       // setup only once
       if (screen != screen_prev)
@@ -121,6 +111,17 @@ void display_loop()
 
       // loop
       USBDRIVE_render(&tft, &u8f);
+    }
+    
+    // WORD PROCESSOR
+    else
+    {
+      // setup only once
+      if (screen != screen_prev)
+        WordProcessor::getInstance(&tft, &u8f).setup();
+
+      // loop
+      WordProcessor::getInstance(&tft, &u8f).render();
     }
 
     //

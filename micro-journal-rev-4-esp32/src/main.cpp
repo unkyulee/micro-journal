@@ -4,7 +4,6 @@
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 
-
 #define BAUD_RATE 9600
 
 // Dual Core Support
@@ -26,12 +25,13 @@ void setup()
   // initialize config
   config_setup();
 
-  //
-  display_setup();
-
   // keyboard setup
   keyboard_setup();
 
+  //
+  display_setup();
+
+  //
   xTaskCreatePinnedToCore(
       Core0,   // Function to implement the task
       "Core0", // Name of the task
@@ -55,8 +55,5 @@ void Core0(void *parameter)
   {
     //
     display_loop();
-
-    //
-    SD_loop();
   }
 }
