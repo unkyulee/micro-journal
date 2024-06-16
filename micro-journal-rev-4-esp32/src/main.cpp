@@ -15,8 +15,6 @@ void setup()
 {
   // Setup serial for ESP32
   Serial.begin(BAUD_RATE);
-  while (!Serial)
-    ; // Wait for the serial port to connect
   app_log("\nDevice Started. Baud rate: %d\n", BAUD_RATE);
 
   // SD must be initialized before display
@@ -24,9 +22,6 @@ void setup()
 
   // initialize config
   config_setup();
-
-  // keyboard setup
-  keyboard_setup();
 
   //
   display_setup();
@@ -40,6 +35,10 @@ void setup()
       0,       // Priority of the task
       &Task0,  // Task handle.
       0);      // Core where the task should run
+
+  
+  // keyboard setup
+  keyboard_setup();
 }
 
 // Main loop is ignored as the tasks are separated per core
