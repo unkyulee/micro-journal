@@ -12,7 +12,9 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [Build Guide] TBD
 
-[Typing Test Video](https://www.youtube.com/watch?v=7LUKOb-125s&t=136s&ab_channel=UnKyuLee)
+[Features and Introduction](https://youtu.be/1ZP9wwYMaMY)
+
+[Typing Test Video](https://youtu.be/7LUKOb-125s)
 
 
 I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
@@ -47,6 +49,8 @@ User Reviews:
 [+1 for the Micro Journalk](https://www.reddit.com/r/writerDeck/comments/1cyvjsf/1_for_the_micro_journal/)
 
 [My first WriterDeck - the Micro Journal Rev 5.](https://www.reddit.com/r/writerDeck/comments/1cytyq6/my_first_writerdeck_the_micro_journal_rev_5/)
+
+[Introduction and Features](https://youtu.be/OuGs6Pu1ZMg)
 
 
 ## Third iteration: Immeidate power on and writing
