@@ -6,13 +6,14 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [Buy from my Tindie shop](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
 
-[Micro Journal Rev.6 Build Story](/micro-journal-rev-6-one-piece/readme.md)
+[Micro Journal Rev.6 Design Process Story](/micro-journal-rev-6-one-piece/readme.md)
 
-[Quick Start Guid] TBD
+[Quick Start Guide] TBD
 
-[Build Guide Video] TBD
+[Build Guide] TBD
 
-[Typing Test Video] TBD
+[Typing Test Video](https://www.youtube.com/watch?v=7LUKOb-125s&t=136s&ab_channel=UnKyuLee)
+
 
 I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
 

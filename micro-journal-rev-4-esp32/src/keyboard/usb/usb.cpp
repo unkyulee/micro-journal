@@ -280,10 +280,6 @@ void keyboard_usb_setup()
 ///
 void keyboard_usb_loop()
 {
-  // when booted as mass storage then skip usb host
-  if (mass_drive_mode)
-    return;
-
   // as a usb host
   usbHost.task();
 

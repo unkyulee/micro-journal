@@ -1,6 +1,12 @@
 #include "keyboard.h"
+#ifdef ENV_USBHOST
 #include "usb/usb.h"
+#endif
+
+#ifdef ENV_KEYBOARD
 #include "keypad/keypad.h"
+#endif
+
 #include "bluetooth/bluetooth.h"
 
 //
