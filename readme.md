@@ -16,6 +16,8 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [Typing Test Video](https://youtu.be/7LUKOb-125s)
 
+[How to Customize Keyboard Layout] TBD
+
 
 I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
 
