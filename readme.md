@@ -18,6 +18,14 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [How to Customize Keyboard Layout] TBD
 
+### Press
+
+[The Verge: You can customize the mechanical keyboard on this distraction-free digital typewriter.](https://www.theverge.com/2024/6/18/24180889/you-can-customize-the-mechanical-keyboard-on-this-distraction-free-digital-typewriter)
+
+[Boing Boing: MicroJournal: a distraction-free writing device with knobs
+](https://boingboing.net/2024/06/17/microjournal-a-distraction-free-writing-device-with-knobs.html)
+
+
 
 I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
 
@@ -53,6 +61,12 @@ User Reviews:
 [My first WriterDeck - the Micro Journal Rev 5.](https://www.reddit.com/r/writerDeck/comments/1cytyq6/my_first_writerdeck_the_micro_journal_rev_5/)
 
 [Introduction and Features](https://youtu.be/OuGs6Pu1ZMg)
+
+### Press
+
+[Hackster.io: Micro Journal Offers a Customizable writerDeck Experience](https://www.hackster.io/news/micro-journal-offers-a-customizable-writerdeck-experience-4ffbf773f3ec)
+
+[Guest Starring at Canadian National Radio](https://ici.radio-canada.ca/nouvelle/2080542/telephone-idiot-minimaliste-dumbphone)
 
 
 ## Third iteration: Immeidate power on and writing
@@ -122,10 +136,6 @@ https://kbd.news/Micro-Journal-2332.html
 Hackaday\
 https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/
 
-Hackster.io\
-https://www.hackster.io/news/micro-journal-offers-a-customizable-writerdeck-experience-4ffbf773f3ec
-
-https://x.com/Hacksterio/status/1782755796637417944?t=Y-wfez-u7MrAFzUVcOOIBw&s=08
 
 # Online shop
 

@@ -36,7 +36,6 @@ void setup()
       &Task0,  // Task handle.
       0);      // Core where the task should run
 
-  
   // keyboard setup
   keyboard_setup();
 }
@@ -45,7 +44,7 @@ void setup()
 void loop()
 {
   //
-  keyboard_loop();
+  display_loop();
 }
 
 void Core0(void *parameter)
@@ -53,6 +52,6 @@ void Core0(void *parameter)
   for (;;)
   {
     //
-    display_loop();
+    keyboard_loop();
   }
 }
