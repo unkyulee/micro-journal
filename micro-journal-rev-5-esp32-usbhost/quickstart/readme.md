@@ -40,11 +40,15 @@ Make sure to buy the one that has the adapter to the bigger size. writerDeck tak
 
 Install the battery when the enclosure is open. Battery holder should have the polarity written on the bottom. Please check carefully before inserting the battery.
 
+The place with the spring on the holder is the negative (-) side. 
+
+
 ![SD](./images/battery_install.jpg)
 
 **PLEASE BE EXTRA CAREFUL TO + and - POLARITY OF THE BATTERY**
 
-When installed the battery with the wrong polarity, it can cause a fire.
+When installed the battery with the wrong polarity, it can cause a unreparable damange to the device.
+
 
 # Step 2. Prepare SD card
 
