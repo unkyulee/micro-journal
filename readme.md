@@ -68,6 +68,8 @@ User Reviews:
 
 [Guest Starring at Canadian National Radio](https://ici.radio-canada.ca/nouvelle/2080542/telephone-idiot-minimaliste-dumbphone)
 
+[Pascal Forget: Micro Journal – machine à écrire](https://www.pascalforget.com/micro-journal/)
+
 
 ## Third iteration: Immeidate power on and writing
 
