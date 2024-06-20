@@ -8,7 +8,7 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [Micro Journal Rev.6 Design Process Story](/micro-journal-rev-6-one-piece/readme.md)
 
-[Quick Start Guide] TBD
+[Quick Start Guide](/micro-journal-rev-6-one-piece/quickstart.md)
 
 [Build Guide] TBD
 
