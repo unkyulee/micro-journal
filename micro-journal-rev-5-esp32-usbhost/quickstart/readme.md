@@ -14,7 +14,7 @@ Also, please update the firmware when you receive the device. The firmware on th
 
 ![Battery](./images/battery.png)
 
-writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one.
+writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one. Both flatop and button top works fine. 
 
 **This is not AA battery or AAA battery.**
 
