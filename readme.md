@@ -70,6 +70,8 @@ User Reviews:
 
 [Pascal Forget: Micro Journal – machine à écrire](https://www.pascalforget.com/micro-journal/)
 
+[98.5 Canadian Radio Channel about Micro Journal](https://www.985fm.ca/audio/632913/un-clavier-ergonomique-ideal-pour-le-teletravail)
+
 
 ## Third iteration: Immeidate power on and writing
 
