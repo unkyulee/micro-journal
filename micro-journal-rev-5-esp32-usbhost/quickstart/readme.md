@@ -14,11 +14,13 @@ Also, please update the firmware when you receive the device. The firmware on th
 
 ![Battery](./images/battery.png)
 
-writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one.
+writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one. Both flatop and button top works fine. 
 
 **This is not AA battery or AAA battery.**
 
 Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
+
+Make sure that the battery has short circuit protection on it.
 
 In case, you don't have the battery yet. You can plug in a usb cable to the charging port. The device should be able to turn on with it.
 
@@ -49,6 +51,7 @@ The place with the spring on the holder is the negative (-) side.
 
 When installed the battery with the wrong polarity, it can cause a unreparable damange to the device.
 
+**Be extra careful with the battery. It can cause fire**
 
 # Step 2. Prepare SD card
 
