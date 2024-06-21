@@ -16,7 +16,7 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [Typing Test Video](https://youtu.be/7LUKOb-125s)
 
-[How to Customize Keyboard Layout] TBD
+[How to Customize Keyboard Layout](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/keymap.md)
 
 ### Press
 
