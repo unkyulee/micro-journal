@@ -20,6 +20,8 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 ### Press
 
+[Liliputing: MicroJournal is a distraction-free writing tool with Cherry MX hot-swap keys](https://liliputing.com/microjournal-is-a-distraction-free-writing-tool-with-cherry-mx-hot-swap-keys/)
+
 [The Verge: You can customize the mechanical keyboard on this distraction-free digital typewriter.](https://www.theverge.com/2024/6/18/24180889/you-can-customize-the-mechanical-keyboard-on-this-distraction-free-digital-typewriter)
 
 [Boing Boing: MicroJournal: a distraction-free writing device with knobs
@@ -72,7 +74,7 @@ User Reviews:
 
 [98.5 Canadian Radio Channel about Micro Journal](https://www.985fm.ca/audio/632913/un-clavier-ergonomique-ideal-pour-le-teletravail)
 
-[Liliputing: MicroJournal is a distraction-free writing tool with Cherry MX hot-swap keys](https://liliputing.com/microjournal-is-a-distraction-free-writing-tool-with-cherry-mx-hot-swap-keys/)
+
 
 ## Third iteration: Immeidate power on and writing
 
