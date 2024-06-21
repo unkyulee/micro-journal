@@ -22,6 +22,14 @@ Currently, my wife isn't a fan of writing, so I don't have anyone around to test
 
 Customizing your keyboard layout is straightforward and involves placing a "keyboard.json" file in the SD card. 
 
+Here's how you can customize your keyboard layout:
+
+1. **Create a "keyboard.json" file inside the SD card.**
+2. **Copy the following content into the "keyboard.json" file.**
+3. **Turn off the Micro Journal and turn it on again.**
+4. **Your customized keyboard layout will now be active.**
+
+
 The following json is the default configuration. 
 
 ```json
@@ -85,13 +93,6 @@ For example:
 - È - 200
 - è - 232
 
-Here's how you can customize your keyboard layout:
-
-1. **Create a "keyboard.json" file inside the SD card.**
-2. **Copy the following content into the "keyboard.json" file.**
-3. **Turn off the Micro Journal and turn it on again.**
-4. **Your customized keyboard layout will now be active.**
-
 Example "keyboard.json" content with accents:
 
 ```json
@@ -134,6 +135,8 @@ In the above example. The key next to the backspace will type è and È respecti
 Note that it is written in a number and not in the actual character. 
 
 Remember to replace the placeholder values with your desired key configurations. This process enables you to tailor the keyboard layout to your specific needs.
+
+
 
 
 # Keyboard Layout Templates
