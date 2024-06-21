@@ -4,19 +4,6 @@ The Micro Journal Rev. 6 utilizes a 48-key ortholinear keyboard, which may look 
 
 It's true that this keyboard doesn't follow the standard format. Initially, using it can be challenging. However, you'll be amazed at how quickly your brain can adapt to the new system. After just three days of stuttering through typing, you'll start to feel fluent.
 
-This message isn't intended to convince those who resist the 48-key ortholinear format. Rather, it aims to reassure those who have chosen this layout and are willing to adapt to the new settings. Based on personal experience, I can confidently say that adapting to this keyboard doesn't take much time—just three days of struggle. Moreover, you can seamlessly switch between a standard keyboard and an ortholinear keyboard once you get accustomed to it. Your hands will adjust instantly.
-
-Using a keyboard with 48 keys is not a problem. Most writing primarily involves alphabets and spaces, making it feasible.
-
-
-
-# For Those Who Can't Overcome the Resistance
-
-I totally understand. It's perfectly reasonable for most people to find it undesirable to adapt to a quirky keyboard format. Rest assured, I plan to introduce a more standard yet portable format in future iterations. 
-
-Currently, my wife isn't a fan of writing, so I don't have anyone around to test or push for a standard keyboard. However, the constant feedback has made me consider that perhaps not being quirky about the keyboard could be a reasonable compromise.
-
-
 
 # Keyboard Layout Customization Guide
 
