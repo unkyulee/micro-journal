@@ -216,6 +216,20 @@ Turn on the Micro Journal Rev.6. \
 Micro Journal Rev.6 will show white screen for 10 seconds then automatically boot again to the updated firmware.
 
 
+# Strap Installation
+
+![strap](./images/strap_001.png)
+
+1. Place the strap between the knob and the ring. The ring acts as a buffer to prevent the knob from overtightening. Avoid tightening the knob too hard.
+
+2. Be gentle when opening or closing the hood. The twisting motion can cause the knob to tighten further, potentially leading to breakage.
+
+3. If the knob breaks, you can download the 3D model file and request 3D printing services for a replacement. Additionally, a gel-type glue (silicon type) can help to repair and sustain any cracks.
+
+3D Model files:
+https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/STL
+
+
 # Customizing Start and Sleep Animation
 
 If you want to change the Startup and Sleep animation. You can place the gif files directly in the SD card. Filename should be exactly the same in order to have the effect.
@@ -245,6 +259,7 @@ https://ezgif.com/
 ![wakeup](../gif/wakeup_balls.gif)
 
 ![wakeup](../gif/wakeup_system.gif)
+
 
 
 # Keyboard Layout Customization
