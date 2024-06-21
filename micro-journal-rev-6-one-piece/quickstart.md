@@ -23,7 +23,7 @@ Micro Journal Rev.6 requires one 18650 3.7V Lithium ion Battery. Search with key
 
 Please, note that when buying the battery, try to buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
 
-Also look for short circuit protection is equipped on the battery. 
+Make sure thqt the battery is equipped with a short circuit protection. 
 
 
 
