@@ -70,6 +70,8 @@ User Reviews:
 
 [Pascal Forget: Micro Journal – machine à écrire](https://www.pascalforget.com/micro-journal/)
 
+[Liliputing: MicroJournal is a distraction-free writing tool with Cherry MX hot-swap keys](https://liliputing.com/microjournal-is-a-distraction-free-writing-tool-with-cherry-mx-hot-swap-keys/)
+
 
 ## Third iteration: Immeidate power on and writing
 
