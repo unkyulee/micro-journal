@@ -4,7 +4,19 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 ## Fifth iteration: Write with Style
 
+I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
+
+<img src="./micro-journal-rev-6-one-piece/images/005.png" width="400">
+
+Enter the Micro Journal Rev.6, now with Cherry MX hot-swappable sockets, letting users customize their mechanical keyboard setup. It features a 48-key ortholinear layout, with a custom configuration via SD card (still in the works). The leather strap makes it easy to carry, and the display protective case doubles as a hood for privacy while writing on the go.
+
+I'm having some feelings that might be akin to love. I'm trying to deny this affection for an object, but I can't ignore the joy and lightness I feel when holding the leather strap.
+
+<img src="./micro-journal-rev-6-one-piece/images/005.jpg" width="400">
+
 [Buy from my Tindie shop](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
+
+### Documents 
 
 [Micro Journal Rev.6 Design Process Story](/micro-journal-rev-6-one-piece/readme.md)
 
@@ -20,6 +32,8 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 ### Press
 
+[Yanko Design: DISTRACTION-FREE DIGITAL TYPEWRITER CARRIES A PLAYFUL AND WHIMSICAL CHARACTER](https://www.yankodesign.com/2024/06/21/distraction-free-digital-typewriter-carries-a-playful-and-whimsical-character/)
+
 [Liliputing: MicroJournal is a distraction-free writing tool with Cherry MX hot-swap keys](https://liliputing.com/microjournal-is-a-distraction-free-writing-tool-with-cherry-mx-hot-swap-keys/)
 
 [The Verge: You can customize the mechanical keyboard on this distraction-free digital typewriter.](https://www.theverge.com/2024/6/18/24180889/you-can-customize-the-mechanical-keyboard-on-this-distraction-free-digital-typewriter)
@@ -28,16 +42,6 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 ](https://boingboing.net/2024/06/17/microjournal-a-distraction-free-writing-device-with-knobs.html)
 
 
-
-I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
-
-<img src="./micro-journal-rev-6-one-piece/images/005.png" width="400">
-
-Enter the Micro Journal Rev.6, now with Cherry MX hot-swappable sockets, letting users customize their mechanical keyboard setup. It features a 48-key ortholinear layout, with a custom configuration via SD card (still in the works). The leather strap makes it easy to carry, and the display protective case doubles as a hood for privacy while writing on the go.
-
-I'm having some feelings that might be akin to love. I'm trying to deny this affection for an object, but I can't ignore the joy and lightness I feel when holding the leather strap.
-
-<img src="./micro-journal-rev-6-one-piece/images/005.jpg" width="400">
 
 
 ## Fourth iteration: writerDeck with any mechanical keyboard
@@ -50,13 +54,15 @@ So, I proceeded to design an enclosure to sit next to the keyboard, utilizing th
 
 There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
 
+### Documents 
+
 For those who wants to build on your own: [Micro Journal Rev.5 Build Details](/micro-journal-rev-5-esp32-usbhost/readme.md)
 
 For those who already have the device: [Quick Start User Guide](/micro-journal-rev-5-esp32-usbhost/quickstart/readme.md)
 
 If you want to buy one: [Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
 
-User Reviews:
+### User Reviews
 
 [+1 for the Micro Journalk](https://www.reddit.com/r/writerDeck/comments/1cyvjsf/1_for_the_micro_journal/)
 
@@ -88,7 +94,19 @@ Despite the challenges, this version comes closest to my ideal writing device. I
 
 With these features in place, this build proves to be highly practical. It's perfect for capturing sudden bursts of inspiration or quickly jotting down important tasks or ideas. It's a device that can be kept on your bedside table, ready to record your dreams at a moment's notice. All you need to do is find the power switch before immortalizing your weirdest dream ever in writing.
 
+### Documents
+
 [Micro Journal Rev.4 Build Details](/micro-journal-rev-4-esp32/readme.md)
+
+[Typing Test Video](https://www.youtube.com/watch?v=S1f8ps_NdyE)
+
+
+### Press
+
+[KBD NEWS: A series of writerdecks: Micro Journal for distraction-free writing – designed by Un Kyu Lee.](https://kbd.news/Micro-Journal-2332.html)
+
+[Hackaday: ESP32 PROVIDES DISTRACTION-FREE WRITING EXPERIENCE](https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/)
+
 
 
 
@@ -104,9 +122,9 @@ This particular build involved 3D prints and hand-wired keyboards, making it sli
 
 It's important to note that achieving a distraction-free environment was challenging with this build. Phones are inherently versatile devices, offering access to various forms of entertainment like YouTube and music streaming services. Consequently, maintaining focus on writing proved difficult. Despite this limitation, the device still served its purpose well by assisting my daughter in continuing her journal writing.
 
-Here are build guides:
+### Documents
 
-[Micro Journal Rev.3 Build Details](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)
+[Micro Journal Rev.3 Build Guide](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)
 
 [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1bfhnfz/writerdeck_with_samsung_s8_using_an_old_mobile/)
 
@@ -124,7 +142,9 @@ Upon powering on the device, I utilized the midnight commander to navigate to th
 
 This is the write up for the build guide of ths raspberry pi build.
 
-[Micro Journal Rev.2 Build Details](/micro-journal-rev-2-raspberypi/readme.md) 
+### Documents
+
+[Micro Journal Rev.2 Build Guide](/micro-journal-rev-2-raspberypi/readme.md) 
 
 [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1b6ff16/micro_journal_rev_2/)
 
@@ -134,14 +154,6 @@ This is the write up for the build guide of ths raspberry pi build.
 https://new.reddit.com/r/writerDeck\
 https://www.writerdeck.org/
 
-
-# Press
-
-KBD NEWS\
-https://kbd.news/Micro-Journal-2332.html
-
-Hackaday\
-https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/
 
 
 # Online shop
