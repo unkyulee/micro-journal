@@ -61,6 +61,8 @@ When installed the battery with the wrong polarity, it can cause a unreparable d
 
 **Be extra careful with the battery installation. Can cause a fire**
 
+When closing the panel back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the panel to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
+
 # Step 2. Prepare SD card
 
 **SD card is already setup in this Micro Journal Rev. 6. Refer to this step only when you are inserting a new one**
