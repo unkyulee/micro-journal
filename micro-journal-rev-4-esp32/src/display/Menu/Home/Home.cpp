@@ -86,6 +86,11 @@ void Home_keyboard(char key)
         // move to keyboard layout
         app["menu"]["state"] = MENU_LAYOUT;
     }
+    else if (key == 'f')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_BUTTONS;
+    }
 #endif
 
     else if (key == 'w')
@@ -112,9 +117,5 @@ void Home_keyboard(char key)
         ESP.restart();
     }
 
-    else if (key == 'f')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_BUTTONS;
-    }
+    
 }
