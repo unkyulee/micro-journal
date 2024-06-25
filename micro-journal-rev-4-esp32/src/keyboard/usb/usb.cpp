@@ -274,9 +274,6 @@ void keyboard_usb_setup()
 
   // setup display button
   button_setup();
-
-  //
-  usb_ready = true;
 }
 
 ///
