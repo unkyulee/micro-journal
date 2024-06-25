@@ -212,7 +212,7 @@ Most of the USB keyboard should work by connecting to the writerDeck.
 - Wired USB keyboard should work
 - Some keyboards that has USB Hub on board does not work.
 - **Keyboard should be without a hub, without a battery system. Connecting directly to the keyboard that requries charging will break the Micro Journal**
-
+- **Keyboards that has many LEDs or has high power demand is not recommended to be connected to the Micro Journal**
 
 
 # Customizing Start and Sleep Animation

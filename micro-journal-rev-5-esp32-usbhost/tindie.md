@@ -51,6 +51,7 @@ Assembled writerDeck that includes
 
 **Keyboard should be without a hub, without a battery system. Connecting directly to the keyboard that requries charging will break the Micro Journal**
 
+- **Keyboards that has many LEDs or has high power demand is not recommended to be connected to the Micro Journal**
 
 
 ## Why did you make it?
@@ -70,11 +71,11 @@ It's perfect for capturing sudden bursts of inspiration or quickly jotting down 
 
 ## Youtube Video
 
-https://www.youtube.com/watch?v=zcHL68JWXqc
+[Micro Journal Rev.5 Introduction](https://www.youtube.com/watch?v=zcHL68JWXqc)
 
 ## DIY Build Guide
 
-https://github.com/unkyulee/micro-journal
+[DIY Build Guide](https://github.com/unkyulee/micro-journal)
 
 
 ## Press
