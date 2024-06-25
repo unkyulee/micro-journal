@@ -216,7 +216,6 @@ class MyEspUsbHost : public EspUsbHost
 };
 
 MyEspUsbHost usbHost;
-bool usb_ready = false;
 
 // initialize USB HOST
 String keyboard_layout_prev;
@@ -283,28 +282,25 @@ void keyboard_usb_setup()
 ///
 void keyboard_usb_loop()
 {
-  if (usb_ready)
+  // as a usb host
+  usbHost.task();
+
+  static unsigned int last = 0;
+  if (millis() - last > 1000)
   {
-    // as a usb host
-    usbHost.task();
+    //
+    last = millis();
 
-    static unsigned int last = 0;
-    if (millis() - last > 1000)
+    // check if layout is changed
+    JsonDocument &app = app_status();
+    String layout = app["config"]["keyboard_layout"].as<String>();
+    if (!layout.equals(keyboard_layout_prev))
     {
-      //
-      last = millis();
-
-      // check if layout is changed
-      JsonDocument &app = app_status();
-      String layout = app["config"]["keyboard_layout"].as<String>();
-      if (!layout.equals(keyboard_layout_prev))
-      {
-        app_log("Keyboard layout changed %s\n", layout);
-        keyboard_layout(layout);
-      }
+      app_log("Keyboard layout changed %s\n", layout);
+      keyboard_layout(layout);
     }
-
-    // handle display button press
-    button_loop();
   }
+
+  // handle display button press
+  button_loop();
 }

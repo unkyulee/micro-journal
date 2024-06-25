@@ -1,3 +1,9 @@
+
+## Quick Start Guide
+
+* Link to [Quick Start Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5-esp32-usbhost/quickstart/readme.md)
+
+
 ## What is it?
 
 Craft your own personalized writerDeck by pairing it with your favorite mechanical keyboard. This unique device seamlessly connects to a vast array of mechanical keyboards via a USB port, transforming them into functional writerDecks. With the ability to power on and start typing immediately, along with the added convenience of syncing with Google Drive, this writerDeck ensures that your drafts are always securely recorded.
@@ -32,7 +38,7 @@ Upon powering up, this device springs to life within moments, inviting you to un
 
 Assembled writerDeck that includes
 
-* Assembled device without Battery, and SD card.
+* Assembled device without Battery.
   * ESP32-S3, Display, Power supply modules, and usb interfaces assembled.
 
 * 3D printed enclosure, and assembled with the parts above.
@@ -41,8 +47,9 @@ Assembled writerDeck that includes
 
 **!! Please, note that Battery, SD card and Keyboard are NOT included.**
 
-**Device requires one 18650 battery to operate. Please, make sure to source the battery in order to operate the device.
-**
+**Device requires one 18650 battery to operate. Please, make sure to source the battery in order to operate the device.**
+
+**Keyboard should be without a hub, without a battery system. Connecting directly to the keyboard that requries charging will break the Micro Journal**
 
 
 
@@ -55,6 +62,7 @@ I couldn't find such a solution online, likely because it caters to a niche dema
 I aimed to acquire a dedicated device that allows me to type immediately, facilitating the collection of meeting notes or capturing fleeting ideas before they fade. While I've explored various iterations of a WriterDeck, none of them offer the crucial feature of instant powering on.
 
 So, I decided to build one by myself.
+
 
 ## What makes it special?
 
@@ -69,8 +77,16 @@ https://www.youtube.com/watch?v=zcHL68JWXqc
 https://github.com/unkyulee/micro-journal
 
 
+## Press
+
+[Hackster.io: Micro Journal Offers a Customizable writerDeck Experience](https://www.hackster.io/news/micro-journal-offers-a-customizable-writerdeck-experience-4ffbf773f3ec)
+
+[Guest Starring at Canadian National Radio](https://ici.radio-canada.ca/nouvelle/2080542/telephone-idiot-minimaliste-dumbphone)
+
 ## User Reviews
 
-[+1 for the Micro Journalk](https://www.reddit.com/r/writerDeck/comments/1cyvjsf/1_for_the_micro_journal/)
+I've been searching for something like this for years. Alphasmarts were close, but the keyboard was where they fell down, I always wanted to use my mechanical keyboards. I had ideas of a Raspberry Pi box and a small monitor, but they always felt too much like the dekstops/laptops I wanted to get away from.
 
 [My first WriterDeck - the Micro Journal Rev 5.](https://www.reddit.com/r/writerDeck/comments/1cytyq6/my_first_writerdeck_the_micro_journal_rev_5/)
+
+[+1 for the Micro Journalk](https://www.reddit.com/r/writerDeck/comments/1cyvjsf/1_for_the_micro_journal/)

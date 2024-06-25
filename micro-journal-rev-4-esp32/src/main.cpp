@@ -35,9 +35,6 @@ void setup()
       0,       // Priority of the task
       &Task0,  // Task handle.
       0);      // Core where the task should run
-
-  // keyboard setup
-  keyboard_setup();
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -49,6 +46,9 @@ void loop()
 
 void Core0(void *parameter)
 {
+  // keyboard setup
+  keyboard_setup();
+
   for (;;)
   {
     //

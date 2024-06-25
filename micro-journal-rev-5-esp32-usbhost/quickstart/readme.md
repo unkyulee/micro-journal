@@ -210,7 +210,10 @@ Most of the USB keyboard should work by connecting to the writerDeck.
 - Bluetooth keyboard is not able to connect to the writerDeck. (Should be possible in the future development)
 - Wireless keyboard with 2.4 Ghz USB dongle should work
 - Wired USB keyboard should work
-- Some keyboards that has USB Hub on board may not work.
+- Some keyboards that has USB Hub on board does not work.
+- **Keyboard should be without a hub, without a battery system. Connecting directly to the keyboard that requries charging will break the Micro Journal**
+
+
 
 # Customizing Start and Sleep Animation
 
