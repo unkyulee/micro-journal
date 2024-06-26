@@ -2,6 +2,11 @@
 
 The Micro Journal Rev. 6 utilizes a 48-key ortholinear keyboard, which may look quite different from the typical office keyboard. Many might wonder how to press the space bar or even if it’s possible to type effectively with it. The usability of this unconventional keyboard can be hard to imagine at first glance.
 
+![QWERTY](./images/map_default.png)
+
+ALT LAYER
+![QWERTY](./images/map_default_alt.png)
+
 It's true that this keyboard doesn't follow the standard format. Initially, using it can be challenging. However, you'll be amazed at how quickly your brain can adapt to the new system. After just three days of stuttering through typing, you'll start to feel fluent.
 
 
