@@ -16,7 +16,7 @@ U8g2_for_TFT_eSPI u8f; // U8g2 font instance
 void display_setup()
 {
   app_log("DISPLAY SETUP\n");
-  
+
   // Initialise the TFT screen
   tft.begin();
 
@@ -34,14 +34,23 @@ void display_setup()
   JsonDocument &app = app_status();
 
   // check SD card status
-  
   if (app.containsKey("error"))
   {
     app["screen"] = ERRORSCREEN;
   }
   else
   {
-    app["screen"] = WAKEUPSCREEN;
+    bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
+    if (disabled)
+    {
+      // show the word processor immediately when wakeup is disabled
+      app["screen"] = WORDPROCESSOR;
+    }
+    else
+    {
+      // 
+      app["screen"] = WAKEUPSCREEN;
+    }
   }
 }
 
@@ -56,7 +65,6 @@ void display_loop()
 
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
-
 
     // ERROR SCREEN
     if (screen == ERRORSCREEN)
@@ -112,7 +120,7 @@ void display_loop()
       // loop
       USBDRIVE_render(&tft, &u8f);
     }
-    
+
     // WORD PROCESSOR
     else
     {

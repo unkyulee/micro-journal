@@ -40,11 +40,13 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [D] START NEW ");
 #ifdef ENV_USBHOST
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
+    ptft->println(" [F] DEVICE BUTTON");
 #endif
     ptft->println(" [W] WIFI");
+    ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
-    ptft->println(" [F] DEVICE BUTTON");
+
     ptft->println(" [R] REBOOT DEVICE");
     ptft->println();
     ptft->println(" [B] BACK ");
@@ -99,6 +101,12 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
+    else if (key == 'a')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_STARTUP;
+    }
+
     else if (key == 'g')
     {
         // move to keyboard layout
@@ -116,6 +124,4 @@ void Home_keyboard(char key)
         // restart
         ESP.restart();
     }
-
-    
 }
