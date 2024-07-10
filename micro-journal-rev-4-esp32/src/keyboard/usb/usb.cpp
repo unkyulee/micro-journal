@@ -54,6 +54,8 @@
 #include "locale/it.h"
 #include "locale/us.h"
 #include "locale/ge.h"
+#include "locale/be.h"
+#include "locale/uk.h"
 
 class MyEspUsbHost : public EspUsbHost
 {
@@ -65,6 +67,8 @@ class MyEspUsbHost : public EspUsbHost
     static uint8_t const keyboard_conv_table_it[128][3] = {HID_KEYCODE_TO_ASCII_IT};
     static uint8_t const keyboard_conv_table_ca_bi[128][5] = {HID_KEYCODE_TO_ASCII_CA_BI};
     static uint8_t const keyboard_conv_table_ge[128][3] = {HID_KEYCODE_TO_ASCII_GE};
+    static uint8_t const keyboard_conv_table_be[128][3] = {HID_KEYCODE_TO_ASCII_BE};
+    static uint8_t const keyboard_conv_table_uk[128][2] = {HID_KEYCODE_TO_ASCII_UK};
 
     //
     static uint8_t pre_cursor_ascii = 0;
@@ -86,6 +90,24 @@ class MyEspUsbHost : public EspUsbHost
 
       // Italian
       return keyboard_conv_table_it[keycode][shift];
+    }
+
+    //
+    // Belgium
+    //
+    else if (hidLocal == HID_LOCAL_Belgian)
+    {
+      if (altgr > 0)
+        shift += 2;
+      return keyboard_conv_table_be[keycode][shift];
+    }
+
+    //
+    // UK
+    //
+    else if (hidLocal == HID_LOCAL_UK)
+    {
+      return keyboard_conv_table_uk[keycode][shift];
     }
 
     //
@@ -228,6 +250,10 @@ void keyboard_layout(String layout)
   {
     usbHost.setHIDLocal(HID_LOCAL_US);
   }
+  else if (layout == "BE")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_Belgian);
+  }
   else if (layout == "IT")
   {
     usbHost.setHIDLocal(HID_LOCAL_Italian);
@@ -239,6 +265,10 @@ void keyboard_layout(String layout)
   else if (layout == "CA")
   {
     usbHost.setHIDLocal(HID_LOCAL_Canadian_Bilingual);
+  }
+  else if (layout == "UK")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_UK);
   }
   else if (layout == "INT")
   {
