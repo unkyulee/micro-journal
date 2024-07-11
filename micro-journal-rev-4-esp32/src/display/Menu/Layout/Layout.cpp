@@ -24,7 +24,7 @@ void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" - Choose Keyboard Layout");
     ptft->println();
 
-    ptft->println("[a] US - International");
+    ptft->println("[a] International");
     ptft->println("[b] Belgian");
     ptft->println("[c] Canadian Multiligual");
     ptft->println("[g] German");
