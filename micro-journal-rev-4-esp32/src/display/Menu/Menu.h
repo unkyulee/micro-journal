@@ -25,7 +25,7 @@ void Menu_sync(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 #define MENU_LAYOUT 3
 #define MENU_WIFI 4
 #define MENU_DRIVE 5
-#define MENU_BLUETOOTH 6
+
 #define MENU_BUTTONS 7
 #define MENU_BACKGROUND 8
 #define MENU_FOREGROUND 9

@@ -3,6 +3,7 @@
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 #include "keyboard/ascii/ascii.h"
+#include "editor/editor.h"
 //
 #include "display/WordProcessor/WordProcessor.h"
 #include "display/ErrorScreen/ErrorScreen.h"
@@ -72,6 +73,16 @@ char keys[ROWS][COLS] = {
 
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
+//
+int layer = 0;
+bool _shift_pressed = false;
+bool _fn_pressed = false;
+
+// back space
+int _backspace_last = 0;
+bool _backspace_pressed = false;
+bool _backspace_double_tap = false;
+
 // initialize keymap
 void keyboard_keypad_setup()
 {
@@ -115,11 +126,23 @@ void keyboard_keypad_loop()
             }
         }
     }
+
+    // Handle Backspace
+    if (millis() > 60 + _backspace_last && _backspace_pressed)
+    {
+        _backspace_last = millis();
+
+        // send backspace key
+        keyboard_key('\b');
+    }
+
+    if (_backspace_double_tap)
+    {
+        _backspace_double_tap = false;
+        Editor::getInstance().delete_word();
+    }
 }
 
-bool _shift_pressed = false;
-bool _fn_pressed = false;
-int layer = 0;
 int keyboard_get_key(keypadEvent e)
 {
     //
@@ -130,7 +153,6 @@ int keyboard_get_key(keypadEvent e)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
-            app_log("FN\n");
             _fn_pressed = true;
             return 0;
         }
@@ -144,7 +166,6 @@ int keyboard_get_key(keypadEvent e)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
-            app_log("Shift\n");
             _shift_pressed = true;
             return 0;
         }
@@ -153,6 +174,34 @@ int keyboard_get_key(keypadEvent e)
         {
             _shift_pressed = false;
             return 0;
+        }
+    }
+    // mark back space press
+    else if (key == '\b')
+    {
+        if (e.bit.EVENT == KEY_JUST_PRESSED)
+        {
+            // check if it is double tap
+            if (millis() - _backspace_last <= 300)
+            {
+                _backspace_double_tap = true;
+                _backspace_pressed = false;
+                return 0;
+            }
+
+            // other wise track for the continuous delete
+            else
+            {
+                _backspace_last = millis() + 500;
+                _backspace_pressed = true;
+            }
+        }
+
+        else if (e.bit.EVENT == KEY_JUST_RELEASED)
+        {
+            // register the timer
+            _backspace_last = millis();
+            _backspace_pressed = false;
         }
     }
 

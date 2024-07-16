@@ -1,207 +1,73 @@
 #include "ascii.h"
 
-uint8_t ascii_international(uint8_t precursor, uint8_t ascii)
-{
+
+typedef struct {
+    uint8_t precursor;
+    uint8_t ascii;
+    uint8_t code;
+} AsciiMapping;
+
+static const AsciiMapping ascii_map[] = {
     // ~  a n o
-    uint8_t found = 0;
-    if (precursor == '~' && ascii == 'a')
-    {
-        found = 227; // ã
-    }
-    else if (precursor == '~' && ascii == 'A')
-    {
-        found = 195; // Ã
-    }
-    else if (precursor == '~' && ascii == 'n')
-    {
-        found = 241; // ñ
-    }
-    else if (precursor == '~' && ascii == 'N')
-    {
-        found = 209; // Ñ
-    }
-    else if (precursor == '~' && ascii == 'o')
-    {
-        found = 245; // õ
-    }
-    else if (precursor == '~' && ascii == 'O')
-    {
-        found = 213; // Õ
-    }
-
+    {'~', 'a', 227},
+    {'~', 'A', 195},
+    {'~', 'n', 241},
+    {'~', 'N', 209},
+    {'~', 'o', 245},
+    {'~', 'O', 213},
     // ` a e i o u
-    else if (precursor == '`' && ascii == 'a')
-    {
-        found = 224; // à
-    }
-    else if (precursor == '`' && ascii == 'A')
-    {
-        found = 192; // À
-    }
-    else if (precursor == '`' && ascii == 'e')
-    {
-        found = 232; // è
-    }
-    else if (precursor == '`' && ascii == 'E')
-    {
-        found = 200; // È
-    }
-    else if (precursor == '`' && ascii == 'i')
-    {
-        found = 236; // ì
-    }
-    else if (precursor == '`' && ascii == 'I')
-    {
-        found = 204; // Ì
-    }
-    else if (precursor == '`' && ascii == 'o')
-    {
-        found = 242; // ò
-    }
-    else if (precursor == '`' && ascii == 'O')
-    {
-        found = 210; // Ò
-    }
-    else if (precursor == '`' && ascii == 'u')
-    {
-        found = 249; // ù
-    }
-    else if (precursor == '`' && ascii == 'U')
-    {
-        found = 217; // Ù
-    }
-
+    {'`', 'a', 224},
+    {'`', 'A', 192},
+    {'`', 'e', 232},
+    {'`', 'E', 200},
+    {'`', 'i', 236},
+    {'`', 'I', 204},
+    {'`', 'o', 242},
+    {'`', 'O', 210},
+    {'`', 'u', 249},
+    {'`', 'U', 217},
     // ' a e i o u
-    else if (precursor == '\'' && ascii == 'a')
-    {
-        found = 225; // á
-    }
-    else if (precursor == '\'' && ascii == 'A')
-    {
-        found = 193; // Á
-    }
-    else if (precursor == '\'' && ascii == 'e')
-    {
-        found = 233; // é
-    }
-    else if (precursor == '\'' && ascii == 'E')
-    {
-        found = 201; // É
-    }
-    else if (precursor == '\'' && ascii == 'i')
-    {
-        found = 237; // í
-    }
-    else if (precursor == '\'' && ascii == 'I')
-    {
-        found = 205; // Í
-    }
-    else if (precursor == '\'' && ascii == 'o')
-    {
-        found = 243; // ó
-    }
-    else if (precursor == '\'' && ascii == 'O')
-    {
-        found = 211; // Ó
-    }
-    else if (precursor == '\'' && ascii == 'u')
-    {
-        found = 250; // ú
-    }
-    else if (precursor == '\'' && ascii == 'U')
-    {
-        found = 218; // Ú
-    }
-
+    {'\'', 'a', 225},
+    {'\'', 'A', 193},
+    {'\'', 'e', 233},
+    {'\'', 'E', 201},
+    {'\'', 'i', 237},
+    {'\'', 'I', 205},
+    {'\'', 'o', 243},
+    {'\'', 'O', 211},
+    {'\'', 'u', 250},
+    {'\'', 'U', 218},
     // " a e i o u y
-    else if (precursor == '\"' && ascii == 'a')
-    {
-        found = 228; // ä
-    }
-    else if (precursor == '\"' && ascii == 'A')
-    {
-        found = 196; // Ä
-    }
-    else if (precursor == '\"' && ascii == 'e')
-    {
-        found = 235; // ë
-    }
-    else if (precursor == '\"' && ascii == 'E')
-    {
-        found = 203; // Ë
-    }
-    else if (precursor == '\"' && ascii == 'i')
-    {
-        found = 239; // ï
-    }
-    else if (precursor == '\"' && ascii == 'I')
-    {
-        found = 207; // Ï
-    }
-    else if (precursor == '\"' && ascii == 'o')
-    {
-        found = 246; // ö
-    }
-    else if (precursor == '\"' && ascii == 'O')
-    {
-        found = 214; // Ö
-    }
-    else if (precursor == '\"' && ascii == 'u')
-    {
-        found = 252; // ü
-    }
-    else if (precursor == '\"' && ascii == 'U')
-    {
-        found = 220; // Ü
-    }
-    else if (precursor == '\"' && ascii == 'y')
-    {
-        found = 255; // ÿ
-    }
-
+    {'\"', 'a', 228},
+    {'\"', 'A', 196},
+    {'\"', 'e', 235},
+    {'\"', 'E', 203},
+    {'\"', 'i', 239},
+    {'\"', 'I', 207},
+    {'\"', 'o', 246},
+    {'\"', 'O', 214},
+    {'\"', 'u', 252},
+    {'\"', 'U', 220},
+    {'\"', 'y', 255},
     // ^ a e i o u
-    else if (precursor == '^' && ascii == 'a')
-    {
-        found = 226; // â
-    }
-    else if (precursor == '^' && ascii == 'A')
-    {
-        found = 194; // Â
-    }
-    else if (precursor == '^' && ascii == 'e')
-    {
-        found = 234; // ê
-    }
-    else if (precursor == '^' && ascii == 'E')
-    {
-        found = 202; // Ê
-    }
-    else if (precursor == '^' && ascii == 'i')
-    {
-        found = 238; // î
-    }
-    else if (precursor == '^' && ascii == 'I')
-    {
-        found = 206; // Î
-    }
-    else if (precursor == '^' && ascii == 'o')
-    {
-        found = 244; // ô
-    }
-    else if (precursor == '^' && ascii == 'O')
-    {
-        found = 212; // Ô
-    }
-    else if (precursor == '^' && ascii == 'u')
-    {
-        found = 251; // û
-    }
-    else if (precursor == '^' && ascii == 'U')
-    {
-        found = 219; // Û
-    }
+    {'^', 'a', 226},
+    {'^', 'A', 194},
+    {'^', 'e', 234},
+    {'^', 'E', 202},
+    {'^', 'i', 238},
+    {'^', 'I', 206},
+    {'^', 'o', 244},
+    {'^', 'O', 212},
+    {'^', 'u', 251},
+    {'^', 'U', 219}};
 
-    return found;
+uint8_t ascii_international(uint8_t precursor, uint8_t ascii) {
+    for (size_t i = 0; i < sizeof(ascii_map) / sizeof(AsciiMapping); ++i) {
+        if (ascii_map[i].precursor == precursor && ascii_map[i].ascii == ascii) {
+            return ascii_map[i].code;
+        }
+    }
+    return 0; // Default return value if no match is found
 }
 
 // https://www.ascii-code.com/
@@ -378,13 +244,20 @@ uint8_t unicode_convert_ascii(String key)
     if (key.length() != 1)
     {
         // If the input is not a single character, return 0 as an error value
-        if(key == "ESC") {
+        if (key == "ESC")
+        {
             return 27;
-        } else if(key == "BACKSPACE") {
+        }
+        else if (key == "BACKSPACE")
+        {
             return 8;
-        } else if(key == "SHIFT") {
+        }
+        else if (key == "SHIFT")
+        {
             return 14;
-        } else if(key == "ALT") {
+        }
+        else if (key == "ALT")
+        {
             return 17;
         }
         return 0;

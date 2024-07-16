@@ -35,10 +35,8 @@ void FrontPanelButton_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println("");
     }
 
-    // Bluetooth Keyboard Config
+    // 
     ptft->println(" [Y] Enable Front Panel Buttons ");
-
-    // Bluetooth Keyboard Config
     ptft->println(" [N] Disable Front Panel Buttons ");
 
     //

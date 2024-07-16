@@ -11,7 +11,6 @@
 #include "Layout/Layout.h"
 #include "Drive/Drive.h"
 #include "Wifi/Wifi.h"
-#include "BlueToothConfig/BluetoothConfig.h"
 #include "FrontPanelButton/FrontPanelButton.h"
 #include "Background/Background.h"
 #include "Foreground/Foreground.h"

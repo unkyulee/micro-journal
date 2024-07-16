@@ -1,192 +1,82 @@
 #include "WordProcessor.h"
 #include "app/app.h"
-#include "SD/sd.h"
-#include "display/display.h"
+#include "editor/editor.h"
 #include "keyboard/keyboard.h"
+#include "display/display.h"
 #include "keyboard/ascii/ascii.h"
 
-#include <FS.h>
-#include <SD.h>
-#include <algorithm>
+//
+int STATUSBAR_Y = 224;
+int screen_width = 320;
+bool clear_background = true;
+bool cleared_background = false;
+unsigned int last_sleep = millis();
 
-// Initialize static instance
-WordProcessor *WordProcessor::instance = nullptr;
+#define FILENAME "/ujournal.txt"
 
-// Get instance of WordProcessor
-WordProcessor &WordProcessor::getInstance(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+//
+void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    if (!instance)
-    {
-        instance = new WordProcessor(ptft, pu8f);
-    }
-    return *instance;
-}
-
-// Setup function
-void WordProcessor::setup()
-{
-    //
-    // Check SD card status
-    JsonDocument &app = app_status();
-
-    // Check if the file exists, create if not
-    if (!SD.exists(FILENAME))
-    {
-        File file = SD.open(FILENAME, FILE_WRITE);
-        if (!file)
-        {
-            //
-            Serial.println("Failed to create file");
-
-            return;
-        }
-        file.close();
-        Serial.println("File created");
-    }
+    // editor instantiate
+    Editor::getInstance(10, 26);
+    STATUSBAR_Y = 224;
 
     // setup default color
+    JsonDocument &app = app_status();
     if (!app["config"].containsKey("foreground_color"))
     {
         app["config"]["foreground_color"] = TFT_WHITE;
     }
 
-    // Load text from file
-    loadText();
+    // load file from the editor
+    Editor::getInstance().loadFile(FILENAME);
 
-    // Clear background
-    clear = true;
+    // start from clear background
+    clear_background = true;
 
     // sleep timer reset
     last_sleep = millis();
 }
 
-// Render text on screen
-void WordProcessor::render()
+//
+void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    bool cleared = clearBackground();
-    clearTrails();
-    checkSaved();
-    checkSleep();
+    // timers
+    WP_check_saved();
+    WP_check_sleep();
 
+    // CLEAR BACKGROUND
+    WP_render_clear(ptft, pu8f);
+
+    // RENDER STATUS BAR
+    WP_render_status(ptft, pu8f);
+
+    // RENDER TEXT
+    WP_render_text(ptft, pu8f);
+
+    // BLINK CURSOR
+    WP_render_blink(ptft, pu8f);
+
+    //
+    if (cleared_background)
+        cleared_background = false;
+}
+
+void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
     JsonDocument &app = app_status();
+
+    // LOAD COLORS
     uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
-    // Calculate the screen text lines
-    // try to display from the second line when possible
-    // then when cursor reaches the end refresh the screen
-    int total_line = 0;
-    int row_character_count = 0;
-    char last_char;
-
-    line_position[0] = &text_buffer[0];
-    line_length[0] = MAX_ROW_CHARACTERS;
-
-    for (int i = 0; i < TEXT_BUFFER_SIZE; i++)
-    {
-        // when reaching end of text
-        // break
-        if (text_buffer[i] == '\0')
-        {
-            //
-            line_length[total_line] = row_character_count;
-
-            //
-            line_position[total_line + 1] = nullptr;
-            line_length[total_line + 1] = 0;
-
-            // debug message
-            // app_log("%d %d %d\n", total_line, line_length[total_line]);
-
-            //
-            break;
-        }
-
-        // count total characters in a line
-        row_character_count++;
-
-        // when receiving a \n or max character reached
-        // start a new line
-        if (text_buffer[i] == '\n' || row_character_count == MAX_ROW_CHARACTERS)
-        {
-            //
-            total_line += 1;
-
-            //
-            line_position[total_line] = &text_buffer[i + 1];
-            line_length[total_line - 1] = row_character_count;
-
-            // if last character is new line don't count in
-            if (text_buffer[i] == '\n')
-            {
-                line_length[total_line - 1] = row_character_count - 1;
-            }
-
-            //
-            row_character_count = 0;
-        }
-
-        //
-        last_char = text_buffer[i];
-    }
-
-    // determine where the current editing line will be
-    int start_line = start_line_prev;
-
-    // when reached the max line
-    // refresh the screen to the 2nd line
-    if (total_line - start_line_prev >= MAX_LINES)
-    {
-        // very start of the writing, there is nothing to show
-        // so line starts from the first row
-        start_line = total_line - 2;
-        if (start_line < 0)
-            start_line = 0;
-
-        // refresh the screen
-        clear = true;
-        start_line_prev = start_line;
-    }
-
-    // with backspace, reaches the first character of the screen
-    // means there will be no more character displayed on the screen
-    if (total_line_prev > total_line && total_line == start_line - 1)
-    {
-        app_log("%d %d %d\n", total_line_prev, total_line, start_line);
-
-        // clear screen
-        clear = true;
-
-        start_line -= MAX_LINES - 1;
-        if (start_line < 0)
-            start_line = 0;
-
-        start_line_prev = start_line;
-    }
-
-    // if the line has changed then clear the previous line
-    //
-    if (total_line_prev != total_line)
-    {
-        // update the flag
-        total_line_prev = total_line;
-    }
-
-    // STATUS BAR
+    // RENDER STATUS BAR
     ptft->setCursor(0, STATUSBAR_Y, 2);
     ptft->setTextColor(foreground_color, background_color);
     ptft->setTextSize(1);
-    ptft->printf("%s bytes", formatNumberWithCommas(fileSize + text_pos - text_last_save_pos));
-    /*
-    ptft->printf("%s, %d, %d, %d, %d, %d",
-                 formatNumberWithCommas(fileSize + text_pos - text_last_save_pos),
-                 text_pos,
-                 text_last_save_pos,
-                 total_line,
-                 start_line,
-                 line_length[total_line - 1]);
-    */
-    if (text_pos == text_last_save_pos)
+    ptft->printf("%s bytes", Editor::getInstance().getFileSize());
+
+    if (Editor::getInstance().saved)
     {
         ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
     }
@@ -196,7 +86,27 @@ void WordProcessor::render()
     }
     ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
 
-    /////
+#ifdef ENV_USBHOST
+    // write keyboard layout
+    String layout = app["config"]["keyboard_layout"].as<String>();
+    if (layout == "null" || layout.isEmpty())
+        layout = "US"; // defaults to US layout
+    // draw status bar
+    ptft->setCursor(280, STATUSBAR_Y, 2);
+    ptft->setTextColor(foreground_color, background_color);
+    ptft->setTextSize(1);
+    ptft->print(layout);
+#endif
+}
+
+void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    JsonDocument &app = app_status();
+
+    // LOAD COLORS
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
     // Render the user text
     pu8f->setFont(u8g2_font_profont22_mf);      // extended font
     pu8f->setForegroundColor(foreground_color); // apply color
@@ -207,9 +117,50 @@ void WordProcessor::render()
     // not to redraw the entire screen
     // because when it reaches the end of the screen the typing speed slows down gradually
     // provides the feeling that the system is sluggish
+    static int start_line = 0;
+    static int total_line_prev = 0;
+    int total_line = Editor::getInstance().total_line;
+    char **line_position = Editor::getInstance().line_position;
+    int *line_length = Editor::getInstance().line_length;
 
-    // to prevent this. Just skips the previous lines that are already rendered
-    if (!cleared)
+    // determine where the current editing line will be
+    // when reached the max line
+    // refresh the screen to the 2nd line
+    if (total_line - start_line >= Editor::getInstance().rows)
+    {
+        // very start of the writing, there is nothing to show
+        // so line starts from the first row
+        start_line = total_line - 2;
+        if (start_line < 0)
+            start_line = 0;
+
+        //
+        clear_background = true;
+    }
+
+    // with backspace, reaches the first character of the screen
+    // means there will be no more character displayed on the screen
+    if (total_line_prev > total_line && total_line == start_line - 1)
+    {
+        app_log("%d %d %d\n", total_line_prev, total_line, start_line);
+
+        // clear screen
+        clear_background = true;
+
+        start_line -= Editor::getInstance().rows - 1;
+        if (start_line < 0)
+            start_line = 0;
+    }
+
+    // if the line has changed then clear the previous line
+    //
+    if (total_line_prev != total_line)
+    {
+        // update the flag
+        total_line_prev = total_line;
+    }
+
+    if (!cleared_background)
     {
         for (int i = start_line + 1; i < total_line - 2; i++)
         {
@@ -219,7 +170,7 @@ void WordProcessor::render()
     }
 
     int buffer_start_line = max(total_line - 2, start_line);
-    if (cleared)
+    if (cleared_background)
         buffer_start_line = start_line;
     for (int i = buffer_start_line; i <= total_line; i++)
     {
@@ -259,242 +210,109 @@ void WordProcessor::render()
             }
         }
     }
-
-    /////
-    blinkCursor();
 }
 
-// Empty the file
-void WordProcessor::emptyFile()
+void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    // Rename the existing file and create a new one
-    char newName[30];
-    snprintf(newName, sizeof(newName), "/%lu.txt", millis());
-
-    if (SD.rename(FILENAME, newName))
-    {
-        app_log("File renamed successfully: %s.\n", newName);
-    }
-    else
-    {
-        app_log("Error renaming file. %s\n", newName);
-        return;
-    }
-
-    File file = SD.open(FILENAME, FILE_WRITE);
-    if (!file)
-    {
-        Serial.println("Failed to create file");
-        JsonDocument &app = app_status();
-        app["screen"] = ERRORSCREEN;
-        return;
-    }
-    file.close();
-    app_log("File created\n");
-
-    // after write operation make sure to give some delay for safe operation
-    delay(250);
-}
-
-// Load text from file
-void WordProcessor::loadText()
-{
-    File file = SD.open(FILENAME);
-    if (!file)
-    {
-        app_log("Failed to open file for reading\n");
-        JsonDocument &app = app_status();
-        app["screen"] = ERRORSCREEN;
-        return;
-    }
-
-    // Determine file size and set buffer accordingly
-    fileSize = file.size();
-
-    // calcualte the file offset
-    int offset = 0;
-    if (fileSize > 0)
-        offset = (fileSize / TEXT_BUFFER_SIZE) * TEXT_BUFFER_SIZE;
-    if (!file.seek(offset))
-    {
-        app_log("Failed to seek file pointer\n");
-        file.close();
-        return;
-    }
-    app_log("Reading file from: %d\n", offset);
-
-    // Read file content into text buffer
-    int pos = 0;
-    text_buffer[pos] = '\0';
-    while (file.available())
-    {
-        text_buffer[pos++] = file.read();
-        text_buffer[pos] = '\0';
-    }
-    text_pos = pos;
-    text_pos_prev = pos;
-    text_last_save_pos = pos;
-    start_line_prev = 0;
-
-    app_log("File loaded: text_pos: %d, fileSize: %d\n",
-            text_pos,
-            fileSize);
-
-    file.close();
-    delay(100);
-}
-
-// Save text to file
-void WordProcessor::saveText()
-{
-    if (text_last_save_pos == text_pos)
-    {
-        // No changes, no need to save
-        app_log("Nothing is changed\n");
-        return;
-    }
-
-    static unsigned int last = 0;
-    if (millis() - last > 1000)
+    static bool blink = false;
+    static unsigned int last = millis();
+    if (millis() - last > 500)
     {
         last = millis();
-        File file = SD.open(FILENAME, FILE_WRITE);
-        if (!file)
-        {
-            app_log("Failed to open file for writing\n");
-            JsonDocument &app = app_status();
-            app["screen"] = ERRORSCREEN;
-            return;
-        }
-
-        // Seek to the specified offset
-        int offset = 0;
-        if (fileSize > 0)
-            offset = (fileSize / TEXT_BUFFER_SIZE) * TEXT_BUFFER_SIZE;
-        if (!file.seek(offset))
-        {
-            app_log("Failed to seek file pointer\n");
-            file.close();
-            return;
-        }
-        app_log("Writing file at: %d\n", offset);
-
-        // writing the file content
-        size_t length = file.print(text_buffer);
-        if (length >= 0)
-        {
-            app_log("File written: %d bytes\n", length);
-            //
-            text_last_save_pos = text_pos;
-        }
-        else
-        {
-            app_log("Write failed\n");
-            JsonDocument &app = app_status();
-            app["screen"] = ERRORSCREEN;
-        }
-
-        //
-        file.close();
-
-        // save operation takes time before loading is available
-        delay(100);
-
-        // recalculate the file size
-        // calculate the file size
-        file = SD.open(FILENAME, FILE_READ);
-        if (!file)
-        {
-            app_log("Failed to open file for reading\n");
-            JsonDocument &app = app_status();
-            app["screen"] = ERRORSCREEN;
-            return;
-        }
-        fileSize = file.size();
-        file.close();
-
-        // save operation takes time before loading is available
-        delay(100);
-
-        app_log("File size: %d, text_pos: %d\n", fileSize, text_pos);
+        blink = !blink;
     }
-}
 
-// Handle keyboard input
-void WordProcessor::keyboard(char key)
-{
-    if (file_on_going)
+    int cursorX = pu8f->getCursorX();
+    int cursorY = pu8f->getCursorY();
+
+    JsonDocument &app = app_status();
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+    // delete the previous cursor lines
+    static int length_prev = 0;
+    static int total_line_prev = 0;
+    int total_line = Editor::getInstance().total_line;
+    int length = Editor::getInstance().line_length[total_line];
+
+    // draw the blink cursor
+    if (blink)
     {
-        app_log("Skip Key Press. File Operation OnGonig.\n");
-        return;
+        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, foreground_color);
     }
-
-    // Check if menu key is pressed
-    if (key == MENU)
-    {
-        // Save before transitioning to the menu
-        file_on_going = true;
-        saveText();
-        file_on_going = false;
-
-        //
-        JsonDocument &app = app_status();
-        app["screen"] = MENUSCREEN;
-        return;
-    }
-
-    ///
-    // handling BACKSPACE
-    if (key == '\b')
-    {
-        if (text_pos > 0)
-        {
-            text_buffer[--text_pos] = '\0';
-        }
-        else
-        {
-            // Load previous contents from the file if at the beginning of the buffer
-            app_log("Backspace reached the beginning of the buffer\n");
-            clear = true;
-            text_pos = 0;
-            text_buffer[0] = '\0';
-
-            file_on_going = true;
-            saveText();
-            loadText();
-            file_on_going = false;
-        }
-    }
-    ///
-
     else
     {
-        text_buffer[text_pos++] = key;
-        text_buffer[text_pos] = '\0';
+        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, background_color);
     }
 
-    //
-    if (text_pos >= TEXT_BUFFER_SIZE)
+    if (total_line != total_line_prev)
     {
-        app_log("Text buffer full\n");
+        // when going back one line above with backspace
+        if (total_line_prev > total_line)
+        {
+            clear_background = true;
+        } else {
+            // clear the previous line
+            ptft->fillRect(0, cursorY - 34, 320, 40, background_color);
+        }
 
-        file_on_going = true;
-        saveText();
-        loadText();
-        file_on_going = false;
+        // line changed remove the previous line trail
+        // delete the previous trails
+        ptft->drawLine(
+            0,
+            cursorY - 16,
+            screen_width,
+            cursorY - 16,
+            background_color);
 
-        // when the buffer is about to finish try to save
-        clear = true;
+        //
+        total_line_prev = total_line;
+
+        //
+        blink = true;
+        last = millis();
+    }
+
+    if (length_prev != length)
+    {
+        // handle backspace
+        if (length_prev > length)
+        {
+            // delete the character
+            ptft->fillRect(cursorX, cursorY - 17, 320, 40, background_color);
+        }
+
+        // delete the previous trails
+        ptft->drawLine(
+            cursorX - (20 * (length - length_prev)),
+            cursorY + 2,
+            cursorX + 24,
+            cursorY + 2,
+            background_color);
+
+        //
+        length_prev = length;
+
+        //
+        blink = true;
+        last = millis();
     }
 }
 
-// Clear background
-bool WordProcessor::clearBackground()
+void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    if (clear)
+    // check if the editor requests to clear screen
+    if (Editor::getInstance().clear)
     {
-        //
-        clear = false;
+        Editor::getInstance().clear = false;
+        clear_background = true;
+    }
+
+    if (clear_background)
+    {
+        // reset flag
+        clear_background = false;
+        cleared_background = true;
 
         // apply background color
         JsonDocument &app = app_status();
@@ -515,83 +333,41 @@ bool WordProcessor::clearBackground()
         ptft->setTextSize(1);
         ptft->print(layout);
 #endif
-
-        return true;
     }
-
-    return false;
 }
 
-// Clear trails
-void WordProcessor::clearTrails()
+//
+void WP_keyboard(char key)
 {
-    if (text_pos_prev != text_pos)
+    // Check if menu key is pressed
+    if (key == MENU)
     {
-        // get current cursor position
-        int cursorX = pu8f->getCursorX();
-        int cursorY = pu8f->getCursorY();
+        // Save before transitioning to the menu
+        Editor::getInstance().saveFile();
 
+        //
         JsonDocument &app = app_status();
-        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
-
-        // remove previous cursor
-        for (int i = 0; i <= text_pos - text_pos_prev; i++)
-        {
-            ptft->drawLine(cursorX + 2 - (10 * (i + 1)), cursorY + 2, cursorX + 24 - (10 * (i + 1)), cursorY + 2, background_color);
-        }
-
-        // in case when back space is pressed
-        if (text_pos_prev > text_pos)
-        {
-            // delete the character
-            ptft->fillRect(cursorX - 12, cursorY - 17, 320, 40, background_color);
-        }
-
-        // always show the cursor when typing
-        blink = true;
-
-        // update the text_pos
-        text_pos_prev = text_pos;
-    }
-}
-
-// Blink Cursor
-void WordProcessor::blinkCursor()
-{
-    static unsigned int last = millis();
-    if (millis() - last > 500)
-    {
-        last = millis();
-        blink = !blink;
+        app["screen"] = MENUSCREEN;
     }
 
-    int cursorX = pu8f->getCursorX();
-    int cursorY = pu8f->getCursorY();
-
-    JsonDocument &app = app_status();
-    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
-
-    //
-    if (blink)
-    {
-        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, foreground_color);
-    }
     else
     {
-        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, background_color);
+        // send the keys to the editor
+        Editor::getInstance().keyboard(key);
     }
 }
 
 // Check if text is saved
-void WordProcessor::checkSaved()
+void WP_check_saved()
 {
     static unsigned int last = millis();
-    static unsigned int text_pos_last = -1;
-    if (text_pos_last != text_pos)
+    static unsigned int text_pos_prev = Editor::getInstance().text_pos;
+    unsigned int text_pos = Editor::getInstance().text_pos;
+
+    // extend the auto save timer
+    if (text_pos_prev != text_pos)
     {
-        text_pos_last = text_pos;
+        text_pos_prev = text_pos;
         last = millis();
     }
 
@@ -599,26 +375,23 @@ void WordProcessor::checkSaved()
     if (millis() - last > 5000)
     {
         last = millis();
-        if (text_pos != text_last_save_pos)
-        {
-            file_on_going = true;
-            saveText();
-            file_on_going = false;
-        }
+        Editor::getInstance().saveFile();
     }
 }
 
-//
-void WordProcessor::checkSleep()
+void WP_check_sleep()
 {
-    static unsigned int text_pos_last = -1;
-    if (text_pos_last != text_pos)
+    static unsigned int text_pos_prev = Editor::getInstance().text_pos;
+    unsigned int text_pos = Editor::getInstance().text_pos;
+
+    if (text_pos_prev != text_pos)
     {
         // when typed then reset sleep timer
-        text_pos_last = text_pos;
+        text_pos_prev = text_pos;
         last_sleep = millis();
     }
 
+    // 600 seconds - 10 minutes
     if (millis() - last_sleep > 600000)
     {
         // if no action for 10 minute go to sleep
@@ -628,30 +401,4 @@ void WordProcessor::checkSleep()
         JsonDocument &app = app_status();
         app["screen"] = SLEEPSCREEN;
     }
-}
-
-// Format number with commas
-String WordProcessor::formatNumberWithCommas(long num)
-{
-    String formattedNumber = "";
-    int digitCount = 0;
-
-    if (num < 0)
-    {
-        formattedNumber += "-";
-        num = -num;
-    }
-
-    do
-    {
-        if (digitCount > 0 && digitCount % 3 == 0)
-        {
-            formattedNumber = "," + formattedNumber;
-        }
-        formattedNumber = String(num % 10) + formattedNumber;
-        num /= 10;
-        digitCount++;
-    } while (num > 0);
-
-    return formattedNumber;
 }

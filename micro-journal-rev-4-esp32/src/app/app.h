@@ -11,5 +11,6 @@ JsonDocument &app_status();
 
 //
 void app_log(const char *format, ...);
+String format(const char *format, ...);
 
 #endif

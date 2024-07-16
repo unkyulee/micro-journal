@@ -7,8 +7,6 @@
 #include "keypad/keypad.h"
 #endif
 
-#include "bluetooth/bluetooth.h"
-
 //
 #include "app/app.h"
 #include "config/config.h"
@@ -58,7 +56,7 @@ void keyboard_key(char key)
     if (screen == WORDPROCESSOR)
     {
         // send the key stroke to word processor
-        WordProcessor::getInstance(nullptr, nullptr).keyboard(key);
+        WP_keyboard(key);
     }
     else if (screen == MENUSCREEN)
     {

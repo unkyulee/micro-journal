@@ -3,7 +3,7 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+#include "editor/editor.h"
 
 //
 void Clear_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -41,7 +41,7 @@ void Clear_keyboard(char key)
     if (key == 'Y' || key == 'y')
     {
         // empty the file
-        WordProcessor::getInstance(nullptr, nullptr).emptyFile();
+        Editor::getInstance().clearFile();
 
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
