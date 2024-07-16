@@ -6,6 +6,9 @@
 #include "display/WordProcessor/WordProcessor.h"
 
 //
+#include <SPIFFS.h>
+
+//
 void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     //
@@ -47,7 +50,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
 
-    ptft->println(" [R] REBOOT DEVICE");
+    ptft->println(" [R] RESET DEVICE");
     ptft->println();
     ptft->println(" [B] BACK ");
     ptft->println();
@@ -121,6 +124,9 @@ void Home_keyboard(char key)
 
     else if (key == 'r')
     {
+        // Delete wifi.json from the SPIFF
+        SPIFFS.remove("/wifi.json");
+        
         // restart
         ESP.restart();
     }
