@@ -401,7 +401,8 @@ void Editor::calculate_screen_buffer()
     }
 }
 
-void Editor::delete_word() {
+void Editor::delete_word()
+{
     int length = text_pos;
     if (length == 0)
         return;
@@ -409,7 +410,7 @@ void Editor::delete_word() {
     // Find the position of the last non-space character
     int end = length - 1;
     while (end >= 0 && buffer[end] == ' ')
-        end--;    
+        end--;
 
     // If buffer is all spaces or empty
     if (end < 0)
@@ -424,7 +425,7 @@ void Editor::delete_word() {
     buffer[start + 1] = '\0';
 
     // reset the text pos
-    text_pos = start;
+    text_pos = start + 1;
 
     // recalculate the screen buffer
     calculate_screen_buffer();
