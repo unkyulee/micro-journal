@@ -248,7 +248,7 @@ void GIFDraw(GIFDRAW *pDraw)
             } // while looking for opaque pixels
             if (iCount) // any opaque pixels?
             {
-                // DMA would degrtade performance here due to short line segments
+                // DMA would degrade performance here due to short line segments
                 ptft->setAddrWindow(pDraw->iX + x, y, iCount, 1);
                 ptft->pushPixels(usTemp, iCount);
                 x += iCount;

@@ -248,13 +248,8 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (total_line != total_line_prev)
     {
         // when going back one line above with backspace
-        if (total_line_prev > total_line)
-        {
-            clear_background = true;
-        } else {
-            // clear the previous line
-            ptft->fillRect(0, cursorY - 34, 320, 40, background_color);
-        }
+        // clear the previous line
+        ptft->fillRect(0, cursorY - 34, 320, 40, background_color);
 
         // line changed remove the previous line trail
         // delete the previous trails

@@ -182,7 +182,7 @@ int keyboard_get_key(keypadEvent e)
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
             // check if it is double tap
-            if (millis() - _backspace_last <= 300)
+            if (millis() - _backspace_last <= 200)
             {
                 _backspace_double_tap = true;
                 _backspace_pressed = false;

@@ -302,6 +302,11 @@ void Editor::keyboard(char key)
         }
     }
 
+    // DEL key deletes the word
+    else if(key == 127) {
+        delete_word();
+    }
+
     // FORWARD TYPING
     else
     {
