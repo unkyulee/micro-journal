@@ -37,7 +37,7 @@ The following json is the default configuration.
     "main-shift": 
     [
      "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "<",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "BACKSPACE",
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", 127,
      "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", "\"", "\n",
      "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", ">", "?", "SHIFT"
     ],
@@ -45,7 +45,7 @@ The following json is the default configuration.
     "alt": 
     [
      "`", "1", "2", "3", "4", "5", "6", "7", "8", "[", "]", "\\",
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", "BACKSPACE",
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
      "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\n",
      "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ",", "/", "SHIFT"
     ],
@@ -53,7 +53,7 @@ The following json is the default configuration.
     "alt-shift": 
     [
      "~", "!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "|",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", "BACKSPACE",
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
      "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\n",
      "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", "<", "?", "SHIFT"
     ]
@@ -75,6 +75,7 @@ Most keys are typed directly into the JSON file between quotes. However, some ke
 | SHIFT                  | This is a SHIFT key              |
 | ALT                    | Hidden layer activation key      |
 | BACKSPACE              | Works as a backspace             |
+| 127                    | Deletes a word (DEL)             |
 | \n                     | Enter Key                        |
 | \\\\                   | Backslash                        |
 | \\"                    | Double Quote                     |
@@ -100,7 +101,7 @@ Example "keyboard.json" content with accents:
     "main-shift": 
     [
      "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "<",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", 200, "BACKSPACE",
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", 200, 127,
      "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", "\"", "\n",
      "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", ">", "?", "SHIFT"
     ],
@@ -108,7 +109,7 @@ Example "keyboard.json" content with accents:
     "alt": 
     [
      "`", "1", "2", "3", "4", "5", "6", "7", "8", "[", "]", "\\",
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", "BACKSPACE",
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
      "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\n",
      "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ",", "/", "SHIFT"
     ],
@@ -116,7 +117,7 @@ Example "keyboard.json" content with accents:
     "alt-shift": 
     [
      "~", "!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "|",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", "BACKSPACE",
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
      "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\n",
      "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", "<", "?", "SHIFT"
     ]
@@ -151,7 +152,7 @@ For those who want to have the space bar on the bottom, try this layout and use 
 
     "main-shift": 
     [     
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "BACKSPACE",
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", 127,
      "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
      "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
      "!", "@", "#", "$", "%", " ", " ", "^", "&", "*", "(", ")"
@@ -159,7 +160,7 @@ For those who want to have the space bar on the bottom, try this layout and use 
 
     "alt": 
     [     
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", "BACKSPACE",
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
      "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "L", ":", "'",
      "SHIFT", "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", "\n",
      "`", "-", "=", "4", "5", " ", " ", "6", "7", "8", "[", "]"
@@ -167,7 +168,7 @@ For those who want to have the space bar on the bottom, try this layout and use 
 
     "alt-shift": 
     [     
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", "BACKSPACE",
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
      "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "'",
      "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
      "~", "_", "+", "$", "%", " ", " ", "^", "&", "*", "{", "}"
