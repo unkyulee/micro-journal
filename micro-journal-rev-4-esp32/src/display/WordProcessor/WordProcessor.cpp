@@ -112,7 +112,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     pu8f->setFont(u8g2_font_profont22_mf);      // extended font
     pu8f->setForegroundColor(foreground_color); // apply color
     pu8f->setFontMode(1);                       // use u8g2 transparent mode (this is default)
-    pu8f->setCursor(0, 24);                     // start writing at this position
+    pu8f->setCursor(1, 24);                     // start writing at this position
 
     // try to render only two lines at a time
     // not to redraw the entire screen
@@ -200,14 +200,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             {
                 // convert extended ascii into a streamlined string
                 uint8_t value = *(line_position[i] + j);
-                if (value < 128)
-                {
-                    pu8f->print((char)value);
-                }
-                else
-                {
-                    pu8f->print(ascii_convert_unicode(value));
-                }
+                pu8f->print((char)value);                
             }
         }
     }
