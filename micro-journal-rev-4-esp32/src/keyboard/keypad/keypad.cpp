@@ -44,19 +44,19 @@ int layers[LAYERS][ROWS * COLS] = {
 
     {// when shift is pressed
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<',
-     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 8,
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 127,
      17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
 
     {// special layer
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 8,
+     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 127,
      17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\n',
      14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', ',', '/', 14},
 
     {// special layer shift
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
-     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 8,
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 127,
      17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '<', '?', 14},
 
@@ -135,16 +135,15 @@ void keyboard_keypad_loop()
         // send backspace key
         keyboard_key('\b');
     }
-
-    if (_backspace_double_tap)
-    {
-        _backspace_double_tap = false;
-        Editor::getInstance().delete_word();
-    }
 }
 
 int keyboard_get_key(keypadEvent e)
 {
+    // release back space when any other keys are pressed
+    if(_backspace_pressed) {
+        _backspace_pressed = false;
+    }
+
     //
     // step 1. layer processing
     //
@@ -181,20 +180,8 @@ int keyboard_get_key(keypadEvent e)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
-            // check if it is double tap
-            if (millis() - _backspace_last <= 200)
-            {
-                _backspace_double_tap = true;
-                _backspace_pressed = false;
-                return 0;
-            }
-
-            // other wise track for the continuous delete
-            else
-            {
-                _backspace_last = millis() + 500;
-                _backspace_pressed = true;
-            }
+            _backspace_last = millis() + 500;
+            _backspace_pressed = true;
         }
 
         else if (e.bit.EVENT == KEY_JUST_RELEASED)

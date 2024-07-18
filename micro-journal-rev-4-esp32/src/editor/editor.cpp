@@ -12,8 +12,22 @@
 // Setup function
 void Editor::loadFile(const char *fileName)
 {
+    if (this->saving)
+    {
+        // file operation on-going
+        app_log("File operation on-going");
+        return;
+    }
+
     // save to global
     this->fileName = fileName;
+
+    // Ensure the saving flag is reset at the end of the function
+    this->saving = true;
+    auto cleanup = [this]()
+    {
+        this->saving = false;
+    };
 
     // Check SD card status
     JsonDocument &app = app_status();
@@ -31,6 +45,9 @@ void Editor::loadFile(const char *fileName)
             //
             app["error"] = "Failed to create file";
             app["screen"] = ERRORSCREEN;
+
+            //
+            cleanup();
 
             return;
         }
@@ -52,6 +69,9 @@ void Editor::loadFile(const char *fileName)
         app["error"] = format("file open failed %s\n", fileName);
         app["screen"] = ERRORSCREEN;
         app_log(app["error"].as<const char *>());
+
+        //
+        cleanup();
 
         return;
     }
@@ -81,6 +101,9 @@ void Editor::loadFile(const char *fileName)
         app["error"] = format("Failed to seek file pointer. fileSize: %d offset: %d\n", fileSize, offset);
         app["screen"] = ERRORSCREEN;
         app_log(app["error"].as<const char *>());
+
+        //
+        cleanup();
 
         return;
     }
@@ -114,18 +137,25 @@ void Editor::loadFile(const char *fileName)
     //
     this->clear = true;
     this->saved = true;
+
+    //
+    cleanup();
 }
 
 void Editor::saveFile()
 {
-    if (this->saved)
+    if (this->saved || this->saving)
     {
-        // already saved
         return;
     }
 
     // set saving flag
     this->saving = true;
+    // Ensure the saving flag is reset at the end of the function
+    auto cleanup = [this]()
+    {
+        this->saving = false;
+    };
 
     //
     JsonDocument &app = app_status();
@@ -140,7 +170,7 @@ void Editor::saveFile()
         app_log(app["error"].as<const char *>());
 
         //
-        this->saving = false;
+        cleanup();
 
         return;
     }
@@ -156,7 +186,7 @@ void Editor::saveFile()
         delay(100);
 
         //
-        this->saving = false;
+        cleanup();
 
         return;
     }
@@ -189,7 +219,7 @@ void Editor::saveFile()
         app["screen"] = ERRORSCREEN;
 
         //
-        this->saving = false;
+        cleanup();
 
         //
         return;
@@ -202,11 +232,20 @@ void Editor::saveFile()
 
     // file is saved
     this->saved = true;
-    this->saving = false;
+
+    //
+    cleanup();
 }
 
 void Editor::clearFile()
 {
+    if (this->saving)
+    {
+        // file operation on-going
+        app_log("File operation on-going");
+        return;
+    }
+
     //
     JsonDocument &app = app_status();
 
@@ -272,6 +311,12 @@ String Editor::getFileSize()
 
 void Editor::keyboard(char key)
 {
+    if (this->saving)
+    {
+        // do not handle key inputs when file operation is on-going
+        app_log("Skip inputs File operation on-going");
+        return;
+    }
     // every key stroke saved = false;
     this->saved = false;
 
@@ -303,7 +348,8 @@ void Editor::keyboard(char key)
     }
 
     // DEL key deletes the word
-    else if(key == 127) {
+    else if (key == 127)
+    {
         delete_word();
     }
 
