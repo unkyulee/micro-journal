@@ -5,6 +5,7 @@
 #include "display/display.h"
 #include "keyboard/ascii/ascii.h"
 
+// font size x 12 x 18
 //
 int STATUSBAR_Y = 224;
 int screen_width = 320;
@@ -248,8 +249,21 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (total_line != total_line_prev)
     {
         // when going back one line above with backspace
-        // clear the previous line
-        ptft->fillRect(0, cursorY - 34, 320, 40, background_color);
+        if (total_line < total_line_prev)
+        {
+            // delete the line below
+            ptft->fillRect(0, cursorY, 320, 60, background_color);
+
+            // delete the last character of the line
+            ptft->fillRect(cursorX - 20, cursorY - 22, 320, 24, background_color);
+        }
+
+        // word wrap occurred
+        if (length > 0)
+        {
+            // delete the last part of the previous line
+            ptft->fillRect(320 - 12 * (length + 1), cursorY - 40, 320, 24, background_color);
+        }
 
         // line changed remove the previous line trail
         // delete the previous trails

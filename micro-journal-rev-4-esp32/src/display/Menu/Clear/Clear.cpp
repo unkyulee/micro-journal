@@ -42,7 +42,7 @@ void Clear_keyboard(char key)
     {
         // empty the file
         Editor::getInstance().clearFile();
-
+        
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
     }

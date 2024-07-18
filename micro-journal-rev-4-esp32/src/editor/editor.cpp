@@ -15,7 +15,7 @@ void Editor::loadFile(const char *fileName)
     if (this->saving)
     {
         // file operation on-going
-        app_log("File operation on-going");
+        app_log("File operation on-going\n");
         return;
     }
 
@@ -242,9 +242,17 @@ void Editor::clearFile()
     if (this->saving)
     {
         // file operation on-going
-        app_log("File operation on-going");
+        app_log("File operation on-going\n");
         return;
     }
+
+    // set saving flag
+    this->saving = true;
+    // Ensure the saving flag is reset at the end of the function
+    auto cleanup = [this]()
+    {
+        this->saving = false;
+    };
 
     //
     JsonDocument &app = app_status();
@@ -267,6 +275,8 @@ void Editor::clearFile()
         app_log(app["error"].as<const char *>());
         app["screen"] = ERRORSCREEN;
 
+        cleanup();
+
         return;
     }
 
@@ -277,10 +287,18 @@ void Editor::clearFile()
         app_log(app["error"].as<const char *>());
         app["screen"] = ERRORSCREEN;
 
+        cleanup();
+        
         return;
     }
     file.close();
     delay(100);
+
+    //
+    cleanup();
+
+    // reload the file
+    loadFile(fileName);
 }
 
 String Editor::getFileSize()
@@ -314,7 +332,7 @@ void Editor::keyboard(char key)
     if (this->saving)
     {
         // do not handle key inputs when file operation is on-going
-        app_log("Skip inputs File operation on-going");
+        app_log("Skip inputs File operation on-going\n");
         return;
     }
     // every key stroke saved = false;
