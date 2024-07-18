@@ -1,7 +1,7 @@
 #include "ascii.h"
 
-
-typedef struct {
+typedef struct
+{
     uint8_t precursor;
     uint8_t ascii;
     uint8_t code;
@@ -61,9 +61,12 @@ static const AsciiMapping ascii_map[] = {
     {'^', 'u', 251},
     {'^', 'U', 219}};
 
-uint8_t ascii_international(uint8_t precursor, uint8_t ascii) {
-    for (size_t i = 0; i < sizeof(ascii_map) / sizeof(AsciiMapping); ++i) {
-        if (ascii_map[i].precursor == precursor && ascii_map[i].ascii == ascii) {
+uint8_t ascii_international(uint8_t precursor, uint8_t ascii)
+{
+    for (size_t i = 0; i < sizeof(ascii_map) / sizeof(AsciiMapping); ++i)
+    {
+        if (ascii_map[i].precursor == precursor && ascii_map[i].ascii == ascii)
+        {
             return ascii_map[i].code;
         }
     }
@@ -77,8 +80,30 @@ String ascii_convert_unicode(u_int8_t ascii)
     {
     case 128:
         return "€";
+    case 130:
+        return "‚";
+    case 131:
+        return "ƒ";
+    case 132:
+        return "„";
+    case 133:
+        return "…";
+    case 134:
+        return "†";
+    case 135:
+        return "‡";
+    case 136:
+        return "ˆ";
+    case 137:
+        return "‰";
+    case 138:
+        return "Š";
+    case 139:
+        return "‹";
     case 140:
         return "Œ";
+    case 142:
+        return "Ž";
     case 145:
         return "‘";
     case 146:
@@ -87,10 +112,38 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "“";
     case 148:
         return "”";
+    case 149:
+        return "•";
+    case 150:
+        return "–";
+    case 151:
+        return "—";
+    case 152:
+        return "˜";
+    case 153:
+        return "™";
+    case 154:
+        return "š";
+    case 155:
+        return "›";
+    case 156:
+        return "œ";
+    case 158:
+        return "ž";
+    case 159:
+        return "Ÿ";
+    case 161:
+        return "¡";
     case 162:
         return "¢";
     case 163:
         return "£";
+    case 164:
+        return "¤";
+    case 165:
+        return "¥";
+    case 166:
+        return "¦";
     case 167:
         return "§";
     case 168:
@@ -101,12 +154,42 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "ª";
     case 171:
         return "«";
+    case 172:
+        return "¬";
+    case 174:
+        return "®";
+    case 175:
+        return "¯";
     case 176:
         return "°";
+    case 177:
+        return "±";
+    case 178:
+        return "²";
+    case 179:
+        return "³";
+    case 180:
+        return "´";
     case 181:
         return "µ";
+    case 182:
+        return "¶";
+    case 183:
+        return "·";
+    case 184:
+        return "¸";
+    case 185:
+        return "¹";
+    case 186:
+        return "º";
     case 187:
         return "»";
+    case 188:
+        return "¼";
+    case 189:
+        return "½";
+    case 190:
+        return "¾";
     case 191:
         return "¿";
     case 192:
@@ -155,6 +238,10 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "Õ";
     case 214:
         return "Ö";
+    case 215:
+        return "×";
+    case 216:
+        return "Ø";
     case 217:
         return "Ù";
     case 218:
@@ -163,18 +250,26 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "Û";
     case 220:
         return "Ü";
+    case 221:
+        return "Ý";
+    case 222:
+        return "Þ";
     case 223:
         return "ß";
     case 224:
         return "à";
     case 225:
         return "á";
-    case 227:
-        return "ã";
     case 226:
         return "â";
+    case 227:
+        return "ã";
     case 228:
         return "ä";
+    case 229:
+        return "å";
+    case 230:
+        return "æ";
     case 231:
         return "ç";
     case 232:
@@ -193,6 +288,8 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "î";
     case 239:
         return "ï";
+    case 240:
+        return "ð";
     case 241:
         return "ñ";
     case 242:
@@ -205,14 +302,22 @@ String ascii_convert_unicode(u_int8_t ascii)
         return "õ";
     case 246:
         return "ö";
+    case 247:
+        return "÷";
+    case 248:
+        return "ø";
     case 249:
         return "ù";
-    case 252:
-        return "ü";
     case 250:
         return "ú";
     case 251:
         return "û";
+    case 252:
+        return "ü";
+    case 253:
+        return "ý";
+    case 254:
+        return "þ";
     case 255:
         return "ÿ";
     }
