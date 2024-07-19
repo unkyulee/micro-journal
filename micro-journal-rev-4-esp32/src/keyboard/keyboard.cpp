@@ -18,6 +18,8 @@
 #include "display/Menu/Menu.h"
 #include "display/WakeUp/WakeUp.h"
 
+bool keyboard_setup_completed = false;
+
 void keyboard_setup()
 {
 #ifdef ENV_USBHOST
@@ -29,10 +31,15 @@ void keyboard_setup()
     // keypad setup
     keyboard_keypad_setup();
 #endif
+
+keyboard_setup_completed = true;
 }
 
 void keyboard_loop()
 {
+    if(!keyboard_setup_completed) return;
+
+    
 #ifdef ENV_USBHOST
     // usb keyboard loop
     keyboard_usb_loop();

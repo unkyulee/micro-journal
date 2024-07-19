@@ -1,6 +1,7 @@
 #include "WakeUp.h"
 #include "app/app.h"
 #include "display/display.h"
+#include "keyboard/keyboard.h"
 
 #ifdef USE_DMA
 uint16_t usTemp[2][BUFFER_SIZE]; // Global to support DMA use
@@ -41,7 +42,6 @@ void WakeUp_setup(TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f, bool w)
 void WakeUp_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     //
-
     // Put your main code here, to run repeatedly:
     if (gif.open((uint8_t *)gif_image, gif_image_size, GIFDraw))
     {
