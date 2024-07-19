@@ -25,7 +25,7 @@ public:
     void delete_word();
 
     //
-    void loadFile(const char *filename);
+    void loadFile(String filename);
     void saveFile();
     void clearFile();
 
@@ -49,7 +49,7 @@ public:
     bool clear = false;
 
     // current filename
-    const char *fileName;
+    String fileName;
     size_t fileSize;
 
 private:

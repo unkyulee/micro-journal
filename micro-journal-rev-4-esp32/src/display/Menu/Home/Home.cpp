@@ -3,7 +3,7 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+#include "editor/editor.h"
 
 //
 #include <SPIFFS.h>
@@ -26,7 +26,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         keyboard_layout = "US";
 
     // Text to be displayed
-    ptft->setCursor(0, 30, 2);
+    ptft->setCursor(0, 20, 2);
     ptft->setTextSize(1);
 
     //
@@ -39,8 +39,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" [S] SYNC ");
     }
 
-    //
-    ptft->println(" [D] START NEW ");
+
 #ifdef ENV_USBHOST
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
     ptft->println(" [F] DEVICE BUTTON");
@@ -55,6 +54,30 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [B] BACK ");
     ptft->println();
     ptft->println();
+
+    // File Selection
+    int pos_x = 180;
+    ptft->setCursor(pos_x, 30, 2);
+    ptft->print("CHOOSE A FILE");
+
+    int file_index = app["config"]["file_index"].as<int>();
+    for (int i = 0; i < 9; i++)
+    {
+        if (file_index == i + 1)
+        {
+            ptft->setTextColor(TFT_GREEN, TFT_BLACK);
+        }
+        else
+        {
+            ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+        }
+
+        ptft->setCursor(pos_x, 50 + i * 16, 2);
+        ptft->printf(" [%d] File %d", i + 1, i + 1);
+    }
+    //
+    ptft->setCursor(pos_x, 210, 2);
+    ptft->printf(" [D] Clear File %d ", file_index);
 }
 
 //
@@ -126,8 +149,24 @@ void Home_keyboard(char key)
     {
         // Delete wifi.json from the SPIFF
         SPIFFS.remove("/wifi.json");
-        
+
         // restart
         ESP.restart();
+    }
+
+    // chose file
+    if (key > 48 && key < 58)
+    {
+        // save config
+        int file_index = key - 48;
+        app["config"]["file_index"] = file_index;
+        config_save();
+
+        // load editor
+        Editor::getInstance().loadFile(format("/%d.txt", file_index));
+
+        //
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
     }
 }

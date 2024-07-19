@@ -10,7 +10,7 @@
 #include <algorithm>
 
 // Setup function
-void Editor::loadFile(const char *fileName)
+void Editor::loadFile(String fileName)
 {
     if (this->saving)
     {
@@ -161,6 +161,7 @@ void Editor::saveFile()
     JsonDocument &app = app_status();
 
     //
+    app_log("%s\n", fileName);
     File file = SD.open(fileName, FILE_WRITE);
     if (!file)
     {

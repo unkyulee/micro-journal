@@ -13,8 +13,6 @@ bool clear_background = true;
 bool cleared_background = false;
 unsigned int last_sleep = millis();
 
-#define FILENAME "/ujournal.txt"
-
 //
 void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
@@ -30,7 +28,8 @@ void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     // load file from the editor
-    Editor::getInstance().loadFile(FILENAME);
+    int file_index = app["config"]["file_index"].as<int>();
+    Editor::getInstance().loadFile(format("/%d.txt", file_index));
 
     // start from clear background
     clear_background = true;
@@ -72,11 +71,20 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // RENDER STATUS BAR
-    ptft->setCursor(0, STATUSBAR_Y, 2);
     ptft->setTextColor(foreground_color, background_color);
     ptft->setTextSize(1);
+
+    // FILE INDEX
+    ptft->setCursor(0, STATUSBAR_Y, 2);
+    ptft->setTextColor(background_color, foreground_color);
+    ptft->printf(" %d ", app["config"]["file_index"].as<int>());
+
+    // FILE SIZE
+    ptft->setTextColor(foreground_color, background_color);
+    ptft->setCursor(25, STATUSBAR_Y, 2);
     ptft->printf("%s bytes", Editor::getInstance().getFileSize());
 
+    // SAVE STATUS
     if (Editor::getInstance().saved)
     {
         ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
@@ -88,7 +96,7 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
 
 #ifdef ENV_USBHOST
-    // write keyboard layout
+    // KEYBOARD LAYOUT
     String layout = app["config"]["keyboard_layout"].as<String>();
     if (layout == "null" || layout.isEmpty())
         layout = "US"; // defaults to US layout
@@ -153,7 +161,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             start_line = 0;
     }
 
-    // when deleting a word it can be that it is a long word 
+    // when deleting a word it can be that it is a long word
     // and goes back to the previous screen
     // this case start_line should be redefined
     if (abs(total_line - total_line_prev) > 2 && total_line_prev != 0)

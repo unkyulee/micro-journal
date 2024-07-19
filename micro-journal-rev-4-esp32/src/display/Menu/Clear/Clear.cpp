@@ -27,7 +27,7 @@ void Clear_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
     ptft->println();
-    ptft->println("WARNING: This action will delete all text. Make sure to sync your content before confirming to prevent loss of data.");
+    ptft->println("WARNING: This action will delete the selected file. Make sure to sync your content before confirming to prevent loss of data.");
     ptft->println();
     ptft->println(" [B] BACK ");
 }

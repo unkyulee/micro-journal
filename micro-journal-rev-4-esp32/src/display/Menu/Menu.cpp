@@ -60,6 +60,16 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextSize(1);
     ptft->print(" MENU ");
     ptft->print(VERSION);
+    ptft->print(" ");
+
+#ifdef ENV_USBHOST
+    ptft->print(" REV.5 ");
+#endif
+
+#ifdef ENV_KEYBOARD
+    ptft->print(" REV.6 ");
+#endif
+
 
     // draw sub module of menu
     JsonDocument &app = app_status();
