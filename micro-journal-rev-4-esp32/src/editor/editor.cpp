@@ -288,7 +288,7 @@ void Editor::clearFile()
         app["screen"] = ERRORSCREEN;
 
         cleanup();
-        
+
         return;
     }
     file.close();
@@ -415,6 +415,8 @@ void Editor::calculate_screen_buffer()
             // Mark the end of the text
             line_position[total_line + 1] = nullptr;
             line_length[total_line + 1] = 0;
+
+            //
             break;
         }
 
@@ -487,8 +489,16 @@ void Editor::delete_word()
 
     // Find the beginning of the last word
     int start = end;
-    while (start >= 0 && buffer[start] != ' ')
+    while (start >= 0 && buffer[start] != ' ' && buffer[start] != '\n')
         start--;
+
+    app_log("%d\n", start);
+    // add space at the last stop
+    if(start < 0) {
+        start = 0;
+        buffer[0] = '\0';
+    }
+    buffer[start] = ' ';
 
     // Remove the last word and any trailing spaces
     buffer[start + 1] = '\0';

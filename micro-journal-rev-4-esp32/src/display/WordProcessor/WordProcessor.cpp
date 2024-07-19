@@ -153,6 +153,19 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             start_line = 0;
     }
 
+    // when deleting a word it can be that it is a long word 
+    // and goes back to the previous screen
+    // this case start_line should be redefined
+    if (abs(total_line - total_line_prev) > 2 && total_line_prev != 0)
+    {
+        start_line = total_line - 2;
+        if (start_line < 0)
+            start_line = 0;
+
+        //
+        clear_background = true;
+    }
+
     // if the line has changed then clear the previous line
     //
     if (total_line_prev != total_line)
@@ -200,7 +213,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             {
                 // convert extended ascii into a streamlined string
                 uint8_t value = *(line_position[i] + j);
-                pu8f->print((char)value);                
+                pu8f->print((char)value);
             }
         }
     }
@@ -241,6 +254,7 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     if (total_line != total_line_prev)
     {
+
         // when going back one line above with backspace
         if (total_line < total_line_prev)
         {
@@ -266,10 +280,8 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             screen_width,
             cursorY - 16,
             background_color);
-
         //
         total_line_prev = total_line;
-
         //
         blink = true;
         last = millis();
