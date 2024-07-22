@@ -83,14 +83,16 @@ void Editor::loadFile(String fileName)
     int offset = 0;
     if (fileSize > 0)
         offset = (fileSize / BUFFER_SIZE) * BUFFER_SIZE;
-    if (fileSize - offset == 0 && offset > 0)
+    if (fileSize == offset && offset > 0)
     {
         // when it is exactly the buffer end
         // go one buffer behind
         offset -= BUFFER_SIZE;
-        if (offset < 0)
-            offset = 0;
     }
+
+    if (offset < 0)
+        offset = 0;
+        
     if (!file.seek(offset))
     {
         //
@@ -155,6 +157,8 @@ void Editor::saveFile()
     auto cleanup = [this]()
     {
         this->saving = false;
+        // file is saved
+        this->saved = true;
     };
 
     //
@@ -182,7 +186,11 @@ void Editor::saveFile()
         offset = (fileSize / BUFFER_SIZE) * BUFFER_SIZE;
     if (!file.seek(offset))
     {
-        app_log("Failed to seek file pointer\n");
+        app["error"] = "Failed to seek file pointer\n";
+        app["screen"] = ERRORSCREEN;
+        app_log(app["error"].as<const char *>());
+
+        //
         file.close();
         delay(100);
 
@@ -198,17 +206,26 @@ void Editor::saveFile()
     if (length >= 0)
     {
         app_log("File written: %d bytes\n", length);
+
+        //
+        file.close();
+        delay(100);
     }
     else
     {
         app["error"] = "Save failed\n";
         app["screen"] = ERRORSCREEN;
         app_log(app["error"].as<const char *>());
-    }
 
-    //
-    file.close();
-    delay(100);
+        //
+        file.close();
+        delay(100);
+
+        //
+        cleanup();
+
+        return;
+    }
 
     // recalculate the file size
     // calculate the file size
@@ -230,9 +247,6 @@ void Editor::saveFile()
     delay(100);
 
     app_log("File size: %d, text_pos: %d\n", fileSize, text_pos);
-
-    // file is saved
-    this->saved = true;
 
     //
     cleanup();
@@ -495,7 +509,8 @@ void Editor::delete_word()
 
     app_log("%d\n", start);
     // add space at the last stop
-    if(start < 0) {
+    if (start < 0)
+    {
         start = 0;
         buffer[0] = '\0';
     }

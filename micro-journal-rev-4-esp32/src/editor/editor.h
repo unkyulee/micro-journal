@@ -4,7 +4,7 @@
 #include <cstring> // For memset
 #include <Arduino.h>
 
-#define BUFFER_SIZE 5200
+#define BUFFER_SIZE 1000
 
 class Editor
 {

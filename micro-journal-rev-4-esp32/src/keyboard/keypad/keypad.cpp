@@ -140,7 +140,8 @@ void keyboard_keypad_loop()
 int keyboard_get_key(keypadEvent e)
 {
     // release back space when any other keys are pressed
-    if(_backspace_pressed) {
+    if (_backspace_pressed)
+    {
         _backspace_pressed = false;
     }
 
@@ -245,6 +246,9 @@ bool load_keymap(int layer, JsonArray keyArray)
 
 void keyboard_keypad_load_config()
 {
+    //
+    JsonDocument &app = app_status();
+
     // check if file exists in SD card
     if (SD.exists(KEYBOARD_FILE))
     {
@@ -266,11 +270,13 @@ void keyboard_keypad_load_config()
         JsonDocument keyboardConfig;
         // convert to JsonObject
         DeserializationError error = deserializeJson(keyboardConfig, fileString);
-        app_log("Deserializing keyboard.json file\n");
         if (error)
         {
             //
-            app_log("keyboard.jsondeserializeJson() failed: %s\n", error.c_str());
+            app["error"] = format("keyboard.json not in a correct json form: %s\n", error.c_str());
+            app_log(app["error"].as<const char *>());
+            app["screen"] = ERRORSCREEN;
+
             return;
         }
 
@@ -289,6 +295,15 @@ void keyboard_keypad_load_config()
                 if (load_keymap(index, keyboardConfig[key].as<JsonArray>()))
                 {
                     app_log("%s loaded\n", key);
+                }
+                else
+                {
+                    //
+                    app["error"] = format("%s keyboard layout load failed\n", key);
+                    app_log(app["error"].as<const char *>());
+                    app["screen"] = ERRORSCREEN;
+
+                    return;
                 }
             }
         }
