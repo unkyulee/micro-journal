@@ -12,7 +12,4 @@
 void SD_setup();
 
 
-//
-void SD_firwamre_update();
-
 #endif

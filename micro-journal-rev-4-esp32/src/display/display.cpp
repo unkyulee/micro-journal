@@ -31,14 +31,13 @@ void display_setup()
 
   // set the initial screen to word processor
   JsonDocument &app = app_status();
-
-  // check SD card status
-  if (app.containsKey("error"))
+  int screen = app["screen"].as<int>();
+  if (screen == 0) 
   {
-    app["screen"] = ERRORSCREEN;
-  }
-  else
-  {
+    //
+    // if screen is not specified
+    // then load the wake animation then the word processor
+    //
     bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
     if (disabled)
     {

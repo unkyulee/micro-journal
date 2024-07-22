@@ -147,11 +147,8 @@ void Home_keyboard(char key)
 
     else if (key == 'r')
     {
-        // Delete wifi.json from the SPIFF
-        SPIFFS.remove("/wifi.json");
-
-        // restart
-        ESP.restart();
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_RESET;
     }
 
     // chose file
