@@ -194,6 +194,24 @@ void Editor::keyboard(char key)
     }
 
     //////////////////////////
+    // CURSORS
+    //////////////////////////
+    else if (key >= 18 && key <= 23 || key == 2 || key == 3)
+    {
+        // arrow keys
+        // 18 - Left, 19 - Right, 20 - Up, 21 - Down
+        // 22 - Page Up, 23 - Page Down
+        // 2 - Home 3 - End
+        if(key == 18) {
+            // left
+            --fileBuffer.cursorPos;
+        } else if(key == 19) {
+            ++fileBuffer.cursorPos;
+        }
+        app_log("Cursor Pos: %d\n", fileBuffer.cursorPos);
+    }
+
+    //////////////////////////
     // FORWARD EDITING
     //////////////////////////
     else

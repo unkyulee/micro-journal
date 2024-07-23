@@ -11,7 +11,7 @@ void WP_setup(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 void WP_render(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 void WP_render_status(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 void WP_render_text(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
-void WP_render_blink(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
+void WP_render_cursor(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 void WP_render_clear(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 
 //

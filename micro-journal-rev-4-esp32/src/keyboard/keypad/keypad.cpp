@@ -32,6 +32,11 @@ byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 // SHIFT - 14
 // ALT - 17
 
+// arrow keys
+// 18 - Left, 19 - Right, 20 - Up, 21 - Down
+// 22 - Page Up, 23 - Page Down
+// 2 - Home 3 - End
+
 // layers
 // prettier-ignore
 int layers[LAYERS][ROWS * COLS] = {
@@ -48,13 +53,13 @@ int layers[LAYERS][ROWS * COLS] = {
      17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
 
-    {// special layer
+    {// alt layer
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 127,
-     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\n',
+     27, 2, 20, 3, 22, 't', 'y', 'u', 'i', '-', '=', 127,
+     17, 18, 21, 19, 23, 'g', 'h', 'j', 'k', 'l', ';', '\n',
      14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', ',', '/', 14},
 
-    {// special layer shift
+    {// alt layer shift
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
      27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 127,
      17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\n',
@@ -146,7 +151,7 @@ int keyboard_get_key(keypadEvent e)
     }
 
     //
-    // step 1. layer processing
+    // step 1. layer or speical key processing
     //
     int key = layers[layer][e.bit.KEY];
     if (key == 17)

@@ -55,7 +55,7 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     WP_render_text(ptft, pu8f);
 
     // BLINK CURSOR
-    WP_render_blink(ptft, pu8f);
+    WP_render_cursor(ptft, pu8f);
 
     // reset flags
     if (cleared_background)
@@ -121,6 +121,12 @@ void WP_check_sleep()
 //
 void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    JsonDocument &app = app_status();
+
+    // LOAD COLORS
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
     // check if the editor requests to clear screen
     if (Editor::getInstance().screenBuffer.clear)
     {
@@ -140,11 +146,6 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // this tell to the rest of the pipe line
         // that the screen is blank
         cleared_background = true;
-
-        // apply background color
-        JsonDocument &app = app_status();
-        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
         // clear screen with background color
         ptft->fillScreen(background_color);
@@ -243,6 +244,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     int total_line = Editor::getInstance().screenBuffer.total_line;
     char **line_position = Editor::getInstance().screenBuffer.line_position;
     int *line_length = Editor::getInstance().screenBuffer.line_length;
+    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
 
     // determine where the current editing line will be
     // when reached the max line
@@ -339,7 +341,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 }
 
-void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     static bool blink = false;
     static unsigned int last = millis();
@@ -348,7 +350,6 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         last = millis();
         blink = !blink;
     }
-
     int cursorX = pu8f->getCursorX();
     int cursorY = pu8f->getCursorY();
 

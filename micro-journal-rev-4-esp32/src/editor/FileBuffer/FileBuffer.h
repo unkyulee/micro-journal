@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <cstring> // For memset
 
-#define BUFFER_SIZE 250
+#define BUFFER_SIZE 1000
 
 //
 class FileBuffer
@@ -30,7 +30,9 @@ public:
     size_t fileSize = 0;
     //
     size_t seekPos = 0;
-
+    // 
+    int cursorPos = 0;
+    
     //
     void reset();
 

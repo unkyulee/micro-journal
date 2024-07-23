@@ -121,13 +121,14 @@ void FileBuffer::load(String fileName, size_t cursorPos)
     {
         buffer[bufferSize++] = file.read();
     }
+    cursorPos = bufferSize;
 
     //
     file.close();
     delay(100);
 
     // log
-    app_log("Read size: %d, seek: %d, buffer: %d\n", fileSize, seekPos, bufferSize);
+    app_log("Read size: %d, seek: %d, buffer: %d, cursor: %d\n", fileSize, seekPos, bufferSize, cursorPos);
 }
 
 void FileBuffer::save()
@@ -223,6 +224,8 @@ void FileBuffer::addChar(char c)
     {
         buffer[bufferSize++] = c;
         buffer[bufferSize] = '\0';
+
+        cursorPos++;
     }
 }
 
@@ -231,6 +234,8 @@ void FileBuffer::removeLastChar()
     if (bufferSize > 0)
     {
         buffer[--bufferSize] = '\0';
+
+        --cursorPos;
     }
 }
 
@@ -261,8 +266,10 @@ void FileBuffer::removeLastWord()
     {
         buffer[start] = ' ';
         buffer[start + 1] = '\0';
-        bufferSize = start + 1;
+        bufferSize = start + 1;        
     }
+
+    cursorPos = bufferSize;
 }
 
 //
