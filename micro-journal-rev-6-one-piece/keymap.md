@@ -5,6 +5,7 @@ The Micro Journal Rev. 6 utilizes a 48-key ortholinear keyboard, which may look 
 ![QWERTY](./images/map_default.png)
 
 ALT LAYER
+
 ![QWERTY](./images/map_default_alt.png)
 
 It's true that this keyboard doesn't follow the standard format. Initially, using it can be challenging. However, you'll be amazed at how quickly your brain can adapt to the new system. After just three days of stuttering through typing, you'll start to feel fluent.
@@ -45,9 +46,9 @@ The following json is the default configuration.
     "alt": 
     [
      "`", "1", "2", "3", "4", "5", "6", "7", "8", "[", "]", "\\",
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
-     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\n",
-     "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ",", "/", "SHIFT"
+     "ESC", "q", "w", "e", "r", "t", "PGUP", "u", "UP", "-", "=", 127,
+     "ALT", "a", "s", "d", "f", "g", "PGDN", "LEFT", "DOWN", "RIGHT", ";", "\n",
+     "SHIFT", "z", "x", "c", "v", " ", "b", "HOME", "m", "END", "/", "SHIFT"
     ],
 
     "alt-shift": 
@@ -79,6 +80,14 @@ Most keys are typed directly into the JSON file between quotes. However, some ke
 | \n                     | Enter Key                        |
 | \\\\                   | Backslash                        |
 | \\"                    | Double Quote                     |
+| LEFT                   | Navigate LEFT                    |
+| RIGHT                  | Navigate RIGHT                   |
+| UP                     | Navigate UP                      |
+| DOWN                   | Navigate DOWN                    |
+| PGUP                   | Go to Previous Page              |
+| PGDN                   | Go to Next Page                  |
+| HOME                   | N/A                              |
+| END                    | Go back to end of the text       |
 
 For accented keys, you can't directly write characters like è or ù in the JSON file as they won’t be recognized. Instead, you need to use their DEC values from the ASCII Table, which can be found at [ASCII Code](https://www.ascii-code.com/).
 

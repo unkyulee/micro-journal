@@ -192,16 +192,18 @@ https://github.com/unkyulee/micro-journal/releases
 
 ## 2. Download the "firmware.bin"
 
-Download the file from Assets "firmware.bin"
+Download the file from Assets "firmware_rev_5.bin"
 
 ## 3. Place "firmware.bin" inside the SD card
 
 Turn off the writerDeck. \
 Pull out the SD card from the writerDeck. \
-Copy "firmware.bin" file inside the SD card. \
+Copy "firmware_rev_5.bin" file inside the SD card. \
 Put back the SD card to the writerDeck. \
 Turn on the writerDeck. \
 writerDeck will show white screen for 10 seconds then automatically boot again to the updated firmware.
+
+In case if firmware_rev_5.bin does not trigger the update. Try to rename to firmare.bin and try again.
 
 # USB Keyboard
 

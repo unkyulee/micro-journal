@@ -203,19 +203,18 @@ You can check the latest firmware from the following link.
 
 https://github.com/unkyulee/micro-journal/releases
 
-## 2. Download the "firmware_48keys.bin"
+## 2. Download the "firmware_rev_6.bin"
 
-Download the file from Assets "firmware_48keys.bin"
-
-## 3. Rename it to "firmware.bin" and copy to the SD card
+Download the file from Assets "firmware_rev_6.bin"
 
 Turn off the Micro Journal Rev.6. \
 Pull out the SD card from the Micro Journal Rev.6. \
-Rename "firmware_48keys.bin" to "firmware.bin" \
-Copy "firmware.bin" file inside the SD card. \
+Copy "firmware_rev_6.bin" file inside the SD card. \
 Put back the SD card to the Micro Journal Rev.6. \
 Turn on the Micro Journal Rev.6. \
 Micro Journal Rev.6 will show white screen for 10 seconds then automatically boot again to the updated firmware.
+
+In case "firmware_rev_6.bin" doesn't trigger the update. Rename the file to "firmware.bin" and try again
 
 
 # Strap Installation

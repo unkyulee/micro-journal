@@ -94,6 +94,39 @@ uint8_t unicode_convert_ascii(String key)
         {
             return 17;
         }
+
+        else if (key == "LEFT")
+        {
+            return 18;
+        }
+        else if (key == "RIGHT")
+        {
+            return 19;
+        }
+        else if (key == "UP")
+        {
+            return 20;
+        }
+        else if (key == "DOWN")
+        {
+            return 21;
+        }
+        else if (key == "PGUP")
+        {
+            return 22;
+        }
+        else if (key == "PGDN")
+        {
+            return 23;
+        }
+        else if (key == "HOME")
+        {
+            return 2;
+        }
+        else if (key == "END")
+        {
+            return 3;
+        }
         return 0;
     }
 
