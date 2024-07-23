@@ -5,8 +5,6 @@
 #include "display/display.h"
 #include "keyboard/ascii/ascii.h"
 
-// font size x 12 x 18
-//
 int STATUSBAR_Y = 224;
 int screen_width = 320;
 bool clear_background = true;
@@ -44,6 +42,7 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // timers
     WP_check_saved();
     WP_check_sleep();
+    Editor::getInstance().screenBuffer.loop();
 
     // CLEAR BACKGROUND
     WP_render_clear(ptft, pu8f);
@@ -51,11 +50,11 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // RENDER STATUS BAR
     WP_render_status(ptft, pu8f);
 
-    // RENDER TEXT
-    WP_render_text(ptft, pu8f);
-
     // BLINK CURSOR
     WP_render_cursor(ptft, pu8f);
+
+    // RENDER TEXT
+    WP_render_text(ptft, pu8f);
 
     // reset flags
     if (cleared_background)
@@ -67,14 +66,18 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 // Check if text is saved
 void WP_check_saved()
 {
+    //
     static unsigned int last = millis();
-    static unsigned int lastBufferSize = Editor::getInstance().fileBuffer.getBufferSize();
-    unsigned int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    static int lastBufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+
     //
     // when the file is saved then extend the autosave timer
     if (lastBufferSize != bufferSize)
     {
         last = millis();
+
+        //
         lastBufferSize = bufferSize;
     }
 
@@ -85,11 +88,8 @@ void WP_check_saved()
         //
         last = millis();
 
-        //
         if (!Editor::getInstance().saved)
-        {
             Editor::getInstance().saveFile();
-        }
     }
 }
 
@@ -229,120 +229,132 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
-    // Render the user text
+    // SET FONT
     pu8f->setFont(u8g2_font_profont22_mf);      // extended font
     pu8f->setForegroundColor(foreground_color); // apply color
     pu8f->setFontMode(1);                       // use u8g2 transparent mode (this is default)
-    pu8f->setCursor(1, 24);                     // start writing at this position
+    pu8f->setCursor(0, 24);                     // start writing at this position
 
-    // try to render only two lines at a time
-    // not to redraw the entire screen
-    // because when it reaches the end of the screen the typing speed slows down gradually
-    // provides the feeling that the system is sluggish
-    static int start_line = 0;
-    static int total_line_prev = 0;
+    // TEXT WILL BE DISPLAYED
+    // FROM TOP till the BOTTOM
+
+    // start_line will maintain the TOP line
+    // maximum of ROWs can be displayed on the screen
+    int start_line = Editor::getInstance().screenBuffer.start_line;
     int total_line = Editor::getInstance().screenBuffer.total_line;
-    char **line_position = Editor::getInstance().screenBuffer.line_position;
-    int *line_length = Editor::getInstance().screenBuffer.line_length;
-    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
 
-    // determine where the current editing line will be
-    // when reached the max line
-    // refresh the screen to the 2nd line
-    if (total_line - start_line >= Editor::getInstance().screenBuffer.rows)
-    {
-        // very start of the writing, there is nothing to show
-        // so line starts from the first row
-        start_line = total_line - 2;
-        if (start_line < 0)
-            start_line = 0;
-
-        //
-        clear_background = true;
-    }
-
-    // with backspace, reaches the first character of the screen
-    // means there will be no more character displayed on the screen
-    if (total_line_prev > total_line && total_line == start_line - 1)
-    {
-        app_log("%d %d %d\n", total_line_prev, total_line, start_line);
-
-        // clear screen
-        clear_background = true;
-
-        start_line -= Editor::getInstance().screenBuffer.rows - 1;
-        if (start_line < 0)
-            start_line = 0;
-    }
-
-    // when deleting a word it can be that it is a long word
-    // and goes back to the previous screen
-    // this case start_line should be redefined
-    if (abs(total_line - total_line_prev) > 2 && total_line_prev != 0)
-    {
-        start_line = total_line - 2;
-        if (start_line < 0)
-            start_line = 0;
-
-        //
-        clear_background = true;
-    }
-
-    // if the line has changed then clear the previous line
-    //
-    if (total_line_prev != total_line)
-    {
-        // update the flag
-        total_line_prev = total_line;
-    }
-
-    if (!cleared_background)
-    {
-        for (int i = start_line + 1; i < total_line - 2; i++)
-        {
-            // print new line
-            pu8f->println("");
-        }
-    }
-
-    int buffer_start_line = max(total_line - 2, start_line);
+    // full render
     if (cleared_background)
-        buffer_start_line = start_line;
-    for (int i = buffer_start_line; i <= total_line; i++)
     {
-        // print new line
-        if (i != start_line)
-            pu8f->println("");
-
-        // partial refresh
-        if (total_line - i > 2 && total_line > LINE_MAX)
+        for (int i = start_line; i <= total_line; i++)
         {
-            continue;
-        }
-
-        //
-        if (line_position[i] != nullptr)
-        {
-            //
-            if (line_position[i] == nullptr)
+            // if the line goes out side the screen then stop printing
+            if (i - start_line >= Editor::getInstance().screenBuffer.rows)
                 break;
 
             //
-            int length = line_length[i];
+            int length = Editor::getInstance().screenBuffer.line_length[i];
+            char *line = Editor::getInstance().screenBuffer.line_position[i];
 
             // render
             for (int j = 0; j < length; j++)
             {
                 // convert extended ascii into a streamlined string
-                uint8_t value = *(line_position[i] + j);
-                pu8f->print((char)value);
+                uint8_t value = *(line + j);
+
+                // skip explicit new line
+                if (value != '\n')
+                    pu8f->print((char)value);
             }
+
+            // new line
+            pu8f->print("\n");
+        }
+    }
+    else
+    {
+        // do partial render
+        for (int i = start_line; i <= total_line; i++)
+        {
+            // if the line goes out side the screen then stop printing
+            if (i - start_line >= Editor::getInstance().screenBuffer.rows)
+                break;
+
+            // render only if the range is around the cursor
+            if (abs(i - Editor::getInstance().fileBuffer.cursorLine) <= 2)
+            {
+                //
+                int length = Editor::getInstance().screenBuffer.line_length[i];
+                char *line = Editor::getInstance().screenBuffer.line_position[i];
+
+                // render
+                bool stop = false;
+                for (int j = 0; j < length; j++)
+                {
+                    // if the print reached the cursor then stop rendering
+                    if (i >= Editor::getInstance().fileBuffer.cursorLine && j >= Editor::getInstance().fileBuffer.cursorLinePos)
+                    {
+                        stop = true;
+                        break;
+                    }
+
+                    // convert extended ascii into a streamlined string
+                    uint8_t value = *(line + j);
+
+                    // skip explicit new line
+                    if (value != '\n')
+                        pu8f->print((char)value);
+                }
+
+                // stop at the cursor
+                if (stop)
+                    break;
+            }
+
+            // new line
+            pu8f->print("\n");
         }
     }
 }
 
 void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    JsonDocument &app = app_status();
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+    // current cursor information
+    static int cursorPos_prev = 0;
+    static int cursorLine_prev = 0;
+
+    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
+    int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
+    int cursorLinePos = Editor::getInstance().fileBuffer.cursorLinePos;
+    int cursorLineLength = Editor::getInstance().screenBuffer.line_length[cursorLine];
+
+    static int bufferSize_prev = 0;
+    int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+
+    // calculate cursor positions
+    // font size x 12 x 18
+    // start y 24
+    int cursorX;
+    int cursorY;
+
+    // reached the line where cursor is
+    // distance X is cursorPos - pos
+    cursorY = 6 + (cursorLine - Editor::getInstance().screenBuffer.start_line + 1) * 18;
+    if (Editor::getInstance().fileBuffer.getBuffer()[cursorPos - 1] == '\n')
+    {
+        // new line characters doesn't count as an actual letter
+        // but cursor should be rendered at the new line
+        cursorX = 0;
+    }
+    else
+    {
+        cursorX = cursorLinePos * 12;
+    }
+
     static bool blink = false;
     static unsigned int last = millis();
     if (millis() - last > 500)
@@ -350,83 +362,72 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         last = millis();
         blink = !blink;
     }
-    int cursorX = pu8f->getCursorX();
-    int cursorY = pu8f->getCursorY();
-
-    JsonDocument &app = app_status();
-    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
-
-    // delete the previous cursor lines
-    static int length_prev = 0;
-    static int total_line_prev = 0;
-    int total_line = Editor::getInstance().screenBuffer.total_line;
-    int length = Editor::getInstance().screenBuffer.line_length[total_line];
 
     // draw the blink cursor
     if (blink)
-    {
-        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, foreground_color);
-    }
+        ptft->drawLine(cursorX, cursorY + 2, cursorX + 10, cursorY + 2, foreground_color);
     else
-    {
-        ptft->drawLine(cursorX + 2, cursorY + 2, cursorX + 12, cursorY + 2, background_color);
-    }
+        ptft->drawLine(cursorX, cursorY + 2, cursorX + 10, cursorY + 2, background_color);
 
-    if (total_line != total_line_prev)
+    // when new line or previous line changes
+    if (cursorLine != cursorLine_prev)
     {
-
         // when going back one line above with backspace
-        if (total_line < total_line_prev)
+        if (cursorLine < cursorLine_prev)
         {
             // delete the line below
             ptft->fillRect(0, cursorY, 320, 60, background_color);
 
             // delete the last character of the line
-            ptft->fillRect(cursorX - 20, cursorY - 22, 320, 24, background_color);
+            ptft->fillRect(cursorX - 16, cursorY - 18, 320, 24, background_color);
         }
 
         // word wrap occurred
-        if (length > 0)
+        // delete the previous line up
+        if (cursorLineLength > 0)
         {
             // delete the last part of the previous line
-            ptft->fillRect(320 - 12 * (length + 1), cursorY - 40, 320, 24, background_color);
+            ptft->fillRect(320 - 12 * (cursorLineLength + 1), cursorY - 40, 320, 24, background_color);
         }
 
         // line changed remove the previous line trail
         // delete the previous trails
-        ptft->drawLine(
-            0,
-            cursorY - 16,
-            screen_width,
-            cursorY - 16,
-            background_color);
+        ptft->drawLine(0, cursorY - 16, screen_width, cursorY - 16, background_color);
+
         //
-        total_line_prev = total_line;
+        cursorLine_prev = cursorLine;
+
         //
         blink = true;
         last = millis();
     }
 
-    if (length_prev != length)
+    // check cursor position changes
+    if (cursorPos != cursorPos_prev)
     {
         // handle backspace
-        if (length_prev > length)
+        if (cursorPos_prev > cursorPos)
         {
             // delete the character
             ptft->fillRect(cursorX, cursorY - 17, 320, 40, background_color);
         }
 
+        // if the cursor is in the middle of the line
+        // redraw all the trailing texts
+        if (
+            cursorPos != Editor::getInstance().fileBuffer.getBufferSize() &&
+            bufferSize_prev != bufferSize)
+        {
+            ptft->fillRect(cursorX - 12, cursorY - 17, 320, 40, background_color);
+            ptft->fillRect(0, cursorY, 320, 200 - cursorY, background_color);
+        }
+
         // delete the previous trails
-        ptft->drawLine(
-            cursorX - (20 * (length - length_prev)),
-            cursorY + 2,
-            cursorX + 24,
-            cursorY + 2,
-            background_color);
+        ptft->drawLine(cursorX - (20 * (cursorPos - cursorPos_prev)), cursorY + 2, cursorX + 24, cursorY + 2, background_color);
 
         //
-        length_prev = length;
+        cursorPos_prev = cursorPos;
+        bufferSize_prev = bufferSize;
 
         //
         blink = true;

@@ -19,7 +19,7 @@ String FileBuffer::getFileName()
 }
 
 // Fill the buffer from File
-void FileBuffer::load(String fileName, size_t cursorPos)
+void FileBuffer::load(String fileName)
 {
     // app status
     JsonDocument &app = app_status();
@@ -222,54 +222,74 @@ void FileBuffer::addChar(char c)
 {
     if (bufferSize < BUFFER_SIZE)
     {
-        buffer[bufferSize++] = c;
-        buffer[bufferSize] = '\0';
+        // shift the trailing texts
+        if (bufferSize > cursorPos)
+            memmove(buffer + cursorPos + 1, buffer + cursorPos, bufferSize - cursorPos);
 
-        cursorPos++;
+        //
+        buffer[cursorPos++] = c;
+        buffer[++bufferSize] = '\0';
     }
 }
 
 void FileBuffer::removeLastChar()
 {
-    if (bufferSize > 0)
+    if (bufferSize > 0 && cursorPos > 0)
     {
-        buffer[--bufferSize] = '\0';
+        // Shift the trailing texts left by one position
+        if (bufferSize > cursorPos)
+        {
+            memmove(buffer + cursorPos - 1, buffer + cursorPos, bufferSize - cursorPos);
+        }
 
+        // Decrease buffer size and cursor position
+        --bufferSize;
         --cursorPos;
+
+        // Null terminate the buffer
+        buffer[bufferSize] = '\0';
     }
 }
 
 void FileBuffer::removeLastWord()
 {
-    int length = bufferSize;
-    if (length == 0)
+    if (bufferSize == 0 || cursorPos == 0)
         return;
 
-    int end = length - 1;
+    int end = cursorPos - 1;
+
+    // Move the end pointer to the last non-space character before cursorPos
     while (end >= 0 && buffer[end] == ' ')
         end--;
 
+    // If the buffer is all spaces or empty
     if (end < 0)
         return;
 
+    // Find the beginning of the last word before cursorPos
     int start = end;
     while (start >= 0 && buffer[start] != ' ' && buffer[start] != '\n')
         start--;
 
-    if (start <= 0)
+    // If start is less than 0, it means the word is at the beginning of the buffer
+    if (start < 0)
     {
         start = 0;
-        buffer[0] = '\0';
-        bufferSize = 0;
-    }
-    else
-    {
-        buffer[start] = ' ';
-        buffer[start + 1] = '\0';
-        bufferSize = start + 1;        
     }
 
-    cursorPos = bufferSize;
+    // Shift the remaining characters after the word
+    int shiftStart = start + 1;
+    int shiftEnd = cursorPos;
+    int shiftLength = bufferSize - cursorPos;
+
+    memmove(&buffer[shiftStart], &buffer[shiftEnd], shiftLength);
+
+    // Update buffer size and cursor position
+    bufferSize -= (end - start + 1);
+    cursorPos = shiftStart;
+
+    // Null-terminate the buffer
+    buffer[bufferSize] = '\0';
 }
 
 //

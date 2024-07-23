@@ -12,27 +12,39 @@
 class FileBuffer
 {
 public:
+    FileBuffer()
+    {
+        bufferSize = 0;
+        fileSize = 0;
+        seekPos = 0;
+        cursorPos = 0;
+        cursorLine = 0;
+        cursorLinePos = 0;
+    }
+
     //
     char buffer[BUFFER_SIZE + 2];
-    int bufferSize = 0;
+    int bufferSize;
 
     //
     String getFileName();
     //
     int getSeekPos();
     //
-    void load(String fileName, size_t cursorPos);
+    void load(String fileName);
     void save();
 
     //
     String fileName;
     //
-    size_t fileSize = 0;
+    size_t fileSize;
     //
-    size_t seekPos = 0;
-    // 
-    int cursorPos = 0;
-    
+    size_t seekPos;
+    //
+    int cursorPos;
+    int cursorLine;
+    int cursorLinePos;
+
     //
     void reset();
 

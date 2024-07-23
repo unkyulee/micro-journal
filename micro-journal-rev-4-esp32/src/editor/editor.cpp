@@ -45,7 +45,7 @@ void Editor::loadFile(String fileName)
     }
 
     // Step 2. Initialize the FileBuffer
-    fileBuffer.load(fileName, 0);
+    fileBuffer.load(fileName);
 
     // Update the Screen Buffer
     screenBuffer.Update(fileBuffer);
@@ -144,10 +144,6 @@ void Editor::clearFile()
 // Handle Keyboard Input
 void Editor::keyboard(char key)
 {
-    // when ever keyboard event occurs
-    // set saved flag to false
-    this->saved = false;
-
     //////////////////////////
     // BACKWARD EDITING
     //////////////////////////
@@ -157,6 +153,8 @@ void Editor::keyboard(char key)
         if (fileBuffer.getBufferSize() > 0)
         {
             fileBuffer.removeLastChar();
+            // set saved flag to false
+            this->saved = false;
         }
         // buffer emptied
         else
@@ -178,6 +176,8 @@ void Editor::keyboard(char key)
         if (fileBuffer.getBufferSize() > 0)
         {
             fileBuffer.removeLastWord();
+            // set saved flag to false
+            this->saved = false;
         }
         // buffer emptied
         else
@@ -202,13 +202,69 @@ void Editor::keyboard(char key)
         // 18 - Left, 19 - Right, 20 - Up, 21 - Down
         // 22 - Page Up, 23 - Page Down
         // 2 - Home 3 - End
-        if(key == 18) {
-            // left
-            --fileBuffer.cursorPos;
-        } else if(key == 19) {
-            ++fileBuffer.cursorPos;
+        if (key == 18)
+        {
+            if (fileBuffer.cursorPos == 0)
+            {
+                // load previous page
+            }
+            else
+            {
+                // left
+                --fileBuffer.cursorPos;
+            }
         }
-        app_log("Cursor Pos: %d\n", fileBuffer.cursorPos);
+        else if (key == 19)
+        {
+            // cursor can't move outside the last text
+            if (fileBuffer.cursorPos < fileBuffer.getBufferSize())
+                ++fileBuffer.cursorPos;
+        }
+        else if (key == 20)
+        {
+            // up key
+            // calculate the cursorLine
+            fileBuffer.cursorPos -=
+                screenBuffer.rows -
+                (screenBuffer.rows - screenBuffer.line_length[fileBuffer.cursorLine - 1]);
+
+            // reached the beginning of the buffer
+            if (fileBuffer.cursorPos < 1)
+                fileBuffer.cursorPos = 1;
+        }
+        else if (key == 21)
+        {
+            // up key
+            // calculate the cursorLine
+            fileBuffer.cursorPos +=
+                screenBuffer.rows -
+                (screenBuffer.rows - screenBuffer.line_length[fileBuffer.cursorLine]);
+
+            // reached the end of the buffer
+            if (fileBuffer.cursorPos > fileBuffer.getBufferSize())
+                fileBuffer.cursorPos = fileBuffer.getBufferSize();
+        }
+        else if (key == 22)
+        {
+            // page up
+            fileBuffer.cursorPos -= (screenBuffer.rows*0.7) * screenBuffer.cols;
+            // reached the beginning of the buffer
+            if (fileBuffer.cursorPos < 1)
+                fileBuffer.cursorPos = 1;
+        }
+        else if (key == 23)
+        {
+            // page down
+            fileBuffer.cursorPos += (screenBuffer.rows*0.7) * screenBuffer.cols;
+            // reached the end of the buffer
+            if (fileBuffer.cursorPos > fileBuffer.getBufferSize())
+                fileBuffer.cursorPos = fileBuffer.getBufferSize();
+        }
+        else if (key == 3)
+        {
+            // end
+            fileBuffer.cursorPos = fileBuffer.getBufferSize();
+        }
     }
 
     //////////////////////////
@@ -230,6 +286,8 @@ void Editor::keyboard(char key)
 
         //
         fileBuffer.addChar(key);
+        // set saved flag to false
+        this->saved = false;
     }
 
     // update the screen buffer
