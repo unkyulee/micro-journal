@@ -39,7 +39,6 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" [S] SYNC ");
     }
 
-
 #ifdef ENV_USBHOST
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
     ptft->println(" [F] DEVICE BUTTON");
@@ -61,6 +60,9 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->print("CHOOSE A FILE");
 
     int file_index = app["config"]["file_index"].as<int>();
+    // default file_index is 1
+    if(file_index == 0) file_index = 1;
+
     for (int i = 0; i < 9; i++)
     {
         if (file_index == i + 1)

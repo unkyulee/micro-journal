@@ -262,7 +262,7 @@ void _sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // preparing the file
     ptft->println(" - Preparing the file ... ");
     {
-        File inputFile = SD.open(Editor::getInstance().fileName);
+        File inputFile = SD.open(Editor::getInstance().fileBuffer.getFileName());
         if (!inputFile)
         {
             Serial.println("Error opening input file!");

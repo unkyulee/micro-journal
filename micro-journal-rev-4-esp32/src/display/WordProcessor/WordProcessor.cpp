@@ -17,7 +17,7 @@ unsigned int last_sleep = millis();
 void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     // editor instantiate
-    Editor::getInstance(10, 26);
+    Editor::getInstance();
     STATUSBAR_Y = 224;
 
     // setup default color
@@ -57,11 +57,105 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // BLINK CURSOR
     WP_render_blink(ptft, pu8f);
 
-    //
+    // reset flags
     if (cleared_background)
+    {
         cleared_background = false;
+    }
 }
 
+// Check if text is saved
+void WP_check_saved()
+{
+    static unsigned int last = millis();
+    static unsigned int lastBufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    unsigned int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    //
+    // when the file is saved then extend the autosave timer
+    if (lastBufferSize != bufferSize)
+    {
+        last = millis();
+        lastBufferSize = bufferSize;
+    }
+
+    //
+    // when idle for 4 seconds then auto save
+    if (millis() - last > 4000)
+    {
+        //
+        last = millis();
+
+        //
+        if (!Editor::getInstance().saved)
+        {
+            Editor::getInstance().saveFile();
+        }
+    }
+}
+
+void WP_check_sleep()
+{
+    //
+    // when the file is saved then extend the sleep timer
+    if (!Editor::getInstance().saved)
+    {
+        // when typed then reset sleep timer
+        last_sleep = millis();
+    }
+
+    // 600 seconds - 10 minutes
+    if (millis() - last_sleep > 600000)
+    {
+        // if no action for 10 minute go to sleep
+        last_sleep = millis();
+
+        //
+        JsonDocument &app = app_status();
+        app["screen"] = SLEEPSCREEN;
+    }
+}
+
+//
+// Clear Screen
+// Do it as less as possible so that there is the least amount of the flicker
+//
+void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    // check if the editor requests to clear screen
+    if (Editor::getInstance().screenBuffer.clear)
+    {
+        // flag as clear completed nto the screen buffer
+        Editor::getInstance().screenBuffer.clear = false;
+
+        // set the flag to clear the background
+        clear_background = true;
+    }
+
+    // clear background
+    if (clear_background)
+    {
+        // reset flag
+        clear_background = false;
+
+        // this tell to the rest of the pipe line
+        // that the screen is blank
+        cleared_background = true;
+
+        // apply background color
+        JsonDocument &app = app_status();
+        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+        // clear screen with background color
+        ptft->fillScreen(background_color);
+    }
+}
+
+// Status Bar
+// - file index
+// - current file size
+// - keyboard layout
+// - saved status
 void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     JsonDocument &app = app_status();
@@ -82,18 +176,25 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // FILE SIZE
     ptft->setTextColor(foreground_color, background_color);
     ptft->setCursor(25, STATUSBAR_Y, 2);
-    ptft->printf("%s bytes", Editor::getInstance().getFileSize());
-
-    // SAVE STATUS
-    if (Editor::getInstance().saved)
+    size_t num = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
+    String formattedNumber = "";
+    int digitCount = 0;
+    if (num < 0)
     {
-        ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
+        formattedNumber += "-";
+        num = -num;
     }
-    else
+    do
     {
-        ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_RED);
-    }
-    ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
+        if (digitCount > 0 && digitCount % 3 == 0)
+        {
+            formattedNumber = "," + formattedNumber;
+        }
+        formattedNumber = String(num % 10) + formattedNumber;
+        num /= 10;
+        digitCount++;
+    } while (num > 0);
+    ptft->printf("%s bytes", formattedNumber);
 
 #ifdef ENV_USBHOST
     // KEYBOARD LAYOUT
@@ -106,6 +207,17 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextSize(1);
     ptft->print(layout);
 #endif
+
+    // SAVE STATUS
+    if (Editor::getInstance().saved)
+    {
+        ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
+    }
+    else
+    {
+        ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_RED);
+    }
+    ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
 }
 
 void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -128,14 +240,14 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // provides the feeling that the system is sluggish
     static int start_line = 0;
     static int total_line_prev = 0;
-    int total_line = Editor::getInstance().total_line;
-    char **line_position = Editor::getInstance().line_position;
-    int *line_length = Editor::getInstance().line_length;
+    int total_line = Editor::getInstance().screenBuffer.total_line;
+    char **line_position = Editor::getInstance().screenBuffer.line_position;
+    int *line_length = Editor::getInstance().screenBuffer.line_length;
 
     // determine where the current editing line will be
     // when reached the max line
     // refresh the screen to the 2nd line
-    if (total_line - start_line >= Editor::getInstance().rows)
+    if (total_line - start_line >= Editor::getInstance().screenBuffer.rows)
     {
         // very start of the writing, there is nothing to show
         // so line starts from the first row
@@ -156,7 +268,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // clear screen
         clear_background = true;
 
-        start_line -= Editor::getInstance().rows - 1;
+        start_line -= Editor::getInstance().screenBuffer.rows - 1;
         if (start_line < 0)
             start_line = 0;
     }
@@ -247,8 +359,8 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // delete the previous cursor lines
     static int length_prev = 0;
     static int total_line_prev = 0;
-    int total_line = Editor::getInstance().total_line;
-    int length = Editor::getInstance().line_length[total_line];
+    int total_line = Editor::getInstance().screenBuffer.total_line;
+    int length = Editor::getInstance().screenBuffer.line_length[total_line];
 
     // draw the blink cursor
     if (blink)
@@ -321,43 +433,6 @@ void WP_render_blink(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 }
 
-void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
-{
-    // check if the editor requests to clear screen
-    if (Editor::getInstance().clear)
-    {
-        Editor::getInstance().clear = false;
-        clear_background = true;
-    }
-
-    if (clear_background)
-    {
-        // reset flag
-        clear_background = false;
-        cleared_background = true;
-
-        // apply background color
-        JsonDocument &app = app_status();
-        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
-
-        // clear screen
-        ptft->fillScreen(background_color);
-
-#ifdef ENV_USBHOST
-        // write keyboard layout
-        String layout = app["config"]["keyboard_layout"].as<String>();
-        if (layout == "null" || layout.isEmpty())
-            layout = "US"; // defaults to US layout
-        // draw status bar
-        ptft->setCursor(280, STATUSBAR_Y, 2);
-        ptft->setTextColor(foreground_color, background_color);
-        ptft->setTextSize(1);
-        ptft->print(layout);
-#endif
-    }
-}
-
 //
 void WP_keyboard(char key)
 {
@@ -376,51 +451,5 @@ void WP_keyboard(char key)
     {
         // send the keys to the editor
         Editor::getInstance().keyboard(key);
-    }
-}
-
-// Check if text is saved
-void WP_check_saved()
-{
-    static unsigned int last = millis();
-    static unsigned int text_pos_prev = Editor::getInstance().text_pos;
-    unsigned int text_pos = Editor::getInstance().text_pos;
-
-    // extend the auto save timer
-    if (text_pos_prev != text_pos)
-    {
-        text_pos_prev = text_pos;
-        last = millis();
-    }
-
-    // when idle for 5 seconds then auto save
-    if (millis() - last > 5000)
-    {
-        last = millis();
-        Editor::getInstance().saveFile();
-    }
-}
-
-void WP_check_sleep()
-{
-    static unsigned int text_pos_prev = Editor::getInstance().text_pos;
-    unsigned int text_pos = Editor::getInstance().text_pos;
-
-    if (text_pos_prev != text_pos)
-    {
-        // when typed then reset sleep timer
-        text_pos_prev = text_pos;
-        last_sleep = millis();
-    }
-
-    // 600 seconds - 10 minutes
-    if (millis() - last_sleep > 600000)
-    {
-        // if no action for 10 minute go to sleep
-        last_sleep = -1;
-
-        //
-        JsonDocument &app = app_status();
-        app["screen"] = SLEEPSCREEN;
     }
 }
