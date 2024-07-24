@@ -644,8 +644,31 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
 
           bool shift = (report.modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
           bool altgr = (report.modifier & KEYBOARD_MODIFIER_RIGHTALT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTALT);
+
+          // Check for released keys
           for (int i = 0; i < 6; i++)
           {
+            if (last_report.keycode[i] != 0)
+            {
+              bool key_released = true;
+              for (int j = 0; j < 6; j++)
+              {
+                if (last_report.keycode[i] == report.keycode[j])
+                {
+                  key_released = false;
+                  break;
+                }
+              }
+              if (key_released)
+              {
+                usbHost->onKeyboardKeyReleased(usbHost->getKeycodeToAscii(last_report.keycode[i], shift, altgr), last_report.keycode[i], shift);
+              }
+            }
+          }
+
+          for (int i = 0; i < 6; i++)
+          {
+            // a key is pressed or kept pressed
             if (report.keycode[i] != 0)
             {
               // check if the same key appear in the previous report

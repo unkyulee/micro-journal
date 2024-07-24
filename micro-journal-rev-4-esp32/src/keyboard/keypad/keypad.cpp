@@ -34,7 +34,6 @@ byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 
 // arrow keys
 // 18 - Left, 19 - Right, 20 - Up, 21 - Down
-// 22 - Page Up, 23 - Page Down
 // 2 - Home 3 - End
 
 // layers
@@ -55,8 +54,8 @@ int layers[LAYERS][ROWS * COLS] = {
 
     {// alt layer
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     27, 'q', 'w', 'e', 'r', 't', 22 , 'u', 20 , '-', '=', 127, // 2, 20, 3, 22,
-     17, 'a', 's', 'd', 'f', 'g', 23 , 18 , 21 , 19 , ';', '\n', //  18, 21, 19, 23
+     27, 'q', 'w', 'e', 'r', 't', 'y' , 'u', 20 , '-', '=', 127, // 2, 20, 3, 22,
+     17, 'a', 's', 'd', 'f', 'g', 'h' , 18 , 21 , 19 , ';', '\n', //  18, 21, 19, 23
      14, 'z', 'x', 'c', 'v', ' ', 'b', 2  , 'm', 3  , '/', 14},
 
     {// alt layer shift
@@ -86,7 +85,6 @@ bool _fn_pressed = false;
 // back space
 int _backspace_last = 0;
 bool _backspace_pressed = false;
-bool _backspace_double_tap = false;
 
 // initialize keymap
 void keyboard_keypad_setup()
