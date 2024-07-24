@@ -174,7 +174,18 @@ void Editor::keyboard(char key)
     {
         if (fileBuffer.getBufferSize() > 0)
         {
-            fileBuffer.removeLastWord();
+            // if editing at the end of the line then remove word
+            if (fileBuffer.cursorPos == fileBuffer.bufferSize)
+            {
+                fileBuffer.removeLastWord();
+            }
+
+            else
+            {
+                // remove word in front
+                fileBuffer.removeCharAtCursor();
+            }
+
             // set saved flag to false
             this->saved = false;
         }
@@ -219,48 +230,42 @@ void Editor::keyboard(char key)
             if (fileBuffer.cursorPos < fileBuffer.getBufferSize())
                 ++fileBuffer.cursorPos;
         }
+
+        // UP
         else if (key == 20)
         {
-            // up key
             // move the cursorPos to the start of the previous line
             if (fileBuffer.cursorLine > 0)
             {
                 //
                 int newCursorPos =
-                    screenBuffer.line_position[fileBuffer.cursorLine - 1] - screenBuffer.line_position[0] + screenBuffer.line_length[fileBuffer.cursorLine - 1] - 1;
+                    screenBuffer.line_position[fileBuffer.cursorLine - 1] - screenBuffer.line_position[0];
                 //
                 fileBuffer.cursorPos = newCursorPos;
             }
         }
+
+        // DOWN
         else if (key == 21)
         {
-            // down key
             // move the cursorPos to the start of the next line
-            if (fileBuffer.cursorLine < screenBuffer.total_line)
+            if (fileBuffer.cursorLine <= screenBuffer.total_line)
             {
                 //
+                int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine + 1], 1);
                 int newCursorPos =
-                    screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0];
+                    screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0] + line_length - 1;
+
+                // if last line then move to the end of the buffer
+                if (fileBuffer.cursorLine == screenBuffer.total_line)
+                    newCursorPos = fileBuffer.getBufferSize();
+
                 //
                 fileBuffer.cursorPos = newCursorPos;
             }
         }
-        else if (key == 22)
-        {
-            // page up
-            fileBuffer.cursorPos -= (screenBuffer.rows * 0.7) * screenBuffer.cols;
-            // reached the beginning of the buffer
-            if (fileBuffer.cursorPos < 1)
-                fileBuffer.cursorPos = 1;
-        }
-        else if (key == 23)
-        {
-            // page down
-            fileBuffer.cursorPos += (screenBuffer.rows * 0.7) * screenBuffer.cols;
-            // reached the end of the buffer
-            if (fileBuffer.cursorPos > fileBuffer.getBufferSize())
-                fileBuffer.cursorPos = fileBuffer.getBufferSize();
-        }
+
+        // HOME
         else if (key == 2)
         {
             // home - move to the start of the line
@@ -269,11 +274,47 @@ void Editor::keyboard(char key)
             //
             fileBuffer.cursorPos = newCursorPos;
         }
+
+        // END
         else if (key == 3)
         {
             // end - move to the end of the line
+            int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine], 1);
             int newCursorPos =
-                screenBuffer.line_position[fileBuffer.cursorLine] - screenBuffer.line_position[0] + screenBuffer.line_length[fileBuffer.cursorLine];
+                screenBuffer.line_position[fileBuffer.cursorLine] - screenBuffer.line_position[0] + line_length - 1;
+
+            // if last line then move to the end of the buffer
+            if (fileBuffer.cursorLine == screenBuffer.total_line)
+                newCursorPos = fileBuffer.getBufferSize();
+
+            //
+            app_log("%d\n", newCursorPos);
+            fileBuffer.cursorPos = newCursorPos;
+        }
+
+        // PAGE UP
+        else if (key == 22)
+        {
+            int newCursorLine = max(fileBuffer.cursorLine - screenBuffer.rows, 0);
+            int newCursorPos =
+                screenBuffer.line_position[newCursorLine] - screenBuffer.line_position[0];
+
+            //
+            fileBuffer.cursorPos = newCursorPos;
+        }
+
+        // PAGE DOWN
+        else if (key == 23)
+        {
+            int newCursorLine = min(fileBuffer.cursorLine + screenBuffer.rows, screenBuffer.total_line);
+            int line_length = max(screenBuffer.line_length[newCursorLine], 1);
+            int newCursorPos =
+                screenBuffer.line_position[newCursorLine] - screenBuffer.line_position[0] + line_length - 1;
+
+            // if last line then move to the end of the buffer
+            if (fileBuffer.cursorLine == screenBuffer.total_line)
+                newCursorPos = fileBuffer.getBufferSize();
+
             //
             fileBuffer.cursorPos = newCursorPos;
         }

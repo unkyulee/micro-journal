@@ -53,7 +53,7 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
             if (buffer[i] == '\n')
             {
                 // register the line count
-                line_length[total_line] = line_count-1;
+                line_length[total_line] = line_count;
 
                 // start of the new line
                 line_position[++total_line] = &buffer[i+1];
@@ -102,9 +102,9 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
     //
     fileBuffer.cursorLine = 0;
     fileBuffer.cursorLinePos = line_length[0];
-
+    
     // caculate the which line cursor is located and the line position
-    for (int i = total_line; i > 0; i--)
+    for (int i = total_line; i >= 0; i--)
     {
         //
         if (pCursorPos >= line_position[i])

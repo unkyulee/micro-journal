@@ -16,6 +16,7 @@
 
 //
 void display_setup();
+TFT_eSprite& display_sprite();
 
 ///
 void display_loop();

@@ -3,7 +3,7 @@
 #ifndef ScreenBuffer_h
 #define ScreenBuffer_h
 
-#define SCREEN_BUFFER_SIZE 1000
+#define SCREEN_BUFFER_SIZE 4000
 
 //
 class ScreenBuffer

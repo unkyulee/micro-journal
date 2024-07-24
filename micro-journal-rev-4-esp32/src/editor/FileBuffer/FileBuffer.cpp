@@ -251,45 +251,55 @@ void FileBuffer::removeLastChar()
     }
 }
 
+void FileBuffer::removeCharAtCursor()
+{
+    if (bufferSize > 0 && cursorPos < bufferSize)
+    {
+        // Shift the trailing text left by one position
+        if (bufferSize > cursorPos + 1)
+        {
+            memmove(buffer + cursorPos, buffer + cursorPos + 1, bufferSize - cursorPos - 1);
+        }
+
+        // Decrease buffer size
+        --bufferSize;
+
+        // Null terminate the buffer
+        buffer[bufferSize] = '\0';
+    }
+}
+
 void FileBuffer::removeLastWord()
 {
-    if (bufferSize == 0 || cursorPos == 0)
+    int length = bufferSize;
+    if (length == 0)
         return;
 
-    int end = cursorPos - 1;
-
-    // Move the end pointer to the last non-space character before cursorPos
+    int end = length - 1;
     while (end >= 0 && buffer[end] == ' ')
         end--;
 
-    // If the buffer is all spaces or empty
     if (end < 0)
         return;
 
-    // Find the beginning of the last word before cursorPos
     int start = end;
     while (start >= 0 && buffer[start] != ' ' && buffer[start] != '\n')
         start--;
 
-    // If start is less than 0, it means the word is at the beginning of the buffer
-    if (start < 0)
+    if (start <= 0)
     {
         start = 0;
+        buffer[0] = '\0';
+        bufferSize = 0;
+    }
+    else
+    {
+        buffer[start] = ' ';
+        buffer[start + 1] = '\0';
+        bufferSize = start + 1;
     }
 
-    // Shift the remaining characters after the word
-    int shiftStart = start + 1;
-    int shiftEnd = cursorPos;
-    int shiftLength = bufferSize - cursorPos;
-
-    memmove(&buffer[shiftStart], &buffer[shiftEnd], shiftLength);
-
-    // Update buffer size and cursor position
-    bufferSize -= (end - start + 1);
-    cursorPos = shiftStart;
-
-    // Null-terminate the buffer
-    buffer[bufferSize] = '\0';
+    cursorPos = bufferSize;
 }
 
 //

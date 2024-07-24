@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <cstring> // For memset
 
-#define BUFFER_SIZE 1000
+#define BUFFER_SIZE 4000
 
 //
 class FileBuffer
@@ -55,6 +55,7 @@ public:
     int getBufferSize();
     void addChar(char c);
     void removeLastChar();
+    void removeCharAtCursor();
     void removeLastWord();
 
     //

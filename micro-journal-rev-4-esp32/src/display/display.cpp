@@ -9,7 +9,13 @@
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
+TFT_eSprite sprite(&tft);
 U8g2_for_TFT_eSPI u8f; // U8g2 font instance
+
+//
+TFT_eSprite& display_sprite() {
+  return sprite;
+}
 
 //
 void display_setup()
