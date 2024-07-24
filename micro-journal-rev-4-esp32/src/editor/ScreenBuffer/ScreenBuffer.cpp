@@ -2,22 +2,27 @@
 #include "app/app.h"
 #include "display/display.h"
 
-
-
 //
 void ScreenBuffer::Update(FileBuffer &fileBuffer)
 {
-    // Initialize the screen text lines
+    // Loop through the text buffer
+    // and product the data structure that is splitted in each line
+    char *buffer = fileBuffer.getBuffer();
+
+    // first line is the first of the buffer
+    line_position[0] = &buffer[0];
+    line_length[0] = 0;
+
+    //
     this->total_line = 0;
-    int row_character_count = 0;
+    int line_count = 0;
+
+    // remember the last space position to use it for the word wrap
     int last_space_index = -1;
     int last_space_position = -1;
 
     //
-    char *buffer = fileBuffer.getBuffer();
-    line_position[0] = &buffer[0];
-    line_length[0] = cols;
-
+    // BUFFER -> SPLIT IN LINES
     //
     for (int i = 0; i < BUFFER_SIZE + 1; i++)
     {
@@ -25,142 +30,91 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
         if (buffer[i] == '\0')
         {
             // Update the length of the last line
-            line_length[total_line] = row_character_count;
-
-            // Mark the end of the text
-            line_position[total_line + 1] = nullptr;
-            line_length[total_line + 1] = 0;
+            line_length[total_line] = line_count;
 
             //
             break;
         }
 
         // Count total characters in a line
-        row_character_count++;
+        line_count++;
 
         // Track the position of the last space
         if (buffer[i] == ' ')
         {
             last_space_index = i;
-            last_space_position = row_character_count;
+            last_space_position = line_count;
         }
 
         // When receiving a newline or max characters reached, start a new line
-        if (buffer[i] == '\n' || row_character_count == cols)
+        if (buffer[i] == '\n' || line_count == cols)
         {
+            // when ENTER key is found
             if (buffer[i] == '\n')
             {
-                // Handle newline character
-                total_line++;
-                line_position[total_line] = &buffer[i + 1];
+                // register the line count
+                line_length[total_line] = line_count-1;
 
-                // new line is not included in the line
-                line_length[total_line - 1] = row_character_count;
+                // start of the new line
+                line_position[++total_line] = &buffer[i+1];
 
                 // reset counters
-                row_character_count = 0;
-                last_space_index = -1;
-                last_space_position = -1;
+                line_count = 0;
             }
+
+            // This line requires word-wrap
             else if (last_space_index != -1 && buffer[i] != '\n')
             {
-                // If there's a space within the line, wrap at the last space
-                int wrap_position = last_space_position;
-                total_line++;
-                line_position[total_line] = &buffer[last_space_index + 1];
-                line_length[total_line - 1] = wrap_position;
+                // register the line position as the last space position
+                line_length[total_line] = last_space_position;
 
-                //
-                row_character_count -= wrap_position;
-                last_space_index = -1;
-                last_space_position = -1;
+                // new line starts from just after the space
+                line_position[++total_line] = &buffer[last_space_index + 1];
+
+                // new line count starts from the wrapped word
+                line_count -= last_space_position;
             }
+
+            // This line doesn't requrie word wrap
             else
             {
-                // If no spaces to wrap at, wrap at the max character limit
-                total_line++;
-                line_position[total_line] = &buffer[i + 1];
-                line_length[total_line - 1] = row_character_count;
-                row_character_count = 0;
+                // register the line count
+                line_length[total_line] = line_count;
+
+                //
+                line_position[++total_line] = &buffer[i+1];
+
+                //
+                line_count = 0;
             }
+
+            // reset the word wrap flags
+            last_space_index = -1;
+            last_space_position = -1;
         }
     }
 
-    // find the line where cursor is located at
+    //
+    // CALCULATE CURSOR INFORMATION
+    //
     char *pCursorPos = &fileBuffer.buffer[fileBuffer.cursorPos];
-    fileBuffer.cursorLine = total_line;
-    fileBuffer.cursorLinePos = pCursorPos - line_position[total_line];
+
+    //
+    fileBuffer.cursorLine = 0;
+    fileBuffer.cursorLinePos = line_length[0];
 
     // caculate the which line cursor is located and the line position
-    for (int i = 0; i <= total_line; i++)
+    for (int i = total_line; i > 0; i--)
     {
-        if (pCursorPos < line_position[i])
+        //
+        if (pCursorPos >= line_position[i])
         {
-            fileBuffer.cursorLine = i - 1;
-            fileBuffer.cursorLinePos = pCursorPos - line_position[i - 1];
+            // found the line index
+            fileBuffer.cursorLine = i;
+            // calculate the cursor position within the line
+            fileBuffer.cursorLinePos = pCursorPos - line_position[i];
             break;
         }
     }
 
-    // decide the START LINE
-    // which line to be displayed as a first line in the display
-
-    // when total line is less than the screen size then the start line is 0
-    static int start_line_prev = -1;
-    if (total_line < rows)
-    {
-        start_line = 0;
-    }
-    else if (total_line > rows)
-    {
-        // there are cases when the screen will flow out and need to restart from the top
-        // in that case flip the page, and make it total_line - 2
-        if (fileBuffer.cursorLine - start_line >= rows)
-        {
-            start_line = fileBuffer.cursorLine - 2;
-            if (start_line < 0)
-                start_line = 0;
-        }
-
-        // there can be cases when cursor goes up or
-        // due to back space
-        // cursorline may go before the start_line
-        // in this case, realign the print
-        else if (fileBuffer.cursorLine < start_line)
-        {
-            start_line = fileBuffer.cursorLine - rows + 1;
-            if (start_line < 0)
-                start_line = 0;
-        }
-    }
-
-    // when start line changes clear
-    if(start_line != start_line_prev) {
-        //
-        clear = true;
-        start_line_prev = start_line;
-    }
-
-    // when the edit is happening while the cursor is moving
-    // do the delay clear
-    static int cursorPos_prev = 0;
-    if(fileBuffer.cursorPos != fileBuffer.getBufferSize() && cursorPos_prev != fileBuffer.cursorPos) {
-        delayedClear(500);
-        cursorPos_prev = fileBuffer.cursorPos;
-    }
-}
-
-// initiate clear command after certain time
-// in order reduce the flicker
-void ScreenBuffer::delayedClear(int millseconds)
-{
-    clear_last = millis() + millseconds;
-    clear_later = true;
-}
-
-void ScreenBuffer::loop() {
-    if(clear_later && millis() > clear_last) {
-        clear_later = false;        
-        clear = true;
-    }
 }

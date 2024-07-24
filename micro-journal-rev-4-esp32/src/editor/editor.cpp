@@ -49,7 +49,6 @@ void Editor::loadFile(String fileName)
 
     // Update the Screen Buffer
     screenBuffer.Update(fileBuffer);
-    screenBuffer.clear = true;
 }
 
 //
@@ -223,31 +222,33 @@ void Editor::keyboard(char key)
         else if (key == 20)
         {
             // up key
-            // calculate the cursorLine
-            fileBuffer.cursorPos -=
-                screenBuffer.rows -
-                (screenBuffer.rows - screenBuffer.line_length[fileBuffer.cursorLine - 1]);
-
-            // reached the beginning of the buffer
-            if (fileBuffer.cursorPos < 1)
-                fileBuffer.cursorPos = 1;
+            // move the cursorPos to the start of the previous line
+            if (fileBuffer.cursorLine > 0)
+            {
+                //
+                int newCursorPos =
+                    screenBuffer.line_position[fileBuffer.cursorLine - 1] - screenBuffer.line_position[0] + screenBuffer.line_length[fileBuffer.cursorLine - 1] - 1;
+                //
+                fileBuffer.cursorPos = newCursorPos;
+            }
         }
         else if (key == 21)
         {
-            // up key
-            // calculate the cursorLine
-            fileBuffer.cursorPos +=
-                screenBuffer.rows -
-                (screenBuffer.rows - screenBuffer.line_length[fileBuffer.cursorLine]);
-
-            // reached the end of the buffer
-            if (fileBuffer.cursorPos > fileBuffer.getBufferSize())
-                fileBuffer.cursorPos = fileBuffer.getBufferSize();
+            // down key
+            // move the cursorPos to the start of the next line
+            if (fileBuffer.cursorLine < screenBuffer.total_line)
+            {
+                //
+                int newCursorPos =
+                    screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0];
+                //
+                fileBuffer.cursorPos = newCursorPos;
+            }
         }
         else if (key == 22)
         {
             // page up
-            fileBuffer.cursorPos -= (screenBuffer.rows*0.7) * screenBuffer.cols;
+            fileBuffer.cursorPos -= (screenBuffer.rows * 0.7) * screenBuffer.cols;
             // reached the beginning of the buffer
             if (fileBuffer.cursorPos < 1)
                 fileBuffer.cursorPos = 1;
@@ -255,15 +256,26 @@ void Editor::keyboard(char key)
         else if (key == 23)
         {
             // page down
-            fileBuffer.cursorPos += (screenBuffer.rows*0.7) * screenBuffer.cols;
+            fileBuffer.cursorPos += (screenBuffer.rows * 0.7) * screenBuffer.cols;
             // reached the end of the buffer
             if (fileBuffer.cursorPos > fileBuffer.getBufferSize())
                 fileBuffer.cursorPos = fileBuffer.getBufferSize();
         }
+        else if (key == 2)
+        {
+            // home - move to the start of the line
+            int newCursorPos =
+                screenBuffer.line_position[fileBuffer.cursorLine] - screenBuffer.line_position[0];
+            //
+            fileBuffer.cursorPos = newCursorPos;
+        }
         else if (key == 3)
         {
-            // end
-            fileBuffer.cursorPos = fileBuffer.getBufferSize();
+            // end - move to the end of the line
+            int newCursorPos =
+                screenBuffer.line_position[fileBuffer.cursorLine] - screenBuffer.line_position[0] + screenBuffer.line_length[fileBuffer.cursorLine];
+            //
+            fileBuffer.cursorPos = newCursorPos;
         }
     }
 
