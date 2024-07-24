@@ -185,3 +185,9 @@ For those who want to have the space bar on the bottom, try this layout and use 
 }
 ```
 
+## Other templates
+
+https://github.com/unkyulee/micro-journal/tree/1.0.16/micro-journal-rev-6-one-piece/keyboard_template
+
+
+You can find the pre-defined key maps from the link above. If you want your key map to be registered in the repository. Please, let me know. 
