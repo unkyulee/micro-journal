@@ -288,7 +288,6 @@ void Editor::keyboard(char key)
                 newCursorPos = fileBuffer.getBufferSize();
 
             //
-            app_log("%d\n", newCursorPos);
             fileBuffer.cursorPos = newCursorPos;
         }
 
