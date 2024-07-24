@@ -190,6 +190,29 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 //
+void WP_render_line(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f, int line_num)
+{
+    char *line = Editor::getInstance().screenBuffer.line_position[line_num];
+    int length = Editor::getInstance().screenBuffer.line_length[line_num];
+
+    // render
+    for (int i = 0; i < length; i++)
+    {
+        // convert extended ascii into a streamlined string
+        uint8_t value = *(line + i);
+        if (value == '\n')
+            continue;
+
+        String str = asciiToUnicode(value);
+        if (str.length() == 0)
+            pu8f->print((char)value);
+        else
+            pu8f->print(str);
+
+    }
+}
+
+//
 void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     JsonDocument &app = app_status();
@@ -199,9 +222,9 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // SET FONT
-    pu8f->setFont(u8g2_font_profont22_mf);      // extended font
-    pu8f->setForegroundColor(foreground_color); // apply color
-    pu8f->setFontMode(1);                       // use u8g2 transparent mode (this is default)
+    pu8f->setFont(u8g2_font_profont22_tf);
+    pu8f->setForegroundColor(foreground_color);
+    pu8f->setFontMode(1);
 
     // Cursor Information
     static int cursorLine_prev = 0;
@@ -220,7 +243,12 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     {
         sprite.createSprite(screen_width, screen_height);
         sprite.fillSprite(background_color);
+
+        //
         pu8f->begin(sprite);
+        pu8f->setFont(u8g2_font_profont22_mf);
+        pu8f->setForegroundColor(foreground_color);
+        pu8f->setFontMode(1);
 
         //
         pu8f->setCursor(0, font_height + font_height / 2);
@@ -322,23 +350,6 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_RED);
     }
     ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
-}
-
-void WP_render_line(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f, int line_num)
-{
-    char *line = Editor::getInstance().screenBuffer.line_position[line_num];
-    int length = Editor::getInstance().screenBuffer.line_length[line_num];
-
-    // render
-    for (int i = 0; i < length; i++)
-    {
-        // convert extended ascii into a streamlined string
-        uint8_t value = *(line + i);
-
-        // skip explicit new line
-        if (value != '\n')
-            pu8f->print((char)value);
-    }
 }
 
 //

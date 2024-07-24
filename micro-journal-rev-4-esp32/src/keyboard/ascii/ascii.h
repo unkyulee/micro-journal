@@ -5,5 +5,6 @@
 
 uint8_t ascii_international(uint8_t precursor, uint8_t ascii);
 uint8_t unicode_convert_ascii(String key);
+String asciiToUnicode(uint8_t value);
 
 #endif
