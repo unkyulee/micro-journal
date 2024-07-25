@@ -255,14 +255,79 @@ Use the following web site to create your own animation files.
 https://ezgif.com/
 
 
-- Example
 
-![wakeup](../gif/wakeup_balls.gif)
 
-![wakeup](../gif/wakeup_system.gif)
+# Keyboard Layout
 
+The Micro Journal Rev. 6 utilizes a 48-key ortholinear keyboard, which may look quite different from the typical office keyboard. Many might wonder how to press the space bar or even if it’s possible to type effectively with it. The usability of this unconventional keyboard can be hard to imagine at first glance.
+
+It's true that this keyboard doesn't follow the standard format. Initially, using it can be challenging. However, you'll be amazed at how quickly your brain can adapt to the new system. After just three days of stuttering through typing, you'll start to feel fluent.
+
+
+![QWERTY](./images/map_default.png)
+
+ALT LAYER
+
+![QWERTY](./images/map_default_alt.png)
+
+While pressing down ALT key, you should have access to cursor navigation features.
 
 
 # Keyboard Layout Customization
 
 Keyboard layout can be customized to fit your needs. Please, refer to [Key Map Customization](./keymap.md).  
+
+
+
+
+# Keyboard Layout Templates
+
+## QWERTY
+
+For those who want to have the space bar on the bottom, try this layout and use it as a starting point for your customization.
+
+![QWERTY](./images/map_qwerty.png)
+
+```json
+{
+    "main": 
+    [     
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
+     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
+     "1", "2", "3", "4", "5", " ", " ", "6", "7", "8", "9", "0"
+    ],
+
+    "main-shift": 
+    [     
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", 127,
+     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "!", "@", "#", "$", "%", " ", " ", "^", "&", "*", "(", ")"
+    ],
+
+    "alt": 
+    [     
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
+     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "L", ":", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", "\n",
+     "`", "-", "=", "4", "5", " ", " ", "6", "7", "8", "[", "]"
+    ],
+
+    "alt-shift": 
+    [     
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
+     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "'",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "~", "_", "+", "$", "%", " ", " ", "^", "&", "*", "{", "}"
+    ]
+}
+```
+
+
+## Other templates
+
+https://github.com/unkyulee/micro-journal/tree/1.0.16/micro-journal-rev-6-one-piece/keyboard_template
+
+
+You can find the pre-defined key maps from the link above. If you want your key map to be registered in the repository. Please, let me know. 
