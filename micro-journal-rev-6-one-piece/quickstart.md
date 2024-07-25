@@ -331,3 +331,13 @@ https://github.com/unkyulee/micro-journal/tree/1.0.16/micro-journal-rev-6-one-pi
 
 
 You can find the pre-defined key maps from the link above. If you want your key map to be registered in the repository. Please, let me know. 
+
+
+
+# For hardware trouble shooting
+
+Micro Journal Rev.6 is built with components that you can find in Amazon. So, if some of the components are not working properly, or worn out, you should be able to find a replace from the market quite easily.
+
+Here is the build guide where it explains the wiring and the steps to build one your own. This document should give you good enough information to identify the hardware troubles that you may encounter.
+
+[Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/build-guide.md)
