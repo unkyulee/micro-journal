@@ -56,16 +56,13 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // File Selection
     int pos_x = 180;
-    ptft->setCursor(pos_x, 30, 2);
+    ptft->setCursor(pos_x, 25, 2);
     ptft->print("CHOOSE A FILE");
 
     int file_index = app["config"]["file_index"].as<int>();
-    // default file_index is 1
-    if(file_index == 0) file_index = 1;
-
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 10; i++)
     {
-        if (file_index == i + 1)
+        if (file_index == i)
         {
             ptft->setTextColor(TFT_GREEN, TFT_BLACK);
         }
@@ -74,8 +71,8 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             ptft->setTextColor(TFT_WHITE, TFT_BLACK);
         }
 
-        ptft->setCursor(pos_x, 50 + i * 16, 2);
-        ptft->printf(" [%d] File %d", i + 1, i + 1);
+        ptft->setCursor(pos_x, 45 + i * 16, 2);
+        ptft->printf(" [%d] File %d", i, i);
     }
     //
     ptft->setCursor(pos_x, 210, 2);
@@ -154,7 +151,7 @@ void Home_keyboard(char key)
     }
 
     // chose file
-    if (key > 48 && key < 58)
+    if (key > 47 && key < 58)
     {
         // save config
         int file_index = key - 48;
