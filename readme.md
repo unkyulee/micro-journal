@@ -22,7 +22,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 [Quick Start Guide](/micro-journal-rev-6-one-piece/quickstart.md)
 
-[Build Guide] TBD
+[Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/build-guide.md)
 
 [Features and Introduction](https://youtu.be/1ZP9wwYMaMY)
 
