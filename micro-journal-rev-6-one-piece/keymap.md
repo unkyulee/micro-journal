@@ -73,8 +73,8 @@ Most keys are typed directly into the JSON file between quotes. However, some ke
 | DOWN                   | Navigate DOWN                    |
 | PGUP                   | Go to Previous Page              |
 | PGDN                   | Go to Next Page                  |
-| HOME                   | N/A                              |
-| END                    | Go back to end of the text       |
+| HOME                   | Move to the beginning of the current line |
+| END                    | Move to the end the current line     |
 
 For accented keys, you can't directly write characters like è or ù in the JSON file as they won’t be recognized. Instead, you need to use their DEC values from the ASCII Table, which can be found at [ASCII Code](https://www.ascii-code.com/).
 
