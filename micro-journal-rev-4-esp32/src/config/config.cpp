@@ -36,7 +36,16 @@ void config_setup()
 void config_load()
 {
     //
-    app_log("Loading config ...\n");
+    app_log("Loading config ... %s", VERSION);
+
+#ifdef ENV_USBHOST
+    app_log(" REV.5 \n");
+#endif
+
+#ifdef ENV_KEYBOARD
+    app_log(" REV.6 \n");
+#endif
+
 
     // load app status
     JsonDocument &app = app_status();

@@ -16,9 +16,16 @@ Also, please update the firmware when you receive the device. The firmware on th
 
 writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one. Both flatop and button top works fine. 
 
+* LiPo 18650
+* Flattop, Button Top both fine
+* Check for Short Circuit Protection on the battery
+* Not more than 3300 mAh capacity
+
 **This is not AA battery or AAA battery.**
 
 Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
+
+Make sure that the battery has short circuit protection on it.
 
 In case, you don't have the battery yet. You can plug in a usb cable to the charging port. The device should be able to turn on with it.
 
@@ -48,6 +55,10 @@ The place with the spring on the holder is the negative (-) side.
 **PLEASE BE EXTRA CAREFUL TO + and - POLARITY OF THE BATTERY**
 
 When installed the battery with the wrong polarity, it can cause a unreparable damange to the device.
+
+**Be extra careful with the battery. It can cause fire**
+
+When closing the enclosure back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the enclosure to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
 
 
 # Step 2. Prepare SD card
@@ -181,16 +192,18 @@ https://github.com/unkyulee/micro-journal/releases
 
 ## 2. Download the "firmware.bin"
 
-Download the file from Assets "firmware.bin"
+Download the file from Assets "firmware_rev_5.bin"
 
 ## 3. Place "firmware.bin" inside the SD card
 
 Turn off the writerDeck. \
 Pull out the SD card from the writerDeck. \
-Copy "firmware.bin" file inside the SD card. \
+Copy "firmware_rev_5.bin" file inside the SD card. \
 Put back the SD card to the writerDeck. \
 Turn on the writerDeck. \
 writerDeck will show white screen for 10 seconds then automatically boot again to the updated firmware.
+
+In case if firmware_rev_5.bin does not trigger the update. Try to rename to firmare.bin and try again.
 
 # USB Keyboard
 
@@ -199,7 +212,10 @@ Most of the USB keyboard should work by connecting to the writerDeck.
 - Bluetooth keyboard is not able to connect to the writerDeck. (Should be possible in the future development)
 - Wireless keyboard with 2.4 Ghz USB dongle should work
 - Wired USB keyboard should work
-- Some keyboards that has USB Hub on board may not work.
+- Some keyboards that has USB Hub on board does not work.
+- **Keyboard should be without a hub, without a battery system. Connecting directly to the keyboard that requries charging will break the Micro Journal**
+- **Keyboards that has many LEDs or has high power demand is not recommended to be connected to the Micro Journal**
+
 
 # Customizing Start and Sleep Animation
 

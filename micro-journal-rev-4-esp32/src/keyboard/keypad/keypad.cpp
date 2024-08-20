@@ -3,6 +3,7 @@
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 #include "keyboard/ascii/ascii.h"
+#include "editor/editor.h"
 //
 #include "display/WordProcessor/WordProcessor.h"
 #include "display/ErrorScreen/ErrorScreen.h"
@@ -31,6 +32,12 @@ byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 // SHIFT - 14
 // ALT - 17
 
+// arrow keys
+// 18 - Left, 19 - Right, 20 - Up, 21 - Down
+// 2 - Home 3 - End
+// 22 - Page Up 
+// 23 - Page Down
+
 // layers
 // prettier-ignore
 int layers[LAYERS][ROWS * COLS] = {
@@ -43,19 +50,19 @@ int layers[LAYERS][ROWS * COLS] = {
 
     {// when shift is pressed
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<',
-     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 8,
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 127,
      17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
 
-    {// special layer
+    {// alt layer
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', '-', '=', 8,
-     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\n',
-     14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', ',', '/', 14},
+     27, 'q', 'w', 'e', 'r', 't', 22 , 'u', 20 , '-', '=', 127, // 2, 20, 3, 22,
+     17, 'a', 's', 'd', 'f', 'g', 23 , 18 , 21 , 19 , ';', '\n', //  18, 21, 19, 23
+     14, 'z', 'x', 'c', 'v', ' ', 'b', 2  , 'm', 3  , '/', 14},
 
-    {// special layer shift
+    {// alt layer shift
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
-     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 8,
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 127,
      17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\n',
      14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '<', '?', 14},
 
@@ -71,6 +78,15 @@ char keys[ROWS][COLS] = {
 };
 
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+//
+int layer = 0;
+bool _shift_pressed = false;
+bool _fn_pressed = false;
+
+// back space
+int _backspace_last = 0;
+bool _backspace_pressed = false;
 
 // initialize keymap
 void keyboard_keypad_setup()
@@ -115,22 +131,33 @@ void keyboard_keypad_loop()
             }
         }
     }
+
+    // Handle Backspace
+    if (millis() > 60 + _backspace_last && _backspace_pressed)
+    {
+        _backspace_last = millis();
+
+        // send backspace key
+        keyboard_key('\b');
+    }
 }
 
-bool _shift_pressed = false;
-bool _fn_pressed = false;
-int layer = 0;
 int keyboard_get_key(keypadEvent e)
 {
+    // release back space when any other keys are pressed
+    if (_backspace_pressed)
+    {
+        _backspace_pressed = false;
+    }
+
     //
-    // step 1. layer processing
+    // step 1. layer or speical key processing
     //
     int key = layers[layer][e.bit.KEY];
     if (key == 17)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
-            app_log("FN\n");
             _fn_pressed = true;
             return 0;
         }
@@ -144,7 +171,6 @@ int keyboard_get_key(keypadEvent e)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
-            app_log("Shift\n");
             _shift_pressed = true;
             return 0;
         }
@@ -153,6 +179,22 @@ int keyboard_get_key(keypadEvent e)
         {
             _shift_pressed = false;
             return 0;
+        }
+    }
+    // mark back space press
+    else if (key == '\b')
+    {
+        if (e.bit.EVENT == KEY_JUST_PRESSED)
+        {
+            _backspace_last = millis() + 500;
+            _backspace_pressed = true;
+        }
+
+        else if (e.bit.EVENT == KEY_JUST_RELEASED)
+        {
+            // register the timer
+            _backspace_last = millis();
+            _backspace_pressed = false;
         }
     }
 
@@ -209,6 +251,9 @@ bool load_keymap(int layer, JsonArray keyArray)
 
 void keyboard_keypad_load_config()
 {
+    //
+    JsonDocument &app = app_status();
+
     // check if file exists in SD card
     if (SD.exists(KEYBOARD_FILE))
     {
@@ -230,11 +275,13 @@ void keyboard_keypad_load_config()
         JsonDocument keyboardConfig;
         // convert to JsonObject
         DeserializationError error = deserializeJson(keyboardConfig, fileString);
-        app_log("Deserializing keyboard.json file\n");
         if (error)
         {
             //
-            app_log("keyboard.jsondeserializeJson() failed: %s\n", error.c_str());
+            app["error"] = format("keyboard.json not in a correct json form: %s\n", error.c_str());
+            app_log(app["error"].as<const char *>());
+            app["screen"] = ERRORSCREEN;
+
             return;
         }
 
@@ -253,6 +300,15 @@ void keyboard_keypad_load_config()
                 if (load_keymap(index, keyboardConfig[key].as<JsonArray>()))
                 {
                     app_log("%s loaded\n", key);
+                }
+                else
+                {
+                    //
+                    app["error"] = format("%s keyboard layout load failed\n", key);
+                    app_log(app["error"].as<const char *>());
+                    app["screen"] = ERRORSCREEN;
+
+                    return;
                 }
             }
         }

@@ -23,6 +23,9 @@ void setup()
   // initialize config
   config_setup();
 
+  // keyboard setup
+  keyboard_setup();
+
   //
   display_setup();
 
@@ -35,9 +38,6 @@ void setup()
       0,       // Priority of the task
       &Task0,  // Task handle.
       0);      // Core where the task should run
-
-  // keyboard setup
-  keyboard_setup();
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -45,13 +45,30 @@ void loop()
 {
   //
   display_loop();
+
+  //
+  keyboard_loop();
 }
 
 void Core0(void *parameter)
 {
-  for (;;)
+  static unsigned int last = 0;
+  while (true)
   {
-    //
-    keyboard_loop();
+    if (millis() - last > 100)
+    {
+      //
+      last = millis();
+
+      JsonDocument &app = app_status();
+      int screen = app["screen"].as<int>();
+
+      // when GIF is playing keyboard gets blocked
+      if (screen == SLEEPSCREEN || screen == WAKEUPSCREEN)
+      {
+        // do the keyboard loop
+        keyboard_loop();
+      }
+    }
   }
 }

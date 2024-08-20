@@ -3,7 +3,7 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+#include "editor/editor.h"
 #include "../Wifi/Wifi.h"
 
 //
@@ -262,7 +262,7 @@ void _sync_send(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // preparing the file
     ptft->println(" - Preparing the file ... ");
     {
-        File inputFile = SD.open(FILENAME);
+        File inputFile = SD.open(Editor::getInstance().fileBuffer.getFileName());
         if (!inputFile)
         {
             Serial.println("Error opening input file!");

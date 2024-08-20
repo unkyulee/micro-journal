@@ -9,12 +9,13 @@
 #include "Sync/Sync.h"
 #include "Clear/Clear.h"
 #include "Layout/Layout.h"
-#include "Drive/Drive.h"
 #include "Wifi/Wifi.h"
-#include "BlueToothConfig/BluetoothConfig.h"
 #include "FrontPanelButton/FrontPanelButton.h"
 #include "Background/Background.h"
 #include "Foreground/Foreground.h"
+#include "DisableWakeUp/DisableWakeUp.h"
+#include "Reset/Reset.h"
+#include "Firmware/Firmware.h"
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -36,9 +37,6 @@ void Menu_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // refresh the background
     menu_clear = true;
-
-    // first menu screen
-    app["menu"]["state"] = MENU_HOME;
 }
 
 void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -60,6 +58,15 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextSize(1);
     ptft->print(" MENU ");
     ptft->print(VERSION);
+    ptft->print(" ");
+
+#ifdef ENV_USBHOST
+    ptft->print(" REV.5 ");
+#endif
+
+#ifdef ENV_KEYBOARD
+    ptft->print(" REV.6 ");
+#endif
 
     // draw sub module of menu
     JsonDocument &app = app_status();
@@ -92,6 +99,28 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             Wifi_setup(ptft, pu8f);
 
         Wifi_render(ptft, pu8f);
+    }
+    //
+    else if (menu_state == MENU_STARTUP)
+    {
+        if (menu_state_prev != menu_state)
+            DisableWakeUp_setup(ptft, pu8f);
+
+        DisableWakeUp_render(ptft, pu8f);
+    }
+    else if (menu_state == MENU_FIRMWARE)
+    {
+        if (menu_state_prev != menu_state)
+            Firmware_setup(ptft, pu8f);
+
+        Firmware_render(ptft, pu8f);
+    }
+    else if (menu_state == MENU_RESET)
+    {
+        if (menu_state_prev != menu_state)
+            Reset_setup(ptft, pu8f);
+
+        Reset_render(ptft, pu8f);
     }
     else if (menu_state == MENU_BACKGROUND)
     {
@@ -168,15 +197,34 @@ void Menu_keyboard(char key)
     }
 
     //
+    else if (menu_state == MENU_STARTUP)
+    {
+        DisableWakeUp_keyboard(key);
+        return;
+    }
+
+    //
     else if (menu_state == MENU_BACKGROUND)
     {
-         Background_keyboard(key);
+        Background_keyboard(key);
     }
 
     //
     else if (menu_state == MENU_FOREGROUND)
     {
         Foreground_keyboard(key);
+    }
+
+    //
+    else if (menu_state == MENU_RESET)
+    {
+        Reset_keyboard(key);
+    }
+
+    //
+    else if (menu_state == MENU_FIRMWARE)
+    {
+        Firmware_keyboard(key);
     }
 
 #ifdef ENV_USBHOST

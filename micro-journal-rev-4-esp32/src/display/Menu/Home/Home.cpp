@@ -3,7 +3,10 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+#include "editor/editor.h"
+
+//
+#include <SPIFFS.h>
 
 //
 void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -23,7 +26,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         keyboard_layout = "US";
 
     // Text to be displayed
-    ptft->setCursor(0, 30, 2);
+    ptft->setCursor(0, 20, 2);
     ptft->setTextSize(1);
 
     //
@@ -36,20 +39,44 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" [S] SYNC ");
     }
 
-    //
-    ptft->println(" [D] START NEW ");
 #ifdef ENV_USBHOST
     ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
+    ptft->println(" [F] DEVICE BUTTON");
 #endif
     ptft->println(" [W] WIFI");
+    ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
-    ptft->println(" [F] DEVICE BUTTON");
-    ptft->println(" [R] REBOOT DEVICE");
+
+    ptft->println(" [R] RESET DEVICE");
     ptft->println();
     ptft->println(" [B] BACK ");
     ptft->println();
     ptft->println();
+
+    // File Selection
+    int pos_x = 180;
+    ptft->setCursor(pos_x, 25, 2);
+    ptft->print("CHOOSE A FILE");
+
+    int file_index = app["config"]["file_index"].as<int>();
+    for (int i = 0; i < 10; i++)
+    {
+        if (file_index == i)
+        {
+            ptft->setTextColor(TFT_GREEN, TFT_BLACK);
+        }
+        else
+        {
+            ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+        }
+
+        ptft->setCursor(pos_x, 45 + i * 16, 2);
+        ptft->printf(" [%d] File %d", i, i);
+    }
+    //
+    ptft->setCursor(pos_x, 210, 2);
+    ptft->printf(" [D] Clear File %d ", file_index);
 }
 
 //
@@ -86,12 +113,23 @@ void Home_keyboard(char key)
         // move to keyboard layout
         app["menu"]["state"] = MENU_LAYOUT;
     }
+    else if (key == 'f')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_BUTTONS;
+    }
 #endif
 
     else if (key == 'w')
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_WIFI;
+    }
+
+    else if (key == 'a')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_STARTUP;
     }
 
     else if (key == 'g')
@@ -108,13 +146,23 @@ void Home_keyboard(char key)
 
     else if (key == 'r')
     {
-        // restart
-        ESP.restart();
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_RESET;
     }
 
-    else if (key == 'f')
+    // chose file
+    if (key > 47 && key < 58)
     {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_BUTTONS;
+        // save config
+        int file_index = key - 48;
+        app["config"]["file_index"] = file_index;
+        config_save();
+
+        // load editor
+        Editor::getInstance().loadFile(format("/%d.txt", file_index));
+
+        //
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
     }
 }

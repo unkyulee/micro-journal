@@ -54,17 +54,27 @@
 #include "locale/it.h"
 #include "locale/us.h"
 #include "locale/ge.h"
+#include "locale/be.h"
+#include "locale/uk.h"
+
+// back space
+int _usb_backspace_last = 0;
+bool _usb_backspace_pressed = false;
 
 class MyEspUsbHost : public EspUsbHost
 {
   //
   uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
   {
+    // left - 80 right - 79 up - 82 down - 81 home - 74 end - 77 
+
     //
     static uint8_t const keyboard_conv_table_us[128][2] = {HID_KEYCODE_TO_ASCII_US};
     static uint8_t const keyboard_conv_table_it[128][3] = {HID_KEYCODE_TO_ASCII_IT};
     static uint8_t const keyboard_conv_table_ca_bi[128][5] = {HID_KEYCODE_TO_ASCII_CA_BI};
     static uint8_t const keyboard_conv_table_ge[128][3] = {HID_KEYCODE_TO_ASCII_GE};
+    static uint8_t const keyboard_conv_table_be[128][3] = {HID_KEYCODE_TO_ASCII_BE};
+    static uint8_t const keyboard_conv_table_uk[128][2] = {HID_KEYCODE_TO_ASCII_UK};
 
     //
     static uint8_t pre_cursor_ascii = 0;
@@ -86,6 +96,24 @@ class MyEspUsbHost : public EspUsbHost
 
       // Italian
       return keyboard_conv_table_it[keycode][shift];
+    }
+
+    //
+    // Belgium
+    //
+    else if (hidLocal == HID_LOCAL_Belgian)
+    {
+      if (altgr > 0)
+        shift += 2;
+      return keyboard_conv_table_be[keycode][shift];
+    }
+
+    //
+    // UK
+    //
+    else if (hidLocal == HID_LOCAL_UK)
+    {
+      return keyboard_conv_table_uk[keycode][shift];
     }
 
     //
@@ -197,6 +225,18 @@ class MyEspUsbHost : public EspUsbHost
   //
   void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
   {
+    // release back space when any other keys are pressed
+    if (_usb_backspace_pressed)
+    {
+      _usb_backspace_pressed = false;
+    }
+
+    // when backspace is pressed
+    if (ascii == '\b')
+    {
+      _usb_backspace_last = millis() + 500;
+      _usb_backspace_pressed = true;
+    }
 
     if (ascii == 27)
     {
@@ -209,14 +249,22 @@ class MyEspUsbHost : public EspUsbHost
     }
   };
 
+  void onKeyboardKeyReleased(uint8_t ascii, uint8_t keycode, uint8_t modifier)
+  {
+    //
+    // when backspace is pressed
+    if (_usb_backspace_pressed)
+    {
+      _usb_backspace_pressed = false;
+    }
+  }
+
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
-    // app_log("%02x %02x %02x %02x %02x %02x\n", report.modifier, report.keycode[0], report.keycode[1], report.keycode[2], report.keycode[3], report.keycode[4], report.keycode[5]);
   }
 };
 
 MyEspUsbHost usbHost;
-bool mass_drive_mode = false;
 
 // initialize USB HOST
 String keyboard_layout_prev;
@@ -229,6 +277,10 @@ void keyboard_layout(String layout)
   {
     usbHost.setHIDLocal(HID_LOCAL_US);
   }
+  else if (layout == "BE")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_Belgian);
+  }
   else if (layout == "IT")
   {
     usbHost.setHIDLocal(HID_LOCAL_Italian);
@@ -240,6 +292,10 @@ void keyboard_layout(String layout)
   else if (layout == "CA")
   {
     usbHost.setHIDLocal(HID_LOCAL_Canadian_Bilingual);
+  }
+  else if (layout == "UK")
+  {
+    usbHost.setHIDLocal(HID_LOCAL_UK);
   }
   else if (layout == "INT")
   {
@@ -301,5 +357,13 @@ void keyboard_usb_loop()
 
   // handle display button press
   button_loop();
-}
 
+  // Handle Backspace
+  if (millis() > 60 + _usb_backspace_last && _usb_backspace_pressed)
+  {
+    _usb_backspace_last = millis();
+
+    // send backspace key
+    keyboard_key('\b');
+  }
+}

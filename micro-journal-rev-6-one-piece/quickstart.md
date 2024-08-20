@@ -23,6 +23,9 @@ Micro Journal Rev.6 requires one 18650 3.7V Lithium ion Battery. Search with key
 
 Please, note that when buying the battery, try to buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
 
+Make sure thqt the battery is equipped with a short circuit protection. 
+
+
 
 # SD CARD
 
@@ -56,6 +59,9 @@ The place with the spring on the holder is the negative (-) side.
 
 When installed the battery with the wrong polarity, it can cause a unreparable damange to the device.
 
+**Be extra careful with the battery installation. Can cause a fire**
+
+When closing the panel back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the panel to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
 
 # Step 2. Prepare SD card
 
@@ -197,19 +203,32 @@ You can check the latest firmware from the following link.
 
 https://github.com/unkyulee/micro-journal/releases
 
-## 2. Download the "firmware_48keys.bin"
+## 2. Download the "firmware_rev_6.bin"
 
-Download the file from Assets "firmware_48keys.bin"
-
-## 3. Rename it to "firmware.bin" and copy to the SD card
+Download the file from Assets "firmware_rev_6.bin"
 
 Turn off the Micro Journal Rev.6. \
 Pull out the SD card from the Micro Journal Rev.6. \
-Rename "firmware_48keys.bin" to "firmware.bin" \
-Copy "firmware.bin" file inside the SD card. \
+Copy "firmware_rev_6.bin" file inside the SD card. \
 Put back the SD card to the Micro Journal Rev.6. \
 Turn on the Micro Journal Rev.6. \
 Micro Journal Rev.6 will show white screen for 10 seconds then automatically boot again to the updated firmware.
+
+In case "firmware_rev_6.bin" doesn't trigger the update. Rename the file to "firmware.bin" and try again
+
+
+# Strap Installation
+
+![strap](./images/strap_001.png)
+
+1. Place the strap between the knob and the ring. The ring acts as a buffer to prevent the knob from overtightening. Avoid tightening the knob too hard.
+
+2. Be gentle when opening or closing the hood. The twisting motion can cause the knob to tighten further, potentially leading to breakage.
+
+3. If the knob breaks, you can download the 3D model file and request 3D printing services for a replacement. Additionally, a gel-type glue (silicon type) can help to repair and sustain any cracks.
+
+3D Model files:
+https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/STL
 
 
 # Customizing Start and Sleep Animation
@@ -236,13 +255,89 @@ Use the following web site to create your own animation files.
 https://ezgif.com/
 
 
-- Example
 
-![wakeup](../gif/wakeup_balls.gif)
 
-![wakeup](../gif/wakeup_system.gif)
+# Keyboard Layout
+
+The Micro Journal Rev. 6 utilizes a 48-key ortholinear keyboard, which may look quite different from the typical office keyboard. Many might wonder how to press the space bar or even if it’s possible to type effectively with it. The usability of this unconventional keyboard can be hard to imagine at first glance.
+
+It's true that this keyboard doesn't follow the standard format. Initially, using it can be challenging. However, you'll be amazed at how quickly your brain can adapt to the new system. After just three days of stuttering through typing, you'll start to feel fluent.
+
+
+![QWERTY](./images/map_default.png)
+
+ALT LAYER
+
+![QWERTY](./images/map_default_alt.png)
+
+While pressing down ALT key, you should have access to cursor navigation features.
 
 
 # Keyboard Layout Customization
 
 Keyboard layout can be customized to fit your needs. Please, refer to [Key Map Customization](./keymap.md).  
+
+
+
+
+# Keyboard Layout Templates
+
+## QWERTY
+
+For those who want to have the space bar on the bottom, try this layout and use it as a starting point for your customization.
+
+![QWERTY](./images/map_qwerty.png)
+
+```json
+{
+    "main": 
+    [     
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
+     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
+     "1", "2", "3", "4", "5", " ", " ", "6", "7", "8", "9", "0"
+    ],
+
+    "main-shift": 
+    [     
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", 127,
+     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "!", "@", "#", "$", "%", " ", " ", "^", "&", "*", "(", ")"
+    ],
+
+    "alt": 
+    [     
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
+     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "L", ":", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", "<", ">", "?", "\n",
+     "`", "-", "=", "4", "5", " ", " ", "6", "7", "8", "[", "]"
+    ],
+
+    "alt-shift": 
+    [     
+     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
+     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "'",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "~", "_", "+", "$", "%", " ", " ", "^", "&", "*", "{", "}"
+    ]
+}
+```
+
+
+## Other templates
+
+https://github.com/unkyulee/micro-journal/tree/1.0.16/micro-journal-rev-6-one-piece/keyboard_template
+
+
+You can find the pre-defined key maps from the link above. If you want your key map to be registered in the repository. Please, let me know. 
+
+
+
+# For hardware trouble shooting
+
+Micro Journal Rev.6 is built with components that you can find in Amazon. So, if some of the components are not working properly, or worn out, you should be able to find a replace from the market quite easily.
+
+Here is the build guide where it explains the wiring and the steps to build one your own. This document should give you good enough information to identify the hardware troubles that you may encounter.
+
+[Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/build-guide.md)

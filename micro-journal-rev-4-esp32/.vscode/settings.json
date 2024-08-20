@@ -23,6 +23,7 @@
     "vector": "cpp",
     "string_view": "cpp",
     "initializer_list": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "cstring": "cpp"
   }
 }

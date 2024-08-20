@@ -6,17 +6,22 @@
 #include "display/ErrorScreen/ErrorScreen.h"
 #include "display/Menu/Menu.h"
 #include "display/WakeUp/WakeUp.h"
-#include "display/USBDRIVE/USBDRIVE.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
+TFT_eSprite sprite(&tft);
 U8g2_for_TFT_eSPI u8f; // U8g2 font instance
+
+//
+TFT_eSprite& display_sprite() {
+  return sprite;
+}
 
 //
 void display_setup()
 {
   app_log("DISPLAY SETUP\n");
-  
+
   // Initialise the TFT screen
   tft.begin();
 
@@ -32,16 +37,24 @@ void display_setup()
 
   // set the initial screen to word processor
   JsonDocument &app = app_status();
-
-  // check SD card status
-  
-  if (app.containsKey("error"))
+  int screen = app["screen"].as<int>();
+  if (screen == 0) 
   {
-    app["screen"] = ERRORSCREEN;
-  }
-  else
-  {
-    app["screen"] = WAKEUPSCREEN;
+    //
+    // if screen is not specified
+    // then load the wake animation then the word processor
+    //
+    bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
+    if (disabled)
+    {
+      // show the word processor immediately when wakeup is disabled
+      app["screen"] = WORDPROCESSOR;
+    }
+    else
+    {
+      //
+      app["screen"] = WAKEUPSCREEN;
+    }
   }
 }
 
@@ -57,16 +70,15 @@ void display_loop()
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
 
-
     // ERROR SCREEN
     if (screen == ERRORSCREEN)
     {
       // setup only once
       if (screen != screen_prev)
         ErrorScreen_setup(&tft, &u8f);
-
-      // loop
-      ErrorScreen_render(&tft, &u8f);
+      else
+        // loop
+        ErrorScreen_render(&tft, &u8f);
     }
 
     // MENU SCREEN
@@ -75,9 +87,9 @@ void display_loop()
       // setup only once
       if (screen != screen_prev)
         Menu_setup(&tft, &u8f);
-
-      // loop
-      Menu_render(&tft, &u8f);
+      else
+        // loop
+        Menu_render(&tft, &u8f);
     }
 
     // WAKEUP SCREEN
@@ -86,9 +98,9 @@ void display_loop()
       // setup only once
       if (screen != screen_prev)
         WakeUp_setup(&tft, &u8f, true);
-
-      // loop
-      WakeUp_render(&tft, &u8f);
+      else
+        // loop
+        WakeUp_render(&tft, &u8f);
     }
 
     // SLEEP SCREEN
@@ -97,31 +109,20 @@ void display_loop()
       // setup only once
       if (screen != screen_prev)
         WakeUp_setup(&tft, &u8f, false);
-
-      // loop
-      WakeUp_render(&tft, &u8f);
+      else
+        // loop
+        WakeUp_render(&tft, &u8f);
     }
 
-    // USB DRIVE
-    else if (screen == USBDRIVESCREEN)
-    {
-      // setup only once
-      if (screen != screen_prev)
-        USBDRIVE_setup(&tft, &u8f);
-
-      // loop
-      USBDRIVE_render(&tft, &u8f);
-    }
-    
     // WORD PROCESSOR
     else
     {
       // setup only once
       if (screen != screen_prev)
-        WordProcessor::getInstance(&tft, &u8f).setup();
-
-      // loop
-      WordProcessor::getInstance(&tft, &u8f).render();
+        WP_setup(&tft, &u8f);
+      else
+        // loop
+        WP_render(&tft, &u8f);
     }
 
     //

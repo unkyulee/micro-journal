@@ -1,13 +1,13 @@
 #include "sd.h"
 #include "app/app.h"
 #include "display/display.h"
+#include "display/Menu/Menu.h"
 
 //
 #include <SPI.h>
 #include <FS.h>
 #include <SD.h>
 #include <SPIFFS.h>
-#include <Update.h> // Required for firmware update
 
 #define FORMAT_SPIFFS_IF_FAILED true
 
@@ -64,84 +64,16 @@ void SD_setup()
     //
     app_log("SD Card detected\n");
 
-    // check firmware update
-    SD_firwamre_update();
-}
-
-
-void SD_firwamre_update()
-{
-    //
-    JsonDocument &app = app_status();
-
     // Check if there are firmware.bin in the SD card
-    if (SD.exists("/firmware.bin"))
+#ifdef ENV_USBHOST
+        const char *firmware_filename = "/firmware_rev_5.bin";
+#endif
+#ifdef ENV_KEYBOARD
+        const char *firmware_filename = "/firmware_rev_6.bin";
+#endif
+    if (SD.exists(firmware_filename))
     {
-        //
-        app_log("Firmware update begins.\n");
-
-        // perform update
-        File firmwareFile = SD.open("/firmware.bin");
-        if (!firmwareFile)
-        {
-            //
-            Serial.println("Error opening firmware file!");
-
-            //
-            app["error"] = "ERROR FIRMWARE.BIN";
-            app["screen"] = ERRORSCREEN;
-
-            return;
-        }
-
-        // delay before next file operations
-        delay(100);
-
-        // Perform firmware update
-        size_t fileSize = firmwareFile.size();
-        if (Update.begin(fileSize))
-        {
-            if (Update.writeStream(firmwareFile) == fileSize)
-            {
-                if (Update.end())
-                {
-                    Serial.println("Firmware update successful!");
-                    // Delete firmware file from SD card (optional)
-                    SD.remove("/firmware.bin");
-                    // restart
-                    ESP.restart();
-                }
-                else
-                {
-                    Update.printError(Serial);
-                    Serial.println("Error ending update!");
-
-                    //
-                    app["error"] = "UPDATE FAILED AT THE END";
-                    app["screen"] = ERRORSCREEN;
-                }
-            }
-            else
-            {
-                Update.printError(Serial);
-                Serial.println("Error writing firmware!");
-
-                //
-                app["error"] = "UPDATE FAILED TO APPLY";
-                app["screen"] = ERRORSCREEN;
-            }
-        }
-        else
-        {
-            Update.printError(Serial);
-            Serial.println("Error beginning update!");
-
-            //
-            app["error"] = "UPDATE FAILED TO BEGIN";
-            app["screen"] = ERRORSCREEN;
-        }
-
-        // Close firmware file
-        firmwareFile.close();
+        app["screen"] = MENUSCREEN;
+        app["menu"]["state"] = MENU_FIRMWARE;
     }
 }

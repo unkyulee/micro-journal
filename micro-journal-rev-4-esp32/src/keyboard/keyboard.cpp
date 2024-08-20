@@ -7,8 +7,6 @@
 #include "keypad/keypad.h"
 #endif
 
-#include "bluetooth/bluetooth.h"
-
 //
 #include "app/app.h"
 #include "config/config.h"
@@ -19,6 +17,8 @@
 #include "display/ErrorScreen/ErrorScreen.h"
 #include "display/Menu/Menu.h"
 #include "display/WakeUp/WakeUp.h"
+
+bool keyboard_setup_completed = false;
 
 void keyboard_setup()
 {
@@ -31,10 +31,15 @@ void keyboard_setup()
     // keypad setup
     keyboard_keypad_setup();
 #endif
+
+keyboard_setup_completed = true;
 }
 
 void keyboard_loop()
 {
+    if(!keyboard_setup_completed) return;
+
+    
 #ifdef ENV_USBHOST
     // usb keyboard loop
     keyboard_usb_loop();
@@ -58,7 +63,7 @@ void keyboard_key(char key)
     if (screen == WORDPROCESSOR)
     {
         // send the key stroke to word processor
-        WordProcessor::getInstance(nullptr, nullptr).keyboard(key);
+        WP_keyboard(key);
     }
     else if (screen == MENUSCREEN)
     {

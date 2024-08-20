@@ -4,12 +4,13 @@
 #include <ArduinoJson.h>
 
 // app version
-#define VERSION "1.0.12"
+#define VERSION "1.0.16.r3"
 
 // app status
 JsonDocument &app_status();
 
 //
 void app_log(const char *format, ...);
+String format(const char *format, ...);
 
 #endif

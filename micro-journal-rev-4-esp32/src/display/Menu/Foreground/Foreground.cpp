@@ -35,7 +35,6 @@ void Foreground_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     JsonDocument &app = app_status();
 
-    // Bluetooth Keyboard Config
     ptft->print("[a] ");
     Foreground_print_color(ptft, pu8f, TFT_BLACK);
     ptft->print("[b] ");
@@ -223,5 +222,6 @@ void Foreground_keyboard(char key)
     }
 
     // go back to the word processor
+    app["menu"]["state"] = MENU_HOME;
     app["screen"] = WORDPROCESSOR;
 }
