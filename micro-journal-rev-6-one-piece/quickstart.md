@@ -19,12 +19,9 @@ Also, please update the firmware when you receive the device. The firmware on th
 
 **You need to buy your own LIPO battery. LIPO battery is NOT included in the package. EU delivery restrictions prevent batteries in the parcel. The device requires one 18650 battery to operate. Please read the following guide for the choice of your battery**
 
-Micro Journal Rev.6 requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon or any shopping means you have then you should be able to find one. Flat top, button top - either type is fine. 
+Micro Journal Rev.6 requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon or any shopping means you have then you should be able to find one. Flat top, button top - either type is fine. Some reports that flat top probably is a better fit. 
 
 Please, note that when buying the battery, try to buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
-
-Make sure thqt the battery is equipped with a short circuit protection. 
-
 
 
 # SD CARD
