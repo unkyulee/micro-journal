@@ -23,6 +23,12 @@ Micro Journal Rev.6 requires one 18650 3.7V Lithium ion Battery. Search with key
 
 Please, note that when buying the battery, try to buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
 
+# Battery Indicator User Mod
+
+There is a way to add battery indicator with some user modifications. Please find more details from the link below.
+
+https://github.com/unkyulee/micro-journal/issues/21
+
 
 # SD CARD
 
