@@ -13,7 +13,8 @@ void _set_default_config()
     JsonDocument &app = app_status();
 
     // create a default config
-    app["config"]["sync"]["url"] = "";    
+    app["config"]["sync"]["url"] = "";
+    app["config"]["ble"]["remote"] = "";
 
     //
     config_save();

@@ -3,7 +3,7 @@
 
 #include <TFT_eSPI.h>
 #include <U8g2_for_TFT_eSPI.h>
-#include <Animatedgif.h>
+#include <AnimatedGIF.h>
 
 #include <SPI.h>
 #include <SPIFFS.h>
