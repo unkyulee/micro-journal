@@ -17,13 +17,11 @@ bool keyboard_ble_connect()
 
     // look for BLE client
     JsonString remote = app["config"]["ble"]["remote"].as<JsonString>();
-    app_log("BLE: Remote: %s\n", remote.c_str());
     if (remote == "null" || remote.isNull())
     {
         return false;
     }
     scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
-    app_log("BLE: Scan Mode: %d\n", scanMode);
     if (scanMode)
     {
         app_log("scan mode true, skipping connect\n");
@@ -131,7 +129,6 @@ bool connectToServer(const char* remote, uint8_t type)
                 app_log("Reconnect failed\n");
                 return false;
             }
-            app_log("Reconnected client\n");
         }
     }
     else
@@ -139,9 +136,7 @@ bool connectToServer(const char* remote, uint8_t type)
         pClient = NimBLEDevice::createClient(NimBLEAddress(device->toString(), BLE_ADDR_RANDOM));
     }
 
-    app_log("setting client callbacks\n");
     pClient->setClientCallbacks(&clientCB, false);
-    app_log("done\n");
     pClient->setConnectionParams(12,12,0,51);
     pClient->setConnectTimeout(2);
     if (!pClient->connect(new NimBLEAddress(device->toString(), type))) {
@@ -153,11 +148,9 @@ bool connectToServer(const char* remote, uint8_t type)
         app_log("BLE: connect returned true but not connected\n");
         return false;
     }
-    app_log("Connected to server\n");
+    app_log("BLE: Connected to server\n");
 
-    app_log("Refreshing services\n");
     pClient->getServices(true);
-    app_log("calling getService() \n");
     pRemoteService = pClient->getService(serviceUUID);
     if (pRemoteService == nullptr)
     {
@@ -165,8 +158,6 @@ bool connectToServer(const char* remote, uint8_t type)
         pClient->disconnect();
         return false;
     }
-    app_log("got remote service\n");
-
     auto characteristicsMap = pRemoteService->getCharacteristics(true);
     if (characteristicsMap->empty())
     {
@@ -180,40 +171,26 @@ bool connectToServer(const char* remote, uint8_t type)
         // if (characteristic->getUUID().toString().c_str() == charUUID.toString().c_str())
         if (characteristic->getUUID() == charUUID)
         {
-            app_log("BLE: found characteristic\n");
             charUUID = characteristic->getUUID();
-            app_log("BLE: Assigned\n");
             break;
         }
     }
-    // app_log("BLE: Cheching for null\n");
-    // if (charUUID == nullptr)
-    // {
-    //     app_log("BLE: could not find characteristic %s\n", charUUID.toString().c_str());
-    //     pClient->disconnect();
-    //     return false;
-    // }
-    // app_log("BLE: not null\n");
 
     pRemoteCharacteristic = pRemoteService->getCharacteristic(charUUID);
-    app_log("BLE: Getting remote characteristic\n");
     if (pRemoteCharacteristic == nullptr)
     {
         app_log("BLE: Failed to get characteristic from remote service: %s\n", charUUID.toString().c_str());
         pClient->disconnect();
         return false;
     }
-    app_log("BLE: Found our characteristic\n");
     // Read the value of the characteristic.
     if (pRemoteCharacteristic->canRead())
     {
-        NimBLEAttValue value = pRemoteCharacteristic->readValue();
-        // app_log("The characteristic value was: %x\n", value);
+        pRemoteCharacteristic->readValue();
     }
 
     if (pRemoteCharacteristic->canNotify())
     {
-        app_log("BLE: can notify, subscribing\n");
         bool notify = pRemoteCharacteristic->subscribe(true, notifyCallback);
         if (!notify) {
             app_log("BLE: failed to subscribe");
@@ -221,22 +198,4 @@ bool connectToServer(const char* remote, uint8_t type)
     }
     return true;
 }
-
-//Callback function that gets called, when another device's advertisement has been received
-// class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks
-// {
-// public:
-//     String foundDevices[5] = {};
-//     void onResult(BLEAdvertisedDevice *advertisedDevice)
-//     {
-//         app_log("%s (%s), type %d\n", advertisedDevice->getName().c_str(), advertisedDevice->getAddress().toString().c_str(), advertisedDevice->getAddress().getType());
-//         // strcpy(foundDevices[deviceIndex], advertisedDevice->getAddress().toString());
-//         foundDevices[deviceIndex] = advertisedDevice->getAddress().toString().c_str();
-//         app_log("foundDevices[%i]: %s\n", deviceIndex, foundDevices[deviceIndex]);
-//         deviceIndex++;
-//     }
-// private:
-//     int deviceIndex = 0;
-
-// };
 

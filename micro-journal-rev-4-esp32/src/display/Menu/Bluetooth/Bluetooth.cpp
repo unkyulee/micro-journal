@@ -30,17 +30,15 @@ bool scanMode;
 class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks {
     void onResult(BLEAdvertisedDevice *advertisedDevice)
     {
-        app_log("in result\n");
-        app_log("%s (%s), type %d\n", advertisedDevice->getName().c_str(), advertisedDevice->getAddress().toString().c_str(), advertisedDevice->getAddress().getType());
         int deviceIndex = 0;
         for (int i = 0; i < advertisedDevice->getServiceUUIDCount(); i++)
         {
             BLEUUID service = advertisedDevice->getServiceUUID(i);
-            app_log("service uuid: %s\n", service.toString().c_str());
+            app_log(" uuid: %s\n", service.toString().c_str());
             if (service == serviceUUID)
             {
-                app_log("Keyboard found\n");
                 std::string foundDevice = advertisedDevice->getAddress().toString();
+                app_log("Keyboard found : %s\n", foundDevice.c_str());
                 foundDevices[deviceIndex++] = foundDevice;
             }
         }
@@ -49,14 +47,10 @@ class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks {
 
 void scan()
 {
-    app_log("SCANNING\n");
     // scan to run for 5 seconds.
     pBLEScan = BLEDevice::getScan();
-    app_log("Got scan %x\n", pBLEScan);
     pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
     pBLEScan->start(5);
-    app_log("scan finished\n");
-    app_log("got results\n");
     pBLEScan->clearResults();
     
 }
@@ -79,9 +73,7 @@ void Bluetooth_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // single bluetooth entry
     JsonDocument &app = app_status();
     JsonString savedAddress = app["config"]["ble"]["remote"].as<JsonString>();
-    app_log("savedAddress from config: %s\r\n", savedAddress.c_str());
     scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
-    app_log("scanMode from config: %d\r\n", scanMode);
 
 }
 
@@ -129,7 +121,6 @@ void Bluetooth_keyboard(char key)
                 // save address
                 JsonObject ble = app["config"]["ble"].as<JsonObject>();
                 ble["remote"] = String(bluetooth_config_buffer);
-                app_log("ble[remote]: %s\n", ble["remote"]);
 
                 bluetooth_config_buffer[0] = '\0';
                 bluetooth_config_buffer_pos = 0;
@@ -145,8 +136,6 @@ void Bluetooth_keyboard(char key)
             // edit mode
             bluetooth_config_buffer[bluetooth_config_buffer_pos++] = key;
             bluetooth_config_buffer[bluetooth_config_buffer_pos] = '\0';
-
-                app_log("ble_buffer: %s\n", bluetooth_config_buffer);
 
         }
 
@@ -196,10 +185,10 @@ void Bluetooth_keyboard(char key)
             // scan for bluetooth devices
             scan();
 
-            for (int i = 0; i < foundDevices->length(); i++)
-            {
-                app_log("found device: %s\n", foundDevices[i]);
-            }
+            // for (int i = 0; i < foundDevices->length(); i++)
+            // {
+            //     app_log("found device: %s\n", foundDevices[i]);
+            // }
 
             return;
         }
@@ -215,39 +204,29 @@ void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     //
     JsonDocument &app = app_status();
-    // String jsonOutput;
-    // serializeJsonPretty(app["config"], jsonOutput);
-    // app_log("_bt_saved_list: %s\n", jsonOutput.c_str());
 
     // initialize the config
     if (!app["config"].containsKey("ble"))
     {
-        app_log("No BLE found, init");
         JsonObject ble = app["config"]["ble"].to<JsonObject>();
         app["config"]["ble"] = ble;
     }
 
     if (!app["config"]["ble"].containsKey("remote"))
     {
-        app_log("No ble.remote found, init");
         String ble_remote = app["config"]["ble"]["remote"].as<String>();
         app["config"]["ble"]["remote"] = ble_remote;
 
     }
     if (!app["config"]["ble"].containsKey("scan_mode"))
     {
-        app_log("No ble.scan_mode found, init");
         scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
         app["config"]["ble"]["scan_mode"] = scanMode;
     }
 
     // get remote address
-    // app_log("scan_mode_pre: %d\n", scanMode);
     String ble_remote = app["config"]["ble"]["remote"].as<String>();
     scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
-
-    // app_log("ble_remote: %s\n", ble_remote);
-    // app_log("scan_mode_post: %d\n", scanMode);
 
     // available ble remote
     ptft->printf(" [E] %s\n", ble_remote);
