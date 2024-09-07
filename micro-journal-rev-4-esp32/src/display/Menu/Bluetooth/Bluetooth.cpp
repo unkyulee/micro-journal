@@ -24,8 +24,12 @@ int bluetooth_config_buffer_pos = 0;
 
 static BLEScan *pBLEScan = nullptr;
 static BLEScanResults results;
+struct device {
+    std::string address;
+    std::string name;
+};
 const int maxScanSize = 5;
-std::string foundDevices[maxScanSize];
+device foundDevices[maxScanSize];
 int deviceIndex = 0;
 
 bool scanMode;
@@ -43,8 +47,10 @@ class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks {
             BLEUUID service = advertisedDevice->getServiceUUID(i);
             if (service == serviceUUID)
             {
-                std::string foundDevice = advertisedDevice->getAddress().toString();
-                app_log("Keyboard found : %s\n", foundDevice.c_str());
+                device foundDevice = device();
+                foundDevice.address = advertisedDevice->getAddress().toString();
+                foundDevice.name = advertisedDevice->getName();
+                app_log("Keyboard found : %s\n", foundDevice.name.c_str());
                 foundDevices[deviceIndex++] = foundDevice;
                 return;
             }
@@ -122,9 +128,9 @@ void Bluetooth_keyboard(char key)
         if (key - '0' > 0 && key - '0' <= deviceIndex)
         {
             // picked a device
-            app_log("Picked %d, %s\n", key, foundDevices[(key-1)-'0'].c_str());
+            app_log("Picked %d, %s\n", key, foundDevices[(key-1)-'0'].name.c_str());
             JsonObject ble = app["config"]["ble"].as<JsonObject>();
-            ble["remote"] = foundDevices[(key-1)-'0'];
+            ble["remote"] = foundDevices[(key-1)-'0'].address;
             Bluetooth_save();
         }
         else if (key == 'B' || key == 'b')
@@ -134,7 +140,7 @@ void Bluetooth_keyboard(char key)
         // reset
         for (int i = 0; i < deviceIndex; i++)
         {
-            foundDevices[deviceIndex] = "";
+            foundDevices[deviceIndex] = device();
         }
         deviceIndex = 0;
         bluetooth_config_status = BLUETOOTH_CONFIG_LIST;
@@ -218,7 +224,7 @@ void Bluetooth_keyboard(char key)
             {
                 for (int i = 0; i < deviceIndex; i++)
                 {
-                    app_log("found device: %s\n", foundDevices[i].c_str());
+                    app_log("found device: %s\n", foundDevices[i].name.c_str());
                 }
             }
             bluetooth_config_status = BLUETOOTH_CONFIG_POST_SCAN;
@@ -321,7 +327,7 @@ void _bluetooth_select(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" SELECT BLE KEYBOARD ");
         for (int i = 0; i < deviceIndex; i++)
         {
-            ptft->printf(" [%d] %s", i+1, foundDevices[i].c_str());
+            ptft->printf(" [%d] %s (%s)", i+1, foundDevices[i].address.c_str(), foundDevices[i].name.c_str());
             ptft->println("");
         }
         ptft->println("");
