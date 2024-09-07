@@ -47,10 +47,10 @@ bool keyboard_ble_connect()
 
 void keyboard_ble_loop()
 {
-    if (!ble_connected)
-    {
-        keyboard_ble_connect();
-    }
+    // if (!ble_connected)
+    // {
+    //     keyboard_ble_connect();
+    // }
 }
 
 bool keyboard_ble_setup()
