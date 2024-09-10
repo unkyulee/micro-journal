@@ -39,7 +39,7 @@ Some ultra fast sanDisk micro SD cards were not recognized. So, try to buy somet
 
 Make sure to buy the one that has the adapter to the bigger size. writerDeck takes the bigger size SD card.
 
-# Step 1. Open the back cover and install the battery
+# Step 1. Open the cover and install the battery
 
 ![SD](./images/unscrew.jpg)
 
