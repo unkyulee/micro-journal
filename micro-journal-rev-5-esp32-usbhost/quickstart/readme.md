@@ -39,7 +39,7 @@ Some ultra fast sanDisk micro SD cards were not recognized. So, try to buy somet
 
 Make sure to buy the one that has the adapter to the bigger size. writerDeck takes the bigger size SD card.
 
-# Step 1. Open the front cover and install the battery
+# Step 1. Open the back cover and install the battery
 
 ![SD](./images/unscrew.jpg)
 
@@ -48,6 +48,8 @@ Make sure to buy the one that has the adapter to the bigger size. writerDeck tak
 Install the battery when the enclosure is open. Battery holder should have the polarity written on the bottom. Please check carefully before inserting the battery.
 
 The place with the spring on the holder is the negative (-) side. 
+
+Check that the positive (+) end of battery is making contact with the positive terminal in the battery panel. Battery can fit snugly, preventing contact. Suggest turning on power switch to confirm connectivity before putting screws back.
 
 
 ![SD](./images/battery_install.jpg)
