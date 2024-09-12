@@ -62,6 +62,12 @@ The place with the spring on the holder is the negative (-) side.
 
 When installed the battery with the wrong polarity, it can cause a unreparable damange to the device.
 
+**PLEASE ENSURE THE BATTERY IS FULLY CHARGED BEFORE USE**
+
+LiPo batteries do not come fully charged, so it’s essential to charge the battery before using the device. Install the battery, connect it to the charging port, and leave it charging for at least 4 hours before turning it on for the first time.
+
+When the battery is low, the screen may turn white or flicker—these are common signs of a low battery. If you notice this happening, please check that the battery is functioning properly or recharge it before continuing to use the device.
+
 **Be extra careful with the battery installation. Can cause a fire**
 
 When closing the panel back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the panel to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
