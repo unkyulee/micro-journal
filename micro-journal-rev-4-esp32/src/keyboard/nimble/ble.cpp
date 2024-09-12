@@ -17,10 +17,17 @@ bool keyboard_ble_connect()
 
     // look for BLE client
     JsonString remote = app["config"]["ble"]["remote"].as<JsonString>();
-    if (remote == "null" || remote.isNull())
+    if (remote == "null" || remote.isNull() || remote == "")
     {
         return false;
     }
+
+    // initialize BLE only when it configured
+    BLEDevice::init("uJournal");
+    // Enable bonding
+    BLEDevice::setSecurityAuth(true, false, true);
+
+    //
     scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
     if (scanMode)
     {
@@ -28,19 +35,9 @@ bool keyboard_ble_connect()
         return false;
     }
 
-    const char* address = (const char*)remote.c_str();
+    app_log("Connecting Bluetooth Keyboard: %s\n", remote);
+    const char *address = (const char *)remote.c_str();
     connectToServer(address, BLE_ADDR_RANDOM);
-
-    // update the locale depending on your keyboard layout
-    //
-    String layout = app["config"]["keyboard_layout"].as<String>();
-    if (layout == "null" || layout.isEmpty())
-        layout = "US"; // defaults to US layout
-
-    keyboard_layout(layout);
-
-    // setup display button
-    button_setup();
 
     return true;
 }
@@ -56,17 +53,14 @@ void keyboard_ble_loop()
 bool keyboard_ble_setup()
 {
     app_log("Init BLE Keyboard\n");
-    BLEDevice::init("uJournal");
-    // Enable bonding
-    BLEDevice::setSecurityAuth(true, false, true);
-
+    
     return keyboard_ble_connect();
 }
 
 // Callback function for notifications
 void notifyCallback(
-    NimBLERemoteCharacteristic* pBLERemoteCharacteristic,
-    uint8_t* pData,
+    NimBLERemoteCharacteristic *pBLERemoteCharacteristic,
+    uint8_t *pData,
     size_t length,
     bool isNotify)
 {
@@ -86,13 +80,13 @@ void notifyCallback(
     }
 
     // this callback can be triggered if the modifier is
-    // released before the alpha - if pData[2-7] haven't 
+    // released before the alpha - if pData[2-7] haven't
     // changed then there's nothing to do.
     if (!changed)
     {
         return;
     }
-  
+
     uint8_t shift = (pData[0] == 0x2 || pData[0] == 0x20);
     uint8_t altgr = (pData[0] == 0x4 || pData[0] == 0x40);
     uint8_t ascii = getKeycodeToAscii(keycode, shift, altgr);
@@ -102,12 +96,14 @@ void notifyCallback(
 // Custom callback class for BLE client
 class clientCallback : public BLEClientCallbacks
 {
-    void onConnect(BLEClient* pClient) {
+    void onConnect(BLEClient *pClient)
+    {
         app_log("connect callback");
         ble_connected = true;
     }
 
-    void onDisconnect(BLEClient* pClient) {
+    void onDisconnect(BLEClient *pClient)
+    {
         app_log("onDisconnect");
         ble_connected = false;
     }
@@ -115,17 +111,19 @@ class clientCallback : public BLEClientCallbacks
 
 static clientCallback clientCB;
 
-bool connectToServer(const char* remote, uint8_t type)
+bool connectToServer(const char *remote, uint8_t type)
 {
     BLEAddress *device = new BLEAddress(remote, type);
 
-    //Connect to the BLE Server that has the name, Service, and Characteristics
-    if(NimBLEDevice::getClientListSize()) {
+    // Connect to the BLE Server that has the name, Service, and Characteristics
+    if (NimBLEDevice::getClientListSize())
+    {
         app_log("client list size: %d\n", NimBLEDevice::getClientListSize());
         pClient = NimBLEDevice::getClientByPeerAddress(*device);
-        if(pClient)
+        if (pClient)
         {
-            if(!pClient->connect(device)) {
+            if (!pClient->connect(device))
+            {
                 app_log("Reconnect failed\n");
                 return false;
             }
@@ -137,10 +135,11 @@ bool connectToServer(const char* remote, uint8_t type)
     }
 
     pClient->setClientCallbacks(&clientCB, false);
-    pClient->setConnectionParams(12,12,0,51);
+    pClient->setConnectionParams(12, 12, 0, 51);
     pClient->setConnectTimeout(2);
-    if (!pClient->connect(new NimBLEAddress(device->toString(), type))) {
-        app_log("BLE: could not connect\n");
+    if (!pClient->connect(new NimBLEAddress(device->toString(), type)))
+    {
+        app_log("BLE: could not connect: %s\n", device->toString().c_str());
         return false;
     };
     if (!pClient->isConnected())
@@ -166,7 +165,7 @@ bool connectToServer(const char* remote, uint8_t type)
         return false;
     }
 
-    for (auto& characteristic : *characteristicsMap)
+    for (auto &characteristic : *characteristicsMap)
     {
         // if (characteristic->getUUID().toString().c_str() == charUUID.toString().c_str())
         if (characteristic->getUUID() == charUUID)
@@ -192,10 +191,10 @@ bool connectToServer(const char* remote, uint8_t type)
     if (pRemoteCharacteristic->canNotify())
     {
         bool notify = pRemoteCharacteristic->subscribe(true, notifyCallback);
-        if (!notify) {
+        if (!notify)
+        {
             app_log("BLE: failed to subscribe");
         }
     }
     return true;
 }
-

@@ -5,6 +5,7 @@
 #include "display/display.h"
 #include "display/WordProcessor/WordProcessor.h"
 #include "keyboard/nimble/ble.h"
+#include "keyboard/keyboard.h"
 
 //
 #include <SPI.h>
@@ -15,6 +16,8 @@
 #define BLUETOOTH_CONFIG_LIST 0
 #define BLUETOOTH_CONFIG_EDIT_ADDR 1
 #define BLUETOOTH_CONFIG_POST_SCAN 2
+#define BLUETOOTH_CONFIG_SCANNING 3
+
 int bluetooth_config_status = 0;
 int bluetooth_config_index = 0;
 
@@ -24,17 +27,20 @@ int bluetooth_config_buffer_pos = 0;
 
 static BLEScan *pBLEScan = nullptr;
 static BLEScanResults results;
-struct device {
+struct device
+{
     std::string address;
     std::string name;
 };
 const int maxScanSize = 5;
 device foundDevices[maxScanSize];
 int deviceIndex = 0;
+int deviceSelected = 0;
 
 bool scanMode;
 
-class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks {
+class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks
+{
     void onResult(BLEAdvertisedDevice *advertisedDevice)
     {
         if (deviceIndex > maxScanSize)
@@ -61,14 +67,17 @@ class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks {
 void scan()
 {
     // scan to run for 5 seconds.
+    deviceSelected = 0;
+
+    //
     pBLEScan = BLEDevice::getScan();
     pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
     pBLEScan->start(5);
     pBLEScan->clearResults();
-    
 }
 
 void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
+void _bluetooth_scanning(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 void _bluetooth_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 void _bluetooth_select(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 
@@ -78,7 +87,7 @@ void Bluetooth_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     Menu_clear();
 
-    // 
+    //
     Bluetooth_load();
 
     //
@@ -88,7 +97,6 @@ void Bluetooth_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     JsonDocument &app = app_status();
     JsonString savedAddress = app["config"]["ble"]["remote"].as<JsonString>();
     scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
-
 }
 
 //
@@ -98,15 +106,19 @@ void Bluetooth_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setCursor(0, 30, 2);
     ptft->setTextSize(1);
 
-    //scan();
+    // scan();
     //
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println(" BLUETOOTH SETTINGS ");
+    ptft->println(" BLE KEYBOARD SETTINGS ");
     ptft->println("");
 
     if (bluetooth_config_status == BLUETOOTH_CONFIG_LIST)
     {
         _bluetooth_saved_list(ptft, pu8f);
+    }
+    else if (bluetooth_config_status == BLUETOOTH_CONFIG_SCANNING)
+    {
+        _bluetooth_scanning(ptft, pu8f);
     }
     else if (bluetooth_config_status == BLUETOOTH_CONFIG_EDIT_ADDR)
     {
@@ -125,18 +137,42 @@ void Bluetooth_keyboard(char key)
 
     if (bluetooth_config_status == BLUETOOTH_CONFIG_POST_SCAN)
     {
-        if (key - '0' > 0 && key - '0' <= deviceIndex)
+        // choose the device
+        if (key == 'm' || key == 'M' || key == MENU)
         {
-            // picked a device
-            app_log("Picked %d, %s\n", key, foundDevices[(key-1)-'0'].name.c_str());
-            JsonObject ble = app["config"]["ble"].as<JsonObject>();
-            ble["remote"] = foundDevices[(key-1)-'0'].address;
-            Bluetooth_save();
+            // check if it is back
+            if (deviceSelected >= deviceIndex)
+            {
+                // go back
+                bluetooth_config_status = BLUETOOTH_CONFIG_LIST;
+                return;
+            }
+            else
+            {
+                // picked a device
+                app_log("Picked %d, %s\n", key, foundDevices[deviceSelected].name.c_str());
+                JsonObject ble = app["config"]["ble"].as<JsonObject>();
+                ble["remote"] = foundDevices[deviceSelected].address;
+                Bluetooth_save();
+            }
         }
         else if (key == 'B' || key == 'b')
         {
-            app_log("Returning without pick\n");
+            if (deviceIndex == 0)
+            {
+                // back to 
+                bluetooth_config_status = BLUETOOTH_CONFIG_LIST;
+            }
+            else
+            {
+                deviceSelected++;
+                if (deviceSelected > deviceIndex)
+                    deviceSelected = 0;
+            }
+
+            return;
         }
+
         // reset
         for (int i = 0; i < deviceIndex; i++)
         {
@@ -144,6 +180,8 @@ void Bluetooth_keyboard(char key)
         }
         deviceIndex = 0;
         bluetooth_config_status = BLUETOOTH_CONFIG_LIST;
+
+        return;
     }
     else if (bluetooth_config_status == BLUETOOTH_CONFIG_EDIT_ADDR)
     {
@@ -172,7 +210,6 @@ void Bluetooth_keyboard(char key)
             // edit mode
             bluetooth_config_buffer[bluetooth_config_buffer_pos++] = key;
             bluetooth_config_buffer[bluetooth_config_buffer_pos] = '\0';
-
         }
 
         // OVERFLOW CONTROL
@@ -196,11 +233,16 @@ void Bluetooth_keyboard(char key)
 
         else if (key == 'E' || key == 'e')
         {
-            //
+            // remove the BLE config
+            app["config"]["ble"]["remote"] = "";
+            config_save();
+
+            /*
             // bluetooth entry chose to edit
             bluetooth_config_status = BLUETOOTH_CONFIG_EDIT_ADDR;
             bluetooth_config_buffer[0] = '\0';
             bluetooth_config_buffer_pos = 0;
+            */
 
             //
             Menu_clear();
@@ -215,38 +257,17 @@ void Bluetooth_keyboard(char key)
             Bluetooth_save();
             return;
         }
-        else if ((key == 'S' || key == 's') && !ble_connected)
+        else if ((key == 'M' || key == 'm' || key == MENU) && !ble_connected)
         {
-            //
-            // scan for bluetooth devices
-            scan();
-            if (deviceIndex > 0)
-            {
-                for (int i = 0; i < deviceIndex; i++)
-                {
-                    app_log("found device: %s\n", foundDevices[i].name.c_str());
-                }
-            }
-            bluetooth_config_status = BLUETOOTH_CONFIG_POST_SCAN;
+            bluetooth_config_status = BLUETOOTH_CONFIG_SCANNING;
 
             return;
-        }
-        else if (key == 'X' || key == 'x')
-        {
-            // reboot
-            ESP.restart();
-
         }
     }
 }
 
-
-
 void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    ptft->println(" EDIT REMOTE OR ENTER SCAN MODE: ");
-    ptft->println("");
-
     //
     JsonDocument &app = app_status();
 
@@ -261,7 +282,6 @@ void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     {
         String ble_remote = app["config"]["ble"]["remote"].as<String>();
         app["config"]["ble"]["remote"] = ble_remote;
-
     }
     if (!app["config"]["ble"].containsKey("scan_mode"))
     {
@@ -274,14 +294,18 @@ void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     scanMode = app["config"]["ble"]["scan_mode"].as<bool>();
 
     // available ble remote
-    ptft->printf(" [E] %s\n", ble_remote.c_str());
-
-    ptft->printf(" [T] SCAN MODE: %d\n", scanMode);
-    ptft->println(" SCAN MODE PREVENTS CONNECTION ON STARTUP ");
+    if (ble_remote.isEmpty() == false && ble_remote.compareTo("null") != 0)
+    {
+        ptft->printf(" [E] REMOVE %s\n", ble_remote.c_str());
+        /*
+        ptft->printf(" [T] SCAN MODE: %d\n", scanMode);
+        ptft->println(" SCAN MODE PREVENTS CONNECTION ON STARTUP ");
+        */
+    }
 
     if (!ble_connected)
     {
-        ptft->println(" [S] SCAN (5 SECOND PAUSE)");
+        ptft->println(" [M] CONNECT BLE KEYBOARD");
     }
     else
     {
@@ -289,8 +313,35 @@ void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     ptft->println();
-    ptft->println(" [X] RESTART ");
     ptft->println(" [B] BACK ");
+}
+
+void _bluetooth_scanning(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    //
+    JsonDocument &app = app_status();
+
+    // Load saved BLE address
+    String ble_remote = app["config"]["ble"]["remote"].as<String>();
+
+    ptft->print(" SEARCHING FOR BLUETOOTH KEYBOARD ...");
+
+    //
+    // scan for bluetooth devices
+    scan();
+
+    //
+    if (deviceIndex > 0)
+    {
+        for (int i = 0; i < deviceIndex; i++)
+        {
+            app_log("found device: %s\n", foundDevices[i].name.c_str());
+        }
+    }
+
+    //
+    Menu_clear();
+    bluetooth_config_status = BLUETOOTH_CONFIG_POST_SCAN;
 }
 
 void _bluetooth_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -317,23 +368,50 @@ void _bluetooth_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 void _bluetooth_select(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    // no keyboard found
+    // press B to go back
     if (deviceIndex == 0)
     {
         ptft->println(" NO KEYBOARDS FOUND ");
         ptft->println("");
+        ptft->println("[B] BACK");
+
+        return;
     }
+
+    // Keyboard found
+    // Press B to select an operations
     else
     {
         ptft->println(" SELECT BLE KEYBOARD ");
+        ptft->println("   [B] to change, [M] to select  ");
+        ptft->println("     ");
+
         for (int i = 0; i < deviceIndex; i++)
         {
-            ptft->printf(" [%d] %s (%s)", i+1, foundDevices[i].address.c_str(), foundDevices[i].name.c_str());
+            if (i == deviceSelected)
+            {
+                ptft->print(" -> ");
+            }
+            else
+            {
+                ptft->print("    ");
+            }
+            ptft->printf(" %s (%s)", foundDevices[i].address.c_str(), foundDevices[i].name.c_str());
             ptft->println("");
         }
         ptft->println("");
-    }
 
-    ptft->println("[B] BACK");
+        // back
+        if (deviceSelected == deviceIndex)
+        {
+            ptft->println(" ->  BACK");
+        }
+        else
+        {
+            ptft->println("     BACK");
+        }
+    }
 }
 
 void Bluetooth_load()
@@ -380,7 +458,7 @@ void Bluetooth_load()
 
 // debug
 #ifdef DEBUG
-    app_log("%s\n", configString.c_str());
+        app_log("%s\n", configString.c_str());
 #endif
 
         // Assign the loaded configuration to "config" property of app
@@ -429,4 +507,8 @@ void Bluetooth_save()
 
     // close config.json
     file.close();
+    delay(100);
+
+    // restart the app
+    ESP.restart();
 }

@@ -4,6 +4,7 @@
 #include "config/config.h"
 #include "display/display.h"
 #include "editor/editor.h"
+#include "keyboard/keyboard.h"
 
 //
 #include <SPIFFS.h>
@@ -40,11 +41,11 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
 #ifdef ENV_USBHOST
-    ptft->println(" [K] KEYBOARD LAYOUT - " + keyboard_layout);
+    ptft->println(" [K] KEY LAYOUT - " + keyboard_layout);
     ptft->println(" [F] DEVICE BUTTON");
 #endif
     ptft->println(" [W] WIFI");
-    ptft->println(" [U] BLUETOOTH");
+    ptft->println(" [M] BLE KEYBOARD");
     ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
@@ -56,7 +57,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println();
 
     // File Selection
-    int pos_x = 180;
+    int pos_x = 190;
     ptft->setCursor(pos_x, 25, 2);
     ptft->print("CHOOSE A FILE");
 
@@ -127,7 +128,7 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
-    else if (key == 'u')
+    else if (key == 'm' || key == MENU)
     {
         // move to bluetooth setup
         app["menu"]["state"] = MENU_BLUETOOTH;

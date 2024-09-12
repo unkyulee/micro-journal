@@ -50,6 +50,8 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         // toolbr
         ptft->fillRect(0, 0, 320, 20, MENUBAR_COLOR);
+
+        //
         menu_clear = false;
     }
 

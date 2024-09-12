@@ -347,7 +347,8 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
     else
     {
-        ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_LIGHTGREY);
+        // for now do not display disconnected status
+        //ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_LIGHTGREY);
     }
     ptft->drawCircle(290, STATUSBAR_Y + 8, 5, TFT_BLACK);
 
