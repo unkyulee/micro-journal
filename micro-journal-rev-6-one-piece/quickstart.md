@@ -8,7 +8,13 @@ When you receive the Micro Journal Rev.6, you need to first install a battery. P
 
 If you want to test the device without a battery, plug into the ESP32 UART port (Left-hand side) and the device will run without battery installation. Do not plug the charging cable on the right-hand side without a battery. Can be ok for some time (less than 10 minutes) but not too long without a battery. 
 
+**When the 'P' and 'Backspace' Keys Aren't Working**
+
+This issue usually occurs if the battery hasn't been installed or if the USB cable is plugged into the wrong port. Make sure not to use the USB-C port on the lower left side, which is closer to the keyboard. There are two USB-C ports on the left side of the device; always use the upper USB-C port to power the device properly.
+
+
 Also, please update the firmware when you receive the device. The firmware on the device is still under development and you may not have the latest releases. You can find the guide how to update the firmware on this document.
+
 
 
 # Choosing the Battery
@@ -71,6 +77,9 @@ When the battery is low, the screen may turn white or flicker—these are common
 **Be extra careful with the battery installation. Can cause a fire**
 
 When closing the panel back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the panel to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
+
+
+
 
 # Step 2. Prepare SD card
 
