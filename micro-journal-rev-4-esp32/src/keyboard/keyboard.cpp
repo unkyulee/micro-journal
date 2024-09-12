@@ -1,6 +1,7 @@
 #include "keyboard.h"
 #ifdef ENV_USBHOST
 #include "usb/usb.h"
+#include "nimble/ble.h"
 #endif
 
 #ifdef ENV_KEYBOARD
@@ -19,10 +20,14 @@
 #include "display/WakeUp/WakeUp.h"
 
 bool keyboard_setup_completed = false;
+bool ble_keyboard = false;
 
 void keyboard_setup()
 {
 #ifdef ENV_USBHOST
+    if (keyboard_ble_setup()) {
+        ble_keyboard = true;
+    }
     // usb keyboard setup
     keyboard_usb_setup();
 #endif
@@ -41,6 +46,9 @@ void keyboard_loop()
 
     
 #ifdef ENV_USBHOST
+    if (ble_keyboard) {
+        keyboard_ble_loop();
+    }
     // usb keyboard loop
     keyboard_usb_loop();
 #endif

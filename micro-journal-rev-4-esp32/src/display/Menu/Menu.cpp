@@ -10,6 +10,7 @@
 #include "Clear/Clear.h"
 #include "Layout/Layout.h"
 #include "Wifi/Wifi.h"
+#include "Bluetooth/Bluetooth.h"
 #include "FrontPanelButton/FrontPanelButton.h"
 #include "Background/Background.h"
 #include "Foreground/Foreground.h"
@@ -99,6 +100,13 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             Wifi_setup(ptft, pu8f);
 
         Wifi_render(ptft, pu8f);
+    }
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        if (menu_state_prev != menu_state)
+            Bluetooth_setup(ptft, pu8f);
+
+        Bluetooth_render(ptft, pu8f);
     }
     //
     else if (menu_state == MENU_STARTUP)
@@ -193,6 +201,13 @@ void Menu_keyboard(char key)
     else if (menu_state == MENU_WIFI)
     {
         Wifi_keyboard(key);
+        return;
+    }
+
+    // Bluetooth
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        Bluetooth_keyboard(key);
         return;
     }
 

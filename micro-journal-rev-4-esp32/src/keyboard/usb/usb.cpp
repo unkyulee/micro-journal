@@ -262,9 +262,27 @@ class MyEspUsbHost : public EspUsbHost
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
   }
+
+  public : uint8_t publicGetKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
+  {
+    return this->getKeycodeToAscii(keycode, shift, altgr);
+  }
+  public : void publicOnKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
+  {
+    return this->onKeyboardKey(ascii, keycode, modifier);
+  }
 };
 
 MyEspUsbHost usbHost;
+
+uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
+{
+  return usbHost.publicGetKeycodeToAscii(keycode, shift, altgr);
+}
+void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
+{
+  return usbHost.publicOnKeyboardKey(ascii, keycode, modifier);
+}
 
 // initialize USB HOST
 String keyboard_layout_prev;
@@ -310,6 +328,7 @@ void keyboard_layout(String layout)
   keyboard_layout_prev = layout;
 }
 
+
 void keyboard_usb_setup()
 {
   //
@@ -332,6 +351,7 @@ void keyboard_usb_setup()
   // setup display button
   button_setup();
 }
+
 
 ///
 void keyboard_usb_loop()

@@ -4,6 +4,7 @@
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 #include "keyboard/ascii/ascii.h"
+#include "keyboard/nimble/ble.h"
 
 int STATUSBAR_Y = 224;
 int screen_width = 320;
@@ -334,10 +335,22 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (layout == "null" || layout.isEmpty())
         layout = "US"; // defaults to US layout
     // draw status bar
-    ptft->setCursor(280, STATUSBAR_Y, 2);
+    ptft->setCursor(260, STATUSBAR_Y, 2);
     ptft->setTextColor(foreground_color, background_color);
     ptft->setTextSize(1);
     ptft->print(layout);
+
+    // BLUETOOTH STATUS
+    if (ble_connected)
+    {
+        ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_BLUE);
+    }
+    else
+    {
+        ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_LIGHTGREY);
+    }
+    ptft->drawCircle(290, STATUSBAR_Y + 8, 5, TFT_BLACK);
+
 #endif
 
     // SAVE STATUS
