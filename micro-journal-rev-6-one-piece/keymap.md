@@ -18,7 +18,7 @@ The following json is the default configuration.
     [
      "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ",",
      "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
-     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", "\"", "\n",
+     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", "'", "\n",
      "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ".", "/", "SHIFT"
     ],
 
@@ -90,7 +90,7 @@ Example "keyboard.json" content with accents:
     [
      "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ",",
      "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", 232, "BACKSPACE",
-     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", "\"", "\n",
+     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", "'", "\n",
      "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ".", "/", "SHIFT"
     ],
 
