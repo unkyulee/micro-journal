@@ -68,8 +68,8 @@ Raspberry Pi boots up and remains blank screen for quite a while. In order to pr
 
 Default credentials when installed 
 
-login: pi
-password: raspberry
+login: micro
+password: journal
 
 It is possible to skip this process and boot into the system when powered on. This is an optional step in order to reduce the steps to get into writing immediately. This will deactivate security and privacy for the system so, it is an optional step for those who prefer.
 
@@ -106,19 +106,7 @@ sudo apt upgrade
 
 ```bash
 sudo apt install ranger
-nano .bashrc
-```
-
-file extension association
-```bash
-nano ~/.config/ranger/rifle.conf
-```
-
-content of the rifle.conf
-
-```
-ext wg = wordgrinder "$@"
-ext sh = bash "$@"
+nano ~/.bashrc
 ```
 
 Add the following line at the last of the file
@@ -137,6 +125,19 @@ Ctrl + s then Ctrl + x
 sudo apt install wordgrinder
 ```
 
+file extension association
+```bash
+# at least run once ranger
+nano ~/.config/ranger/rifle.conf
+```
+
+content of the rifle.conf
+
+```
+ext wg = wordgrinder "$@"
+ext sh = bash "$@"
+```
+
 
 # Setup File Explorer Service
 
@@ -147,22 +148,54 @@ curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bas
 Create share.sh 
 
 ```bash
-nano share.sh
+nano ~/share.sh
 ```
 
 ```bash
+#!/bin/bash
+
+# Function to run when Ctrl + C (SIGINT) is detected
+cleanup() {
+    echo "Disabling NetworkManager.service..."
+    sudo systemctl stop NetworkManager.service
+    echo "NetworkManager.service disabled."
+    exit 0
+}
+
+# Trap Ctrl + C (SIGINT) and call the cleanup function
+trap cleanup SIGINT
+
+sudo systemctl start NetworkManager.service
 echo "########################################"
 echo "Open http://$(hostname -I | awk '{print $1}') in your web browser"
-echo " Ctrl + c to exit"
+echo "Ctrl + C to exit"
 echo "########################################"
+
+# Start the file browser, suppressing output
 filebrowser -r ~/microjournal/documents -a 0.0.0.0 --noauth -d ~/file.db > /dev/null 2>&1
+
+# Wait indefinitely until Ctrl + C is pressed
+while true; do
+    sleep 1
+done
 ```
 
+```
+chmod +x ~/share.sh
+```
 
 # Changing the font size
 
 ```bash
+nano ~/font.sh
+```
+
+```
 sudo dpkg-reconfigure console-setup
+```
+
+```
+chmod +x ~/font.sh
 ```
 
 
@@ -191,13 +224,13 @@ sudo systemctl disable ssh.service
 
 can even disable some cores in order save more power
 
-Edit the /boot/cmdline.txt file and added maxcpus=1 after console=tty1, then saved the file and reboot.
+Edit the /boot/cmdline .txt file and added maxcpus=1 after console=tty1, then saved the file and reboot.
 
 
 # Shutdown script
 
 ```bash
-nano shutdown.sh
+nano ~/shutdown.sh
 ```
 
 ```shudown.sh
