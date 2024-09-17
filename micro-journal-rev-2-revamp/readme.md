@@ -142,6 +142,23 @@ I decided to remove the internal battery system and instead power the device usi
 While this change might alter the device's appeal, it could make it more sustainable by eliminating consumable components. However, requiring an external power source might detract from its portability and charm.
 
 
+# Sharing and Sync Features
+
+One of the key features of the Micro Journal is its easy file sharing and synchronization. In earlier iterations, this was simple to implement since it only involved editing a single text file. Syncing one file was no big deal.
+
+However, with the Raspberry Pi 2W running a full Linux environment, the situation changes. There could be multiple files, and users might want different storage solutions. Saving to a personal NAS, network folders, or just extracting files without relying on external systems or the cloud.
+
+The challenge is that all of these options are possible, but what should be the default? With so many choices, it's hard to settle on just one. Limiting it to a single method feels restrictive.
+
+That's when I thought, why not let users access a simple file explorer from their computer? This way, they could download files or make quick edits on their PC. The text wouldn't be locked inside the device. It could be easily shared or redirected to other systems.
+
+I ended up integrating an open-source project called "File Browser." It sets up a server, allowing users to access their files through a web browser. The server only runs when the user requests it and closes once the task is complete. This approach is ideal for users who can't connect to cloud services due to security restrictions at work.
+
+https://github.com/filebrowser/filebrowser
+
+
+
+
 
 # Conclusion
 
