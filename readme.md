@@ -6,7 +6,7 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 ## Sixth iteration: Digital Typewriter
 
-Bringing Revision 2 back to life with an upgraded, foldable enclosure that offers extra protection against the relentless curiosity of the twin boys. Powered by a Raspberry Pi Zero 2W, it features a 48-key mini keyboard and side knobs for easy scrolling—much like a modern take on the classic typewriter.
+Bringing Revision 2 back to life with an upgraded, foldable enclosure that offers extra protection against the relentless curiosity of the twin boys. Powered by a Raspberry Pi Zero 2W, it features a 48-key mini keyboard and side knobs for easy scrolling. A modern take on the classic typewriter.
 
 [Buy from my Tindie Shop] TBD
 
