@@ -20,3 +20,5 @@
 #define VIAL_UNLOCK_COMBO_ROWS { 0, 0 }
 #define VIAL_UNLOCK_COMBO_COLS { 0, 1 }
 
+#define BOOTMAGIC_LITE_ROW 0  // The row number of the key
+#define BOOTMAGIC_LITE_COLUMN 0  // The column number of the key
