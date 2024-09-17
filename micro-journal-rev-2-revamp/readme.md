@@ -158,6 +158,35 @@ https://github.com/filebrowser/filebrowser
 
 
 
+# Linux Terminal for ... people?
+
+When someone picks up the Micro Journal and turns it on, I want them to figure out how to start writing without too much hassle. Maybe there will be a few missteps at first, but ultimately, they should be able to get into the writing process with minimal effort. While the Linux environment offers many possibilities, the core idea for this device, as a writerDeck, is that it should be easy to use for writing.
+
+The Linux terminal can be a daunting place, especially for newcomers. You need to know several commands just to get started. Even though I've used it for years in a work setting, I still don't feel completely comfortable with it, and I'm sure many others feel the same.
+
+That's why I started thinking about a simple dashboard-like application with a few buttons to create new files, open recent ones, and share files. It sounds simple, but when I looked for existing Linux solutions, I didn't find much. Terminal user interfaces (TUIs) usually need to be built case by case, and that seemed like an overwhelming task.
+
+Then one day, it hit me. Why not use a file management system like Midnight Commander or Ranger? I could set up a few scripts in the home folder that users can navigate to with the arrow keys. By pressing Enter, the script would perform simple tasks like shutting down, creating a new file, or sharing files.
+
+<img src="./images/story_013.jpg" width=400>
+
+So, I installed Ranger and made it the default app to run at boot. I placed a few key scripts, and voilà! It's now a functional writing environment that's simple enough to use as a writerDeck.
+
+
+
+
+# Choosing Word Grinder as an Editor
+
+From the feedback I received on earlier iterations, I realized that writing requires more than just displaying text on a screen. Features like word counts, word wrapping, highlighting, copy-pasting, and editing are essential to creating a complete writing experience.
+
+In previous versions, I used Nano because it was simple and easy to work with. However, I soon ran into issues, especially with word wrapping. When writing longer paragraphs, the text would flip around a lot, making it difficult to keep track of where I was.
+
+So, I started looking for a solution developed by someone who truly understands the needs of a writer.
+
+That's when I found WordGrinder.
+
+WordGrinder is a word processor built for the Linux terminal, and it's a perfect fit for the Micro Journal. It's incredibly intuitive and easy to use, despite being terminal-based. The best part? It was written by a writer, for writers. That makes it an ideal choice for the default writing software—tailored to the needs of those who know what writing really involves.
+
 
 
 # Conclusion
