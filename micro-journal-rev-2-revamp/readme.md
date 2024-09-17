@@ -11,11 +11,11 @@ My early attempts looked quite like a thick bible adding features like mechanica
 
 Even though I had plenty of excuses to avoid any foldable design requests and was focusing on my next iterations, one day I received a private message asking for a foldable design. I gently declined, saying I would consider it in the future.
 
-Then she added, "I have two boys."
+Then she added, "I have twins."
 
-I have one son, who is 4 years old and has a knack for breaking things. He sometimes visits my office between the babysitter and dinner, staying for just 10 minutes. The next day, I often find things missing, doors locked in odd ways, and objects not where they should be.
+I have one son and a daughter, who is 4 years old and 7, has a knack for breaking things. They sometimes visits my office between the babysitter and dinner, staying for just 10 minutes. The next day, I often find things missing, doors locked in odd ways, and objects not where they should be.
 
-Well... double that. I am in. 
+I couldn't turn away from that request.
 
 She needed protection for her device, and Revision 6 had a solid foundation. However, the open design without a cover wasn't practical. It would break immediately when exposed to the boys. It needed a cover, ideally foldable. While I might not be able to create a design as rugged as I'd like, I understand the need for a foldable design to provide at least a first layer of protection.
 
