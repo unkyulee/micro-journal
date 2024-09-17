@@ -2,6 +2,36 @@
 
 I aimed to create a specialized writing device, focusing on the tactile experience of mechanical keyboards. This device would be portable, with a compact form factor, designed to enhance the writing process in a focused environment. The goal was to provide a distraction-free writing experience, allowing users to immerse themselves fully in their creative work.
 
+
+
+## Sixth iteration: Digital Typewriter
+
+Bringing Revision 2 back to life with an upgraded, foldable enclosure that offers extra protection against the relentless curiosity of the twin boys. Powered by a Raspberry Pi Zero 2W, it features a 48-key mini keyboard and side knobs for easy scrolling—much like a modern take on the classic typewriter.
+
+[Buy from my Tindie Shop] TBD
+
+<img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="400">
+
+A mother of twins (five in total) challenged me to create a foldable design, which is far more complex than other designs due to its many moving parts. The goal was to ensure durability while keeping the mechanism as simple as possible. It was quite a challenge, but I’m pleased with the outcome. Still, I wonder whether the design reflects my intention and skill or if it’s simply a happy accident that happened to turn out well.
+
+
+### Documents 
+
+[Micro Journal Rev.2.ReVamp Design Story](/micro-journal-rev-2-revamp/readme.md)
+
+[Quick Start Guide] TBD
+
+[Build Guide] TBD
+
+[Features and Introduction] TBD
+
+### Press
+
+[Micro Journal Rev.2.ReVamp is a compact word processor with a mechanical keyboard and a clamshell design](https://liliputing.com/micro-journal-rev-2-revamp-is-a-compact-word-processor-with-a-mechanical-keyboard-and-a-clamshell-design/)
+
+[Un Kyu Lee Revisits an Older Micro Journal Design with the Raspberry Pi-Powered Rev.2.ReVamp](https://www.hackster.io/news/un-kyu-lee-revisits-an-older-micro-journal-design-with-the-raspberry-pi-powered-rev-2-revamp-89bf41252f8e)
+
+
 ## Fifth iteration: Write with Style
 
 I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
