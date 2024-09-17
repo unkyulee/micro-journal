@@ -59,17 +59,12 @@ console=serial0,115200 console=tty1 root=PARTUUID=xxxxxxx-xx rootfstype=ext4 fsc
 5) Insert the micro SD card to the Micro Jouranl and verify if the screen is displayed in correct orientation
 
 
-# Enable Splash
-
-Raspberry Pi boots up and remains blank screen for quite a while. In order to prevent so anxiety of looking at the blank screen for the boot up
-
-
 # Auto Login
 
 Default credentials when installed 
 
-login: micro
-password: journal
+login: microjournal
+password: microjournal
 
 It is possible to skip this process and boot into the system when powered on. This is an optional step in order to reduce the steps to get into writing immediately. This will deactivate security and privacy for the system so, it is an optional step for those who prefer.
 
@@ -92,19 +87,21 @@ sudo raspi-config
 
 # once all completed press ESC to back to console
 # reboot the system
+```
 
-# Make sure the USB charging port is connected with the charger
-# This operation can take a lot of power and best to connect to the power brick before heading into this operation
+# Update the system 
+
+```bash
 # run the following to update the system
 sudo apt update
 sudo apt upgrade
 ```
 
 
-
 # Setup Ranger as boot up as file manager
 
 ```bash
+mkdir ~/microjournal
 sudo apt install ranger
 nano ~/.bashrc
 ```
@@ -113,10 +110,23 @@ Add the following line at the last of the file
 
 ```bash
 # Startup app - ranger
+cd ~/microjournal
 ranger
+
+# Ctrl + s then Ctrl + x to close nano
 ```
 
-Ctrl + s then Ctrl + x 
+```bash
+# file extension association
+# at least run once ranger
+nano ~/.config/ranger/rifle.conf
+```
+
+```bash
+# content of the rifle.conf
+ext wg = wordgrinder "$@"
+ext sh = bash "$@"
+```
 
 
 # Install Word Grider
@@ -125,30 +135,15 @@ Ctrl + s then Ctrl + x
 sudo apt install wordgrinder
 ```
 
-file extension association
-```bash
-# at least run once ranger
-nano ~/.config/ranger/rifle.conf
-```
-
-content of the rifle.conf
-
-```
-ext wg = wordgrinder "$@"
-ext sh = bash "$@"
-```
-
 
 # Setup File Explorer Service
 
 ```bash
+# download
 curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
-```
 
-Create share.sh 
-
-```bash
-nano ~/share.sh
+# Create share.sh 
+nano ~/microjournal/share.sh
 ```
 
 ```bash
@@ -180,23 +175,77 @@ while true; do
 done
 ```
 
-```
-chmod +x ~/share.sh
+```bash
+chmod +x ~/microjournal/share.sh
 ```
 
 # Changing the font size
 
 ```bash
-nano ~/font.sh
+nano ~/microjournal/font.sh
 ```
 
 ```
 sudo dpkg-reconfigure console-setup
 ```
 
+```bash
+chmod +x ~/microjournal/font.sh
 ```
-chmod +x ~/font.sh
+
+
+# Enter Raspi Config Script
+
+```bash
+nano ~/microjournal/config.sh
 ```
+
+```config.sh
+sudo raspi-config
+```
+
+```bash
+chmod +x ~/microjournal/config.sh
+```
+
+
+# Create new file
+
+```bash
+nano ~/microjournal/newfile.sh
+```
+
+```newfile.sh
+#!/bin/bash
+
+# Get the current date and time in the format YYYY.MM.DD-HHMM
+filename=$(date +"%Y.%m.%d-%H%M.wg")
+
+# Run WordGrinder with the generated filename
+wordgrinder "~/microjournal/documents/$filename"
+```
+
+```bash
+chmod +x ~/microjournal/newfile.sh
+```
+
+
+
+# Shutdown script
+
+```bash
+nano ~/microjournal/shutdown.sh
+```
+
+```shudown.sh
+sudo shutdown now
+```
+
+```bash
+chmod +x ~/microjournal/shutdown.sh
+```
+
+
 
 
 # Improving the boot time
@@ -216,29 +265,12 @@ sudo systemctl disable apt-daily-upgrade.service
 sudo systemctl disable apt-daily.timer
 sudo systemctl disable apt-daily-upgrade.timer
 sudo systemctl disable ModemManager.service
+sudo systemctl disable bluetooth.service
 sudo systemctl disable NetworkManager.service
 sudo systemctl disable networking.service
-sudo systemctl disable bluetooth.service
-sudo systemctl disable ssh.service
+
 ``` 
 
 can even disable some cores in order save more power
 
 Edit the /boot/cmdline .txt file and added maxcpus=1 after console=tty1, then saved the file and reboot.
-
-
-# Shutdown script
-
-```bash
-nano ~/shutdown.sh
-```
-
-```shudown.sh
-sudo shutdown now
-```
-
-```bash
-chmod +x ./shutdown.sh
-```
-
-
