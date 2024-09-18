@@ -137,9 +137,6 @@ The knobs are rotary encoders connected to the keyboard. They function like a mo
 
 Moving on.
 
-I decided to remove the internal battery system and instead power the device using an external power bank. The main reason for this change is that many people find it challenging to install a battery system. Plus, relying on a battery can cause anxiety about it running low or the device shutting down. Removing the battery altogether might be a bold move, but since the Raspberry Pi Zero 2W consumes significantly more power than the ESP32, the battery life wasn't great—around 3 hours with a 18650 battery, which isn't portable enough. With an external power bank, the device runs for 10 to 15 hours.
-
-While this change might alter the device's appeal, it could make it more sustainable by eliminating consumable components. However, requiring an external power source might detract from its portability and charm.
 
 
 # Sharing and Sync Features
