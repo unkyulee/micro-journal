@@ -337,6 +337,7 @@ String EspUsbHost::getUsbDescString(const usb_str_desc_t *str_desc)
   return str;
 }
 
+static bool _capslock = false; 
 void EspUsbHost::onConfig(const uint8_t bDescriptorType, const uint8_t *p)
 {
   switch (bDescriptorType)
@@ -627,6 +628,14 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
         {
           // HID_KEY_NUM_LOCK TODO!
         }
+
+        
+        if (transfer->data_buffer[2] == HID_KEY_CAPS_LOCK)
+        {
+          // Mark caps lock status
+          _capslock = !_capslock;
+        }
+
         else if (memcmp(&last_report, transfer->data_buffer, sizeof(last_report)))
         {
           // chenge
@@ -642,7 +651,12 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
 
           usbHost->onKeyboard(report, last_report);
 
+          // control shift key pressed
           bool shift = (report.modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
+          // when capslock is on then shift key is always pressed
+          if(_capslock) shift = true;
+
+          // control if altgr key is pressed
           bool altgr = (report.modifier & KEYBOARD_MODIFIER_RIGHTALT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTALT);
 
           // Check for released keys
