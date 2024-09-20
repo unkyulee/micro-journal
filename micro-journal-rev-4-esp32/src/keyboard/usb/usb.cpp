@@ -66,7 +66,7 @@ class MyEspUsbHost : public EspUsbHost
   //
   uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
   {
-    // left - 80 right - 79 up - 82 down - 81 home - 74 end - 77 
+    // left - 80 right - 79 up - 82 down - 81 home - 74 end - 77
 
     //
     static uint8_t const keyboard_conv_table_us[128][2] = {HID_KEYCODE_TO_ASCII_US};
@@ -105,6 +105,65 @@ class MyEspUsbHost : public EspUsbHost
     {
       if (altgr > 0)
         shift += 2;
+
+      // international layout
+      uint8_t ascii = keyboard_conv_table_be[keycode][shift];
+
+      //
+      // when precursor keys are typed
+      if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == '\'' || ascii == '^')
+      {
+        // check if previous precursor is set
+        if (pre_cursor_ascii != 0)
+        {
+          //
+          onKeyboardKey(pre_cursor_ascii, 0, 0);
+
+          // then clear the precursor and send out the key stroke
+          pre_cursor_ascii = 0;
+        }
+        else
+        {
+          // save to the precursor
+          pre_cursor_ascii = ascii;
+          // do not process this key press
+          return 0;
+        }
+      }
+
+      // when precursor exists
+      if (pre_cursor_ascii != 0 && ascii != 0)
+      {
+        uint8_t found = ascii_international(pre_cursor_ascii, ascii);
+
+        // type latin character
+        if (found > 0)
+        {
+          // reset precursor
+          pre_cursor_ascii = 0;
+
+          // á
+          onKeyboardKey(found, 0, 0);
+
+          //
+          return 0;
+        }
+        else
+        {
+          //
+          // precursor invalid just send out the key press
+          //
+          onKeyboardKey(pre_cursor_ascii, 0, 0);
+
+          // then clear the precursor and send out the key stroke
+          pre_cursor_ascii = 0;
+
+          // if space is pressed then don't print
+          if (ascii == ' ')
+            return 0;
+        }
+      }
+
       return keyboard_conv_table_be[keycode][shift];
     }
 
@@ -261,13 +320,26 @@ class MyEspUsbHost : public EspUsbHost
 
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
+    
+    app_log("%02x %02x %02x %02x %02x %02x\n", 
+      report.modifier, 
+      report.keycode[0], 
+      report.keycode[1], 
+      report.keycode[2], 
+      report.keycode[3], 
+      report.keycode[4], 
+      report.keycode[5]);
+
   }
 
-  public : uint8_t publicGetKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
+public:
+  uint8_t publicGetKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
   {
     return this->getKeycodeToAscii(keycode, shift, altgr);
   }
-  public : void publicOnKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
+
+public:
+  void publicOnKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
   {
     return this->onKeyboardKey(ascii, keycode, modifier);
   }
@@ -328,7 +400,6 @@ void keyboard_layout(String layout)
   keyboard_layout_prev = layout;
 }
 
-
 void keyboard_usb_setup()
 {
   //
@@ -351,7 +422,6 @@ void keyboard_usb_setup()
   // setup display button
   button_setup();
 }
-
 
 ///
 void keyboard_usb_loop()
