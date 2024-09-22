@@ -8,7 +8,7 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 Bringing Revision 2 back to life with an upgraded, foldable enclosure that offers extra protection against the relentless curiosity of the twin boys. Powered by a Raspberry Pi Zero 2W, it features a 48-key mini keyboard and side knobs for easy scrolling. A modern take on the classic typewriter.
 
-[Buy from my Tindie Shop] TBD
+[Buy from my Tindie Shop](https://www.tindie.com/products/unkyulee/micro-journal-rev2-mother-of-twins/)
 
 <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="400">
 
@@ -19,11 +19,12 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 [Micro Journal Rev.2.ReVamp Design Story](/micro-journal-rev-2-revamp/readme.md)
 
+[Features and Introduction of Rev.2.ReVamp] TBD
+
 [Quick Start Guide] TBD
 
 [Build Guide] TBD
 
-[Features and Introduction] TBD
 
 ### Press
 
