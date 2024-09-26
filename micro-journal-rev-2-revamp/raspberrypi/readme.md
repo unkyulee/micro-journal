@@ -101,8 +101,8 @@ sudo apt upgrade
 # Setup Ranger as boot up as file manager
 
 ```bash
-mkdir ~/microjournal
 sudo apt install ranger
+mkdir ~/microjournal
 nano ~/.bashrc
 ```
 
@@ -162,7 +162,7 @@ trap cleanup SIGINT
 
 sudo systemctl start NetworkManager.service
 echo "########################################"
-echo "Open http://$(hostname -I | awk '{print $1}') in your web browser"
+echo "Open http://$(hostname -I | awk '{print $1}'):8080 in your web browser"
 echo "Ctrl + C to exit"
 echo "########################################"
 
@@ -266,9 +266,8 @@ sudo systemctl disable apt-daily.timer
 sudo systemctl disable apt-daily-upgrade.timer
 sudo systemctl disable ModemManager.service
 sudo systemctl disable bluetooth.service
-sudo systemctl disable NetworkManager.service
 sudo systemctl disable networking.service
-
+sudo systemctl disable NetworkManager.service
 ``` 
 
 can even disable some cores in order save more power
