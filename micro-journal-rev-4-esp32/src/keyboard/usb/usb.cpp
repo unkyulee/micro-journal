@@ -323,7 +323,7 @@ class MyEspUsbHost : public EspUsbHost
 
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
-
+/*
     app_log("%02x %02x %02x %02x %02x %02x %02x\n",
             report.modifier,
             report.reserved,
@@ -333,6 +333,7 @@ class MyEspUsbHost : public EspUsbHost
             report.keycode[3],
             report.keycode[4],
             report.keycode[5]);
+*/
   }
 
 public:
