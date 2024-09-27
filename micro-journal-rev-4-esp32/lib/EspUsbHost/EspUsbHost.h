@@ -55,7 +55,7 @@ public:
   virtual void onReceive(const usb_transfer_t *transfer) {};
   virtual void onGone(const usb_host_client_event_msg_t *eventMsg) {};
 
-  virtual uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr);
+  virtual uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr, bool released);
   virtual void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report);
   virtual void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier);
   virtual void onKeyboardKeyReleased(uint8_t ascii, uint8_t keycode, uint8_t modifier);

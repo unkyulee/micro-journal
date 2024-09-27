@@ -64,7 +64,7 @@ bool _usb_backspace_pressed = false;
 class MyEspUsbHost : public EspUsbHost
 {
   //
-  uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
+  uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr, bool released)
   {
     // left - 80 right - 79 up - 82 down - 81 home - 74 end - 77
 
@@ -111,56 +111,59 @@ class MyEspUsbHost : public EspUsbHost
 
       //
       // when precursor keys are typed
-      if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == '\'' || ascii == '^')
+      if (released == false)
       {
-        // check if previous precursor is set
-        if (pre_cursor_ascii != 0)
+        if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == '\'' || ascii == '^')
         {
-          //
-          onKeyboardKey(pre_cursor_ascii, 0, 0);
+          // check if previous precursor is set
+          if (pre_cursor_ascii != 0)
+          {
+            //
+            onKeyboardKey(pre_cursor_ascii, 0, 0);
 
-          // then clear the precursor and send out the key stroke
-          pre_cursor_ascii = 0;
-        }
-        else
-        {
-          // save to the precursor
-          pre_cursor_ascii = ascii;
-          // do not process this key press
-          return 0;
-        }
-      }
-
-      // when precursor exists
-      if (pre_cursor_ascii != 0 && ascii != 0)
-      {
-        uint8_t found = ascii_international(pre_cursor_ascii, ascii);
-
-        // type latin character
-        if (found > 0)
-        {
-          // reset precursor
-          pre_cursor_ascii = 0;
-
-          // á
-          onKeyboardKey(found, 0, 0);
-
-          //
-          return 0;
-        }
-        else
-        {
-          //
-          // precursor invalid just send out the key press
-          //
-          onKeyboardKey(pre_cursor_ascii, 0, 0);
-
-          // then clear the precursor and send out the key stroke
-          pre_cursor_ascii = 0;
-
-          // if space is pressed then don't print
-          if (ascii == ' ')
+            // then clear the precursor and send out the key stroke
+            pre_cursor_ascii = 0;
+          }
+          else
+          {
+            // save to the precursor
+            pre_cursor_ascii = ascii;
+            // do not process this key press
             return 0;
+          }
+        }
+
+        // when precursor exists
+        if (pre_cursor_ascii != 0 && ascii != 0)
+        {
+          uint8_t found = ascii_international(pre_cursor_ascii, ascii);
+
+          // type latin character
+          if (found > 0)
+          {
+            // reset precursor
+            pre_cursor_ascii = 0;
+
+            // á
+            onKeyboardKey(found, 0, 0);
+
+            //
+            return 0;
+          }
+          else
+          {
+            //
+            // precursor invalid just send out the key press
+            //
+            onKeyboardKey(pre_cursor_ascii, 0, 0);
+
+            // then clear the precursor and send out the key stroke
+            pre_cursor_ascii = 0;
+
+            // if space is pressed then don't print
+            if (ascii == ' ')
+              return 0;
+          }
         }
       }
 
@@ -320,22 +323,22 @@ class MyEspUsbHost : public EspUsbHost
 
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
-    /*
-    app_log("%02x %02x %02x %02x %02x %02x\n",
-      report.modifier,
-      report.keycode[0],
-      report.keycode[1],
-      report.keycode[2],
-      report.keycode[3],
-      report.keycode[4],
-      report.keycode[5]);
-  */
+
+    app_log("%02x %02x %02x %02x %02x %02x %02x\n",
+            report.modifier,
+            report.reserved,
+            report.keycode[0],
+            report.keycode[1],
+            report.keycode[2],
+            report.keycode[3],
+            report.keycode[4],
+            report.keycode[5]);
   }
 
 public:
-  uint8_t publicGetKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
+  uint8_t publicGetKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr, bool released)
   {
-    return this->getKeycodeToAscii(keycode, shift, altgr);
+    return this->getKeycodeToAscii(keycode, shift, altgr, released);
   }
 
 public:
@@ -345,11 +348,12 @@ public:
   }
 };
 
+//
 MyEspUsbHost usbHost;
 
-uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr)
+uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr, bool released)
 {
-  return usbHost.publicGetKeycodeToAscii(keycode, shift, altgr);
+  return usbHost.publicGetKeycodeToAscii(keycode, shift, altgr, released);
 }
 void onKeyboardKey(uint8_t ascii, uint8_t keycode, uint8_t modifier)
 {

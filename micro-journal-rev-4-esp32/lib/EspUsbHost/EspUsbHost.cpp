@@ -1,5 +1,9 @@
 #include "EspUsbHost.h"
 
+//
+bool _capslock = false;
+bool _isApple = false;
+
 void EspUsbHost::_printPcapText(const char *title, uint16_t function, uint8_t direction, uint8_t endpoint, uint8_t type, uint8_t size, uint8_t stage, const uint8_t *data)
 {
 #if (ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_INFO)
@@ -114,6 +118,16 @@ void EspUsbHost::_clientEventCallback(const usb_host_client_event_msg_t *eventMs
                getUsbDescString(dev_info.str_desc_manufacturer).c_str(),
                getUsbDescString(dev_info.str_desc_product).c_str(),
                getUsbDescString(dev_info.str_desc_serial_num).c_str());
+
+      // check if Apple Inc.
+      if (getUsbDescString(dev_info.str_desc_manufacturer) == "Apple Inc.")
+      {
+        _isApple = true;
+      }
+      else
+      {
+        _isApple = false;
+      }
     }
 
     const usb_device_desc_t *dev_desc;
@@ -337,7 +351,6 @@ String EspUsbHost::getUsbDescString(const usb_str_desc_t *str_desc)
   return str;
 }
 
-static bool _capslock = false; 
 void EspUsbHost::onConfig(const uint8_t bDescriptorType, const uint8_t *p)
 {
   switch (bDescriptorType)
@@ -629,7 +642,6 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
           // HID_KEY_NUM_LOCK TODO!
         }
 
-        
         if (transfer->data_buffer[2] == HID_KEY_CAPS_LOCK)
         {
           // Mark caps lock status
@@ -649,12 +661,36 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
           report.keycode[4] = transfer->data_buffer[6];
           report.keycode[5] = transfer->data_buffer[7];
 
+          if (_isApple)
+          {
+            // at the reserved position sends the modifier
+            //
+            report.modifier = transfer->data_buffer[1];
+            //report.reserved = transfer->data_buffer[0];
+            report.keycode[0] = transfer->data_buffer[2];
+            report.keycode[1] = transfer->data_buffer[3];
+            report.keycode[2] = transfer->data_buffer[4];
+            report.keycode[3] = transfer->data_buffer[5];
+            report.keycode[4] = transfer->data_buffer[6];
+            report.keycode[5] = transfer->data_buffer[7];
+
+            // caps lock at 4th byte
+            if (transfer->data_buffer[3] == HID_KEY_CAPS_LOCK)
+            {
+              // Mark caps lock status
+              _capslock = !_capslock;
+            }
+          }
+
           usbHost->onKeyboard(report, last_report);
 
           // control shift key pressed
           bool shift = (report.modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
+          // apple keyboard has different SHIFT code
+
           // when capslock is on then shift key is always pressed
-          if(_capslock) shift = true;
+          if (_capslock)
+            shift = true;
 
           // control if altgr key is pressed
           bool altgr = (report.modifier & KEYBOARD_MODIFIER_RIGHTALT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTALT);
@@ -675,7 +711,7 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
               }
               if (key_released)
               {
-                usbHost->onKeyboardKeyReleased(usbHost->getKeycodeToAscii(last_report.keycode[i], shift, altgr), last_report.keycode[i], shift);
+                usbHost->onKeyboardKeyReleased(usbHost->getKeycodeToAscii(last_report.keycode[i], shift, altgr, true), last_report.keycode[i], shift);
               }
             }
           }
@@ -698,7 +734,7 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
 
               // otherwise register new key press
               if (newkey)
-                usbHost->onKeyboardKey(usbHost->getKeycodeToAscii(report.keycode[i], shift, altgr), report.keycode[i], shift);
+                usbHost->onKeyboardKey(usbHost->getKeycodeToAscii(report.keycode[i], shift, altgr, false), report.keycode[i], shift);
             }
           }
 

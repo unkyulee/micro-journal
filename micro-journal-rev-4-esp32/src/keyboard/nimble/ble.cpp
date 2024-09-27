@@ -89,7 +89,7 @@ void notifyCallback(
 
     uint8_t shift = (pData[0] == 0x2 || pData[0] == 0x20);
     uint8_t altgr = (pData[0] == 0x4 || pData[0] == 0x40);
-    uint8_t ascii = getKeycodeToAscii(keycode, shift, altgr);
+    uint8_t ascii = getKeycodeToAscii(keycode, shift, altgr, false);
     onKeyboardKey(ascii, keycode, shift);
 }
 
