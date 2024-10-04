@@ -119,6 +119,7 @@ void EspUsbHost::_clientEventCallback(const usb_host_client_event_msg_t *eventMs
                getUsbDescString(dev_info.str_desc_serial_num).c_str());
 
       // check if Apple Inc.
+      Serial.println(getUsbDescString(dev_info.str_desc_manufacturer));
       if (getUsbDescString(dev_info.str_desc_manufacturer) == "Apple Inc.")
       {
         _isApple = true;
@@ -660,13 +661,11 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
           report.keycode[2] = transfer->data_buffer[5];
           report.keycode[3] = transfer->data_buffer[6];
           report.keycode[4] = transfer->data_buffer[7];
-        }
-
-        
+        }        
 
         //////////////////////////////////////////
         // General Key is pressed
-        else if (memcmp(&last_report, transfer->data_buffer, sizeof(last_report)))
+        if (memcmp(&last_report, transfer->data_buffer, sizeof(last_report)))
         {
           usbHost->onKeyboard(report, last_report);
           memcpy(&last_report, &report, sizeof(last_report));

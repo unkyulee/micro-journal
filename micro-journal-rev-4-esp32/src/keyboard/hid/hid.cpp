@@ -95,7 +95,6 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     {
         keyboard_backspace_last_set(millis() + 500);
         keyboard_backspace_pressed_set(true);
-        return;
     }
     //////////////////////////////////////////
 
@@ -116,7 +115,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     bool shift = (modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
 
     // Check ALT key pressed
-    bool alt = (modifier & KEYBOARD_MODIFIER_RIGHTALT) || (modifier & KEYBOARD_MODIFIER_RIGHTALT);
+    bool alt = (modifier & KEYBOARD_MODIFIER_LEFTALT) || (modifier & KEYBOARD_MODIFIER_RIGHTALT);
 
     // Translate the Keycode to ASCII
     JsonDocument &app = app_status();

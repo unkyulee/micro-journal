@@ -71,14 +71,11 @@ void keyboard_usb_setup()
   //
   app_log("Initializing USB Keyboard\n");
 
-  //
-  JsonDocument &app = app_status();
-
   // usb host setup
   usbHost.begin();
 }
 
-///
+//
 void keyboard_usb_loop()
 {
   // Process USB Keyboard Tasks
