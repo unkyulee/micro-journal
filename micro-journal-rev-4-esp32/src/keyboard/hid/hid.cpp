@@ -1,4 +1,5 @@
 #include "hid.h"
+#include "app/app.h"
 //
 #include "keyboard/keyboard.h"
 //
@@ -7,6 +8,8 @@
 #include "button/button.h"
 //
 #include "usb/usb.h"
+//
+#include "locale/locale.h"
 
 // at the boot up BLE keyboard connection will be validated
 bool ble_keyboard = false;
@@ -91,7 +94,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     if (keycode == 0x2a)
     {
         keyboard_backspace_last_set(millis() + 500);
-            keyboard_backspace_pressed_set(true);
+        keyboard_backspace_pressed_set(true);
         return;
     }
     //////////////////////////////////////////
@@ -100,7 +103,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     // MENU
     //
     // ESC key is MENU button
-    if (keycode == 27)
+    if (keycode == 0x29)
     {
         keyboard_key(MENU);
         return;
@@ -112,12 +115,15 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     // Check SHIFT key pressed
     bool shift = (modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
 
-    // Check ALT gr key pressed
-    bool altgr = (modifier & KEYBOARD_MODIFIER_RIGHTALT) || (modifier & KEYBOARD_MODIFIER_RIGHTALT);
+    // Check ALT key pressed
+    bool alt = (modifier & KEYBOARD_MODIFIER_RIGHTALT) || (modifier & KEYBOARD_MODIFIER_RIGHTALT);
 
     // Translate the Keycode to ASCII
-
-    // keyboard_key(ascii);
+    JsonDocument &app = app_status();
+    String locale = app["config"]["keyboard_layout"].as<String>();
+    uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt, keyboard_capslock());
+    if (ascii != 0)
+        keyboard_key(ascii);
 }
 
 void keyboard_hid_released(uint8_t keycode, uint8_t modifier)
