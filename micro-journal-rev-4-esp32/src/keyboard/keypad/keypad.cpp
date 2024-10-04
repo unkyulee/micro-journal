@@ -2,7 +2,7 @@
 #include "app/app.h"
 #include "display/display.h"
 #include "keyboard/keyboard.h"
-#include "keyboard/ascii/ascii.h"
+#include "keyboard/hid/ascii/ascii.h"
 #include "editor/editor.h"
 //
 #include "display/WordProcessor/WordProcessor.h"
@@ -83,10 +83,6 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPin
 int layer = 0;
 bool _shift_pressed = false;
 bool _fn_pressed = false;
-
-// back space
-int _backspace_last = 0;
-bool _backspace_pressed = false;
 
 // initialize keymap
 void keyboard_keypad_setup()

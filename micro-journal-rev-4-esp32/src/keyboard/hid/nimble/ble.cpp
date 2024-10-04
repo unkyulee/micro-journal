@@ -1,7 +1,5 @@
 #include "ble.h"
 #include "app/app.h"
-#include "keyboard/usb/button/button.h"
-#include "keyboard/usb/usb.h" // for keyboard_layout
 #include "keyboard/keyboard.h"
 
 static BLEClient *pClient = nullptr;
@@ -89,8 +87,11 @@ void notifyCallback(
 
     uint8_t shift = (pData[0] == 0x2 || pData[0] == 0x20);
     uint8_t altgr = (pData[0] == 0x4 || pData[0] == 0x40);
+
+    /* TBD
     uint8_t ascii = getKeycodeToAscii(keycode, shift, altgr, false);
     onKeyboardKey(ascii, keycode, shift);
+    */
 }
 
 // Custom callback class for BLE client

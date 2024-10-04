@@ -1,7 +1,6 @@
 #include "EspUsbHost.h"
 
 //
-bool _capslock = false;
 bool _isApple = false;
 
 void EspUsbHost::_printPcapText(const char *title, uint16_t function, uint8_t direction, uint8_t endpoint, uint8_t type, uint8_t size, uint8_t stage, const uint8_t *data)
@@ -635,111 +634,46 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
     {
       if (endpoint_data->bInterfaceProtocol == HID_ITF_PROTOCOL_KEYBOARD)
       {
+        ///////////////////////////////////////////////////////////////
+        // Keycode Detection Logic
+        ///////////////////////////////////////////////////////////////
         static hid_keyboard_report_t last_report = {};
 
-        if (transfer->data_buffer[2] == HID_KEY_NUM_LOCK)
+        // Step 1. Generate the Keycode Report
+        hid_keyboard_report_t report = {};
+        report.modifier = transfer->data_buffer[0];
+        report.reserved = transfer->data_buffer[1];
+        report.keycode[0] = transfer->data_buffer[2]; // NUMLOCK and CAPSLOCK
+        report.keycode[1] = transfer->data_buffer[3]; 
+        report.keycode[2] = transfer->data_buffer[4];
+        report.keycode[3] = transfer->data_buffer[5];
+        report.keycode[4] = transfer->data_buffer[6];
+        report.keycode[5] = transfer->data_buffer[7];
+
+        // In case of Apple Keyboard
+        // Modifier is sent at transfer->data_buffer[1] instead of index 0
+        if (_isApple)
         {
-          // HID_KEY_NUM_LOCK TODO!
+          report.modifier = transfer->data_buffer[1];
+          report.keycode[0] = transfer->data_buffer[3];
+          report.keycode[1] = transfer->data_buffer[4];
+          report.keycode[2] = transfer->data_buffer[5];
+          report.keycode[3] = transfer->data_buffer[6];
+          report.keycode[4] = transfer->data_buffer[7];
         }
 
-        if (transfer->data_buffer[2] == HID_KEY_CAPS_LOCK)
-        {
-          // Mark caps lock status
-          _capslock = !_capslock;
-        }
+        
 
+        //////////////////////////////////////////
+        // General Key is pressed
         else if (memcmp(&last_report, transfer->data_buffer, sizeof(last_report)))
         {
-          // chenge
-          hid_keyboard_report_t report = {};
-          report.modifier = transfer->data_buffer[0];
-          report.reserved = transfer->data_buffer[1];
-          report.keycode[0] = transfer->data_buffer[2];
-          report.keycode[1] = transfer->data_buffer[3];
-          report.keycode[2] = transfer->data_buffer[4];
-          report.keycode[3] = transfer->data_buffer[5];
-          report.keycode[4] = transfer->data_buffer[6];
-          report.keycode[5] = transfer->data_buffer[7];
-
-          if (_isApple)
-          {
-            // at the reserved position sends the modifier
-            //
-            report.modifier = transfer->data_buffer[1];
-            //report.reserved = transfer->data_buffer[0];
-            report.keycode[0] = transfer->data_buffer[2];
-            report.keycode[1] = transfer->data_buffer[3];
-            report.keycode[2] = transfer->data_buffer[4];
-            report.keycode[3] = transfer->data_buffer[5];
-            report.keycode[4] = transfer->data_buffer[6];
-            report.keycode[5] = transfer->data_buffer[7];
-
-            // caps lock at 4th byte
-            if (transfer->data_buffer[3] == HID_KEY_CAPS_LOCK)
-            {
-              // Mark caps lock status
-              _capslock = !_capslock;
-            }
-          }
-
           usbHost->onKeyboard(report, last_report);
-
-          // control shift key pressed
-          bool shift = (report.modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
-          // apple keyboard has different SHIFT code
-
-          // when capslock is on then shift key is always pressed
-          if (_capslock)
-            shift = true;
-
-          // control if altgr key is pressed
-          bool altgr = (report.modifier & KEYBOARD_MODIFIER_RIGHTALT) || (report.modifier & KEYBOARD_MODIFIER_RIGHTALT);
-
-          // Check for released keys
-          for (int i = 0; i < 6; i++)
-          {
-            if (last_report.keycode[i] != 0)
-            {
-              bool key_released = true;
-              for (int j = 0; j < 6; j++)
-              {
-                if (last_report.keycode[i] == report.keycode[j])
-                {
-                  key_released = false;
-                  break;
-                }
-              }
-              if (key_released)
-              {
-                usbHost->onKeyboardKeyReleased(usbHost->getKeycodeToAscii(last_report.keycode[i], shift, altgr, true), last_report.keycode[i], shift);
-              }
-            }
-          }
-
-          for (int i = 0; i < 6; i++)
-          {
-            // a key is pressed or kept pressed
-            if (report.keycode[i] != 0)
-            {
-              // check if the same key appear in the previous report
-              bool newkey = true;
-              for (int j = 0; j < 6; j++)
-              {
-                if (last_report.keycode[j] == report.keycode[i])
-                {
-                  newkey = false;
-                  break;
-                }
-              }
-
-              // otherwise register new key press
-              if (newkey)
-                usbHost->onKeyboardKey(usbHost->getKeycodeToAscii(report.keycode[i], shift, altgr, false), report.keycode[i], shift);
-            }
-          }
-
           memcpy(&last_report, &report, sizeof(last_report));
         }
+        ///////////////////////////////////////////////////////////////
+        // Keycode Detection Logic END
+        ///////////////////////////////////////////////////////////////
       }
       else if (endpoint_data->bInterfaceProtocol == HID_ITF_PROTOCOL_MOUSE)
       {

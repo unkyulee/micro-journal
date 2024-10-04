@@ -6,8 +6,8 @@
 bool keyboard_ble_setup();
 void keyboard_ble_loop();
 bool keyboard_ble_connect();
-inline BLEUUID serviceUUID = BLEUUID("1812");
-inline bool ble_connected = false;
+BLEUUID serviceUUID = BLEUUID("1812");
+bool ble_connected = false;
 
 void connect(NimBLEAdvertisedDevice);
 

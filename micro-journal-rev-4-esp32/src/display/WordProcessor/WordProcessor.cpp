@@ -3,9 +3,9 @@
 #include "editor/editor.h"
 #include "keyboard/keyboard.h"
 #include "display/display.h"
-#include "keyboard/ascii/ascii.h"
-#include "keyboard/nimble/ble.h"
+#include "keyboard/hid/nimble/ble.h"
 
+// 
 int STATUSBAR_Y = 224;
 int screen_width = 320;
 int screen_height = 240;
@@ -327,7 +327,7 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         num /= 10;
         digitCount++;
     } while (num > 0);
-    ptft->printf("%s bytes", formattedNumber);
+    ptft->printf("%s characters", formattedNumber);
 
 #ifdef ENV_USBHOST
     // KEYBOARD LAYOUT
@@ -437,4 +437,146 @@ void WP_keyboard(char key)
         // send the keys to the editor
         Editor::getInstance().keyboard(key);
     }
+}
+
+
+// Create an array of String objects
+static const String extended_ascii[128] = {
+    "e", // 128
+    "",
+    "", // 130
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", // 140
+    "",
+    "Ž", // 142
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", // 150
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", // 160
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", // 170
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", // 180
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "", // 190
+    "",
+    "À",
+    "Á",
+    "Â",
+    "Ã",
+    "Ä",
+    "Å",
+    "Æ",
+    "Ç",
+    "È", // 200
+    "É",
+    "Ê",
+    "Ë",
+    "Ì",
+    "Í",
+    "Î",
+    "Ï",
+    "Ð",
+    "Ñ",
+    "Ò", // 210
+    "Ó",
+    "Ô",
+    "Õ",
+    "Ö",
+    "×",
+    "Ø",
+    "Ù",
+    "Ú",
+    "Û",
+    "Ü", // 220
+    "Ý",
+    "Þ",
+    "ß",
+    "à",
+    "á",
+    "â",
+    "ã",
+    "ä",
+    "å",
+    "æ", // 230
+    "ç",
+    "è",
+    "é",
+    "ê",
+    "ë",
+    "ì",
+    "í",
+    "î",
+    "ï",
+    "ð", // 240
+    "ñ",
+    "ò",
+    "ó",
+    "ô",
+    "õ",
+    "ö",
+    "÷",
+    "ø",
+    "ù",
+    "ú", // 250
+    "û",
+    "ü",
+    "ý",
+    "þ",
+    "ÿ", // 255
+};
+
+String asciiToUnicode(uint8_t value)
+{
+  if (value < 128)
+    return "";
+
+  uint8_t code = value - 128;
+  return extended_ascii[code];
 }

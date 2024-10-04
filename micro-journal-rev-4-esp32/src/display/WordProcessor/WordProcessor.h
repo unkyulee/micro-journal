@@ -35,4 +35,7 @@ void WP_keyboard(char key);
 //
 String formatNumberWithCommas(long num);
 
+//
+String asciiToUnicode(uint8_t value);
+
 #endif
