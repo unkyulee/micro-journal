@@ -5,6 +5,7 @@
 // locale
 #include "us/us.h"
 #include "be/be.h"
+#include "ca/ca.h"
 
 uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt)
 {
@@ -12,6 +13,19 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
     {
         // Belgium Layout
         return keyboard_keycode_ascii_be(keycode, shift, alt);
+    }
+    else if (locale == "CA")
+    {
+        // Canadian Layout
+        return keyboard_keycode_ascii_ca(keycode, shift, alt);
+    } 
+    else if(locale == "INT") {
+        // US International 
+        return keyboard_precursor_filter(keyboard_keycode_ascii_us(keycode, shift)); 
+    }
+    else if(locale == "IT") {
+        // Italian 
+        return keyboard_keycode_ascii_it(keycode, shift, alt);
     }
     // by default return US keyboard layout
     return keyboard_keycode_ascii_us(keycode, shift);
@@ -75,7 +89,7 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
 
             // if space is pressed then don't print
             if (ascii == ' ')
-                return 0;          
+                return 0;
         }
     }
 
@@ -84,9 +98,9 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
 
 typedef struct
 {
-  uint8_t precursor;
-  uint8_t ascii;
-  uint8_t code;
+    uint8_t precursor;
+    uint8_t ascii;
+    uint8_t code;
 } AsciiMapping;
 
 static const AsciiMapping ascii_map[] = {
@@ -145,14 +159,14 @@ static const AsciiMapping ascii_map[] = {
 
 uint8_t keyboard_international(uint8_t precursor, uint8_t ascii)
 {
-  for (size_t i = 0; i < sizeof(ascii_map) / sizeof(AsciiMapping); ++i)
-  {
-    if (ascii_map[i].precursor == precursor && ascii_map[i].ascii == ascii)
+    for (size_t i = 0; i < sizeof(ascii_map) / sizeof(AsciiMapping); ++i)
     {
-      return ascii_map[i].code;
+        if (ascii_map[i].precursor == precursor && ascii_map[i].ascii == ascii)
+        {
+            return ascii_map[i].code;
+        }
     }
-  }
-  return 0; // Default return value if no match is found
+    return 0; // Default return value if no match is found
 }
 
 /*
