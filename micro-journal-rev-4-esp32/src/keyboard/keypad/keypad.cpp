@@ -2,7 +2,6 @@
 #include "app/app.h"
 #include "display/display.h"
 #include "keyboard/keyboard.h"
-#include "keyboard/hid/ascii/ascii.h"
 #include "editor/editor.h"
 //
 #include "display/WordProcessor/WordProcessor.h"
@@ -181,7 +180,7 @@ int keyboard_get_key(keypadEvent e)
     else if (key == '\b')
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
-        {            
+        {
             keyboard_backspace_last_set(millis() + 500);
             keyboard_backspace_pressed_set(true);
         }
@@ -218,6 +217,67 @@ int keyboard_get_key(keypadEvent e)
 // look for keyboard.json in SD card
 // if found load the configuration to the global variable
 #define KEYBOARD_FILE "/keyboard.json"
+
+uint8_t unicode_convert_ascii(String key)
+{
+    if (key.length() != 1)
+    {
+        // If the input is not a single character, return 0 as an error value
+        if (key == "ESC")
+        {
+            return 27;
+        }
+        else if (key == "BACKSPACE")
+        {
+            return 8;
+        }
+        else if (key == "SHIFT")
+        {
+            return 14;
+        }
+        else if (key == "ALT")
+        {
+            return 17;
+        }
+
+        else if (key == "LEFT")
+        {
+            return 18;
+        }
+        else if (key == "RIGHT")
+        {
+            return 19;
+        }
+        else if (key == "UP")
+        {
+            return 20;
+        }
+        else if (key == "DOWN")
+        {
+            return 21;
+        }
+        else if (key == "PGUP")
+        {
+            return 22;
+        }
+        else if (key == "PGDN")
+        {
+            return 23;
+        }
+        else if (key == "HOME")
+        {
+            return 2;
+        }
+        else if (key == "END")
+        {
+            return 3;
+        }
+        return 0;
+    }
+
+    //
+    return key[0];
+}
 
 bool load_keymap(int layer, JsonArray keyArray)
 {

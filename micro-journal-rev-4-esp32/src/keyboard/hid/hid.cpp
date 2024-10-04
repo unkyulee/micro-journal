@@ -121,8 +121,9 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     // Translate the Keycode to ASCII
     JsonDocument &app = app_status();
     String locale = app["config"]["keyboard_layout"].as<String>();
-    uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt, keyboard_capslock());
+    uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt);
     if (ascii != 0)
+        // send key to GUI
         keyboard_key(ascii);
 }
 
