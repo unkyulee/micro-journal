@@ -21,17 +21,20 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 [Features and Introduction of Rev.2.ReVamp](https://youtu.be/IFmGwKtGXtQ)
 
-[Quick Start Guide] TBD
+[Quick Start Guide](./micro-journal-rev-2-revamp/quickstart.md)
 
 [Build Guide] TBD
 
 
 ### Press
 
-[Micro Journal Rev.2.ReVamp is a compact word processor with a mechanical keyboard and a clamshell design](https://liliputing.com/micro-journal-rev-2-revamp-is-a-compact-word-processor-with-a-mechanical-keyboard-and-a-clamshell-design/)
+[Liliputing: Micro Journal Rev.2.ReVamp is a compact word processor with a mechanical keyboard and a clamshell design](https://liliputing.com/micro-journal-rev-2-revamp-is-a-compact-word-processor-with-a-mechanical-keyboard-and-a-clamshell-design/)
 
-[Un Kyu Lee Revisits an Older Micro Journal Design with the Raspberry Pi-Powered Rev.2.ReVamp](https://www.hackster.io/news/un-kyu-lee-revisits-an-older-micro-journal-design-with-the-raspberry-pi-powered-rev-2-revamp-89bf41252f8e)
+[Hackster: Un Kyu Lee Revisits an Older Micro Journal Design with the Raspberry Pi-Powered Rev.2.ReVamp](https://www.hackster.io/news/un-kyu-lee-revisits-an-older-micro-journal-design-with-the-raspberry-pi-powered-rev-2-revamp-89bf41252f8e)
 
+[Good E-Reader: Micro Journal ReVamp Ver2 is set for Launch](https://goodereader.com/blog/digital-publishing/micro-journal-revamp-ver2-is-set-for-launch)
+
+[BoingBoing: Micro Journal ReVamp is a compact ortholinear writer deck](https://boingboing.net/2024/09/18/micro-journal-revamp-is-a-compact-ortholinear-writer-deck.html)
 
 ## Fifth iteration: Write with Style
 
@@ -69,9 +72,9 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 [The Verge: You can customize the mechanical keyboard on this distraction-free digital typewriter.](https://www.theverge.com/2024/6/18/24180889/you-can-customize-the-mechanical-keyboard-on-this-distraction-free-digital-typewriter)
 
-[Boing Boing: MicroJournal: a distraction-free writing device with knobs
-](https://boingboing.net/2024/06/17/microjournal-a-distraction-free-writing-device-with-knobs.html)
+[Boing Boing: MicroJournal: a distraction-free writing device with knobs](https://boingboing.net/2024/06/17/microjournal-a-distraction-free-writing-device-with-knobs.html)
 
+[Cassidy Williams: Building the Micro Journal](https://cassidoo.co/post/micro-journal/)
 
 
 
