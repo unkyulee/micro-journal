@@ -1,4 +1,4 @@
-#include "be.h"
+#include "ge.h"
 #include "../locale.h"
 
 uint8_t hid_keycode_to_ascii_ge[][3] = {

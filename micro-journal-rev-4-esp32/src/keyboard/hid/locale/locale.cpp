@@ -6,6 +6,8 @@
 #include "us/us.h"
 #include "be/be.h"
 #include "ca/ca.h"
+#include "it/it.h"
+#include "uk/uk.h"
 
 uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt)
 {
@@ -18,14 +20,21 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
     {
         // Canadian Layout
         return keyboard_keycode_ascii_ca(keycode, shift, alt);
-    } 
-    else if(locale == "INT") {
-        // US International 
-        return keyboard_precursor_filter(keyboard_keycode_ascii_us(keycode, shift)); 
     }
-    else if(locale == "IT") {
-        // Italian 
+    else if (locale == "INT")
+    {
+        // US International
+        return keyboard_precursor_filter(keyboard_keycode_ascii_us(keycode, shift));
+    }
+    else if (locale == "IT")
+    {
+        // Italian
         return keyboard_keycode_ascii_it(keycode, shift, alt);
+    }
+    else if (locale == "UK")
+    {
+        // Italian
+        return keyboard_keycode_ascii_uk(keycode, shift, alt);
     }
     // by default return US keyboard layout
     return keyboard_keycode_ascii_us(keycode, shift);
