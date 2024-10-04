@@ -9,6 +9,24 @@ static BLERemoteService *pRemoteService;
 static bool scanMode = false;
 uint8_t previousKeys[8] = {};
 
+//
+BLEUUID serviceUUID = BLEUUID("1812");
+BLEUUID keyboard_ble_service_uuid()
+{
+    return serviceUUID;
+}
+
+//
+bool ble_connected = false;
+bool keyboard_ble_connected()
+{
+    return ble_connected;
+}
+void keyboard_ble_connected_set(bool connected)
+{
+    ble_connected = connected;
+}
+
 bool keyboard_ble_connect()
 {
     JsonDocument &app = app_status();
@@ -51,7 +69,7 @@ void keyboard_ble_loop()
 bool keyboard_ble_setup()
 {
     app_log("Init BLE Keyboard\n");
-    
+
     return keyboard_ble_connect();
 }
 

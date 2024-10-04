@@ -35,7 +35,7 @@ byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 // arrow keys
 // 18 - Left, 19 - Right, 20 - Up, 21 - Down
 // 2 - Home 3 - End
-// 22 - Page Up 
+// 22 - Page Up
 // 23 - Page Down
 
 // layers
@@ -56,9 +56,9 @@ int layers[LAYERS][ROWS * COLS] = {
 
     {// alt layer
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     27, 'q', 'w', 'e', 'r', 't', 22 , 'u', 20 , '-', '=', 127, // 2, 20, 3, 22,
-     17, 'a', 's', 'd', 'f', 'g', 23 , 18 , 21 , 19 , ';', '\n', //  18, 21, 19, 23
-     14, 'z', 'x', 'c', 'v', ' ', 'b', 2  , 'm', 3  , '/', 14},
+     27, 'q', 'w', 'e', 'r', 't', 22, 'u', 20, '-', '=', 127, // 2, 20, 3, 22,
+     17, 'a', 's', 'd', 'f', 'g', 23, 18, 21, 19, ';', '\n',  //  18, 21, 19, 23
+     14, 'z', 'x', 'c', 'v', ' ', 'b', 2, 'm', 3, '/', 14},
 
     {// alt layer shift
      '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
@@ -129,9 +129,9 @@ void keyboard_keypad_loop()
     }
 
     // Handle Backspace
-    if (millis() > 60 + _backspace_last && _backspace_pressed)
+    if (millis() > 60 + keyboard_backspace_last() && keyboard_backspace_pressed())
     {
-        _backspace_last = millis();
+        keyboard_backspace_last_set(millis());
 
         // send backspace key
         keyboard_key('\b');
@@ -141,9 +141,9 @@ void keyboard_keypad_loop()
 int keyboard_get_key(keypadEvent e)
 {
     // release back space when any other keys are pressed
-    if (_backspace_pressed)
+    if (keyboard_backspace_pressed())
     {
-        _backspace_pressed = false;
+        keyboard_backspace_pressed_set(false);
     }
 
     //
@@ -181,16 +181,16 @@ int keyboard_get_key(keypadEvent e)
     else if (key == '\b')
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
-        {
-            _backspace_last = millis() + 500;
-            _backspace_pressed = true;
+        {            
+            keyboard_backspace_last_set(millis() + 500);
+            keyboard_backspace_pressed_set(true);
         }
 
         else if (e.bit.EVENT == KEY_JUST_RELEASED)
         {
             // register the timer
-            _backspace_last = millis();
-            _backspace_pressed = false;
+            keyboard_backspace_last_set(millis());
+            keyboard_backspace_pressed_set(false);
         }
     }
 

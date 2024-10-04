@@ -48,9 +48,9 @@ void keyboard_hid_loop()
 
     // When Back Space key is kept pressed
     // Send continues key presses to GUI
-    if (millis() > 60 + _backspace_last && _backspace_pressed)
+    if (millis() > 60 + keyboard_backspace_last() && keyboard_backspace_pressed())
     {
-        _backspace_last = millis();
+        keyboard_backspace_last_set(millis());
 
         // send backspace key
         keyboard_key('\b');
@@ -64,7 +64,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     if (keycode == HID_KEY_NUM_LOCK)
     {
         // mark numlock status
-        _numlock = !_numlock;
+        keyboard_numlock_toggle();
         return;
     }
 
@@ -73,7 +73,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     if (keycode == HID_KEY_CAPS_LOCK)
     {
         // Mark caps lock status
-        _capslock = !_capslock;
+        keyboard_capslock_toggle();
         return;
     }
 
@@ -81,17 +81,17 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     // BACKSPACE
     //
     // Cancel backspace sequence when any else key is pressed
-    if (_backspace_pressed)
+    if (keyboard_backspace_pressed())
     {
-        _backspace_pressed = false;
+        keyboard_backspace_pressed_set(false);
     }
 
     // When backspace key is pressed
     // initiate backspace timer
     if (keycode == 0x2a)
     {
-        _backspace_last = millis() + 500;
-        _backspace_pressed = true;
+        keyboard_backspace_last_set(millis() + 500);
+            keyboard_backspace_pressed_set(true);
         return;
     }
     //////////////////////////////////////////
@@ -125,9 +125,8 @@ void keyboard_hid_released(uint8_t keycode, uint8_t modifier)
     //
     // When any key is released then cancel the backspace sequence
     //
-    if (_backspace_pressed)
+    if (keyboard_backspace_pressed())
     {
-        _backspace_pressed = false;
+        keyboard_backspace_pressed_set(false);
     }
 }
-

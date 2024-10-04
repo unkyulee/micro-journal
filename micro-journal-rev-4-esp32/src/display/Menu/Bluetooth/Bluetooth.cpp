@@ -51,7 +51,7 @@ class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks
         for (int i = 0; i < advertisedDevice->getServiceUUIDCount(); i++)
         {
             BLEUUID service = advertisedDevice->getServiceUUID(i);
-            if (service == serviceUUID)
+            if (service == keyboard_ble_service_uuid())
             {
                 device foundDevice = device();
                 foundDevice.address = advertisedDevice->getAddress().toString();
@@ -257,7 +257,7 @@ void Bluetooth_keyboard(char key)
             Bluetooth_save();
             return;
         }
-        else if ((key == 'M' || key == 'm' || key == MENU) && !ble_connected)
+        else if ((key == 'M' || key == 'm' || key == MENU) && !keyboard_ble_connected())
         {
             bluetooth_config_status = BLUETOOTH_CONFIG_SCANNING;
 
@@ -303,7 +303,7 @@ void _bluetooth_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         */
     }
 
-    if (!ble_connected)
+    if (!keyboard_ble_connected())
     {
         ptft->println(" [M] CONNECT BLE KEYBOARD");
     }

@@ -341,7 +341,7 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->print(layout);
 
     // BLUETOOTH STATUS
-    if (ble_connected)
+    if (keyboard_ble_connected())
     {
         ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_BLUE);
     }

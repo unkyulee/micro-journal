@@ -55,7 +55,6 @@ public:
   virtual void onReceive(const usb_transfer_t *transfer) {};
   virtual void onGone(const usb_host_client_event_msg_t *eventMsg) {};
 
-  virtual uint8_t getKeycodeToAscii(uint8_t keycode, uint8_t shift, uint8_t altgr, bool released);
   virtual void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report);
   virtual void onMouse(hid_mouse_report_t report, uint8_t last_buttons);
   virtual void onMouseButtons(hid_mouse_report_t report, uint8_t last_buttons);

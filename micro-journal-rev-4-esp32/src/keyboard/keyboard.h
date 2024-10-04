@@ -11,18 +11,26 @@
 #define EMPTY 0x0
 #define MENU 0x6
 
-// Tracking backspace
-int _backspace_last = 0;
-bool _backspace_pressed = false;
-
-// capslock and numlock
-bool _capslock = false;
-bool _numlock = false;
-
 void keyboard_setup();
 void keyboard_loop();
 
 // sending keys to GUI
 void keyboard_key(char key);
+
+
+// Tracking backspace
+int keyboard_backspace_last();
+void keyboard_backspace_last_set(int last);
+
+bool keyboard_backspace_pressed();
+void keyboard_backspace_pressed_set(bool pressed);
+
+// capslock
+bool keyboard_capslock();
+void keyboard_capslock_toggle();
+
+// numlock
+bool keyboard_numlock();
+void keyboard_numlock_toggle();
 
 #endif
