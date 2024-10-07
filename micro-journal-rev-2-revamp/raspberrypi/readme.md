@@ -103,6 +103,7 @@ sudo apt upgrade
 ```bash
 sudo apt install ranger
 mkdir ~/microjournal
+mkdir ~/microjournal/documents
 nano ~/.bashrc
 ```
 
@@ -201,7 +202,9 @@ nano ~/microjournal/config.sh
 ```
 
 ```config.sh
+sudo systemctl start NetworkManager.service
 sudo raspi-config
+sudo systemctl stop NetworkManager.service
 ```
 
 ```bash
