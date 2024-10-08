@@ -166,16 +166,12 @@ If you received a device from the first batch, you may need to adjust the font s
 
 1. Run **"font.sh"** from the dashboard and press **Enter** through the menu until you see **"16x32"** on the screen. You may see some intimidating screens. With numbers and lists. At the first screen choose 27, and then from the next screens, follow your intuition, and try to reach to a point where it shows you to choose the font size. 
 2. Use the **Up** key to select **8x16** for a smaller font size that allows the full menu to display.
-
-Once you’ve changed the font size:
-
-1. Press **q** to quit and return to the Linux command mode.
-2. Type the following command and press **Enter**:
-   
+3. Press **q** to quit and return to the Linux command mode.
+4. Type the following command and press **Enter**:   
    ```
    sudo systemctl start NetworkManager.service
    ```
-3. Then type **"ranger"** and press **Enter** to return to the dashboard.
+5. Then type **"ranger"** and press **Enter** to return to the dashboard.
 
 After completing these steps, retry the WiFi setup process.
 
