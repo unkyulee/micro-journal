@@ -442,7 +442,7 @@ void WP_keyboard(char key)
 
 // Create an array of String objects
 static const String extended_ascii[128] = {
-    "e", // 128
+    "E", // 128 euro sign doesn't work on Micro Journal
     "",
     "", // 130
     "",
