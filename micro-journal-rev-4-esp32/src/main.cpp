@@ -36,6 +36,7 @@ void setup()
     display_setup();
 
     //
+#ifdef ILI9341_DRIVER
     xTaskCreatePinnedToCore(
         Core0,   // Function to implement the task
         "Core0", // Name of the task
@@ -44,6 +45,7 @@ void setup()
         0,       // Priority of the task
         &Task0,  // Task handle.
         0);      // Core where the task should run
+#endif
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -54,6 +56,9 @@ void loop()
 
     //
     keyboard_loop();
+
+    //
+    vTaskDelay(10);
 }
 
 void Core0(void *parameter)
@@ -76,5 +81,8 @@ void Core0(void *parameter)
                 keyboard_loop();
             }
         }
+
+        //
+        vTaskDelay(10);
     }
 }
