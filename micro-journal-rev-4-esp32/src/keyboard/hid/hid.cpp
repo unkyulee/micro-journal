@@ -1,5 +1,6 @@
 #include "hid.h"
 #include "app/app.h"
+#include "display/display.h"
 //
 #include "keyboard/keyboard.h"
 //
@@ -56,7 +57,7 @@ void keyboard_hid_loop()
         keyboard_backspace_last_set(millis());
 
         // send backspace key
-        keyboard_key('\b');
+        display_keyboard('\b');
     }
 }
 
@@ -104,7 +105,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     // ESC key is MENU button
     if (keycode == 0x29)
     {
-        keyboard_key(MENU);
+        display_keyboard(MENU);
         return;
     }
 
@@ -123,7 +124,7 @@ void keyboard_hid_pressed(uint8_t keycode, uint8_t modifier)
     uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt);
     if (ascii != 0)
         // send key to GUI
-        keyboard_key(ascii);
+        display_keyboard(ascii);
 }
 
 void keyboard_hid_released(uint8_t keycode, uint8_t modifier)

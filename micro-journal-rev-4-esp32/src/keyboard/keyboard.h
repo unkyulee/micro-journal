@@ -14,10 +14,6 @@
 void keyboard_setup();
 void keyboard_loop();
 
-// sending keys to GUI
-void keyboard_key(char key);
-
-
 // Tracking backspace
 int keyboard_backspace_last();
 void keyboard_backspace_last_set(int last);

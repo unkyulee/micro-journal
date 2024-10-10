@@ -3,10 +3,6 @@
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 #include "editor/editor.h"
-//
-#include "GUI/WordProcessor/WordProcessor.h"
-#include "GUI/ErrorScreen/ErrorScreen.h"
-#include "GUI/Menu/Menu.h"
 
 //
 #include <SD.h>
@@ -116,12 +112,12 @@ void keyboard_keypad_loop()
 
                 if (ascii == 27)
                 {
-                    keyboard_key(MENU);
+                    display_keyboard(MENU);
                 }
 
                 else if (ascii != 0)
                 {
-                    keyboard_key(ascii);
+                    display_keyboard(ascii);
                 }
             }
         }
@@ -133,7 +129,7 @@ void keyboard_keypad_loop()
         keyboard_backspace_last_set(millis());
 
         // send backspace key
-        keyboard_key('\b');
+        display_keyboard('\b');
     }
 }
 

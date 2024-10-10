@@ -3,10 +3,10 @@
 #include "app/app.h"
 
 // screens
-#include "gui/WordProcessor/WordProcessor.h"
-#include "gui/ErrorScreen/ErrorScreen.h"
-#include "gui/Menu/Menu.h"
-#include "gui/WakeUp/WakeUp.h"
+#include "GUI/WordProcessor/WordProcessor.h"
+#include "GUI/ErrorScreen/ErrorScreen.h"
+#include "GUI/Menu/Menu.h"
+#include "GUI/WakeUp/WakeUp.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
@@ -128,5 +128,30 @@ void display_ILI9341_loop()
 
     //
     screen_prev = screen;
+  }
+}
+
+// Redirect the key press to the current GUI
+void display_ILI9341_keyboard(char key)
+{
+  JsonDocument &app = app_status();
+  int screen = app["screen"].as<int>();
+
+  if (screen == WORDPROCESSOR)
+  {
+    // send the key stroke to word processor
+    WP_keyboard(key);
+  }
+  else if (screen == MENUSCREEN)
+  {
+    Menu_keyboard(key);
+  }
+  else if (screen == ERRORSCREEN)
+  {
+    ErrorScreen_keyboard(key);
+  }
+  else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
+  {
+    WakeUp_keyboard(key);
   }
 }

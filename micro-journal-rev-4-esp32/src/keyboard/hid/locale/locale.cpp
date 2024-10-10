@@ -1,6 +1,7 @@
 #include "locale.h"
 #include "app/app.h"
 #include "keyboard/keyboard.h"
+#include "display/display.h"
 
 // locale
 #include "us/us.h"
@@ -52,7 +53,7 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
     {
       // when precursor keys is registered twice
       // send out the pre registered precursor key
-      keyboard_key(pre_cursor_ascii);
+      display_keyboard(pre_cursor_ascii);
 
       // then clear the precursor and send out the key stroke
       pre_cursor_ascii = 0;
@@ -88,7 +89,7 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
       //
       // precursor invalid just send out the key press
       //
-      keyboard_key(pre_cursor_ascii);
+      display_keyboard(pre_cursor_ascii);
 
       // then clear the precursor and send out the key stroke
       pre_cursor_ascii = 0;

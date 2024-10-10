@@ -124,7 +124,7 @@ void config_save()
     }
 
     // Serialize the "config" property of the app Document directly to the file
-    if (app.containsKey("config"))
+    if (app["config"].is<JsonObject>())
     {
         String jsonOutput;
         serializeJsonPretty(app["config"], jsonOutput);
