@@ -33,6 +33,9 @@ You can find 18650 batteries online or at most electronics retailers. **Both fla
 
 Please make sure to install the battery correctly before powering on your Micro Journal Rev.2 for the first time.
 
+**Battery Life:** The internal battery will typically provide **2 to 3 hours** of usage. For extended writing sessions, it's recommended to connect a **portable battery pack**. 
+  - A **10,000 mAh power bank** will provide approximately **+10 hours** of usage. Every additional **1,000 mAh** translates to about **+1 hour** of writing time.
+
 
 
 # Setup Micro SD Card
@@ -107,6 +110,9 @@ If you are familiar with Raspberry Pi configurations, feel free to customize the
 
 ### Step 2. Power On
 
+**Battery Life:** The internal battery will typically provide **2 to 3 hours** of usage. For extended writing sessions, it's recommended to connect a **portable battery pack**. 
+  - A **10,000 mAh power bank** will provide approximately **+10 hours** of usage. Every additional **1,000 mAh** translates to about **+1 hour** of writing time.
+
 ![Powering On](./quickstart/006.png)
 
 1. **Once the battery is fully charged,** flick the power switch to the "ON" position. It will take around **30 to 50 seconds** for the Micro Journal to fully boot up and be ready for use.
@@ -122,12 +128,6 @@ If you are familiar with Raspberry Pi configurations, feel free to customize the
 ---
 
 ![Powering On](./quickstart/007.png)
-
-### Extended Usage Tips:
-
-- **Battery Life:** The internal battery will typically provide **2 to 3 hours** of usage. For extended writing sessions, it's recommended to connect a **portable battery pack**. 
-  - A **10,000 mAh power bank** will provide approximately **+10 hours** of usage. Every additional **1,000 mAh** translates to about **+1 hour** of writing time.
-
 
 
 
