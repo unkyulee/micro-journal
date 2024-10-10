@@ -347,7 +347,7 @@ void keyboard_keypad_load_config()
             const char *key = keys[i];
             int index = keymapIndices[i];
 
-            if (keyboardConfig.containsKey(key) && keyboardConfig[key].is<JsonArray>())
+            if (keyboardConfig[key].is<JsonArray>())
             {
                 if (load_keymap(index, keyboardConfig[key].as<JsonArray>()))
                 {

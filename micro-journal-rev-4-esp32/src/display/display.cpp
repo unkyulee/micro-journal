@@ -12,12 +12,13 @@
 //
 void display_setup()
 {
-  app_log("DISPLAY SETUP\n");
-
+  
 #ifdef ENV_ILI9341
+  app_log("ILI9341 Display SETUP\n");
   display_ILI9341_setup();
 #endif
 #ifdef ENV_EPAPER
+  app_log("E-ink Setup\n");
   display_EPD_setup();
 #endif
 }
