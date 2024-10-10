@@ -3,6 +3,7 @@
 #include "editor/editor.h"
 #include "keyboard/keyboard.h"
 #include "display/display.h"
+#include "display/ILI9341/display_ILI9341.h"
 #include "keyboard/hid/nimble/ble.h"
 
 // 
@@ -239,7 +240,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // Only when refresh background is called
     //
     // initiate sprite
-    TFT_eSprite sprite = display_sprite();
+    TFT_eSprite sprite = display_ILI9341_sprite();
     if (clear_background)
     {
         sprite.createSprite(screen_width, screen_height);

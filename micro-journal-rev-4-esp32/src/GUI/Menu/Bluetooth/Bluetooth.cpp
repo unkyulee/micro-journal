@@ -2,10 +2,12 @@
 #include "../Menu.h"
 #include "app/app.h"
 #include "config/config.h"
-#include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
 #include "keyboard/hid/nimble/ble.h"
 #include "keyboard/keyboard.h"
+
+//
+#include "display/display.h"
+#include "GUI/WordProcessor/WordProcessor.h"
 
 //
 #include <SPI.h>

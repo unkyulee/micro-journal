@@ -1,31 +1,31 @@
-#include "DisableWakeUp.h"
+#include "FrontPanelButton.h"
 #include "../Menu.h"
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+#include "GUI/WordProcessor/WordProcessor.h"
 
 //
-void DisableWakeUp_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void FrontPanelButton_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     // when entering the screen
-    // DisableWakeUp the screen
+    // clear the screen
     Menu_clear();
 }
 
 //
-void DisableWakeUp_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void FrontPanelButton_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     ptft->setCursor(0, 30, 2);
     ptft->setTextSize(1);
     //
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println(" WAKEUP ANIMATION");
+    ptft->println(" FRONTPANEL BUTTONS");
     ptft->println("");
 
     //
     JsonDocument &app = app_status();
-    bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
+    bool disabled = app["config"]["front_panel_button_disabled"].as<bool>();
 
     if (disabled)
     {
@@ -35,9 +35,9 @@ void DisableWakeUp_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println("");
     }
 
-    //
-    ptft->println(" [Y] Enable Start Animation ");
-    ptft->println(" [N] Disable Start Animation ");
+    // 
+    ptft->println(" [Y] Enable Front Panel Buttons ");
+    ptft->println(" [N] Disable Front Panel Buttons ");
 
     //
     ptft->println();
@@ -45,14 +45,14 @@ void DisableWakeUp_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 //
-void DisableWakeUp_keyboard(char key)
+void FrontPanelButton_keyboard(char key)
 {
     JsonDocument &app = app_status();
 
     if (key == 'y')
     {
         //
-        app["config"]["wakeup_animation_disabled"] = false;
+        app["config"]["front_panel_button_disabled"] = false;
 
         // 
         config_save();
@@ -62,7 +62,7 @@ void DisableWakeUp_keyboard(char key)
     else if (key == 'n')
     {
         //
-        app["config"]["wakeup_animation_disabled"] = true;
+        app["config"]["front_panel_button_disabled"] = true;
 
         //
         config_save();

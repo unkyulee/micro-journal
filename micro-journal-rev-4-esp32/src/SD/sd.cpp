@@ -1,7 +1,7 @@
 #include "sd.h"
 #include "app/app.h"
 #include "display/display.h"
-#include "display/Menu/Menu.h"
+#include "GUI/Menu/Menu.h"
 
 //
 #include <SPI.h>
@@ -66,11 +66,15 @@ void SD_setup()
 
     // Check if there are firmware.bin in the SD card
 #ifdef ENV_USBHOST
-        const char *firmware_filename = "/firmware_rev_5.bin";
+    const char *firmware_filename = "/firmware_rev_5.bin";
 #endif
 #ifdef ENV_KEYBOARD
-        const char *firmware_filename = "/firmware_rev_6.bin";
+    const char *firmware_filename = "/firmware_rev_6.bin";
 #endif
+#ifdef ENV_EPAPER
+    const char *firmware_filename = "/firmware_rev_7.bin";
+#endif
+
     if (SD.exists(firmware_filename))
     {
         app["screen"] = MENUSCREEN;

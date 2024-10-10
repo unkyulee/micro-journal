@@ -4,9 +4,9 @@
 #include "keyboard/keyboard.h"
 #include "editor/editor.h"
 //
-#include "display/WordProcessor/WordProcessor.h"
-#include "display/ErrorScreen/ErrorScreen.h"
-#include "display/Menu/Menu.h"
+#include "GUI/WordProcessor/WordProcessor.h"
+#include "GUI/ErrorScreen/ErrorScreen.h"
+#include "GUI/Menu/Menu.h"
 
 //
 #include <SD.h>

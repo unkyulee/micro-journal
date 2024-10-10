@@ -34,7 +34,7 @@ void Firmware_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
     ptft->println();
     ptft->println("While the update is on-going screen may flicker for a minute");
-    ptft->println();    
+    ptft->println();
     ptft->println(" [B] BACK ");
 }
 
@@ -54,6 +54,9 @@ void Firmware_keyboard(char key)
 #endif
 #ifdef ENV_KEYBOARD
         const char *firmware_filename = "/firmware_rev_6.bin";
+#endif
+#ifdef ENV_EPAPER
+        const char *firmware_filename = "/firmware_rev_7.bin";
 #endif
 
         File firmwareFile = SD.open(firmware_filename);

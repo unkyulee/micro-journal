@@ -3,7 +3,7 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+#include "GUI/WordProcessor/WordProcessor.h"
 
 //
 #include <SPI.h>

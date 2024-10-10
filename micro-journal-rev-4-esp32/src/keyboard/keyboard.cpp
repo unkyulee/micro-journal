@@ -6,10 +6,10 @@
 #include "display/display.h"
 
 //
-#include "display/WordProcessor/WordProcessor.h"
-#include "display/ErrorScreen/ErrorScreen.h"
-#include "display/Menu/Menu.h"
-#include "display/WakeUp/WakeUp.h"
+#include "GUI/WordProcessor/WordProcessor.h"
+#include "GUI/ErrorScreen/ErrorScreen.h"
+#include "GUI/Menu/Menu.h"
+#include "GUI/WakeUp/WakeUp.h"
 
 // Rev.5 receives USB and Bluetooth (BLE) Keyboards
 #ifdef ENV_USBHOST

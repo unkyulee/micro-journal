@@ -3,7 +3,9 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "display/WordProcessor/WordProcessor.h"
+
+//
+#include "GUI/WordProcessor/WordProcessor.h"
 
 //
 void Background_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
