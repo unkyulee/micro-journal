@@ -46,35 +46,21 @@ void WP_render()
 
 void WP_render_text()
 {
-    static int count = 0;
+    int line_num = 0;
+
+    char *line = Editor::getInstance().screenBuffer.line_position[line_num];
+    int length = Editor::getInstance().screenBuffer.line_length[line_num];
 
     int32_t x = 18;
     int32_t y = 50;
-    writeln((GFXfont *)&FiraSans, "➸ Touch is online  😀 \n", &x, &y, NULL);
-
-    JsonDocument &app = app_status();
-    y += 50;
-    x = 18;
-    if (app["hid_usb"].as<bool>() == true)
-    {
-        writeln((GFXfont *)&FiraSans, "USB Connected \n", &x, &y, NULL);
-    }
-    else
-    {
-        writeln((GFXfont *)&FiraSans, "USB Not Connected \n", &x, &y, NULL);
-    }
-
-    y += 50;
-    x = 18;
-    writeln((GFXfont *)&FiraSans, String(count).c_str(), &x, &y, NULL);
-    count++;
-    app_log("EPD LOOP\n");
-    delay(5000);
+    writeln((GFXfont *)&FiraSans, line, &x, &y, NULL);
 }
 
 //
 void WP_keyboard(char key)
 {
+    JsonDocument &app = app_status();
+
     // Check if menu key is pressed
     if (key == MENU)
     {
@@ -82,7 +68,6 @@ void WP_keyboard(char key)
         Editor::getInstance().saveFile();
 
         //
-        JsonDocument &app = app_status();
         app["screen"] = MENUSCREEN;
     }
 

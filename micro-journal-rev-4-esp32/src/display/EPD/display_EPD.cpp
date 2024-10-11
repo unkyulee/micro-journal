@@ -51,8 +51,8 @@ void display_EPD_setup()
 //
 void display_EPD_loop()
 {
-    static unsigned int last = millis();
-    if (millis() - last > 1000)
+    static unsigned int last = 0;
+    if (millis() - last > 5000)
     {
         last = millis();
 
@@ -80,10 +80,12 @@ void display_EPD_keyboard(char key)
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
 
+    WP_keyboard(key);
+
     if (screen == WORDPROCESSOR)
     {
         // send the key stroke to word processor
-        WP_keyboard(key);
+        // WP_keyboard(key);
     }
     else if (screen == MENUSCREEN)
     {

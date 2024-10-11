@@ -17,6 +17,7 @@ bool keyboard_setup_completed = false;
 
 void keyboard_setup()
 {
+ 
 #ifdef ENV_KEYBOARD
   // keypad setup
   keyboard_keypad_setup();
@@ -35,14 +36,13 @@ void keyboard_loop()
   if (!keyboard_setup_completed)
     return;
 
-#ifdef ENV_USBHOST
-  keyboard_hid_loop();
-#endif
-
 #ifdef ENV_KEYBOARD
   // keypad loop
   keyboard_keypad_loop();
+#else
+  keyboard_hid_loop();
 #endif
+
 }
 
 //

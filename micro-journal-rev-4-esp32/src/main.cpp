@@ -22,6 +22,7 @@ void setup()
     app_log("Device Started. Baud rate: %d\n", 115200);
     Serial.begin(115200);
 #endif
+    delay(3000);
 
     // SD must be initialized before display
     SD_setup();
@@ -30,7 +31,7 @@ void setup()
     config_setup();
 
     // keyboard setup
-    //keyboard_setup();
+    keyboard_setup();
 
     //
     display_setup();
@@ -44,7 +45,6 @@ void setup()
         0,       // Priority of the task
         &Task0,  // Task handle.
         0);      // Core where the task should run
-
 }
 
 // Main loop is ignored as the tasks are separated per core

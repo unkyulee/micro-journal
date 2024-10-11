@@ -20,7 +20,7 @@ void keyboard_hid_setup()
 {
     // Rev.5 will need to have Button on the front panel
     // also depending on the situation should handle USB and BLE keyboards
-
+    app_log("HID Setup Started\n");
     if (keyboard_ble_setup())
     {
         // if BLE keyboard is connected at a boot up

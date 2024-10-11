@@ -84,6 +84,8 @@ void keyboard_usb_setup()
 
   // usb host setup
   usbHost.begin();
+
+  app_log("Is Ready: %d\n", usbHost.isReady);
 }
 
 //
