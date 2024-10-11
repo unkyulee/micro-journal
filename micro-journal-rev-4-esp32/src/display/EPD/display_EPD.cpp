@@ -45,7 +45,7 @@ void display_EPD_setup()
     epd_clear();
 
     // Turn off the display
-    epd_poweroff();
+    epd_poweroff_all(); // turn off the board LED}
 }
 
 //

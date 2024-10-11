@@ -33,7 +33,7 @@ void WP_render()
     epd_poweron();
 
     // Clear Screen
-    // epd_clear();
+    epd_clear();
 
     // RENDER TEXT
     WP_render_text();
@@ -43,18 +43,33 @@ void WP_render()
 }
 
 //
+
 void WP_render_text()
 {
+    static int count = 0;
+
     int32_t x = 18;
     int32_t y = 50;
     writeln((GFXfont *)&FiraSans, "➸ Touch is online  😀 \n", &x, &y, NULL);
 
     JsonDocument &app = app_status();
-    if(app["hid_usb"].as<bool>() == true) {
+    y += 50;
+    x = 18;
+    if (app["hid_usb"].as<bool>() == true)
+    {
         writeln((GFXfont *)&FiraSans, "USB Connected \n", &x, &y, NULL);
-    } else {
+    }
+    else
+    {
         writeln((GFXfont *)&FiraSans, "USB Not Connected \n", &x, &y, NULL);
     }
+
+    y += 50;
+    x = 18;
+    writeln((GFXfont *)&FiraSans, String(count).c_str(), &x, &y, NULL);
+    count++;
+    app_log("EPD LOOP\n");
+    delay(5000);
 }
 
 //

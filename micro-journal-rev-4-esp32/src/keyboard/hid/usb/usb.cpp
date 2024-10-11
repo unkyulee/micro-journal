@@ -7,11 +7,13 @@
 
 class MyEspUsbHost : public EspUsbHost
 {
-  void onReceive(const usb_transfer_t *transfer) {
+  void onReceive(const usb_transfer_t *transfer)
+  {
     JsonDocument &app = app_status();
     app["hid_usb"] = true;
   }
-  void onGone(const usb_host_client_event_msg_t *eventMsg) {
+  void onGone(const usb_host_client_event_msg_t *eventMsg)
+  {
     JsonDocument &app = app_status();
     app["hid_usb"] = false;
   }
