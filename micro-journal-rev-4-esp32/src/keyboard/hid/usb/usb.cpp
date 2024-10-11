@@ -7,6 +7,15 @@
 
 class MyEspUsbHost : public EspUsbHost
 {
+  void onReceive(const usb_transfer_t *transfer) {
+    JsonDocument &app = app_status();
+    app["hid_usb"] = true;
+  }
+  void onGone(const usb_host_client_event_msg_t *eventMsg) {
+    JsonDocument &app = app_status();
+    app["hid_usb"] = false;
+  }
+
   // USB Keycode is sent when key is pressed or released
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {

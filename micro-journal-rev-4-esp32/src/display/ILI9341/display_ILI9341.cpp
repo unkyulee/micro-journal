@@ -35,32 +35,9 @@ void display_ILI9341_setup()
   // Fill screen with grey so we can see the effect of printing with and without
   // a background colour defined
   tft.fillScreen(TFT_BLACK);
-
-  // set the initial screen to word processor
-  JsonDocument &app = app_status();
-  int screen = app["screen"].as<int>();
-  if (screen == 0) 
-  {
-    //
-    // if screen is not specified
-    // then load the wake animation then the word processor
-    //
-    bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
-    if (disabled)
-    {
-      // show the word processor immediately when wakeup is disabled
-      app["screen"] = WORDPROCESSOR;
-    }
-    else
-    {
-      //
-      app["screen"] = WAKEUPSCREEN;
-    }
-  }
 }
 
 //
-int screen_prev = -1;
 void display_ILI9341_loop()
 {
   static unsigned int last = millis();
@@ -70,6 +47,7 @@ void display_ILI9341_loop()
 
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
+    int screen_prev = app["screen_prev"].as<int>();
 
     // ERROR SCREEN
     if (screen == ERRORSCREEN)
@@ -127,7 +105,7 @@ void display_ILI9341_loop()
     }
 
     //
-    screen_prev = screen;
+    app["screen_prev"] = screen;
   }
 }
 

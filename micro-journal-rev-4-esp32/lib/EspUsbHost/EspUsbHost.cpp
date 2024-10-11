@@ -645,7 +645,7 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
         report.modifier = transfer->data_buffer[0];
         report.reserved = transfer->data_buffer[1];
         report.keycode[0] = transfer->data_buffer[2]; // NUMLOCK and CAPSLOCK
-        report.keycode[1] = transfer->data_buffer[3]; 
+        report.keycode[1] = transfer->data_buffer[3];
         report.keycode[2] = transfer->data_buffer[4];
         report.keycode[3] = transfer->data_buffer[5];
         report.keycode[4] = transfer->data_buffer[6];
@@ -661,7 +661,7 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
           report.keycode[2] = transfer->data_buffer[5];
           report.keycode[3] = transfer->data_buffer[6];
           report.keycode[4] = transfer->data_buffer[7];
-        }        
+        }
 
         //////////////////////////////////////////
         // General Key is pressed

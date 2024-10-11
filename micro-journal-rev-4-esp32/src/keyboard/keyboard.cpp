@@ -5,27 +5,23 @@
 #include "config/config.h"
 #include "display/display.h"
 
-// Rev.5 receives USB and Bluetooth (BLE) Keyboards
-#ifdef ENV_USBHOST
-#include "hid/hid.h"
-#endif
-
-// Rev.6 receives Key presses directly from the keypad
 #ifdef ENV_KEYBOARD
+// Rev.6 receives Key presses directly from the keypad
 #include "keypad/keypad.h"
+#else
+// Rev.5 and Rev.7 receives USB and Bluetooth (BLE) Keyboards
+#include "hid/hid.h"
 #endif
 
 bool keyboard_setup_completed = false;
 
 void keyboard_setup()
 {
-#ifdef ENV_USBHOST
-  keyboard_hid_setup();
-#endif
-
 #ifdef ENV_KEYBOARD
   // keypad setup
   keyboard_keypad_setup();
+#else
+  keyboard_hid_setup();
 #endif
 
   // Keyboard setup is completed

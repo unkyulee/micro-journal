@@ -12,7 +12,6 @@
 //
 void display_setup()
 {
-  
 #ifdef ENV_ILI9341
   app_log("ILI9341 Display SETUP\n");
   display_ILI9341_setup();
@@ -21,6 +20,30 @@ void display_setup()
   app_log("E-ink Setup\n");
   display_EPD_setup();
 #endif
+
+  // set the initial screen to word processor
+  JsonDocument &app = app_status();
+  int screen = app["screen"].as<int>();
+  if (screen == 0)
+  {
+    //
+    // if screen is not specified
+    // then load the wake animation then the word processor
+    //
+    bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
+    if (disabled)
+    {
+      // show the word processor immediately when wakeup is disabled
+      app["screen"] = WORDPROCESSOR;
+      app["screen_prev"] = -1;
+    }
+    else
+    {
+      //
+      app["screen"] = WAKEUPSCREEN;
+      app["screen_prev"] = -1;
+    }
+  }
 }
 
 //
@@ -43,3 +66,4 @@ void display_keyboard(char key)
   display_EPD_keyboard(key);
 #endif
 }
+
