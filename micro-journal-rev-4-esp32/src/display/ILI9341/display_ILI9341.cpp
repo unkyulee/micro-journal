@@ -21,7 +21,7 @@ TFT_eSprite& display_ILI9341_sprite() {
 //
 void display_ILI9341_setup()
 {
-  app_log("DISPLAY SETUP\n");
+  app_log("DISPLAY ILI9341 SETUP\n");
 
   // Initialise the TFT screen
   tft.begin();

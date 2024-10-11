@@ -35,7 +35,12 @@ void SD_setup()
 
     // initialize SD card
     app_log("SD Device CS: %d\n", SD_CS);
+#ifdef ENV_EPAPER
+    SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+    if (!SD.begin(SD_CS, SPI))
+#else
     if (!SD.begin(SD_CS))
+#endif
     {
         //
         app_log("Card Mount Failed\n");
