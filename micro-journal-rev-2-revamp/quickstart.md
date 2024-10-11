@@ -116,6 +116,9 @@ If you are familiar with Raspberry Pi configurations, feel free to customize the
 ![Powering On](./quickstart/006.png)
 
 1. **Once the battery is fully charged,** flick the power switch to the "ON" position. It will take around **30 to 50 seconds** for the Micro Journal to fully boot up and be ready for use.
+ - to verify it's charging, look for a red light to shine through the grill in the back when you plug it in.
+ - please use a small mobile phone charger (like a Raspberry pi 5V 2.5 amp one) to charge the Rev2, because trying to use a bigger/more advanced charger (PD Charger) does not charge the Rev2.
+
 
 2. **Initial delay:** After switching it on, the screen may not immediately display anything. This is normal. It can take up to 30 seconds for the Raspberry Pi to recognize and activate the display.
 
