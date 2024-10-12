@@ -19,7 +19,6 @@ void setup()
     Serial.begin(9600);
 #endif
 #ifdef ENV_EPAPER
-    delay(5000);
     app_log("Device Started. Baud rate: %d\n", 115200);
     Serial.begin(115200);
 #endif
