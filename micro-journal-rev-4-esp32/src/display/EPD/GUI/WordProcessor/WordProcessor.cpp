@@ -15,9 +15,9 @@ bool draw = false;
 //
 #define MARGIN 10
 //
-const int font_width = 30;
+const int font_width = 25;
 const int font_height = 50;
-const int editY = 500;
+const int editY = 450;
 const int cursorHeight = 5;
 
 //
@@ -36,8 +36,8 @@ void WP_setup()
 
     // editor instantiate
     Editor &editor = Editor::getInstance();
-    editor.screenBuffer.rows = 9;
-    editor.screenBuffer.cols = 30;
+    editor.screenBuffer.rows = 8;
+    editor.screenBuffer.cols = 50;
 
     // load file from the editor
     JsonDocument &app = app_status();
@@ -56,6 +56,7 @@ void WP_setup()
 //
 void WP_render()
 {
+    // reset draw flag
     draw = false;
 
     // Turn on the display
@@ -71,13 +72,11 @@ void WP_render()
     WP_render_text();
 
     //
-    // show buffer
     if (draw)
     {
+        // render frame to the display
         epd_draw_grayscale_image(epd_full_screen(), display_EPD_framebuffer());
         memset(display_EPD_framebuffer(), 0xFF, EPD_WIDTH * EPD_HEIGHT / 2);
-
-        app_log("Draw\n");
     }
 
     // Turn off the display
@@ -118,7 +117,16 @@ void WP_render_clear()
     // When Backspace, trailing characters should be deleted
     // if it is backspace or del key
     if (cursorPos_prev >= cursorPos && bufferSize_prev != bufferSize)
-        clear_background = true;
+    {
+        // backspace
+        Rect_t area = {
+            .x = 0,
+            .y = editY - font_height,
+            .width = EPD_WIDTH,
+            .height = EPD_HEIGHT,
+        };
+        epd_clear_quick(area, 4, 10);
+    }
 
     if (cursorPos_prev != cursorPos)
     {
@@ -127,8 +135,13 @@ void WP_render_clear()
         {
             // if the edit line is empty then don't flicker
             //
-            if (cursorLinePos + 1 != cursorLineLength)
-                clear_background = true;
+            Rect_t area = {
+                .x = 0,
+                .y = editY - font_height,
+                .width = EPD_WIDTH,
+                .height = EPD_HEIGHT,
+            };
+            epd_clear_quick(area, 4, 10);
         }
 
         //
@@ -142,9 +155,20 @@ void WP_render_clear()
 
     if (clear_background)
     {
+        static int erase_count = 0;
+        erase_count++;
         app_log("Clear Background\n");
         // clearing background
-        epd_clear();
+        if (erase_count > 10)
+        {
+            epd_clear();
+            erase_count = 0;
+        }
+
+        else
+        {
+            epd_clear_quick(epd_full_screen(), 8, 10);
+        }
     }
 }
 
@@ -175,32 +199,39 @@ void WP_render_text()
             {
                 char *line = Editor::getInstance().screenBuffer.line_position[i];
                 int length = Editor::getInstance().screenBuffer.line_length[i];
-
+                int cursorX = MARGIN;
                 // render
                 if (line != NULL && length > 0)
                 {
-                    for (int j = 0; j < length; j++)
-                    {
-                        WP_render_char(line[j], MARGIN + font_width * j, cursorY);
-                    }
+                    char row[256];
+
+                    // Copy the line content to row, but not more than 255 characters
+                    int copyLength = (length < 255) ? length : 255;
+                    strncpy(row, line, copyLength);
+
+                    // Null-terminate the string
+                    row[copyLength] = '\0';
+                    writeln((GFXfont *)&FiraSans, row, &cursorX, &cursorY, display_EPD_framebuffer());
                 }
-                cursorY += font_height;
             }
-            
+
+            cursorY += font_height;
         }
+
+        // buffer needs to be rendered
+        draw = true;
     }
 
     //
     // Bottom line will the the edit area
     // Draw the last character
-    if (cursorLinePos != cursorLinePos_prev && cursorLine == cursorLine_prev)
+    if (cursorLinePos != cursorLinePos_prev)
     {
+        // render entire line
+        int cursorX = MARGIN;
+        int cursorY = editY;
         char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
-        for (int i = cursorLinePos_prev; i < cursorLinePos; i++)
-        {
-            //
-            WP_render_char(line[i], MARGIN + font_width * i, editY);
-        }
+        writeln((GFXfont *)&FiraSans, line, &cursorX, &cursorY, NULL);
 
         //
         cursorLinePos_prev = cursorLinePos;
@@ -212,18 +243,6 @@ void WP_render_text()
     }
 }
 
-void WP_render_char(char c, int cursorX, int cursorY)
-{
-    // render
-    char character[2];
-    character[0] = c;
-    character[1] = '\0';
-    write_string((GFXfont *)&FiraSans, character, &cursorX, &cursorY, display_EPD_framebuffer());
-
-    // show buffer
-    draw = true;
-}
-
 //
 // Render Cursor
 void WP_render_cursor()
@@ -231,6 +250,9 @@ void WP_render_cursor()
     JsonDocument &app = app_status();
 
     // Cursor information
+    static int renderedCursorX = -1;
+    static bool last = millis() + 2000;
+
     static int cursorLinePos_prev = 0;
     int cursorLinePos = Editor::getInstance().fileBuffer.cursorLinePos;
     int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
@@ -243,42 +265,47 @@ void WP_render_cursor()
     if (Editor::getInstance().fileBuffer.buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
     {
         // font width 12
-        cursorX = cursorLinePos * font_width;
-    }
-
-    // Blink the cursor every 500 ms
-    static bool blink = false;
-    static unsigned int last = millis();
-    if (millis() - last > 500)
-    {
-        last = millis();
-        blink = !blink;
+        cursorX = MARGIN + cursorLinePos * font_width;
     }
 
     // Delete previous cursor line
     if (cursorLinePos != cursorLinePos_prev)
     {
-        //
-        Rect_t area = {
-            .x = cursorLinePos_prev * font_width,
-            .y = editY + MARGIN,
-            .width = font_width,
-            .height = cursorHeight};
-        epd_push_pixels(area, 2, 1);
+        if (renderedCursorX > 0)
+        {
+            //
+            Rect_t area = {
+                .x = 0,
+                .y = editY,
+                .width = EPD_WIDTH,
+                .height = 20};
+
+            epd_clear_quick(area, 8, 50);
+            app_log("clear cursor: %d\n", renderedCursorX);
+
+            // render the cursor
+            renderedCursorX = -1;
+        }
+
+        // reset the timer
+        last = millis();
 
         //
         cursorLinePos_prev = cursorLinePos;
     }
 
-    // Cursor Blink will be always at the bottom of the screen
     //
-    Rect_t area = {
-        .x = cursorX,
-        .y = editY + MARGIN,
-        .width = font_width,
-        .height = cursorHeight};
+    if (renderedCursorX == -1 && last < millis() + 1000)
+    {
+        // Cursor will be always at the bottom of the screen
+        int cursorY = editY;
+        cursorX += 5;
+        writeln((GFXfont *)&FiraSans, "_", &cursorX, &cursorY, NULL);
 
-    epd_push_pixels(area, 2, blink);
+        //
+        renderedCursorX = cursorX;
+        app_log("Cursor: %d\n", renderedCursorX);
+    }
 }
 
 //

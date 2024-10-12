@@ -55,21 +55,18 @@ void loop()
     display_loop();
 
     //
-    vTaskDelay(10);
     yield();
 }
 
 void Core0(void *parameter)
 {
     app_log("Core0 Task Start\n");
-    static unsigned int last = 0;
     while (true)
     {
         //
         keyboard_loop();
 
         //
-        vTaskDelay(10);
         yield();
     }
 }

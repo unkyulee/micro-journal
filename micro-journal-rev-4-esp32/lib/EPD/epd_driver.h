@@ -103,6 +103,7 @@ void epd_poweroff();
  * @brief Clear the whole screen by flashing it.
  */
 void epd_clear();
+void epd_clear_quick(Rect_t area, int cycle, int time);
 
 void epd_poweroff_all();
 
