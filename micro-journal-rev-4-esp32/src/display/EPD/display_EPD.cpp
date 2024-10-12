@@ -45,8 +45,11 @@ void display_EPD_setup()
     epd_clear();
 
     // Turn off the display
-    epd_poweroff_all(); // turn off the board LED}
-    //epd_poweroff();
+    // turn off the board LED
+    // do not use poweroff all because it also turns off SD card
+    // epd_poweroff_all();
+
+    epd_poweroff();
 }
 
 //
@@ -73,7 +76,7 @@ void display_EPD_loop()
         }
         else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
         {
-             // setup only once
+            // setup only once
             if (screen != screen_prev)
                 WakeUp_setup();
             else
@@ -82,7 +85,7 @@ void display_EPD_loop()
         }
         else if (screen == ERRORSCREEN)
         {
-             // setup only once
+            // setup only once
             if (screen != screen_prev)
                 ErrorScreen_setup();
             else
