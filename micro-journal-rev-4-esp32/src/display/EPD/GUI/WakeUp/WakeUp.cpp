@@ -13,12 +13,16 @@ bool stop = false;
 void WakeUp_setup()
 {
     app_log("Wakup Screen Setup\n");
-    
+
     //
     wakeup = true;
 
     //
     stop = false;
+
+    // move to word processor
+    JsonDocument &app = app_status();
+    app["screen"] = WORDPROCESSOR;
 }
 
 //
@@ -37,25 +41,11 @@ void WakeUp_render()
 
     // Turn off the display
     epd_poweroff();
-
-    //
-    delay(3000);
-    wakeup = true;
-
-    // just play once at the start up
-    if (wakeup)
-    {
-        // move to word processor
-        JsonDocument &app = app_status();
-        app["screen"] = WORDPROCESSOR;
-    }
 }
 
 //
 void WakeUp_keyboard(char key)
 {
-    app_log("wakeup stop keyboard\n");
-
     //
     wakeup = true;
     stop = true;

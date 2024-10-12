@@ -80,27 +80,15 @@ MyEspUsbHost usbHost;
 void keyboard_usb_setup()
 {
   //
-  app_log("Initializing USB Keyboard\n");
+  app_log("Initializing USB Host\n");
 
   // usb host setup
-  // usbHost.begin();
+  usbHost.begin();
 }
 
 //
 void keyboard_usb_loop()
 {
   // Process USB Keyboard Tasks
-  /*
-  if (usbHost.isReady)
-    usbHost.task();
-
-
-  static unsigned int last = 0;
-  if (millis() - last > 10000)
-  {
-    last = millis();
-
-    keyboard_hid_pressed(0x04, 0);
-  }
-    */
+  usbHost.task();
 }

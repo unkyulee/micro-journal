@@ -46,23 +46,21 @@ void display_EPD_setup()
 
     // Turn off the display
     // turn off the board LED
-    // do not use poweroff all because it also turns off SD card
-    // epd_poweroff_all();
-
-    epd_poweroff();
+    epd_poweroff_all();
+    //epd_poweroff();
 }
 
 //
 void display_EPD_loop()
 {
     static unsigned int last = 0;
-    if (millis() - last > 200)
+    if (millis() - last > 150)
     {
         last = millis();
 
         JsonDocument &app = app_status();
+        static int screen_prev = -1;
         int screen = app["screen"].as<int>();
-        int screen_prev = app["screen_prev"].as<int>();
 
         // WORD PROCESSOR
         if (screen == WORDPROCESSOR)
@@ -95,6 +93,7 @@ void display_EPD_loop()
 
         //
         app["screen_prev"] = screen;
+        screen_prev = screen;
     }
 }
 
@@ -102,7 +101,8 @@ void display_EPD_keyboard(char key)
 {
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
-
+    app_log("display_EPD_keyboard %d key %d\n", screen, key);
+    
     if (screen == WORDPROCESSOR)
     {
         // send the key stroke to word processor

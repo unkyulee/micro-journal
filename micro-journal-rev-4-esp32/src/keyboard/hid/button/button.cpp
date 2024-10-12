@@ -54,6 +54,7 @@ void button_loop()
             else
             {
                 // go to sleep
+                app_log("Go to sleep\n");
                 app["screen"] = SLEEPSCREEN;
             }
         }

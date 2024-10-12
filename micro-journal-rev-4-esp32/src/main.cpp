@@ -35,7 +35,7 @@ void setup()
 
     //
     display_setup();
-    /*
+
     //
     xTaskCreatePinnedToCore(
         Core0,   // Function to implement the task
@@ -45,7 +45,7 @@ void setup()
         0,       // Priority of the task
         &Task0,  // Task handle.
         0);      // Core where the task should run
-    */
+
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -55,12 +55,13 @@ void loop()
     display_loop();
 
     //
-    vTaskDelay(1);
+    vTaskDelay(10);
+    yield();
 }
 
 void Core0(void *parameter)
 {
-    app_log("Core0 Task Start");
+    app_log("Core0 Task Start\n");
     static unsigned int last = 0;
     while (true)
     {
@@ -68,6 +69,7 @@ void Core0(void *parameter)
         keyboard_loop();
 
         //
-        vTaskDelay(1);
+        vTaskDelay(10);
+        yield();
     }
 }

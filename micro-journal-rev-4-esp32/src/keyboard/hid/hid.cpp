@@ -28,10 +28,10 @@ void keyboard_hid_setup()
         // so that it can be handled at the Loop
         ble_keyboard = true;
     }
-
+#ifdef ENV_BUTTON
     // setup display button
     button_setup();
-
+#endif
     // usb keyboard setup
     keyboard_usb_setup();
 }
@@ -44,9 +44,11 @@ void keyboard_hid_loop()
         keyboard_ble_loop();
     }
 
+#ifdef ENV_BUTTON
     // handle display button press
     button_loop();
-
+#endif
+    
     // usb keyboard loop
     keyboard_usb_loop();
 

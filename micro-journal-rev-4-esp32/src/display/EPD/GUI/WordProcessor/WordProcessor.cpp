@@ -11,7 +11,7 @@
 //
 void WP_setup()
 {
-    app_log("Word Process GUI Setup\n");
+    app_log("Word Processor GUI Setup\n");
 
     // Turn on the display
     epd_poweron();
@@ -23,14 +23,14 @@ void WP_setup()
     epd_poweroff();
 
     // editor instantiate
-    Editor::getInstance();
+    Editor::getInstance(); 
 
     // load file from the editor
     JsonDocument &app = app_status();
     int file_index = app["config"]["file_index"].as<int>();
     
     //
-    //Editor::getInstance().loadFile(format("/%d.txt", file_index));
+    Editor::getInstance().loadFile(format("/%d.txt", file_index));
 
     //
     app_log("Word Processor Initialized %d.txt\n", file_index);
@@ -67,7 +67,7 @@ void WP_render_text()
     x = 18;
     
     if(line != NULL)
-        writeln((GFXfont *)&FiraSans, line, &x, &y, NULL);
+        write_string((GFXfont *)&FiraSans, line, &x, &y, NULL);
 }
 
 //
