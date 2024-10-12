@@ -251,7 +251,7 @@ void WP_render_cursor()
 
     // Cursor information
     static int renderedCursorX = -1;
-    static bool last = millis() + 2000;
+    static int last = millis() + 2000;
 
     static int cursorLinePos_prev = 0;
     int cursorLinePos = Editor::getInstance().fileBuffer.cursorLinePos;
@@ -278,7 +278,7 @@ void WP_render_cursor()
                 .x = 0,
                 .y = editY,
                 .width = EPD_WIDTH,
-                .height = 20};
+                .height = 10};
 
             epd_clear_quick(area, 8, 50);
             app_log("clear cursor: %d\n", renderedCursorX);
@@ -294,8 +294,9 @@ void WP_render_cursor()
         cursorLinePos_prev = cursorLinePos;
     }
 
-    //
-    if (renderedCursorX == -1 && last < millis() + 1000)
+    // when there are no types for 5 seconds then 
+    // display the cursor
+    if (renderedCursorX == -1 && last + 1000 < millis() )
     {
         // Cursor will be always at the bottom of the screen
         int cursorY = editY;
