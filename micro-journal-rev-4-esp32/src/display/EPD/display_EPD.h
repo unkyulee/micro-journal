@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "epd_driver.h"
+#include "firasans.h"
 
 //
 void display_EPD_setup();

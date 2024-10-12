@@ -9,18 +9,28 @@
 #include "keyboard/hid/nimble/ble.h"
 
 //
-#include "firasans.h"
-
-//
 void WP_setup()
 {
+    app_log("Word Process GUI Setup\n");
+
+    // Turn on the display
+    epd_poweron();
+
+    // Clear Screen
+    epd_clear();
+
+    // Turn off the display
+    epd_poweroff();
+
     // editor instantiate
     Editor::getInstance();
 
     // load file from the editor
     JsonDocument &app = app_status();
     int file_index = app["config"]["file_index"].as<int>();
-    Editor::getInstance().loadFile(format("/%d.txt", file_index));
+    
+    //
+    //Editor::getInstance().loadFile(format("/%d.txt", file_index));
 
     //
     app_log("Word Processor Initialized %d.txt\n", file_index);
@@ -33,7 +43,7 @@ void WP_render()
     epd_poweron();
 
     // Clear Screen
-    epd_clear();
+    //epd_clear();
 
     // RENDER TEXT
     WP_render_text();
@@ -43,7 +53,6 @@ void WP_render()
 }
 
 //
-
 void WP_render_text()
 {
     int line_num = 0;
@@ -53,7 +62,12 @@ void WP_render_text()
 
     int32_t x = 18;
     int32_t y = 50;
-    writeln((GFXfont *)&FiraSans, line, &x, &y, NULL);
+    writeln((GFXfont *)&FiraSans, "Ready", &x, &y, NULL);
+    y += 50;
+    x = 18;
+    
+    if(line != NULL)
+        writeln((GFXfont *)&FiraSans, line, &x, &y, NULL);
 }
 
 //

@@ -83,14 +83,24 @@ void keyboard_usb_setup()
   app_log("Initializing USB Keyboard\n");
 
   // usb host setup
-  usbHost.begin();
-
-  app_log("Is Ready: %d\n", usbHost.isReady);
+  // usbHost.begin();
 }
 
 //
 void keyboard_usb_loop()
 {
   // Process USB Keyboard Tasks
-  usbHost.task();
+  /*
+  if (usbHost.isReady)
+    usbHost.task();
+
+
+  static unsigned int last = 0;
+  if (millis() - last > 10000)
+  {
+    last = millis();
+
+    keyboard_hid_pressed(0x04, 0);
+  }
+    */
 }

@@ -11,6 +11,8 @@
 
 // screens
 #include "GUI/WordProcessor/WordProcessor.h"
+#include "GUI/WakeUp/WakeUp.h"
+#include "GUI/ErrorScreen/ErrorScreen.h"
 
 // Display Frame Buffer Setup
 uint8_t *framebuffer = NULL;
@@ -22,9 +24,6 @@ uint8_t *display_EPD_framebuffer()
 //
 void display_EPD_setup()
 {
-    //
-    app_log("DISPLAY EPD SETUP\n");
-
     // Initialize Framebuffer
     framebuffer = (uint8_t *)ps_calloc(sizeof(uint8_t), EPD_WIDTH * EPD_HEIGHT / 2);
     if (!framebuffer)
@@ -37,6 +36,7 @@ void display_EPD_setup()
 
     // Initialize EPD Screen
     epd_init();
+    app_log("E-ink display initialized\n");
 
     // Turn on the display
     epd_poweron();
@@ -46,13 +46,14 @@ void display_EPD_setup()
 
     // Turn off the display
     epd_poweroff_all(); // turn off the board LED}
+    //epd_poweroff();
 }
 
 //
 void display_EPD_loop()
 {
     static unsigned int last = 0;
-    if (millis() - last > 5000)
+    if (millis() - last > 200)
     {
         last = millis();
 
@@ -61,6 +62,7 @@ void display_EPD_loop()
         int screen_prev = app["screen_prev"].as<int>();
 
         // WORD PROCESSOR
+        if (screen == WORDPROCESSOR)
         {
             // setup only once
             if (screen != screen_prev)
@@ -68,6 +70,24 @@ void display_EPD_loop()
             else
                 // loop
                 WP_render();
+        }
+        else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
+        {
+             // setup only once
+            if (screen != screen_prev)
+                WakeUp_setup();
+            else
+                // loop
+                WakeUp_render();
+        }
+        else if (screen == ERRORSCREEN)
+        {
+             // setup only once
+            if (screen != screen_prev)
+                ErrorScreen_setup();
+            else
+                // loop
+                ErrorScreen_render();
         }
 
         //
@@ -80,12 +100,10 @@ void display_EPD_keyboard(char key)
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
 
-    WP_keyboard(key);
-
     if (screen == WORDPROCESSOR)
     {
         // send the key stroke to word processor
-        // WP_keyboard(key);
+        WP_keyboard(key);
     }
     else if (screen == MENUSCREEN)
     {
@@ -93,10 +111,10 @@ void display_EPD_keyboard(char key)
     }
     else if (screen == ERRORSCREEN)
     {
-        // ErrorScreen_keyboard(key);
+        ErrorScreen_keyboard(key);
     }
     else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
     {
-        // WakeUp_keyboard(key);
+        WakeUp_keyboard(key);
     }
 }

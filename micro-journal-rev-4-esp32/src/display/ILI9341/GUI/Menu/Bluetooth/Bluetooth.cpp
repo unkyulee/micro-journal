@@ -418,66 +418,6 @@ void _bluetooth_select(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 void Bluetooth_load()
 {
-    //
-    JsonDocument &app = app_status();
-
-    // load config.json
-    app_log("Opening config.json file\n");
-    File file = SD.open("/config.json", "r");
-    if (file)
-    {
-        // read the file
-        app_log("Reading config.json file\n");
-        String configString = file.readString();
-        app_log("Closing config.json file\n");
-        file.close();
-
-        // check if configString is empty
-        if (configString.isEmpty())
-        {
-            // to avoid deserialization failure whem empty
-            configString = "{}";
-        }
-
-        // Prepare a JsonDocument for the configuration
-        // The size should be adjusted according to your configuration's needs
-        JsonDocument configDoc;
-
-        // convert to JsonObject
-        DeserializationError error = deserializeJson(configDoc, configString);
-        app_log("Deserializing config.json file\n");
-        if (error)
-        {
-            //
-            app_log("config.json deserializeJson() failed: %s\n", error.c_str());
-
-            //
-            app["error"] = "Wrong format config.json";
-            app["screen"] = ERRORSCREEN;
-
-            return;
-        }
-
-// debug
-#ifdef DEBUG
-        app_log("%s\n", configString.c_str());
-#endif
-
-        // Assign the loaded configuration to "config" property of app
-        app_log("Loading app status config\n");
-        app["config"] = configDoc.as<JsonObject>();
-
-        // print out the configuration
-        app_log("BLE config loaded successfully!\n");
-    }
-    else
-    {
-        // file doesn't exist
-        app_log("config.json file doens't exist\n");
-        delay(100);
-
-        return;
-    }
 }
 
 void Bluetooth_save()

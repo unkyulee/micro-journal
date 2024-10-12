@@ -40,6 +40,9 @@ public:
     // Saved Status
     bool saved = true;
 
+    // File Operation On-going
+    bool locked = false;
+
 private:
     // Private constructor to prevent instantiation
     Editor() {}

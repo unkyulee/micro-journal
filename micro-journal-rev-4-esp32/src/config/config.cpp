@@ -37,7 +37,7 @@ void config_setup()
 void config_load()
 {
     //
-    app_log("Loading config ... %s", VERSION);
+    app_log("Loading config ... %s\n", VERSION);
 
 #ifdef ENV_USBHOST
     app_log(" REV.5 \n");
@@ -46,7 +46,6 @@ void config_load()
 #ifdef ENV_KEYBOARD
     app_log(" REV.6 \n");
 #endif
-
 
     // load app status
     JsonDocument &app = app_status();
@@ -60,11 +59,12 @@ void config_load()
         // read the file
         String configString = configFile.readString();
         configFile.close();
+        delay(100);
 
         // check if configString is empty
         if (configString.isEmpty())
-        {
-            delay(100);
+        {           
+            app_log("Configuration is empty setting default\n"); 
             _set_default_config();
 
             // to avoid deserialization failure whem empty

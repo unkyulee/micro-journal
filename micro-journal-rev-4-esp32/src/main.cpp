@@ -19,10 +19,10 @@ void setup()
     Serial.begin(9600);
 #endif
 #ifdef ENV_EPAPER
+    delay(5000);
     app_log("Device Started. Baud rate: %d\n", 115200);
     Serial.begin(115200);
 #endif
-    delay(3000);
 
     // SD must be initialized before display
     SD_setup();
@@ -35,7 +35,7 @@ void setup()
 
     //
     display_setup();
-
+    /*
     //
     xTaskCreatePinnedToCore(
         Core0,   // Function to implement the task
@@ -45,6 +45,7 @@ void setup()
         0,       // Priority of the task
         &Task0,  // Task handle.
         0);      // Core where the task should run
+    */
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -54,34 +55,19 @@ void loop()
     display_loop();
 
     //
-    keyboard_loop();
-
-    //
-    vTaskDelay(10);
+    vTaskDelay(1);
 }
 
 void Core0(void *parameter)
 {
+    app_log("Core0 Task Start");
     static unsigned int last = 0;
     while (true)
     {
-        if (millis() - last > 100)
-        {
-            //
-            last = millis();
-
-            JsonDocument &app = app_status();
-            int screen = app["screen"].as<int>();
-
-            // when GIF is playing keyboard gets blocked
-            if (screen == SLEEPSCREEN || screen == WAKEUPSCREEN)
-            {
-                // do the keyboard loop
-                keyboard_loop();
-            }
-        }
+        //
+        keyboard_loop();
 
         //
-        vTaskDelay(10);
+        vTaskDelay(1);
     }
 }

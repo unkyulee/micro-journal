@@ -10,8 +10,18 @@
 // initialize FileBuffer and ScreenBuffer
 void Editor::loadFile(String fileName)
 {
+    // do not load file while there are on-going process
+    if (locked)
+        return;
+
+    // lock
+    locked = true;
+
     // app status
     JsonDocument &app = app_status();
+
+    //
+    app_log("Editor loading file %s\n", fileName.c_str());
 
     // if no current file is specified then skip
     if (fileName.isEmpty())
@@ -20,18 +30,25 @@ void Editor::loadFile(String fileName)
         app_log(app["error"].as<const char *>());
         app["screen"] = ERRORSCREEN;
 
+        // unlock
+        locked = false;
+
         return;
     }
 
     // Step 1. Create file if necessary
     if (!SD.exists(fileName))
     {
+        app_log("Creating an empty file since it's new\n");
         File file = SD.open(fileName, FILE_WRITE);
         if (!file)
         {
             app["error"] = format("Failed to create a file. %s\n", fileName);
             app_log(app["error"].as<const char *>());
             app["screen"] = ERRORSCREEN;
+
+            // unlock
+            locked = false;
 
             return;
         }
@@ -49,6 +66,9 @@ void Editor::loadFile(String fileName)
 
     // Update the Screen Buffer
     screenBuffer.Update(fileBuffer);
+
+    // unlock
+    locked = false;
 }
 
 //

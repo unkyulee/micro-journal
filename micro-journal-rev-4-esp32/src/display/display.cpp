@@ -24,6 +24,7 @@ void display_setup()
   // set the initial screen to word processor
   JsonDocument &app = app_status();
   int screen = app["screen"].as<int>();
+  app_log("Display initializing with screen %d\n", screen);
   if (screen == 0)
   {
     //
@@ -44,6 +45,7 @@ void display_setup()
       app["screen_prev"] = -1;
     }
   }
+  app_log("Display loading screen %d\n", app["screen"].as<int>());
 }
 
 //
@@ -66,4 +68,3 @@ void display_keyboard(char key)
   display_EPD_keyboard(key);
 #endif
 }
-

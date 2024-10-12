@@ -295,7 +295,7 @@ void Wifi_load()
         }
 
         // Assign the loaded configuration to "config" property of app
-        app_log("Loading app status config\n");
+        app_log("Loading wifi config\n");
         app["wifi"] = configDoc.as<JsonObject>();
 
         // print out the configuration
