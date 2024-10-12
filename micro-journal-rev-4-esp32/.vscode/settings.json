@@ -25,6 +25,7 @@
     "initializer_list": "cpp",
     "fstream": "cpp",
     "cstring": "cpp",
-    "list": "cpp"
+    "list": "cpp",
+    "*.tpp": "cpp"
   }
 }

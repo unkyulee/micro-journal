@@ -83,12 +83,23 @@ void keyboard_usb_setup()
   app_log("Initializing USB Host\n");
 
   // usb host setup
-  usbHost.begin();
+  // usbHost.begin();
 }
 
 //
 void keyboard_usb_loop()
 {
   // Process USB Keyboard Tasks
-  usbHost.task();
+  // usbHost.task();
+ /*
+    static unsigned int last = 0;
+    static int index = 0;
+    if (millis() - last > 300)
+    {
+      last = millis();
+
+      keyboard_hid_pressed(0x04 + index++, 0);
+      if(index > 3) index = 0;
+    }
+*/
 }

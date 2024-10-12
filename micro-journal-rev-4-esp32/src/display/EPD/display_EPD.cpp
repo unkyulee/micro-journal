@@ -101,7 +101,6 @@ void display_EPD_keyboard(char key)
 {
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
-    app_log("display_EPD_keyboard %d key %d\n", screen, key);
     
     if (screen == WORDPROCESSOR)
     {
