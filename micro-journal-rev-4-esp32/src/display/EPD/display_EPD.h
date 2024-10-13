@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 #include "epd_driver.h"
-#include "fonts/mono.h"
-#include "fonts/firasans.h"
+#include "fonts/monospace.h"
+#include "fonts/system.h"
 
 //
 void display_EPD_setup();

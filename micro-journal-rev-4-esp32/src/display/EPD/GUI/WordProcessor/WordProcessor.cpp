@@ -11,13 +11,16 @@
 //
 bool clear_background = true;
 bool draw = false;
-
+int last_sleep = millis();
 //
 #define MARGIN 5
 //
+const int cols = 47;
+const int rows = 8;
 const int font_width = 20;
 const int font_height = 49;
-const int editY = 490;
+const int editY = font_height * (rows + 1);
+const int statusY = EPD_HEIGHT - 4;
 
 //
 void WP_setup()
@@ -35,8 +38,8 @@ void WP_setup()
 
     // editor instantiate
     Editor &editor = Editor::getInstance();
-    editor.screenBuffer.rows = 9;
-    editor.screenBuffer.cols = 47;
+    editor.screenBuffer.rows = rows;
+    editor.screenBuffer.cols = cols;
 
     // load file from the editor
     JsonDocument &app = app_status();
@@ -64,8 +67,15 @@ void WP_render()
     // CLEAR BACKGROUND
     WP_render_clear();
 
+    //
+    WP_check_saved();
+    WP_check_sleep();
+
     // BLINK CURSOR
     WP_render_cursor();
+
+    // BLINK CURSOR
+    WP_render_status();
 
     // RENDER TEXT
     WP_render_text();
@@ -82,9 +92,147 @@ void WP_render()
     epd_poweroff();
 }
 
+// Check if text is saved
+void WP_check_saved()
+{
+    //
+    static unsigned int last = millis();
+    static int lastBufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+
+    //
+    // when the file is saved then extend the autosave timer
+    if (lastBufferSize != bufferSize)
+    {
+        last = millis();
+
+        //
+        lastBufferSize = bufferSize;
+    }
+
+    //
+    // when idle for 4 seconds then auto save
+    if (millis() - last > 4000)
+    {
+        //
+        last = millis();
+
+        if (!Editor::getInstance().saved)
+        {
+            Editor::getInstance().saveFile();
+            clear_background = true;
+        }
+    }
+}
+
+void WP_check_sleep()
+{
+    /*
+    //
+    // when the file is saved then extend the sleep timer
+    if (!Editor::getInstance().saved)
+    {
+        // when typed then reset sleep timer
+        last_sleep = millis();
+    }
+
+    // 600 seconds - 10 minutes
+    if (millis() - last_sleep > 600000)
+    {
+        // if no action for 10 minute go to sleep
+        last_sleep = millis();
+
+        //
+        JsonDocument &app = app_status();
+        app["screen"] = SLEEPSCREEN;
+    }
+    */
+}
+
+// display file number
+// display character total
+// display keyboard layout - Rev.5 and Rev.7
+// display save status
+#define STATUS_REFRESH 30000
+void WP_render_status()
+{
+    if (!clear_background)
+        return;
+
+    //
+    JsonDocument &app = app_status();
+
+    // redraw
+    draw = true;
+
+    // clear area
+    Rect_t area = {
+        .x = 0,
+        .y = statusY,
+        .width = EPD_WIDTH,
+        .height = font_height,
+    };
+    area.width = EPD_WIDTH - area.x;
+    epd_clear_quick(area, 8, 20);
+
+    // FILE INDEX
+    int cursorX = 4;
+    int cursorY = statusY;
+    String file = format("FILE %d", app["config"]["file_index"].as<int>());
+    writeln((GFXfont *)&systemFont, file.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
+
+    // FILE SIZE
+    size_t num = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
+    String formattedNumber = "";
+    int digitCount = 0;
+    if (num < 0)
+    {
+        formattedNumber += "-";
+        num = -num;
+    }
+    do
+    {
+        if (digitCount > 0 && digitCount % 3 == 0)
+        {
+            formattedNumber = "," + formattedNumber;
+        }
+        formattedNumber = String(num % 10) + formattedNumber;
+        num /= 10;
+        digitCount++;
+    } while (num > 0);
+
+    formattedNumber += " characters";
+    cursorX = 140;
+    writeln((GFXfont *)&systemFont, formattedNumber.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
+
+    // KEYBOARD LAYOUT
+    String layout = app["config"]["keyboard_layout"].as<String>();
+    if (layout == "null" || layout.isEmpty())
+        layout = "US"; // defaults to US layout
+
+    cursorX = EPD_WIDTH - 120;
+    writeln((GFXfont *)&systemFont, layout.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
+
+    // BLUETOOTH STATUS
+    if (keyboard_ble_connected())
+    {
+        epd_fill_circle(EPD_WIDTH - 70, statusY - 8, 8, 0, display_EPD_framebuffer());
+    }
+
+    // SAVE STATUS
+    if (Editor::getInstance().saved)
+    {
+        epd_fill_circle(EPD_WIDTH - 30, statusY - 8, 8, 0, display_EPD_framebuffer());
+    }
+    else
+    {
+        epd_draw_circle(EPD_WIDTH - 30, statusY - 8, 8, 0, display_EPD_framebuffer());
+    }
+}
+
 void WP_render_clear()
 {
-    static int erase_count = 0; 
+    static int erase_count = 0;
 
     // reset the flag
     if (clear_background)
@@ -125,7 +273,7 @@ void WP_render_clear()
             .x = cursorLinePos * font_width,
             .y = editY - font_height,
             .width = EPD_WIDTH,
-            .height = EPD_HEIGHT,
+            .height = font_height,
         };
         area.width = EPD_WIDTH - area.x;
         epd_clear_quick(area, 8, 20);
@@ -142,7 +290,7 @@ void WP_render_clear()
                 .x = cursorLinePos_prev * font_width,
                 .y = editY - font_height,
                 .width = EPD_WIDTH,
-                .height = EPD_HEIGHT,
+                .height = font_height,
             };
             area.width = EPD_WIDTH - area.x;
             epd_clear_quick(area, 4, 10);
@@ -157,12 +305,13 @@ void WP_render_clear()
         bufferSize_prev = bufferSize;
     }
 
-    if(cursorLinePos_prev != cursorLinePos) {
+    if (cursorLinePos_prev != cursorLinePos)
+    {
         cursorLinePos_prev = cursorLinePos;
     }
 
     if (clear_background)
-    {        
+    {
         erase_count++;
         app_log("Clear Background\n");
         // clearing background
@@ -288,7 +437,7 @@ void WP_render_cursor()
                 .height = 10};
 
             epd_clear_quick(area, 8, 50);
-            
+
             // render the cursor
             renderedCursorX = -1;
         }
@@ -300,9 +449,9 @@ void WP_render_cursor()
         cursorLinePos_prev = cursorLinePos;
     }
 
-    // when there are no types for 5 seconds then 
+    // when there are no types for 5 seconds then
     // display the cursor
-    if (renderedCursorX == -1 && last + 500 < millis() )
+    if (renderedCursorX == -1 && last + 500 < millis())
     {
         // Cursor will be always at the bottom of the screen
         int cursorY = editY;

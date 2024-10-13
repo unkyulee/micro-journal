@@ -123,5 +123,5 @@ void display_EPD_keyboard(char key)
 
 GFXfont *display_EPD_font()
 {
-    return (GFXfont *)&mono;
+    return (GFXfont *)&monospace;
 }
