@@ -3,12 +3,16 @@
 
 #include <Arduino.h>
 #include "epd_driver.h"
-#include "firasans.h"
+#include "fonts/mono.h"
+#include "fonts/firasans.h"
 
 //
 void display_EPD_setup();
 void display_EPD_loop();
 uint8_t *display_EPD_framebuffer();
 void display_EPD_keyboard(char key);
+
+//
+GFXfont* display_EPD_font();
 
 #endif

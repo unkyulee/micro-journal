@@ -13,12 +13,11 @@ bool clear_background = true;
 bool draw = false;
 
 //
-#define MARGIN 10
+#define MARGIN 5
 //
-const int font_width = 25;
-const int font_height = 50;
-const int editY = 450;
-const int cursorHeight = 5;
+const int font_width = 20;
+const int font_height = 49;
+const int editY = 490;
 
 //
 void WP_setup()
@@ -36,8 +35,8 @@ void WP_setup()
 
     // editor instantiate
     Editor &editor = Editor::getInstance();
-    editor.screenBuffer.rows = 8;
-    editor.screenBuffer.cols = 50;
+    editor.screenBuffer.rows = 9;
+    editor.screenBuffer.cols = 47;
 
     // load file from the editor
     JsonDocument &app = app_status();
@@ -85,6 +84,8 @@ void WP_render()
 
 void WP_render_clear()
 {
+    static int erase_count = 0; 
+
     // reset the flag
     if (clear_background)
         clear_background = false;
@@ -94,6 +95,7 @@ void WP_render_clear()
 
     //
     static int cursorLine_prev = 0;
+    static int cursorLinePos_prev = 0;
     static int cursorPos_prev = 0;
     int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
     int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
@@ -120,12 +122,13 @@ void WP_render_clear()
     {
         // backspace
         Rect_t area = {
-            .x = 0,
+            .x = cursorLinePos * font_width,
             .y = editY - font_height,
             .width = EPD_WIDTH,
             .height = EPD_HEIGHT,
         };
-        epd_clear_quick(area, 4, 10);
+        area.width = EPD_WIDTH - area.x;
+        epd_clear_quick(area, 8, 20);
     }
 
     if (cursorPos_prev != cursorPos)
@@ -136,11 +139,12 @@ void WP_render_clear()
             // if the edit line is empty then don't flicker
             //
             Rect_t area = {
-                .x = 0,
+                .x = cursorLinePos_prev * font_width,
                 .y = editY - font_height,
                 .width = EPD_WIDTH,
                 .height = EPD_HEIGHT,
             };
+            area.width = EPD_WIDTH - area.x;
             epd_clear_quick(area, 4, 10);
         }
 
@@ -153,13 +157,16 @@ void WP_render_clear()
         bufferSize_prev = bufferSize;
     }
 
+    if(cursorLinePos_prev != cursorLinePos) {
+        cursorLinePos_prev = cursorLinePos;
+    }
+
     if (clear_background)
-    {
-        static int erase_count = 0;
+    {        
         erase_count++;
         app_log("Clear Background\n");
         // clearing background
-        if (erase_count > 10)
+        if (erase_count > 3)
         {
             epd_clear();
             erase_count = 0;
@@ -167,7 +174,7 @@ void WP_render_clear()
 
         else
         {
-            epd_clear_quick(epd_full_screen(), 8, 10);
+            epd_clear_quick(epd_full_screen(), 4, 10);
         }
     }
 }
@@ -211,7 +218,7 @@ void WP_render_text()
 
                     // Null-terminate the string
                     row[copyLength] = '\0';
-                    writeln((GFXfont *)&FiraSans, row, &cursorX, &cursorY, display_EPD_framebuffer());
+                    writeln(display_EPD_font(), row, &cursorX, &cursorY, display_EPD_framebuffer());
                 }
             }
 
@@ -231,7 +238,7 @@ void WP_render_text()
         int cursorX = MARGIN;
         int cursorY = editY;
         char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
-        writeln((GFXfont *)&FiraSans, line, &cursorX, &cursorY, NULL);
+        writeln(display_EPD_font(), line, &cursorX, &cursorY, NULL);
 
         //
         cursorLinePos_prev = cursorLinePos;
@@ -281,8 +288,7 @@ void WP_render_cursor()
                 .height = 10};
 
             epd_clear_quick(area, 8, 50);
-            app_log("clear cursor: %d\n", renderedCursorX);
-
+            
             // render the cursor
             renderedCursorX = -1;
         }
@@ -296,16 +302,14 @@ void WP_render_cursor()
 
     // when there are no types for 5 seconds then 
     // display the cursor
-    if (renderedCursorX == -1 && last + 1000 < millis() )
+    if (renderedCursorX == -1 && last + 500 < millis() )
     {
         // Cursor will be always at the bottom of the screen
         int cursorY = editY;
-        cursorX += 5;
-        writeln((GFXfont *)&FiraSans, "_", &cursorX, &cursorY, NULL);
+        writeln(display_EPD_font(), "_", &cursorX, &cursorY, NULL);
 
         //
         renderedCursorX = cursorX;
-        app_log("Cursor: %d\n", renderedCursorX);
     }
 }
 

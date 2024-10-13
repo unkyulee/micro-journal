@@ -23,7 +23,7 @@ void ErrorScreen_render()
     // Draw text
     int32_t x = 18;
     int32_t y = 50;
-    write_string((GFXfont *)&FiraSans, text.c_str(), &x, &y, NULL);
+    write_string(display_EPD_font(), text.c_str(), &x, &y, NULL);
 
     // Turn off the display
     epd_poweroff();

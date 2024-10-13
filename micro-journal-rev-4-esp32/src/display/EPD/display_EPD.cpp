@@ -47,7 +47,7 @@ void display_EPD_setup()
     // Turn off the display
     // turn off the board LED
     epd_poweroff_all();
-    //epd_poweroff();
+    // epd_poweroff();
 }
 
 //
@@ -101,7 +101,7 @@ void display_EPD_keyboard(char key)
 {
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
-    
+
     if (screen == WORDPROCESSOR)
     {
         // send the key stroke to word processor
@@ -119,4 +119,9 @@ void display_EPD_keyboard(char key)
     {
         WakeUp_keyboard(key);
     }
+}
+
+GFXfont *display_EPD_font()
+{
+    return (GFXfont *)&mono;
 }

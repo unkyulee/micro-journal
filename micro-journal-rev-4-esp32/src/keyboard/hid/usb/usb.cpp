@@ -92,25 +92,23 @@ void keyboard_usb_loop()
   // Process USB Keyboard Tasks
   usbHost.task();
 
-/*
-  static unsigned int last = millis();
-  static int index = 0;
-  if (millis() - last > 3000)
-  {
-    last = millis();
-
-    // keyboard_hid_pressed(0x2a, 0);
-    // delay(100);
-    // keyboard_hid_released(0x2a, 0);
-
-    keyboard_hid_pressed(0x04 + index++, 0);
-    if (index > 5)
+  /*
+    static unsigned int last = millis();
+    static int index = 0;
+    if (millis() - last > 3000)
     {
-      index = 0;
-      keyboard_hid_pressed(0x2c, 0);
+      last = millis();
+
+      keyboard_hid_pressed(0x2a, 0);
+      delay(100);
+      keyboard_hid_released(0x2a, 0);
+
+      keyboard_hid_pressed(0x1e + index++, 0);
+      if (index > 9)
+      {
+        index = 0;
+        // keyboard_hid_pressed(0x2c, 0);
+      }
     }
-  }
-*/
-
-
+    */
 }

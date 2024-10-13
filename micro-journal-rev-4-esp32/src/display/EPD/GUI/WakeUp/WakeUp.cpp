@@ -37,7 +37,7 @@ void WakeUp_render()
     // RENDER TEXT
     int32_t x = 18;
     int32_t y = 50;
-    write_string((GFXfont *)&FiraSans, "Starting Up", &x, &y, NULL);
+    write_string(display_EPD_font(), "Starting Up", &x, &y, NULL);
 
     // Turn off the display
     epd_poweroff();
