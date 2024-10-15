@@ -10,13 +10,16 @@
 #include "Clear/Clear.h"
 #include "Layout/Layout.h"
 #include "Wifi/Wifi.h"
-#include "Bluetooth/Bluetooth.h"
 #include "FrontPanelButton/FrontPanelButton.h"
 #include "Background/Background.h"
 #include "Foreground/Foreground.h"
 #include "DisableWakeUp/DisableWakeUp.h"
 #include "Reset/Reset.h"
 #include "Firmware/Firmware.h"
+
+#ifdef ENV_USBHOST
+#include "Bluetooth/Bluetooth.h"
+#endif
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -71,6 +74,9 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->print(" REV.6 ");
 #endif
 
+#ifdef ENV_EPAPER
+    ptft->print(" REV.7 ");
+#endif
     // draw sub module of menu
     JsonDocument &app = app_status();
     int menu_state = app["menu"]["state"].as<int>();
@@ -103,6 +109,8 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Wifi_render(ptft, pu8f);
     }
+
+#ifdef ENV_USBHOST
     else if (menu_state == MENU_BLUETOOTH)
     {
         if (menu_state_prev != menu_state)
@@ -110,6 +118,8 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Bluetooth_render(ptft, pu8f);
     }
+#endif
+
     //
     else if (menu_state == MENU_STARTUP)
     {
@@ -206,12 +216,16 @@ void Menu_keyboard(char key)
         return;
     }
 
+
+#ifdef ENV_USBHOST
     // Bluetooth
     else if (menu_state == MENU_BLUETOOTH)
     {
         Bluetooth_keyboard(key);
         return;
     }
+#endif
+
 
     //
     else if (menu_state == MENU_STARTUP)
