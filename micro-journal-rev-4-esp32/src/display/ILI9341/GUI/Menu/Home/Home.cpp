@@ -120,18 +120,19 @@ void Home_keyboard(char key)
         // move to keyboard layout
         app["menu"]["state"] = MENU_BUTTONS;
     }
+6
+    else if (key == 'm' || key == MENU)
+    {
+        // move to bluetooth setup
+        app["menu"]["state"] = MENU_BLUETOOTH;
+    }
+
 #endif
 
     else if (key == 'w')
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_WIFI;
-    }
-
-    else if (key == 'm' || key == MENU)
-    {
-        // move to bluetooth setup
-        app["menu"]["state"] = MENU_BLUETOOTH;
     }
 
     else if (key == 'a')
