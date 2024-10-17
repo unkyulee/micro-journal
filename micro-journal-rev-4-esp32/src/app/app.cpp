@@ -1,6 +1,4 @@
 #include "app.h"
-#include "config/config.h"
-#include "SD/sd.h"
 
 // global status
 JsonDocument status;
