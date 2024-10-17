@@ -46,7 +46,7 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
   static uint8_t pre_cursor_ascii = 0;
 
   // when precursor keys are typed
-  if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == '\'' || ascii == '^')
+  if (ascii == '~' || ascii == '`' || ascii == '"' || ascii == 168 || ascii == '\'' || ascii == '^')
   {
     // check if previous precursor is set
     if (pre_cursor_ascii != 0)
@@ -152,6 +152,18 @@ static const AsciiMapping ascii_map[] = {
     {'\"', 'u', 252},
     {'\"', 'U', 220},
     {'\"', 'y', 255},
+    // 
+    {168, 'a', 228},
+    {168, 'A', 196},
+    {168, 'e', 235},
+    {168, 'E', 203},
+    {168, 'i', 239},
+    {168, 'I', 207},
+    {168, 'o', 246},
+    {168, 'O', 214},
+    {168, 'u', 252},
+    {168, 'U', 220},
+    {168, 'y', 255},
     // ^ a e i o u
     {'^', 'a', 226},
     {'^', 'A', 194},
