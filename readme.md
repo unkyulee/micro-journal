@@ -48,7 +48,10 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 <img src="./micro-journal-rev-6-one-piece/images/005.jpg" width="400">
 
-[Buy from my Tindie shop](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
+[Buy Preassembled at my Tindie shop](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
+
+[Buy a DIY Kit from my Tindie shop](https://www.tindie.com/products/36190/)
+
 
 ### Documents 
 
@@ -94,7 +97,9 @@ For those who wants to build on your own: [Micro Journal Rev.5 Build Details](/m
 
 For those who already have the device: [Quick Start User Guide](/micro-journal-rev-5-esp32-usbhost/quickstart/readme.md)
 
-If you want to buy one: [Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
+[Buy this writerDeck](https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/)
+
+[Buy a DIY Kit](https://www.tindie.com/products/36190/)
 
 ### User Reviews
 

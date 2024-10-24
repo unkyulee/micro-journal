@@ -6,6 +6,8 @@ Introducing a distraction-free writing device powered by ESP32-S3 and featuring 
 
 ![Micro Journal Rev.5](./images/smile.png)
 
+[Buy a DIY Kit](https://www.tindie.com/products/36190/)
+
 # What made you to make the four devices that does the same thing?
 
 Introducing the fourth iteration of writerDeck. In the previous version, I have introduced the ESP32, enabling instant power-on and seamless access to a minimalist writing environment. Personally, I found enjoyment in using this device. On numerous occasions, I simply picked it up and began writing, resulting in rather satisfying texts.
@@ -249,3 +251,5 @@ https://youtu.be/zcHL68JWXqc
 In case if you want me to build this writerDeck for you:
 
 https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/
+
+[Buy a DIY Kit](https://www.tindie.com/products/36190/)
