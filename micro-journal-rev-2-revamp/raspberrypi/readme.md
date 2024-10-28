@@ -1,4 +1,23 @@
 
+# Flashing from the Image File
+
+**Note**: This process will erase all data on the SD card. Please back up any important files before proceeding.
+
+To set up your SD card, download the image file and flash it using your PC. Here's how:
+
+1) Download **microjournal.rev.2.img.zip** from [this link](https://github.com/unkyulee/micro-journal-linux/releases).
+
+2) Download [balenaEtcher](https://www.balena.io/etcher) on your PC.
+
+3) Use balenaEtcher to flash the SD card, ensuring its at least 4 GB in size.
+
+After flashing, the SD card will be ready for use. Insert it into the Micro Journal Rev.2, and it should start booting up automatically.
+
+The following steps are optional and offer a detailed guide on the image configuration. Refer to them if you'd like to customize the setup further.
+
+
+
+
 # Raspberry Pi Setup
 
 Micro Journal Rev.2 ReVamp uses Raspberry Pi Zero 2W. This is a guide to setup the Raspberry Pi 2W for the Micro Journal.
@@ -9,7 +28,7 @@ You will need:
 * Micro SD card minimum 4GB
 * PC and Micro SD card reader
 * Micro Jouran Rev.2.ReVamp
- 
+
 
 # Flash Raspberry Pi OS Lite
 

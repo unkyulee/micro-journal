@@ -2,9 +2,16 @@
 
 ![Diagram](./quickstart/diagram.png)
 
+What you get out of the box is a writing device with a large screen, a mechanical keyboard that is well laid out for writers, a well-featured while still minimal text editor and a quick and easy method of sharing files with your PC. In other words, everything you need to write (and even edit if you want to, but your PC will always be better at that). You don't need any technical skills beyond following directions to set it up and you quickly have a Modern Dana. You should add an external battery to get longer life, but that's it.
+
 # First things to do
 
 When you receive the **Micro Journal Rev.2**, you'll need to install a battery before using it. Please follow the steps below to complete the setup:
+
+1. **Buy 18650 Lithium ion battery**. Search with term "LiPo 18650" and should be able to find the fitting battery. Here is the link where battery is sourced typically from the users.
+
+   * https://www.18650batterystore.com/products/samsung-30q
+   * Send a message in tindie when you find some reliable places or links to buy the battery in your country.
 
 1. **Install the battery**: The **Rev.2.Revamp** will not function without a battery. Ensure the battery is properly installed before attempting to power it on.
 
@@ -19,22 +26,26 @@ When you receive the **Micro Journal Rev.2**, you'll need to install a battery b
 
 **Important: The Micro Journal Rev.2 requires a specific battery type, not AA or AAA batteries.**
 
-Due to EU delivery restrictions, **the required battery is not included** in the package. To power your device, you will need to purchase an 18650 3.7V Lithium-ion battery separately. 
+Due to EU delivery restrictions, **the required battery is not included** in the package. To power your device, you will need to purchase an 18650 Lithium-ion battery separately. 
 
 #### Battery Specifications:
-- **Type:** 18650 Lithium-ion battery (3.7V)
-- **Capacity:** Should not exceed 3300mAh
+- **Type:** 18650 Lithium-ion battery
 
 You can find 18650 batteries online or at most electronics retailers. **Both flat top and button top batteries are compatible,** though users report that flat tops may fit better.
 
 #### Important Tips for Battery Selection:
-- **Brand matters:** It is recommended to buy from a well-known, reputable brand.
 - **Capacity limit:** Be cautious of any battery that claims a capacity higher than 3300mAh—batteries with higher capacities in this form factor do not exist.
 
 Please make sure to install the battery correctly before powering on your Micro Journal Rev.2 for the first time.
 
 **Battery Life:** The internal battery will typically provide **2 to 3 hours** of usage. For extended writing sessions, it's recommended to connect a **portable battery pack**. 
-  - A **10,000 mAh power bank** will provide approximately **+10 hours** of usage. Every additional **1,000 mAh** translates to about **+1 hour** of writing time.
+
+- A **10,000 mAh power bank** will provide approximately **+10 hours** of usage. Every additional **1,000 mAh** translates to about **+1 hour** of writing time.
+
+- https://www.amazon.com/dp/B0CZ9LH53B
+
+- When buying power bank, make sure to have USB-A port avaialble. Some advanced chargers which supports only PD may not be able to charge. 
+
 
 
 
@@ -52,9 +63,11 @@ While your Micro Journal Rev.2 ships with the Micro SD card already installed an
 
 Default configuration is designed to be user-friendly, allowing you to quickly get into writing mode without needing to learn complex Linux terminal commands.
 
+
+
 # For Advanced Users
 
-If you are familiar with Raspberry Pi configurations, feel free to customize the setup. The Micro Journal Rev.2 has no major constraints, though a minor display configuration may be necessary. Beyond that, you have the freedom to configure the Raspberry Pi as you prefer.
+If you are familiar with Raspberry Pi and Linux configurations, feel free to customize the setup. The Micro Journal Rev.2 has no major constraints, though a minor display configuration may be necessary. Beyond that, you have the freedom to configure the Raspberry Pi as you prefer.
 
 
 
@@ -63,94 +76,99 @@ If you are familiar with Raspberry Pi configurations, feel free to customize the
 
 ### Step 1. Open the Bottom Compartment and Install the Battery
 
-![Opening Up](./quickstart/001.png)
+<img src="./quickstart/001.png" width="400" />
 
-1. **Unscrew the two screws** located on the bottom compartment. Carefully lift the display section and place it on top of the keyboard. Be gentle—there are thin wires connected to the display, and pulling too hard may disconnect them.
+There are two TORX T10H screws on either side in front of the hinge cylinders. They are long screws and you don't need to pull them all the way out. 
 
-
-
-![Opening Up](./quickstart/002.png)
+**Unscrew the two screws** located on the bottom compartment. Carefully lift the display section and place it on top of the keyboard. Be gentle—there are thin wires connected to the display, and pulling too hard may disconnect them.
 
 
+<img src="./quickstart/002.png" width="400" />
 
-2. **Lift from the left-hand side** to reduce the risk of damaging the wires.
+**Lift from the left-hand side** to reduce the risk of damaging the wires.
 
-![Opening Up](./quickstart/003.png)
-
-
-3. **Be mindful of the wire length.** If you lift the display higher than shown above, you may risk damaging the wires, potentially requiring basic soldering skills.
+<img src="./quickstart/003.png" width="400" />
 
 
+**Be mindful of the wire length.** If you lift the display higher than shown above, you may risk damaging the wires.
 
-![Opening Up](./quickstart/005.png)
+<img src="./quickstart/005.png" width="400" />
 
 
-4. Once lifted, gently rest the display on top of the keyboard. You will now see the battery holder.
+Once lifted, gently rest the display on top of the keyboard. You will now see the battery holder.
 
----
+
 
 ### Installing the Battery
 
-1. **Check the battery polarity carefully.** The battery holder has markings for positive (+) and negative (-) polarity. The spring side of the holder is the negative (-) side. Incorrect polarity can cause irreversible damage to the device.
+**Check the battery polarity carefully.** The battery holder has markings for positive (+) and negative (-) polarity. The spring side of the holder is the negative (-) side. Incorrect polarity can cause irreversible damage to the device.
 
-2. **Install the 18650 battery,** ensuring you follow the correct polarity as shown on the battery holder.
+**Install the 18650 battery,** ensuring you follow the correct polarity as shown on the battery holder.
 
-3. **Double-check the installation** to ensure the battery is properly seated and the polarity is correct.
+**Double-check the installation** to ensure the battery is properly seated and the polarity is correct.
 
----
+
 
 ### Important Notes:
 
-- **Ensure the battery is fully charged** before use. LiPo batteries are not shipped fully charged. After installing the battery, connect the device to the charging port and leave it charging for at least 4 hours before first use.
+**Ensure the battery is fully charged** before use. LiPo batteries are not shipped fully charged. After installing the battery, connect the device to the charging port and leave it charging for at least 4 hours before first use.
 
-- **Battery installation safety:** Improper handling or installation can cause a fire. Be cautious and avoid over-tightening the screws. If the case doesn’t close easily, check that no cables are pinched, as this could lead to short circuits, damage, or fire hazards.
+**Battery installation safety:** Improper handling or installation can cause a fire. Be cautious and avoid over-tightening the screws. If the case doesn’t close easily, check that no cables are pinched, as this could lead to short circuits, damage, or fire hazards.
 
-
-
-
-### Step 2. Power On
-
-**Battery Life:** The internal battery will typically provide **2 to 3 hours** of usage. For extended writing sessions, it's recommended to connect a **portable battery pack**. 
-  - A **10,000 mAh power bank** will provide approximately **+10 hours** of usage. Every additional **1,000 mAh** translates to about **+1 hour** of writing time.
-  - When buying power bank, make sure to have USB-A port avaialble. Some advanced chargers which supports only PD may not be able to charge. 
-
-![Powering On](./quickstart/006.png)
-
-1. **Once the battery is fully charged,** flick the power switch to the "ON" position. It will take around **30 to 50 seconds** for the Micro Journal to fully boot up and be ready for use.
- - to verify it's charging, look for a red light to shine through the grill in the back when you plug it in.
- - please use a small mobile phone charger (like a Raspberry pi 5V 2.5 amp one) to charge the Rev2, because trying to use a bigger/more advanced charger (PD Charger) does not charge the Rev2. Typically usb-c to c cables won't be able to charge. Try with USB-A to C charging cables.
-
-
-2. **Initial delay:** After switching it on, the screen may not immediately display anything. This is normal. It can take up to 30 seconds for the Raspberry Pi to recognize and activate the display.
-
-3. **Check the SD card:** If the screen remains blank for too long, check for a green light near the micro SD card slot. This light indicates that the system is booting. If no green light appears, the SD card may not be properly installed. 
-
-![Powering On](./quickstart/008.png)
-
-   - **Solution:** Power off, reinsert the SD card, and try again. If the issue persists, you may need to replace or reconfigure the SD card.
 
 ---
 
-![Powering On](./quickstart/007.png)
+### Step 2. Power On
 
 
+<img src="./quickstart/007.png" width="400" />
 
-### Step 3. Dashboard
 
-![Dashboard](./quickstart/009.png)
+**Battery Life:** The internal battery will typically provide **2 to 3 hours** of usage. For extended writing sessions, it's recommended to connect a **portable battery pack**. 
 
-After the device has fully booted up, you will be greeted with the **Dashboard**. The retro aesthetic should feel nostalgic—just like an old-school terminal interface!
+<img src="./quickstart/006.png" width="400" />
 
-- Use the **cursor keys** to navigate the options on the screen. You can press the **up** and **down** arrows to move between selections.
+**Once the battery is fully charged,** flick the power switch to the "ON" position. It will take around **30 to 50 seconds** for the Micro Journal to fully boot up and be ready for use.
+ - to verify it's charging, look for a red light to shine through the grill in the back when you plug it in.
+ - use a small mobile phone charger to charge the Rev2, because trying to use a bigger/more advanced charger (PD Charger) does not charge the Rev2. Typically usb-c to c cables won't be able to charge. Try with USB-A to C charging cables.
+
+
+**Initial delay:**  Rev 2 is not instant on. It has to boot Linux first, since everything runs off that. If you haven't used Linux before, you will see a lot of incomprehensible text go whizzing by too fast to read. At first the text will fly by in the wrong direction on the screen and finally it will reorient. Just ignore everything until you are given the terminal dashboard.
+
+
+**Check the SD card:** If the screen remains blank for too long, check for a green light near the micro SD card slot. This light indicates that the system is booting. If no green light appears, the SD card may not be properly installed. 
+
+<img src="./quickstart/008.png" width="400" />
+
+**When not booting** Power off, reinsert the SD card, and try again. If the issue persists, you may need to replace or reconfigure the SD card. 99% of the issues is related to SD card. Please, refer to this document when you need to setup the SD card.
+
+[Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
+
+
+---
+
+### Step 3. Using the Dashboard
+
+After the device has fully booted up, you will be greeted with the **Dashboard**. 
+
+The dashboard is a kind of menu. It really is a crude file manager, but you have one folder (documents) and several scripts (files ending with .sh-- if you ever used DOS, think batch files) and you use the arrow keys to select among them, so it acts like a menu.
+
+<img src="./quickstart/009.png" width="400" />
+
+The documents folder is obviously where your files will be stored. You use the right arrow to move to the list of file names in that folder and hit enter to open any file in WordGrinder. To create a new file, you arrow down from the documents folder to the script called newfile. We will get to WordGrinder in a moment.
+
+Use the **cursor keys** to navigate the options on the screen. You can press the **up** and **down** arrows to move between selections.
   
-- To create a new document, select **"newfile.sh"** and press **Enter** or the **right cursor key**. This will open **WordGrinder**, where you can begin typing.
+To create a new document, select **"newfile.sh"** and press **Enter** or the **right cursor key**. This will open **WordGrinder**, where you can begin typing.
 
-- To save your work in WordGrinder, press **Ctrl + S**, and to quit, press **Ctrl + Q**.
+To save your work in WordGrinder, press **Ctrl + S**, and to quit, press **Ctrl + Q**.
 
-- All new files are saved in the **"documents"** folder. This is also where the sharing feature will access your files. Be sure to save everything in this folder to enable easy file sharing later.
+Here are some more commands that you can utilize in the dashboard.
+
+https://gist.github.com/heroheman/aba73e47443340c35526755ef79647eb
 
 
-
+---
 
 ### Step 4. WiFi Setup
 
@@ -162,23 +180,8 @@ To connect to a WiFi network, follow these steps:
 4. Enter the **SSID** (name) of your WiFi network.
 5. Enter the **password** for your WiFi network.
 
+
 ---
-
-#### Additional Instructions for First Batch Recipients:
-
-If you received a device from the first batch, you may need to adjust the font size to see the full Raspberry Pi configuration menu. 
-
-1. Run **"font.sh"** from the dashboard and press **Enter** through the menu until you see **"16x32"** on the screen. You may see some intimidating screens. With numbers and lists. At the first screen choose 27, and then from the next screens, follow your intuition, and try to reach to a point where it shows you to choose the font size. 
-2. Use the **Up** key to select **8x16** for a smaller font size that allows the full menu to display.
-3. Press **q** to quit and return to the Linux command mode.
-4. Type the following command and press **Enter**:   
-   ```
-   sudo systemctl start NetworkManager.service
-   ```
-5. Then type **"ranger"** and press **Enter** to return to the dashboard.
-
-After completing these steps, retry the WiFi setup process.
-
 
 
 ### Step 5. Sharing Your Files
@@ -188,42 +191,70 @@ To share or access files from the Micro Journal, follow these steps:
 1. Select **"share.sh"** from the dashboard and press **Enter**.
 2. Wait a few seconds, and once you see the **IP address**, enter it in the web browser of your PC.
 
-![drive](./quickstart/010.png)
+<img src="./quickstart/010.png" width="400" />
 
 You will be greeted by a web interface where you can download, manage, and extract files stored in the **"documents"** folder on your Micro Journal.
 
----
 
-#### Note on WordGrinder Files:
-WordGrinder saves files in its own format. To read or share them easily, you must export the file as either **PDF** or **Plain Text**. To export a document, press the **ESC** key while in WordGrinder to access the export options.
+---
 
 
 ### Step 6. Getting into Writing
 
-1. **Power on** the device.
-2. Navigate to the **"documents"** folder using the right cursor key.
-3. **Select a file** and press **Enter** to open it.
-4. Start **writing**!
-5. To save and quit, press **Ctrl + S** to save, and **Ctrl + Q** to exit.
-6. After you're done, run **"share.sh"** to export and share your files.
+You are now ready to go. Select **newfile.sh** on the dashboard and hit enter and you are in [WordGrinder](https://cowlark.com/wordgrinder/index.html). It will tell you it can't load your file (of course not... it's a new file so it doesn't exist yet). Hit space and you will be in the new, blank WordGrinder file. Quite honestly you can just type, and use **ctrl-s** to save and **ctrl-q** to quit. But WordGrinder has a complete menu system you access with the **Esc** key. Wordgrinder saves in a non-standard Text format. Luckily, WordGrinder has it's own export function to convert it to text or pdf.
+
+All your files go into the documents folder, including the exported text and pdf files. You then get access to them on your computer by exiting WordGrinder and selecting the **share.sh** script. It will give you an ip address. Type that ip address into your browser on your computer (or, I assume, phone) and you will be able to see those files, open them and copy and paste.
+
+You may need to be in the same wifi network as the Micro Journal in order to access the share features.
 
 
+#### Note on WordGrinder Files:
+
+WordGrinder saves files in its own format. To read or share them easily, you must export the file as either **PDF** or **Plain Text**. To export a document, press the **ESC** key while in WordGrinder to access the export options.
+
+---
 
 
 ### Customizing the Keyboard Layout
 
-**Note:** Detailed instructions will be added in the future.
 
-To customize the keyboard layout of the Micro Journal, use the USB port located on the bottom of the keyboard. This allows you to connect the keyboard to a PC.
+<img src="./keyboard/layout.png" />
 
-1. **Download and install the software** called **Vial** from [Vial's website](https://get.vial.today/).
+You can customize the keyboard layout. Here are the steps that has been discovered by Hook.
 
-2. **Connect the keyboard to your PC**:
-   - Before connecting the keyboard, you must **disconnect it from the Raspberry Pi**. 
-   - To do this, open the display back panel and remove the USB cable from the Raspberry Pi.
+So here is the method I have used and it works every time. I am working with a ThinkPad laptop with Windows 10. I assume it would be fine with Win 11 and Linux, but haven't tested.
 
-3. Once the keyboard is disconnected from the Raspberry Pi, connect it to your PC. When you run the Vial software, you will be guided through the process of customizing the keyboard layout.
+In order to do this, you first need to download and install Vial. The download and user manual are available here:
 
-4. After completing your customization, remember to **reconnect the USB cable back to the Raspberry Pi**.
+get.vial.today/
 
-**Note:** Detailed instructions will be provided soon.
+Once Vial is installed, you are ready to begin.
+
+1. Power down the Rev 2 by holding the bottom left hand power key on the keyboard. You can let go once the shutdown sequence begins.
+
+2. Set the power switch on the back to off.
+
+3. connect a USB cable from the USB port on the side of the keyboard (Micro-USB or USB-c) to your computer (USB-A in my case). That port is for the keyboard controller which Vial will access.
+
+4. Open Vial on your computer. When it opens, you will see a screen that looks like this.
+
+<img src="./keyboard/vial.jpg" />
+
+There are a lot of things you can do with Vial, but I have not explored them. You can do whatever you are comfortable with from the user manual, but I am only going to address the simple matter of changing the position of keys in the top layer of your keyboard.
+
+The smaller keyboard at the top is what Vial is reading from the Rev 2. You will notice it shows 5 rows but you only have 4. So ignore the 5th row. All those triangles means there is nothing there anyway. You can see there are tabs to change to you other layers (shift, arrow up and arrow down) but I am only going to deal with this top layer, the normal map for pressing a key and getting a character or function.
+
+Below is a larger set of keys. There are several tabs on this lower display allowing you to select from many kinds of keys. Everything you need is on the basic tab,. Until you learn more and are comfortable,if you don't know what something does, don't mess with it. Lol.
+
+To change a key, select it in the top image of your ortholinear keyboard and then select what key you want to replace it with on the keys in the bottom half of the screen. Click on it and that key will replace the key you previously selected. As soon as you do it, that change is reflected in the Micro Journal's keyboard. That's my keyboard up top. You can see I have changed my arrow navigation keys to a more conventional D-Pad configuration.
+
+5. When you are done, close Vial.
+
+6. Disconnect the USB cord from the keyboard USB port on the Micro Journal.
+
+That's it. When you start up the Micro Journal, you should have your key assignments that you changed.
+
+
+# Credit
+
+[Many of the texts and instructions provided by Hook from Flickr community](https://www.flickr.com/groups/alphasmart/discuss/72157721921183163)
