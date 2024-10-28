@@ -82,7 +82,7 @@ Oh. right. The joural. I am not sure if I am on the device for writing a journal
 
 TU30 Type-c Hot Swappable Mechanical Keyboard DIY Kits 30 Planck Programmable Keyboard Kit Aluminum Plate Plastic Shell
 
-https://www.aliexpress.com/item/1005005719514694.html?spm=a2g0o.order_list.order_list_main.25.3ac41802PKP80N
+https://www.aliexpress.com/item/1005005719514694.html
 
 ![First Revision](./images/rev2_2.png)
 
@@ -95,7 +95,7 @@ Wisecoco 7.84 Inch 1280x400 LCD Display Stretched Bar LCD Monitor Aida64 Laptop 
 
 (Screen with board)
 
-https://www.aliexpress.com/item/1005004986951553.html?spm=a2g0o.order_list.order_list_main.5.3ac41802PKP80N
+https://www.aliexpress.com/item/1005004986951553.html
 
 ![First Revision](./images/rev2_3.png)
 
