@@ -475,7 +475,7 @@ static const String extended_ascii[128] = {
     "",
     "",
     "",
-    "", // 160
+    " ", // 160
     "",
     "",
     "",
