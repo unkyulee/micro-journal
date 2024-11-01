@@ -9,6 +9,7 @@
 #include "ca/ca.h"
 #include "it/it.h"
 #include "uk/uk.h"
+#include "ge/ge.h"
 
 uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt)
 {
@@ -16,6 +17,11 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
   {
     // Belgium Layout
     return keyboard_keycode_ascii_be(keycode, shift, alt);
+  }
+  else if (locale == "GE")
+  {
+    // Canadian Layout
+    return keyboard_keycode_ascii_ge(keycode, shift, alt);
   }
   else if (locale == "CA")
   {
