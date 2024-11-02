@@ -249,6 +249,11 @@ In case "firmware_rev_6.bin" doesn't trigger the update. Rename the file to "fir
 https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/STL
 
 
+# Some bags
+
+https://www.reddit.com/r/writerDeck/comments/1euch12/travel_case_for_micro_journal/
+
+
 # Customizing Start and Sleep Animation
 
 If you want to change the Startup and Sleep animation. You can place the gif files directly in the SD card. Filename should be exactly the same in order to have the effect.
