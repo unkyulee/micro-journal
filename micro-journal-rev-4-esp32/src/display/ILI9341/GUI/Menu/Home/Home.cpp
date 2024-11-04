@@ -43,9 +43,9 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 #ifdef ENV_USBHOST
     ptft->println(" [K] KEY LAYOUT - " + keyboard_layout);
     ptft->println(" [F] DEVICE BUTTON");
+    ptft->println(" [M] BLE KEYBOARD");
 #endif
     ptft->println(" [W] WIFI");
-    ptft->println(" [M] BLE KEYBOARD");
     ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
