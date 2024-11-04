@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 
 // app version
-#define VERSION "1.0.17-1"
+#define VERSION "1.0.17-2"
 
 // app status
 JsonDocument &app_status();
