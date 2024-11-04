@@ -124,5 +124,5 @@ uint8_t keyboard_keycode_ascii_ge(int keycode, bool shift, bool alt)
 
     uint8_t ascii = hid_keycode_to_ascii_ge[keycode][index];
 
-    return keyboard_precursor_filter(ascii);
+    return ascii;
 }

@@ -139,4 +139,4 @@ uint8_t keyboard_keycode_ascii_be(int keycode, bool shift, bool alt)
     ascii = keyboard_caplock_filter(ascii);
 
     return ascii;
-}
+} 
