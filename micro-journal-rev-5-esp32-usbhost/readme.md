@@ -149,6 +149,25 @@ Connect the BATT port to any battery case. In my build, I used an 18650 battery,
 
 ![Micro Journal Rev.5](./images/015.jpg)
 
+## Step 3. Preparing USB-A female connector
+
+USB-A female connector is needs to accept USB connection from the keyboard. You can search with "USB A female connector" to find the modules that is used in rev.5.
+
+![Micro Journal Rev.5](./images/usb-a-female.png)
+
+https://www.aliexpress.com/item/4001146122421.html
+
+They should come with 4 connections. 
+
+| PIN  | PURPOSE                          |
+| ---- | -------------------------------- |
+| GND  | GND from the power supply module |
+| VBUS | 5V from the sliding switch       |
+| D-   | Wired to ESP32 pin 19            |
+| D+   | Wired to ESP32 pin 20            |
+
+
+
 ## Step 3. Wiring to ESP32
 
 Solder wires to the ESP32 board according to the pinout.
@@ -201,7 +220,7 @@ To work with the project, open it using Visual Studio with the PlatformIO plugin
 
 You may need to modify the /src/service/keyboard/usb/usb.cpp file and adjust the usbHost.setHIDLocal() function call to match your keyboard layout.
 
-* Make sure to run Platform -> Upload Filesystem Image at least once, in order to set SPIFFS
+- Make sure to run Platform -> Upload Filesystem Image at least once, in order to set SPIFFS
 
 ## Step 6. Setup Google Apps Script for Drive Sync
 
