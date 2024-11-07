@@ -65,7 +65,7 @@ Default configuration is designed to be user-friendly, allowing you to quickly g
 
 
 
-# For Advanced Users
+### Note for Advanced Users
 
 If you are familiar with Raspberry Pi and Linux configurations, feel free to customize the setup. The Micro Journal Rev.2 has no major constraints, though a minor display configuration may be necessary. Beyond that, you have the freedom to configure the Raspberry Pi as you prefer.
 
@@ -253,6 +253,11 @@ To change a key, select it in the top image of your ortholinear keyboard and the
 6. Disconnect the USB cord from the keyboard USB port on the Micro Journal.
 
 That's it. When you start up the Micro Journal, you should have your key assignments that you changed.
+
+
+### Powering Off
+
+Pressing LOWER + POWER key for 3 seconds will turn off the raspberry pi. Then turn off the switch at the back in order to turn off the display.
 
 
 # Credit
