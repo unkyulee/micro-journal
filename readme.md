@@ -79,6 +79,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 [Cassidy Williams: Building the Micro Journal](https://cassidoo.co/post/micro-journal/)
 
+[Tindie Blog: Micro Journal DIY Kit](https://blog.tindie.com/2024/11/micro-journal-diy-kit/)
 
 
 ## Fourth iteration: writerDeck with any mechanical keyboard
@@ -119,6 +120,7 @@ For those who already have the device: [Quick Start User Guide](/micro-journal-r
 
 [98.5 Canadian Radio Channel about Micro Journal](https://www.985fm.ca/audio/632913/un-clavier-ergonomique-ideal-pour-le-teletravail)
 
+[Tindie Blog: Micro Journal DIY Kit](https://blog.tindie.com/2024/11/micro-journal-diy-kit/)
 
 
 ## Third iteration: Immeidate power on and writing
