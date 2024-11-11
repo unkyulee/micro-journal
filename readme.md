@@ -4,7 +4,7 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 
 
-## Sixth iteration: Digital Typewriter
+## Micro Journal Rev.2.ReVamp: Mother of Twins 
 
 Bringing Revision 2 back to life with an upgraded, foldable enclosure that offers extra protection against the relentless curiosity of the twin boys. Powered by a Raspberry Pi Zero 2W, it features a 48-key mini keyboard and side knobs for easy scrolling. A modern take on the classic typewriter.
 
@@ -36,7 +36,10 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 [BoingBoing: Micro Journal ReVamp is a compact ortholinear writer deck](https://boingboing.net/2024/09/18/micro-journal-revamp-is-a-compact-ortholinear-writer-deck.html)
 
-## Fifth iteration: Write with Style
+[The Rev 2: One Month Later by Hook](https://www.flickr.com/groups/39436080@N00/discuss/72157721921183163/72157721921902230)
+
+
+## Micro Journal Rev.6: Vivian in New York
 
 I'm deep in the throes of this iteration, and it's a special one. A playwright needed a sleek, stylish, and compact writing device that could be used in cafes and parks. It had to have a handle for easy carrying and a protective cover to keep it safe in the bag.
 
@@ -82,7 +85,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 [Tindie Blog: Micro Journal DIY Kit](https://blog.tindie.com/2024/11/micro-journal-diy-kit/)
 
 
-## Fourth iteration: writerDeck with any mechanical keyboard
+## Micro Journal Rev.5: A Personal Journey
 
 In this iteration, I delved into exploring the potential of utilizing the USB port to enable connectivity with a wide range of mechanical keyboards. This enhancement offers the flexibility for users to employ their preferred keyboard for writing purposes, thereby enhancing the personalized experience and comfort level during usage.
 
