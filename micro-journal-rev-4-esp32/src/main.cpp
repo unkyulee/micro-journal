@@ -7,6 +7,10 @@
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 
+#ifdef ENV_EPAPER
+#include "service/Wifi/WifiService.h"
+#endif
+
 // Dual Core Support
 TaskHandle_t Task0;
 void Core0(void *parameter);
@@ -64,6 +68,11 @@ void Core0(void *parameter)
     {
         //
         keyboard_loop();
+
+#ifdef ENV_EPAPER
+        // check for background task request
+        wifi_service_loop();
+#endif
 
         //
         yield();

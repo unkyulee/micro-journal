@@ -496,6 +496,9 @@ void WP_keyboard(char key)
 
         //
         app["screen"] = MENUSCREEN;
+#ifdef DEBUG
+        app_log("WP - Moving to Menu Screen\n");
+#endif
     }
 
     else

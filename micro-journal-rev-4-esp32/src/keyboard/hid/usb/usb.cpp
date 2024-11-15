@@ -86,6 +86,7 @@ void keyboard_usb_setup()
 #ifndef DEBUG
   usbHost.begin();
 #endif
+  delay(5000);
 }
 
 //
@@ -97,20 +98,40 @@ void keyboard_usb_loop()
 #endif
 
 #ifdef DEBUG
+
+  static int seq_cnt = 0;
+  // int sequence[] = {0x29, 0x07}; ESC, D
+
+  // ESC W 1 TEST ENTER PASS ENTER
+  int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
+
   // simulate typingis
   static unsigned int last = millis();
   static int index = 0;
-  if (millis() - last > 3000)
+  if (millis() - last > 5000)
   {
     last = millis();
 
+    //app_log("KEYCODE %d\n", sequence[seq_cnt]);
+    keyboard_hid_pressed(sequence[seq_cnt], 0);
+    seq_cnt++;
+    if (seq_cnt >= sizeof(sequence) / sizeof(int))
+    {
+      seq_cnt = 0;
+      delay(5000);
+    }
+
+    // ESC
+    // keyboard_hid_pressed(0x29, 0);
+
     /*
-      // simluate backspace
-      keyboard_hid_pressed(0x2a, 0);
-      delay(100);
-      keyboard_hid_released(0x2a, 0);
+    // simluate backspace
+    keyboard_hid_pressed(0x2a, 0);
+    delay(100);
+    keyboard_hid_released(0x2a, 0);
     */
 
+    /*
     keyboard_hid_pressed(0x1e + index, 0);
     // app_log("Key pressed: %d\n", 0x1e + index);
     index++;
@@ -123,6 +144,7 @@ void keyboard_usb_loop()
       keyboard_hid_pressed(0x28, 0);
       // delay(5000);
     }
+    */
   }
 
 #endif

@@ -11,6 +11,7 @@
 
 // screens
 #include "GUI/WordProcessor/WordProcessor.h"
+#include "GUI/Menu/Menu.h"
 #include "GUI/WakeUp/WakeUp.h"
 #include "GUI/ErrorScreen/ErrorScreen.h"
 
@@ -72,6 +73,16 @@ void display_EPD_loop()
                 // loop
                 WP_render();
         }
+        // MENU SCREEN
+        else if (screen == MENUSCREEN)
+        {
+            // setup only once
+            if (screen != screen_prev)
+                Menu_setup();
+            else
+                // loop
+                Menu_render();
+        }
         else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
         {
             // setup only once
@@ -99,6 +110,10 @@ void display_EPD_loop()
 
 void display_EPD_keyboard(char key)
 {
+#ifdef DEBUG
+    app_log("RECEIVED %d %c\n", key, key);
+#endif
+
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
 
@@ -109,7 +124,7 @@ void display_EPD_keyboard(char key)
     }
     else if (screen == MENUSCREEN)
     {
-        // Menu_keyboard(key);
+        Menu_keyboard(key);
     }
     else if (screen == ERRORSCREEN)
     {
