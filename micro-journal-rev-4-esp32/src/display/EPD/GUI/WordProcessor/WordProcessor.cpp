@@ -341,6 +341,7 @@ void WP_check_saved()
         if (!Editor::getInstance().saved)
         {
             Editor::getInstance().saveFile();
+            clear_request = true;
         }
     }
 }
