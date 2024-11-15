@@ -64,11 +64,45 @@ void display_EPD_setup()
     btn1.setPressedHandler(display_sleep_button_pressed);
 }
 
+// get the battery level every minute
+void display_battery_level()
+{
+    // process display
+    static int last = -60 * 1000;
+    if (millis() - last > 60 * 1000)
+    {
+        //
+        last = millis();
+
+        // When reading the battery voltage, POWER_EN must be turned on
+        epd_poweron();
+        delay(10); // Make adc measurement more accurate
+
+         // battery pin - 14
+        uint16_t v = analogRead(14);
+        float battery_voltage = ((float)v / 4095.0) * 2.0 * 3.3 * (1100 / 1000.0);
+        if (battery_voltage >= 4.2)
+        {
+            battery_voltage = 4.2;
+        }
+
+        //
+        JsonDocument &app = app_status();
+        app["battery_voltage"] = battery_voltage;
+
+        //
+        epd_poweroff_all();
+    }
+}
+
 //
 void display_EPD_loop()
 {
     // process sleep button
     btn1.loop();
+
+    // record the battery level
+    display_battery_level();
 
     // process display
     static unsigned int last = 0;

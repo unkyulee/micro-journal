@@ -381,14 +381,30 @@ void WP_render_status()
         if (layout == "null" || layout.isEmpty())
             layout = "US"; // defaults to US layout
 
-        cursorX = EPD_WIDTH - 120;
+        cursorX = EPD_WIDTH - 180;
         writeln((GFXfont *)&systemFont, layout.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
 
-        // BLUETOOTH STATUS
-        if (keyboard_ble_connected())
+        // BATTERY STATUS
+        float battery_voltage = app["battery_voltage"].as<float>();
+        float min_voltage = 3.5;
+        float max_voltage = 4.2;
+        int battery_level = 0;
+
+        if (battery_voltage < min_voltage)
         {
-            epd_fill_circle(EPD_WIDTH - 80, cursorY - 8, 8, 0, display_EPD_framebuffer());
+            battery_level = 0; // Below minimum voltage
         }
+        else if (battery_voltage > max_voltage)
+        {
+            battery_level = 100; // Above maximum voltage
+        }
+        else
+        {
+            battery_level = (battery_voltage - min_voltage) / (max_voltage - min_voltage) * 100;
+        }
+
+        cursorX = EPD_WIDTH - 120;
+        writeln((GFXfont *)&systemFont, format("%d%%", battery_level).c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
     }
 
     // Draw periodically refreshing section
