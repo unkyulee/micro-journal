@@ -50,6 +50,7 @@ void Menu_render()
 
     // deflag so that it doesn't repeatedely called
     menu_clear = false;
+    app["clear"] = false;
 
     ///////////////////////////
     // Render Toolbar

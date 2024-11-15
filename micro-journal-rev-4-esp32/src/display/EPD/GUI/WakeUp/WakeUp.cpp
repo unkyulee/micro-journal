@@ -14,12 +14,6 @@ void WakeUp_setup()
 {
     app_log("Wakup Screen Setup\n");
 
-    //
-    wakeup = true;
-
-    //
-    stop = false;
-
     // move to word processor
     JsonDocument &app = app_status();
     app["screen"] = WORDPROCESSOR;
@@ -28,25 +22,9 @@ void WakeUp_setup()
 //
 void WakeUp_render()
 {
-    // Turn on the display
-    epd_poweron();
-
-    // Clear Screen
-    epd_clear();
-
-    // RENDER TEXT
-    int32_t x = 18;
-    int32_t y = 50;
-    write_string(display_EPD_font(), "Starting Up", &x, &y, NULL);
-
-    // Turn off the display
-    epd_poweroff();
 }
 
 //
 void WakeUp_keyboard(char key)
 {
-    //
-    wakeup = true;
-    stop = true;
 }

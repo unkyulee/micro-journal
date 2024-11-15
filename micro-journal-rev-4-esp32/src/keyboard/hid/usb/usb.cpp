@@ -103,16 +103,19 @@ void keyboard_usb_loop()
   // int sequence[] = {0x29, 0x07}; ESC, D
 
   // ESC W 1 TEST ENTER PASS ENTER
+  //int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
+
+  // ESC W 1 TEST ENTER PASS ENTER B S
   int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
 
   // simulate typingis
   static unsigned int last = millis();
   static int index = 0;
-  if (millis() - last > 5000)
+  if (millis() - last > 2000)
   {
     last = millis();
 
-    //app_log("KEYCODE %d\n", sequence[seq_cnt]);
+    /*    
     keyboard_hid_pressed(sequence[seq_cnt], 0);
     seq_cnt++;
     if (seq_cnt >= sizeof(sequence) / sizeof(int))
@@ -120,6 +123,7 @@ void keyboard_usb_loop()
       seq_cnt = 0;
       delay(5000);
     }
+    */
 
     // ESC
     // keyboard_hid_pressed(0x29, 0);

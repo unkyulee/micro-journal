@@ -28,6 +28,8 @@ void Home_render()
     // SYNC
     if (app["config"]["sync"]["url"].as<String>().isEmpty() == false)
     {
+        cursorX = 10;
+        cursorY += 35;
         writeln((GFXfont *)&systemFont, " [S] SYNC", &cursorX, &cursorY, display_EPD_framebuffer());
     }
 

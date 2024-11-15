@@ -151,7 +151,7 @@ void Wifi_render_edit()
         cursorX = 50;
         cursorY += 50;
         writeln(
-            (GFXfont *)&systemFont,
+            (GFXfont *)&monospace,
             buffer_get(),
             &cursorX, &cursorY,
             display_EPD_framebuffer());
@@ -178,7 +178,7 @@ void Wifi_render_edit()
         cursorX = 50;
         cursorY += 50;
         writeln(
-            (GFXfont *)&systemFont,
+            (GFXfont *)&monospace,
             buffer_get(),
             &cursorX, &cursorY,
             display_EPD_framebuffer());

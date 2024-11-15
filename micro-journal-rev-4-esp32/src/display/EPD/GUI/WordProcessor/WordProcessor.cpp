@@ -82,7 +82,7 @@ void WP_render()
 
     //
     WP_check_saved();
-    // WP_check_sleep();
+    WP_check_sleep();
 
     // Bottom Status
     WP_render_status();
@@ -341,24 +341,14 @@ void WP_check_saved()
         if (!Editor::getInstance().saved)
         {
             Editor::getInstance().saveFile();
-            clear_request = true;
         }
     }
 }
 
 void WP_check_sleep()
 {
-    /*
-    //
-    // when the file is saved then extend the sleep timer
-    if (!Editor::getInstance().saved)
-    {
-        // when typed then reset sleep timer
-        last_sleep = millis();
-    }
-
     // 600 seconds - 10 minutes
-    if (millis() - last_sleep > 600000)
+    if (millis() - last_sleep > 10 * 60 * 1000)
     {
         // if no action for 10 minute go to sleep
         last_sleep = millis();
@@ -367,7 +357,6 @@ void WP_check_sleep()
         JsonDocument &app = app_status();
         app["screen"] = SLEEPSCREEN;
     }
-    */
 }
 
 // display file number
@@ -486,6 +475,10 @@ void WP_render_status()
 //
 void WP_keyboard(char key)
 {
+    // Every key stroke resets sleep timer
+    last_sleep = millis();
+
+    //
     JsonDocument &app = app_status();
 
     // Check if menu key is pressed

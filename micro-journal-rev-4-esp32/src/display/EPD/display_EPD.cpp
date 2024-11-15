@@ -8,11 +8,13 @@
 
 //
 #include <Arduino.h>
+#include "Button2.h"
 
 // screens
 #include "GUI/WordProcessor/WordProcessor.h"
 #include "GUI/Menu/Menu.h"
 #include "GUI/WakeUp/WakeUp.h"
+#include "GUI/Sleep/Sleep.h"
 #include "GUI/ErrorScreen/ErrorScreen.h"
 
 // Display Frame Buffer Setup
@@ -20,6 +22,14 @@ uint8_t *framebuffer = NULL;
 uint8_t *display_EPD_framebuffer()
 {
     return framebuffer;
+}
+
+Button2 btn1(21);
+void display_sleep_button_pressed(Button2 &b)
+{
+    // move to sleep screen
+    JsonDocument &app = app_status();
+    app["screen"] = SLEEPSCREEN;
 }
 
 //
@@ -49,11 +59,18 @@ void display_EPD_setup()
     // turn off the board LED
     epd_poweroff_all();
     // epd_poweroff();
+
+    // Sleep Button Setup
+    btn1.setPressedHandler(display_sleep_button_pressed);
 }
 
 //
 void display_EPD_loop()
 {
+    // process sleep button
+    btn1.loop();
+
+    // process display
     static unsigned int last = 0;
     if (millis() - last > 150)
     {
@@ -83,7 +100,7 @@ void display_EPD_loop()
                 // loop
                 Menu_render();
         }
-        else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
+        else if (screen == WAKEUPSCREEN)
         {
             // setup only once
             if (screen != screen_prev)
@@ -91,6 +108,15 @@ void display_EPD_loop()
             else
                 // loop
                 WakeUp_render();
+        }
+        else if (screen == SLEEPSCREEN)
+        {
+            // setup only once
+            if (screen != screen_prev)
+                Sleep_setup();
+            else
+                // loop
+                Sleep_render();
         }
         else if (screen == ERRORSCREEN)
         {
@@ -130,9 +156,13 @@ void display_EPD_keyboard(char key)
     {
         ErrorScreen_keyboard(key);
     }
-    else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
+    else if (screen == WAKEUPSCREEN)
     {
         WakeUp_keyboard(key);
+    }
+    else if (screen == SLEEPSCREEN)
+    {
+        Sleep_keyboard(key);
     }
 }
 

@@ -28,7 +28,7 @@ void Sync_render()
 
     // SYNC IN PROGRESS
     int cursorX = 10;
-    int cursorY = 130;
+    int cursorY = 120;
     writeln(
         (GFXfont *)&systemFont,
         " SYNC & BACKUP",
@@ -54,37 +54,56 @@ void Sync_render()
         // 1) Connect to Wifi
         sync_start_request();
 
-        cursorX = 20;
+        String message = app["sync_message"].as<String>();
+
+        if (message != "")
+        {
+            cursorX = 30;
+            cursorY += 50;
+            writeln(
+                (GFXfont *)&systemFont,
+                message.c_str(),
+                &cursorX, &cursorY,
+                display_EPD_framebuffer());
+        }
+    }
+
+    //
+    else if (sync_state == SYNC_ERROR)
+    {
+        String error = app["sync_error"].as<String>();
+        if (error != "")
+        {
+            cursorX = 30;
+            cursorY += 50;
+            writeln(
+                (GFXfont *)&systemFont,
+                error.c_str(),
+                &cursorX, &cursorY,
+                display_EPD_framebuffer());
+        }
+    }
+
+    else if (sync_state == SYNC_COMPLETED)
+    {
+        //
+        cursorX = 30;
         cursorY += 35;
         writeln(
             (GFXfont *)&systemFont,
-            "Trying to connect to WIFI ...",
+            "SYNC Completed",
             &cursorX, &cursorY,
             display_EPD_framebuffer());
     }
 
-    //
-    if (sync_state == SYNC_ERROR)
-    {
-        // error
-        //
-        ptft->setTextColor(TFT_WHITE, TFT_RED);
-        ptft->println(sync_error);
-        ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    }
-    else
-        else if (sync_state == SYNC_SEND)
-        {
-            _sync_send(ptft, pu8f);
-        }
-    else if (sync_state == SYNC_COMPLETED)
-    {
-        // close WIFI
-        _network_stop();
-
-        //
-        ptft->println(" - SYNC Completed");
-    }
+    // BACK
+    cursorX = 20;
+    cursorY += 50;
+    writeln(
+        (GFXfont *)&systemFont,
+        "[B] Back",
+        &cursorX, &cursorY,
+        display_EPD_framebuffer());
 }
 
 //
@@ -97,12 +116,12 @@ void Sync_keyboard(char key)
     if (key == '\b' || key == 'b' || key == 'B')
     {
         // stop network
-        _network_stop();
+        sync_stop();
 
         //
-        sync_state = -1;
-    }
+        app["sync_state"] = -1;
 
-    //
-    app["menu"]["state"] = MENU_HOME;
+        //
+        app["menu"]["state"] = MENU_HOME;
+    }
 }
