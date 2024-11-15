@@ -26,7 +26,7 @@ void ErrorScreen_render()
     write_string(display_EPD_font(), text.c_str(), &x, &y, NULL);
 
     // Turn off the display
-    epd_poweroff();
+    epd_poweroff_all();
 }
 
 //

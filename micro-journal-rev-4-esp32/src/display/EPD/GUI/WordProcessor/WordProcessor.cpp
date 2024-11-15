@@ -34,15 +34,6 @@ void WP_setup()
 {
     app_log("Word Processor GUI Setup\n");
 
-    // Turn on the display
-    epd_poweron();
-
-    // Clear Screen
-    epd_clear();
-
-    // Turn off the display
-    epd_poweroff();
-
     // editor instantiate
     Editor &editor = Editor::getInstance();
     editor.screenBuffer.rows = rows;
@@ -94,7 +85,7 @@ void WP_render()
     WP_render_text();
 
     // Turn off the display
-    epd_poweroff();
+    epd_poweroff_all();
 
     // clear background flag off
     cleared = false;
@@ -398,7 +389,6 @@ void WP_render_status()
         {
             epd_fill_circle(EPD_WIDTH - 80, cursorY - 8, 8, 0, display_EPD_framebuffer());
         }
-
     }
 
     // Draw periodically refreshing section
@@ -465,7 +455,8 @@ void WP_render_status()
         formattedNumber += " characters";
 
         // SAVED STATUS
-        if(Editor::getInstance().saved) {
+        if (Editor::getInstance().saved)
+        {
             formattedNumber += " saved";
         }
 
