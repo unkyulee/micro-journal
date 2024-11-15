@@ -125,3 +125,36 @@ GFXfont *display_EPD_font()
 {
     return (GFXfont *)&monospace;
 }
+
+// assign safe rect that constraints inside the range
+Rect_t display_rect(int x, int y, int width, int height)
+{
+    Rect_t area = {
+        .x = x,
+        .y = y,
+        .width = width,
+        .height = height,
+    };
+
+#ifdef DEBUG
+    app_log("Rect x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
+#endif
+
+    // x can't exceed the EPD_WIDTH
+    if (area.x + area.width > EPD_WIDTH)
+        area.width = EPD_WIDTH - area.x;
+
+    // y can't exceed the EPD_HEIGHT
+    if (area.y + area.height > EPD_HEIGHT)
+        area.height = EPD_HEIGHT - area.y;
+
+    // width can't be negative
+    if (area.width < 0)
+        area.width = 0;
+
+    // height can't be negative
+    if (area.height < 0)
+        area.height = 0;
+
+    return area;
+}

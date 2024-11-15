@@ -27,7 +27,7 @@ const int statusY = EPD_HEIGHT - status_height;
 bool clear_request = true;
 bool cleared = true;
 
-int startLine = 0;
+int startLine = -1;
 
 //
 void WP_setup()
@@ -137,13 +137,18 @@ void WP_render_text()
     int rows = Editor::getInstance().screenBuffer.rows;
 
     // start editing from 2nd Line
-    startLine = max(cursorLine - 2, 0);
+    if (startLine == -1)
+    {
+        startLine = max(cursorLine - 2, 0);
+        app_log("Start Line Init: %d -> ", startLine);
+    }
 
     // when reaching the end of the screen reset the startLine
     if (totalLine - startLine > rows)
     {
         clear_request = true;
         startLine = max(cursorLine - 2, 0);
+        app_log("Start Line Reset: %d -> ", startLine);
     }
 
     //
@@ -152,6 +157,8 @@ void WP_render_text()
     //
     if (cleared)
     {
+        app_log("Text Render Cleared\n");
+
         //
         int cursorY = font_height;
         for (int i = startLine; i <= totalLine; i++)
@@ -180,12 +187,14 @@ void WP_render_text()
         if (cursorLine != cursorLine_prev)
         {
             // clear the currentLine and the previousLine
-            Rect_t area = {
-                .x = 0,
-                .y = font_height * (max(cursorLine - startLine - 1, 0)),
-                .width = EPD_WIDTH,
-                .height = font_height * 2,
-            };
+            app_log("clear the currentLine and the previousLine\n");
+            Rect_t area =
+                display_rect(
+                    0,
+                    font_height * (max(cursorLine - startLine - 1, 0)),
+                    EPD_WIDTH,
+                    font_height * 2);
+
             epd_clear_quick(area, 4, 50);
 
             // and redraw the line
@@ -199,14 +208,20 @@ void WP_render_text()
         if (cursorLinePos < cursorLinePos_prev && cursorLine == cursorLine_prev)
         {
             // clear the currentLine and the previousLine
-            Rect_t area = {
-                .x = max(MARGIN + (cursorLinePos_prev - 1) * font_width, 0),
-                .y = font_height * (max(cursorLine_prev - startLine, 0)) + 12,
-                .width = (cursorLinePos_prev - cursorLinePos) * font_width,
-                .height = font_height,
-            };
-            // epd_clear_area(area);
-            epd_clear_quick(area, 1, 50);
+            app_log("Handle Backspace\n");
+
+            // delete a line and redraw the line
+            Rect_t area =
+                display_rect(
+                    0,
+                    font_height * (max(cursorLine - startLine, 0)),
+                    EPD_WIDTH,
+                    font_height * 2);
+
+            epd_clear_quick(area, 4, 50);
+
+            // and redraw the line
+            cursorLinePos_prev = 0;
         }
 
         //
@@ -263,11 +278,14 @@ void WP_render_cursor()
         if (renderedCursorX > 0)
         {
             //
-            Rect_t area = {
-                .x = cursorLinePos_prev * font_width,
-                .y = font_height * (max(cursorLine - startLine, 0) + 1),
-                .width = font_width * (cursorLinePos - cursorLinePos_prev + 1),
-                .height = 10};
+#ifdef DEBUG
+            app_log("Delete previous cursor line\n");
+#endif
+            Rect_t area = display_rect(
+                cursorLinePos_prev * font_width,
+                font_height * (max(cursorLine - startLine, 0) + 1),
+                font_width * abs(cursorLinePos - cursorLinePos_prev + 1),
+                10);
 
             epd_clear_quick(area, 8, 50);
 
@@ -356,12 +374,13 @@ void WP_check_sleep()
 // display character total
 // display keyboard layout - Rev.5 and Rev.7
 // display save status
-#define STATUS_REFRESH 10000
+#define STATUS_REFRESH 300
 void WP_render_status()
 {
     //
     JsonDocument &app = app_status();
 
+    // status start Y position
     int cursorY = statusY + status_height - 8;
     static size_t num_prev = 0;
 
@@ -372,7 +391,7 @@ void WP_render_status()
         num_prev = 0;
 
         // FILE INDEX
-        int cursorX = 4;
+        int cursorX = 16;
         String file = format("FILE %d", app["config"]["file_index"].as<int>());
         writeln((GFXfont *)&systemFont, file.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
 
@@ -387,69 +406,80 @@ void WP_render_status()
         // BLUETOOTH STATUS
         if (keyboard_ble_connected())
         {
-            epd_fill_circle(EPD_WIDTH - 70, cursorY - 8, 8, 0, display_EPD_framebuffer());
+            epd_fill_circle(EPD_WIDTH - 80, cursorY - 8, 8, 0, display_EPD_framebuffer());
         }
 
-        // SAVE STATUS
-        if (Editor::getInstance().saved)
-        {
-            epd_fill_circle(EPD_WIDTH - 30, cursorY - 8, 8, 0, display_EPD_framebuffer());
-        }
-        else
-        {
-            epd_draw_circle(EPD_WIDTH - 30, cursorY - 8, 8, 0, display_EPD_framebuffer());
-        }
     }
 
     // Draw periodically refreshing section
     static int last = millis();
-    if (last + STATUS_REFRESH < millis())
+
+    // when cleared redraw the size
+    if (cleared)
+        num_prev = -1;
+
+    // FILE SIZE
+    static bool num_changed = false;
+    size_t num = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
+    if (num != num_prev)
     {
-        last = millis();
-
-        // FILE SIZE
-        size_t num = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
-
-        if (num != num_prev)
-        {
-            //
-            int cursorX = 120;
-
-            //
-            Rect_t area = {
-                .x = cursorX,
-                .y = statusY,
-                .width = 400,
-                .height = status_height,
-            };
-            //
-            epd_clear_quick(area, 2, 100);
-
-            String formattedNumber = "";
-            int digitCount = 0;
-            if (num < 0)
-            {
-                formattedNumber += "-";
-                num = -num;
-            }
-            do
-            {
-                if (digitCount > 0 && digitCount % 3 == 0)
-                {
-                    formattedNumber = "," + formattedNumber;
-                }
-                formattedNumber = String(num % 10) + formattedNumber;
-                num /= 10;
-                digitCount++;
-            } while (num > 0);
-
-            formattedNumber += " characters";
-
-            writeln((GFXfont *)&systemFont, formattedNumber.c_str(), &cursorX, &cursorY, NULL);
-        }
-
         //
         num_prev = num;
+
+        //
+        num_changed = true;
+
+        // debounce for status_refresh amount
+        last = millis();
+    }
+
+    if ((num_changed && last + STATUS_REFRESH < millis()) || cleared)
+    {
+        //
+        last = millis();
+        num_changed = false;
+
+        //
+        int cursorX = 160;
+
+        //
+        if (!cleared)
+        {
+            Rect_t area = display_rect(
+                cursorX,
+                statusY,
+                450,
+                status_height);
+            //
+            epd_clear_quick(area, 2, 100);
+        }
+
+        String formattedNumber = "";
+        int digitCount = 0;
+        if (num < 0)
+        {
+            formattedNumber += "-";
+            num = -num;
+        }
+        do
+        {
+            if (digitCount > 0 && digitCount % 3 == 0)
+            {
+                formattedNumber = "," + formattedNumber;
+            }
+            formattedNumber = String(num % 10) + formattedNumber;
+            num /= 10;
+            digitCount++;
+        } while (num > 0);
+
+        formattedNumber += " characters";
+
+        // SAVED STATUS
+        if(Editor::getInstance().saved) {
+            formattedNumber += " saved";
+        }
+
+        writeln((GFXfont *)&systemFont, formattedNumber.c_str(), &cursorX, &cursorY, NULL);
     }
 }
 

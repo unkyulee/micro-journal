@@ -15,4 +15,6 @@ void display_EPD_keyboard(char key);
 //
 GFXfont* display_EPD_font();
 
+Rect_t display_rect(int x, int y, int width, int height);
+
 #endif

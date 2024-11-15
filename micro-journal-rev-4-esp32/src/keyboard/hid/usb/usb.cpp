@@ -83,32 +83,47 @@ void keyboard_usb_setup()
   app_log("Initializing USB Host\n");
 
   // usb host setup
+#ifndef DEBUG
   usbHost.begin();
+#endif
 }
 
 //
 void keyboard_usb_loop()
 {
   // Process USB Keyboard Tasks
+#ifndef DEBUG
   usbHost.task();
+#endif
 
-  /*
-    static unsigned int last = millis();
-    static int index = 0;
-    if (millis() - last > 3000)
-    {
-      last = millis();
+#ifdef DEBUG
+  // simulate typingis
+  static unsigned int last = millis();
+  static int index = 0;
+  if (millis() - last > 3000)
+  {
+    last = millis();
 
+    /*
+      // simluate backspace
       keyboard_hid_pressed(0x2a, 0);
       delay(100);
       keyboard_hid_released(0x2a, 0);
-
-      keyboard_hid_pressed(0x1e + index++, 0);
-      if (index > 9)
-      {
-        index = 0;
-        // keyboard_hid_pressed(0x2c, 0);
-      }
-    }
     */
+
+    keyboard_hid_pressed(0x1e + index, 0);
+    // app_log("Key pressed: %d\n", 0x1e + index);
+    index++;
+    if (index > 9)
+    {
+      index = 0;
+      // space
+      //keyboard_hid_pressed(0x2c, 0);
+      // enter
+      keyboard_hid_pressed(0x28, 0);
+      // delay(5000);
+    }
+  }
+
+#endif
 }

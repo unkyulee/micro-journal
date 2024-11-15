@@ -1,4 +1,6 @@
 #include "app.h"
+#include <FS.h>
+#include <SD.h>
 
 // global status
 JsonDocument status;
@@ -33,6 +35,23 @@ void app_log(const char *format, ...)
 
     // Print to Serial
     Serial.printf("[%d] %s", millis(), message);
+
+    // Write the log file to app.log if the file exists
+    if (SD.exists("/app.log"))
+    {
+        File logFile = SD.open("/app.log", FILE_APPEND);
+        if (logFile)
+        {
+            // Write the log entry to the file
+            logFile.printf("[%d] %s", millis(), message);
+            logFile.close();
+        }
+        else
+        {
+            // Fallback to Serial if the file cannot be opened
+            Serial.println("Error opening app.log file!");
+        }
+    }
 }
 
 String format(const char *format, ...)
