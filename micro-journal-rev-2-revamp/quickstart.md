@@ -13,11 +13,11 @@ When you receive the **Micro Journal Rev.2**, you'll need to install a battery b
    * https://www.18650batterystore.com/products/samsung-30q
    * Send a message in tindie when you find some reliable places or links to buy the battery in your country.
 
-1. **Install the battery**: The **Rev.2.Revamp** will not function without a battery. Ensure the battery is properly installed before attempting to power it on.
+2. **Install the battery**: The **Rev.2.Revamp** will not function without a battery. Ensure the battery is properly installed before attempting to power it on.
 
-2. **Power on**: Once the battery is installed, you're ready to power on and begin using your device.
+3. **Power on**: Once the battery is installed, you're ready to power on and begin using your device.
 
-
+4. Peel off the plastic from the display: You may see some scratches or some bubbles on the display. That's part of packaging plastic supposed to be peeled off. I left it there so that you can enjoy the peeling sensation. You know what I mean? 
 
 # Battery Information
 
