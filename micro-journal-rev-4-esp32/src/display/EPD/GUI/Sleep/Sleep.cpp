@@ -46,8 +46,8 @@ void Sleep_render()
     write_string(display_EPD_font(), "by Un Kyu Lee", &x, &y, NULL);
 
     // Turn off the display
-    Serial.end();
-    epd_poweroff_all();
+    // epd_poweroff_all();
+    epd_poweroff();
 
     // BOOT(STR_IO0) Button wakeup
     esp_sleep_enable_ext1_wakeup(_BV(GPIO_NUM_21), ESP_EXT1_WAKEUP_ANY_LOW);

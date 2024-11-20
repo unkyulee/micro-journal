@@ -85,7 +85,8 @@ void WP_render()
     WP_render_text();
 
     // Turn off the display
-    epd_poweroff_all();
+    //epd_poweroff_all();
+    epd_poweroff();
 
     // clear background flag off
     cleared = false;

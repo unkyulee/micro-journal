@@ -57,8 +57,8 @@ void display_EPD_setup()
 
     // Turn off the display
     // turn off the board LED
-    epd_poweroff_all();
-    // epd_poweroff();
+    //epd_poweroff_all();
+    epd_poweroff();
 
     // Sleep Button Setup
     btn1.setPressedHandler(display_sleep_button_pressed);
