@@ -36,6 +36,7 @@ bool keyboard_ble_connect()
     JsonString remote = app["config"]["ble"]["remote"].as<JsonString>();
     if (remote == "null" || remote.isNull() || remote == "")
     {
+        app_log("BLE keyboard config not found. Skip Setup.\n");
         return false;
     }
 

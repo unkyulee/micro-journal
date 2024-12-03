@@ -37,6 +37,7 @@ void app_log(const char *format, ...)
     Serial.printf("[%d] %s", millis(), message);
 
     // Write the log file to app.log if the file exists
+#ifdef DEBUG
     if (SD.exists("/app.log"))
     {
         File logFile = SD.open("/app.log", FILE_APPEND);
@@ -52,6 +53,7 @@ void app_log(const char *format, ...)
             Serial.println("Error opening app.log file!");
         }
     }
+#endif
 }
 
 String format(const char *format, ...)

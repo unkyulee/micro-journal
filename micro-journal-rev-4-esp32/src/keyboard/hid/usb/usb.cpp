@@ -86,7 +86,6 @@ void keyboard_usb_setup()
 #ifndef DEBUG
   usbHost.begin();
 #endif
-  delay(5000);
 }
 
 //
