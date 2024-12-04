@@ -21,6 +21,9 @@ writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18
 * Check for Short Circuit Protection on the battery
 * Not more than 3300 mAh capacity
 
+[Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
+
+
 **This is not AA battery or AAA battery.**
 
 Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.

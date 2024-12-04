@@ -10,8 +10,7 @@ When you receive the **Micro Journal Rev.2**, you'll need to install a battery b
 
 1. **Buy 18650 Lithium ion battery**. Search with term "LiPo 18650" and should be able to find the fitting battery. Here is the link where battery is sourced typically from the users.
 
-   * https://www.18650batterystore.com/products/samsung-30q
-   * Send a message in tindie when you find some reliable places or links to buy the battery in your country.
+[Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
 
 2. **Install the battery**: The **Rev.2.Revamp** will not function without a battery. Ensure the battery is properly installed before attempting to power it on.
 
