@@ -94,7 +94,9 @@ There are two TORX T10H screws on either side in front of the hinge cylinders. T
 <img src="./quickstart/005.png" width="400" />
 
 
-Once lifted, gently rest the display on top of the keyboard. You will now see the battery holder.
+Once lifted, gently rest the display on top of the keyboard. You will now see the battery holder. 
+
+After installing the battery make sure that no cable is clipped on to the edge while closing the device. 
 
 
 
