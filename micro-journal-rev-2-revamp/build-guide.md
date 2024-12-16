@@ -1,6 +1,4 @@
-DRAFT
-
-# Build Guide
+# Rev.2. Build Guide
 
 This guide is for building the **Micro Journal Rev.2.ReVamp**, allowing you to assemble one on your own. It provides detailed information for troubleshooting if any parts of the build encounter issues and serves as a resource for those curious about the construction of the Micro Journal Rev.2.ReVamp.
 
@@ -8,7 +6,42 @@ To complete this build, basic soldering skills are necessary, though advanced sk
 
 You’ll also need access to 3D-printed parts to complete the build. Many 3D printing services are available, but if you’d prefer to assemble your own and are having difficulty sourcing components, feel free to contact me—I’ll do my best to help provide a DIY kit.
 
+- Build Time: 4 ~ 6 hours
+- Basic level of soldering is required to complete the build
+
 [Buy a DIY Kit] TBD
+
+# System Architecture
+
+<img src="build/build_002.png">
+
+Rev.2. is a small computer. Process of the building rev.2. is very similar to building a PC. There is a computer at the center of it, the assembly consists of connecting a display, power supply and the keyboard.
+
+### A. Keyboard PCB
+
+This build utilized how swappable mechanical keyboard. Design files for the keyboard is in [this github repository](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB). You can use, PCB manufacturing services to get the PCB printed. Should be cheaper to buy from [my tindie store](https://www.tindie.com/stores/unkyulee) when you need just one or two PCBs.
+
+### B. Keyboard Controller
+
+Keyboard controller is going to provide USB interface to connect to the raspberry pi computer. In order to control the key inputs, you are going to need a "raspberry pi PICO". Please, note that this is not to be confused with "Raspberry Pi Zero 2W". PICO is a micro controller. It is a tiny processing unit that is dedicated to handle the key inputs. This component will be called as "keyboard controller" throughout the document.
+
+### C and D. LEFT / RIGHT KNOB
+
+Knobs are installed on both left and right hand side of the build. Each knob can roll up and down, and can be clicked. Knobs are connected to the keyboard controller and can be used as a keyboard input. Providing, left and right, scroll up and down respectively.
+
+### E. Raspberry Pi Zero 2W
+
+Raspberry Pi Zero 2W is at the heart of the build. Providing Linux terminal environment. Very simple and low powered computer that provides sufficient power to receive USB keyboard and connect to the wide screen with HDMI cable.
+
+### F. Screen
+
+[7.84 inch 1280x400 LCD Display](https://www.aliexpress.com/item/1005004986951553.html)
+
+Screen received mini HDMI interface. This display is almost exact the size of the keyboard and it has a bit quirky aspect ratio, but attractive writing environment.
+
+### G. Power Supply
+
+This build uses a small power supply module that can charge 18650 battery and provide 5V power supply in one module.
 
 # Materials
 
@@ -18,16 +51,15 @@ You’ll also need access to 3D-printed parts to complete the build. Many 3D pri
 - [48 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
 - [O-ring 10x5.2x2.4](https://www.aliexpress.com/item/1005002753756030.html)
 - [Lipo Battery Charger and Power Supply Module](https://www.aliexpress.com/item/1005006366996657.html)
-- EC11 15mm Half handle
-- 48x Diode IN4148
+- [1S Lithium Battery Inidicator](https://www.aliexpress.com/item/1005007321718440.html)
+- 2x EC11 15mm Half handle for the knobs
+- 50x Diode IN4148
 - 48x Kailih Hot-Swappable PCB socket Cherry MX Switches (CPG151101S11)
-- 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html) 
-- 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html) 
+- 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html)
+- 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html)
 - Micro SD card minimum 4 GB
 - 2x [FPV mini HDMI connector](https://www.aliexpress.com/item/1005004374555360.html)
 - [FFC HDMI Cable](https://www.aliexpress.com/item/1005004374555360.html)
-
-To be completed with further detailed list of materials
 
 # Build Order
 
@@ -84,11 +116,27 @@ When all diodes are in place. Solder their legs, and cut of to the excess legs.
 
 Do this for 48 times.
 
-# Rasbperry Pi Pico and Keyboard PCB Wiring
+# Preparing the Keyboard PCB
 
-[TBD Image of Raspberry Pi Pico]
+Prepare the wires with the length
 
-<img src="../micro-journal-rev-6-one-piece/build/esp32_002.png" width="600">
+- 17x 18cm wires
+- 1x 33cm wire
+
+<img src="build/build_003.png" width="600">
+
+Note where the pin 1 starts on the PCB. Pin 1 is the square marked hole.  
+On the keyboard PCB, pin 5 and 16 will have two wires connected.
+
+Pin 5 has one long wire and one short wire. Pin 16 has two short wires.
+
+# Connecting Keyboard Controller to the Keyboard PCB
+
+Keyboard controller is raspberry pi PICO. Be careful with the temperature of the soldering iron. Do no exceed 310 degrees celcius. Also, cover the pico controller with the masking tape to prevent heat issues. I have broken quite a few controller when applying too high temperature.
+
+<img src="build/build_004.png" width="600">
+
+Solder all the short wires from the keyboard PCB to the keyboard controller.
 
 | Keyboard PIN No. | RP Pico PIN No. |
 | ---------------- | --------------- |
@@ -109,37 +157,103 @@ Do this for 48 times.
 | 15               | 16              |
 | 16               | 17              |
 
-Rotary encoder EC11 will have two pins for the button, and 3 pins for the encoder. 
+<img src="build/build_005.png" width="600">
 
-One button pin will have diode negative end connected to GP18. The other button pin connected to Keyboard PCB pin 5 (RP GPIO 6) for the left, and Keyboard PCB pin 16 (RP GPIO 17) for the right. 
+# Preparing EC11 Rotary Encoder
 
-Encoder pins GP19, GP20 for the left encoder. 
-GP21, and GP22 for the right encoder. 
-Middle pin on the encoder is connected to GND of PICO
+Prepare the wires with the length
 
-[Picture of wiring to be included]
+- 4x 18cm wires
+- 4x 33cm wire
 
+<img src="build/build_006.png" width="600">
+
+Rotary encoder EC11 have two pins for the button, and three pins for the encoder.
+
+On the two pin side solder one wire and on the other pin solder on a DIODE. Note the black line side should be headed outwards.
+
+On the three pin side. solder three wires. Middle pin is the ground. I have soldered a different color wire so that it is easy to detect in the midst of bunch of wires.
+
+# Connecting EC11 Rotary encoder to the keyboard controller
+
+Position the EC11 encoders as it would be installed inside the enclosure. Long wire will go on the left hand side. Short wire will on the right hand side. Make the three pin facing top.
+
+<img src="build/build_007.png" width="600">
+
+| Long Wired EC11 | RP Pico PIN No. |
+| --------------- | --------------- |
+| Button Wire     | 18              |
+| Encoder         | 19              |
+| Encoder         | 20              |
+| GND             | GND             |
+
+- Long wired EC11 diode connects to long wire of keyboard PCB (Keyboard PCB Pin5)
+
+| Short Wired EC11 | RP Pico PIN No. |
+| ---------------- | --------------- |
+| Button Wire      | 18              |
+| Encoder          | 21              |
+| Encoder          | 22              |
+| GND              | GND             |
+
+- Short wired EC11 diode connects to short wire of keyboard PCB (Keyboard PCB Pin16)
+
+# Soldering micro USB cable to keyboard controller
+
+<img src="build/build_008.png" width="600">
+
+Prepare the USB cable as such. Strip off the black insulation.
+
+On the back of the keyboard controller. Solder the wire as the following
+
+| USB Cable | RP Pico PIN No. |
+| --------- | --------------- |
+| Black     | GND             |
+| Red       | VBus            |
+| White     | TP2             |
+| Green     | TP3             |
+
+<img src="build/build_009.png" width="600">
+
+# Flash QMK-Vial Firmare on the Keyboard controller
+
+Connect the keyboard controller to the PC. If everything went well... Keyboard controller will be recognized as a thumb drive. [Download](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/keyboard) the firmware from the github repository. Default firmware is "unkyulee_ortho_48_vial.uf2". Depending on the language configuration you may need to flash different firmware. Copy the file to the drive and the drive will disappear after few seconds. This means, the firmware has been successfully flashed. You can test the keyboard by re-plug the cable.
+
+If the keyboard controller doesn't show up as a thumb drive, connect to the PC WHILE pressing down the reset button on the controller.
 
 # Power Supply Module
 
-Need two Micro USB cable for power (just two cables)
+<img src="build/build_010.png" width="600">
 
-Need one Micro USB cables for Keyboard connection (four cables)
+| Power Supply Module | Connected to                         |
+| ------------------- | ------------------------------------ |
+| Bat+                | Battery Holder + and Battery Meter + |
+| Bat-                | Battery Holder - and Battery Meter - |
+| Vout+               | Switch                               |
+| Vout-               | 2x Micro USB -                       |
 
-Green for the TP2, White for TP3
+- Switch connects to 2x Micro USB +
 
-wiring picture to be included
+# Display installation
+
+<img src="build/build_011.png" width="600">
+
+Glue the display to the display port. Make sure that the grill is facing upwards and the connector is oriented as the picture above. Let the glue dry. 
+
+Glue is a typical hobby hot glue. Heat the glue gun and pour the glue around the edges of the display. 
+
+<img src="build/build_012.png" width="600">
+
+Connect the display connector with the display and the display controller.
 
 
 
+# Prepare the mini HDMI cable
 
-# Display and Raspberry Pi Zero 2W
+This component is called FPV mini HDMI cable. It consists of two mini HDMI male connectors and a think film. Connect those elements together as the picture. Place the tape around the connector in order to prevent the cable being disconnected.
 
-Display should have controller board. Controller board glued to the display back plate. 
+<img src="build/build_013.png" width="600">
 
-Connect the interface cable to the controller board to the display.
 
-Go through the 3d printed enclosure hole 3 usb cables
-
-Create FPV HDMI cable and connector
+# Bottom Enclosure Assembly
 
