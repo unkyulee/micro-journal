@@ -23,7 +23,7 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 [Quick Start Guide](./micro-journal-rev-2-revamp/quickstart.md)
 
-[Build Guide] TBD
+[Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2-revamp/build-guide.md)
 
 
 ### Press
