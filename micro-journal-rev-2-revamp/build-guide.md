@@ -61,6 +61,15 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - 2x [FPV mini HDMI connector](https://www.aliexpress.com/item/1005004374555360.html)
 - [FFC HDMI Cable](https://www.aliexpress.com/item/1005004374555360.html)
 
+- 16x M3 Heated Inserts OD 4.5mm Length 3mm
+- 8x M3 Hex Screw Length 10mm
+- 2x M3 Hex Screw Length 20mm
+- 6x M3 Hex Screw Length 5mm
+
+- 11x M2 Heated Inserts OD 3.2mm Length 3mm
+- 7x M2 Screw Length 5mm
+- 4x M2 Screw Length 3mm
+
 # Build Order
 
 1. Prepare the Enclosure
@@ -234,6 +243,7 @@ If the keyboard controller doesn't show up as a thumb drive, connect to the PC W
 
 - Switch connects to 2x Micro USB +
 
+
 # Display installation
 
 <img src="build/build_011.png" width="600">
@@ -255,5 +265,73 @@ This component is called FPV mini HDMI cable. It consists of two mini HDMI male 
 <img src="build/build_013.png" width="600">
 
 
-# Bottom Enclosure Assembly
 
+# Display Enclosure Assembly
+
+Insert total of 12x M3 heated inserts into the display holder. You need to insert both back side and the front side. 
+
+<img src="build/build_014.png" width="600">
+
+Once the heated inserts are in place. Then place the display panel on the front side of the holder. After that place the hood. Use 10 mm M3 Hex screws to fix the front display parts.
+
+<img src="build/build_015.png" width="600">
+
+Leave the back panel open for now. It should be the last step to complete.
+
+
+# Hinge Assembly
+
+<img src="build/build_016.png" width="600">
+
+Place the rubber o-ring on the bolt
+
+Place the bolt as the picture above in the bottom enclosure.
+
+Place the display hinge below the bolt, and place the bolt tightly in the hole.
+
+<img src="build/build_017.png" width="600">
+
+Place the display on top the the hinge and tighten it with m3 10 mm screw.
+
+
+
+# Power Supply Assembly
+
+<img src="build/build_018.png" width="600">
+
+Place the power supply modules according to the picture.
+
+Use a double sided tape to fix the battery holder. Use hot glue or double sided tape to fix the charger module place. Before installing the back panel, wire the battery indicator outside and glue the indicator in place. 
+
+Do not close the enclosure yet. 
+
+
+
+
+# Keyboard Components Assembly
+
+Place the keyboard PCB and the controller as such in the picture. 
+
+<img src="build/build_019.png" width="600">
+
+Push the two knobs through hole indicated as "1" in the picture. Tighten the knob on each side. Long wired knob will be place on the left hand side, short wired knob will be placed on the right hand side.
+
+Also, push through the USB cable through the hole.
+
+Once all the wires have passed through the hole. Place the controller on the right hand side place, make sure that the usb port is aligned. Use hot glue or double sided tape to fix the controller in place.
+
+
+# Finalize the wiring
+
+Two cables with red/black wires, and one cable with 4 wries goes through the hole underneath the display. Power cables will be connected to the display controller and the raspberry pi. USB cable will be connected to the USB port of the raspberry pi
+
+<img src="build/build_020.png" width="600">
+
+Make sure to remove the SD card from the rasbperry pi before closing the lid. 
+
+
+# Final Assembly
+
+Use m3 20mm screws to close the enclosure. Be very careful not to clip any wires inside. 
+
+<img src="build/build_021.png" width="600">
