@@ -78,6 +78,22 @@ console=serial0,115200 console=tty1 root=PARTUUID=xxxxxxx-xx rootfstype=ext4 fsc
 5) Insert the micro SD card to the Micro Jouranl and verify if the screen is displayed in correct orientation
 
 
+# Wifi Bug fix in Raspberry Pi
+
+Reported and fix proposed by Hollis Potter:
+ 
+I wanted to alert you of a bug in Raspberry OS / Raspbian that affects it. This will prevent a WiFi connection with the message, "There was an error running option S1 wireless lan", due to a failed handshake with a modest range of WiFi routers.
+
+
+```bash
+sudo nano /etc/modprobe.d/brcmfmac.conf
+```
+
+```brcmfmac.conf
+options brcmfmac roamoff=1 feature_disable=0x82000
+```
+
+
 # Auto Login
 
 Default credentials when installed 
@@ -129,6 +145,7 @@ nano ~/.bashrc
 Add the following line at the last of the file
 
 ```bash
+
 # Startup app - ranger
 cd ~/microjournal
 ranger
@@ -295,3 +312,79 @@ sudo systemctl disable NetworkManager.service
 can even disable some cores in order save more power
 
 Edit the /boot/cmdline .txt file and added maxcpus=1 after console=tty1, then saved the file and reboot.
+
+
+
+
+# Unicode Language Input
+
+This part is optional for the unicode language input. For example, Korean input. This configuration allows to run in GUI mode that will allow Korean language input. 
+
+Install X windows and minimal components to run terminal
+
+```bash
+sudo apt update
+sudo apt install xorg openbox konsole fonts-nanum fonts-noto-cjk ibus ibus-hangul
+```
+
+Setup the startup apps when x windows starts. Setup the konsole terminal to run with full screen.
+
+```bash
+mkdir -p ~/.config/openbox
+nano ~/.config/openbox/autostart
+
+```
+
+```
+#!/bin/sh
+
+### SKIP FOR ENGLISH SUPPORT
+
+# For Korean language support add the following in .bashrc
+export GTK_IM_MODULE=ibus
+export XMODIFIDERS=@im=ibus
+export QT_IM_MODULE=ibus
+export LANG=ko_KR.UTF-8
+export LC_CTYPE=ko_KR.UTF-8
+
+# Korean Language Input Method
+ibus-daemon -drx
+### UNTIL HERE SKIP FOR ENGLISH SUPPORT
+
+konsole --fullscreen --noclose --hide-menubar --hide-tabbar
+```
+
+
+When X windows starts rotate the screen to show correctly.
+
+```bash
+chmod +x ~/.config/openbox/autostart
+nano ~/.xinitrc
+```
+
+```
+#!/bin/sh
+
+# Rotate screen to the right at startup
+xrandr --output HDMI-1 --rotate left &
+
+# Start GUI
+exec openbox-session
+```
+
+```bash
+chmod +x ~/.xinitrc
+```
+
+start X windows at boot
+
+```bash
+nano ~/.bash_profile
+```
+
+```
+if [[ -z $DISPLAY ]] && [[ $(tty) == /dev/tty1 ]]; then
+    startx
+fi
+```
+
