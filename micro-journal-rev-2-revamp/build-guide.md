@@ -335,3 +335,7 @@ Make sure to remove the SD card from the rasbperry pi before closing the lid.
 Use m3 20mm screws to close the enclosure. Be very careful not to clip any wires inside. 
 
 <img src="build/build_021.png" width="600">
+
+From this point, follow the quick start guide in order to complete the installation
+
+https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2-revamp/quickstart.md
