@@ -17,6 +17,8 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 ### Documents 
 
+[Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+
 [Micro Journal Rev.2.ReVamp Design Story](/micro-journal-rev-2-revamp/readme.md)
 
 [Features and Introduction of Rev.2.ReVamp](https://youtu.be/IFmGwKtGXtQ)
@@ -57,6 +59,8 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 
 ### Documents 
+
+[Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 [Micro Journal Rev.6 Design Process Story](/micro-journal-rev-6-one-piece/readme.md)
 
