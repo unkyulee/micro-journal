@@ -261,6 +261,13 @@ That's it. When you start up the Micro Journal, you should have your key assignm
 Pressing LOWER + POWER key for 3 seconds will turn off the raspberry pi. Then turn off the switch at the back in order to turn off the display.
 
 
+### Korean Language Support
+
+In order to use Korean language, you simply need to reflash the image. Please, download the corresponding image and flash the SD card of your language of choice.
+
+https://github.com/unkyulee/micro-journal-linux/releases
+
+
 # User Manual by Hook
 
 Written By Hook:
