@@ -417,3 +417,15 @@ Micro Journal Rev.6 is built with components that you can find in Amazon. So, if
 Here is the build guide where it explains the wiring and the steps to build one your own. This document should give you good enough information to identify the hardware troubles that you may encounter.
 
 [Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/build-guide.md)
+
+
+
+# User Manual by Hook
+
+Written By Hook:
+
+
+http://www.thewritekeys.com:8080/
+
+This is a site dedicated to providing help links, reviews, documentation and even downloads to support writers using the various Writer Decks I own and have actual hands on experience with. I started out with an Alphasmart Neo 2 in 2007, when I bought it new shortly after it's release by Renaissance Learning. It revolutionized my writing experience, giving me a great deal of focus. It allowed me to draft 5 novels and a large collection of short stories. It was, and still is, a remarkable Writer Deck more than 10 years since it was discontinued.
+
