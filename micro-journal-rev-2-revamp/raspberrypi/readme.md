@@ -346,6 +346,11 @@ nano ~/.config/openbox/autostart
 ```
 #!/bin/sh
 
+# IBUS
+export GTK_IM_MODULE=ibus
+export XMODIFIDERS=@im=ibus
+export QT_IM_MODULE=ibus
+
 # Korean Language Input Method
 ibus-daemon -drx
 
@@ -433,6 +438,11 @@ nano ~/.config/openbox/autostart
 
 ```
 #!/bin/sh
+
+# IBUS
+export GTK_IM_MODULE=ibus
+export XMODIFIDERS=@im=ibus
+export QT_IM_MODULE=ibus
 
 # Chinese Language Input Method
 ibus-daemon -drx
