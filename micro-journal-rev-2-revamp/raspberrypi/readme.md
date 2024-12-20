@@ -318,12 +318,20 @@ Edit the /boot/cmdline .txt file and added maxcpus=1 after console=tty1, then sa
 
 # Unicode Language Input
 
+### Korean
+
 This part is optional for the unicode language input. For example, Korean input. This configuration allows to run in GUI mode that will allow Korean language input. 
+
+Add Korean locale (in my case 'ko_KR.UTF-8') via:
+```bash
+sudo apt update
+sudo dpkg-reconfigure locales
+```
+
 
 Install X windows and minimal components to run terminal
 
 ```bash
-sudo apt update
 sudo apt install xorg openbox konsole fonts-nanum fonts-noto-cjk ibus ibus-hangul
 ```
 
@@ -338,18 +346,8 @@ nano ~/.config/openbox/autostart
 ```
 #!/bin/sh
 
-### SKIP FOR ENGLISH SUPPORT
-
-# For Korean language support add the following in .bashrc
-export GTK_IM_MODULE=ibus
-export XMODIFIDERS=@im=ibus
-export QT_IM_MODULE=ibus
-export LANG=ko_KR.UTF-8
-export LC_CTYPE=ko_KR.UTF-8
-
 # Korean Language Input Method
 ibus-daemon -drx
-### UNTIL HERE SKIP FOR ENGLISH SUPPORT
 
 konsole --fullscreen --noclose --hide-menubar --hide-tabbar
 ```
@@ -387,4 +385,161 @@ if [[ -z $DISPLAY ]] && [[ $(tty) == /dev/tty1 ]]; then
     startx
 fi
 ```
+
+When reboot, you will be presented with GUI terminal. Run ibus-setup to setup the Korean language input. This may be a little bit difficult to do without a mouse and bigger screen. So, it is recommended to connect to bigger screen and a mouse to raspbery pi. 
+
+run the following command to configure the details of the hangul input
+```
+ibus-setup
+```
+
+
+### Chinese Input
+
+Add Chinese locale (in my case 'zh_CN.UTF-8') via:
+```bash
+sudo apt update
+sudo dpkg-reconfigure locales
+```
+Select and install: zh_CN.UTF-8 UTF-8
+
+
+Install Chinese fonts:
+
+```
+sudo apt-get install \
+fonts-arphic-bkai00mp \
+fonts-arphic-bsmi00lp \
+fonts-arphic-gbsn00lp \
+fonts-arphic-gkai00mp \
+xfonts-intl-chinese \
+xfonts-intl-chinese-big
+```
+
+This configuration allows to run in GUI mode that will allow unicode language input. 
+
+Install X windows and minimal components to run terminal
+
+```bash
+sudo apt install xorg openbox konsole ibus ibus-pinyin ibus-libpinyin
+```
+
+Setup the startup apps when x windows starts. Setup the konsole terminal to run with full screen.
+
+```bash
+mkdir -p ~/.config/openbox
+nano ~/.config/openbox/autostart
+```
+
+```
+#!/bin/sh
+
+# Chinese Language Input Method
+ibus-daemon -drx
+
+konsole --fullscreen --noclose --hide-menubar --hide-tabbar
+```
+
+
+When X windows starts rotate the screen to show correctly.
+
+```bash
+chmod +x ~/.config/openbox/autostart
+nano ~/.xinitrc
+```
+
+```
+#!/bin/sh
+
+# Rotate screen to the right at startup
+xrandr --output HDMI-1 --rotate left &
+
+# Start GUI
+exec openbox-session
+```
+
+```bash
+chmod +x ~/.xinitrc
+```
+
+start X windows at boot
+
+```bash
+nano ~/.bash_profile
+```
+
+```
+if [[ -z $DISPLAY ]] && [[ $(tty) == /dev/tty1 ]]; then
+    startx
+fi
+```
+
+When reboot, you will be presented with GUI terminal. Run ibus-setup to setup the Korean language input. This may be a little bit difficult to do without a mouse and bigger screen. So, it is recommended to connect to bigger screen and a mouse to raspbery pi. 
+
+run the following command to configure the details of the hangul input
+```
+ibus-setup
+```
+
+
+
+#### Japanese Input
+
+TBD
+
+
+=== Japanese Input ===
+
+1. Add Japanese locale (in my case 'ja_JP.UTF-8') via:
+
+sudo dpkg-reconfigure locales
+
+Select and install: ja_JP.UTF-8 UTF-8
+
+2. Install Japanese fonts:
+
+sudo apt-get install \
+xfonts-intl-japanese \
+xfonts-intl-japanese-big \
+fonts-takao
+
+3. Install fcitx and mozc:
+
+sudo apt-get install \
+fcitx \
+fcitx-mozc
+
+4. Open the Input Method Configuration
+
+Either from the command line:
+
+sudo im-config
+
+or via the main menu:
+
+Raspberry Pi Menu > Preferences > Input Method
+
+- First screen:
+Current confituration for the input method...
+click [OK]
+
+- Second screen:
+Do you explicetly select the user configuration?
+click [YES]
+
+- Third screen:
+Select: (*) fcitx activate Flexible Input Method Framework (fcitx) @
+click [OK]
+
+5. Reboot
+
+Now it should be possible to select the input method
+'Mozc' from the keyboard icon in the panel:
+
+- right click on the keyboard icon
+- hover over 'Input Method'
+- and select 'Mozc'
+
+The input method now can be toggled between English and Japanese using
+the key combination 'ctrl-space'...
 
