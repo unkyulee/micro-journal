@@ -16,7 +16,12 @@ When you receive the **Micro Journal Rev.2**, you'll need to install a battery b
 
 3. **Power on**: Once the battery is installed, you're ready to power on and begin using your device.
 
-4. Peel off the plastic from the display: You may see some scratches or some bubbles on the display. That's part of packaging plastic supposed to be peeled off. It's up to you leave it or peel it. Don't force the peel, it should be smooth experience. 
+4. Peel off the plastic from the display: You may see some scratches or some bubbles on the display. That's part of packaging plastic supposed to be peeled off. It's up to you leave it or peel it. Don't force the peel, it should be smooth experience.
+
+# Carrying Case
+
+https://www.reddit.com/r/writerDeck/comments/1hkx7ia/microjournal_rev2_case/
+
 
 # Battery Information
 
