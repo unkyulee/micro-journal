@@ -11,13 +11,12 @@
 //
 int last_sleep = millis();
 //
-#define MARGIN 5
+#define MARGIN_X 20
+#define MARGIN_Y 40
+
 //
 const int cols = 47;
-const int rows = 8;
-const int font_width = 20;
-const int font_height = 49;
-const int editY = font_height * (rows + 1);
+const int rows = 7;
 
 // status bar
 const int status_height = 30;
@@ -27,6 +26,7 @@ const int statusY = EPD_HEIGHT - status_height;
 bool clear_request = true;
 bool cleared = true;
 
+//
 int startLine = -1;
 
 //
@@ -38,6 +38,10 @@ void WP_setup()
     Editor &editor = Editor::getInstance();
     editor.screenBuffer.rows = rows;
     editor.screenBuffer.cols = cols;
+
+    // display init
+    GFXfont *font = display_EPD_font();
+    display_initialize(MARGIN_X, MARGIN_Y, 60, 20);
 
     // load file from the editor
     JsonDocument &app = app_status();
@@ -85,18 +89,22 @@ void WP_render()
     WP_render_text();
 
     // Turn off the display
-    //epd_poweroff_all();
+    // epd_poweroff_all();
     epd_poweroff();
 
     // clear background flag off
     cleared = false;
 }
 
+// DRAW LINE OF TEXT
 void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
 {
     char *line = Editor::getInstance().screenBuffer.line_position[i];
     int length = Editor::getInstance().screenBuffer.line_length[i];
-    int cursorX = MARGIN;
+
+    //
+    display_setline(i - startLine);
+
     // render
     if (line != NULL && length > 0)
     {
@@ -108,8 +116,24 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
 
         // Null-terminate the string
         row[copyLength] = '\0';
+
+        int cursorX = display_x();
+        int cursorY = display_y();
         writeln(display_EPD_font(), row, &cursorX, &cursorY, framebuffer);
     }
+}
+
+void WP_clear_row(int row)
+{
+    // delete a line and redraw the line
+    Rect_t area =
+        display_rect(
+            0,
+            display_lineheight() * row,
+            EPD_WIDTH,
+            display_lineheight());
+
+    epd_clear_quick(area, 4, 50);
 }
 
 //
@@ -151,8 +175,10 @@ void WP_render_text()
     {
         app_log("Text Render Cleared\n");
 
+        // Draw from the first line
+        display_setline(0);
+
         //
-        int cursorY = font_height;
         for (int i = startLine; i <= totalLine; i++)
         {
             // stop when exceeding row
@@ -160,10 +186,10 @@ void WP_render_text()
                 break;
 
             if (i >= 0)
-                WP_render_text_line(i, cursorY, display_EPD_framebuffer());
+                WP_render_text_line(i, display_y(), display_EPD_framebuffer());
 
             // increase the line
-            cursorY += font_height;
+            display_newline();
         }
 
         //
@@ -176,21 +202,16 @@ void WP_render_text()
     if (cleared == false)
     {
         // new line
+        // when new line is detected than redraw the previous line
         if (cursorLine != cursorLine_prev)
         {
             // clear the currentLine and the previousLine
-            app_log("clear the currentLine and the previousLine\n");
-            Rect_t area =
-                display_rect(
-                    0,
-                    font_height * (max(cursorLine - startLine - 1, 0)),
-                    EPD_WIDTH,
-                    font_height * 2);
+            app_log("clear the previous line\n");
 
-            epd_clear_quick(area, 4, 50);
+            WP_clear_row(max(cursorLine_prev - startLine, 0));
 
             // and redraw the line
-            WP_render_text_line(cursorLine - 1, area.y + font_height, NULL);
+            WP_render_text_line(cursorLine_prev, display_y(), NULL);
 
             // render the entire line
             cursorLinePos_prev = 0;
@@ -203,27 +224,20 @@ void WP_render_text()
             app_log("Handle Backspace\n");
 
             // delete a line and redraw the line
-            Rect_t area =
-                display_rect(
-                    0,
-                    font_height * (max(cursorLine - startLine, 0)),
-                    EPD_WIDTH,
-                    font_height * 2);
-
-            epd_clear_quick(area, 4, 50);
+            WP_clear_row(max(cursorLine - startLine, 0));
 
             // and redraw the line
             cursorLinePos_prev = 0;
         }
 
         //
-        // Bottom line will the the edit area
-        // Draw the last character
+        // Draw the new character entered
         if (cursorLinePos != cursorLinePos_prev)
         {
             // render entire line
-            int cursorX = MARGIN + font_width * cursorLinePos_prev;
-            int cursorY = font_height * (cursorLine - startLine + 1);
+            int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
+            display_setline(cursorLine - startLine);
+            int cursorY = display_y();
 
             char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
             writeln(display_EPD_font(), line + cursorLinePos_prev, &cursorX, &cursorY, NULL);
@@ -257,11 +271,11 @@ void WP_render_cursor()
     // Calculate Cursor X position
     // reached the line where cursor is
     // distance X is cursorPos - pos
-    int cursorX = 0;
+    int cursorX = MARGIN_X;
     if (Editor::getInstance().fileBuffer.buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
     {
-        // font width 12
-        cursorX = MARGIN + cursorLinePos * font_width;
+        // where to display the cursor
+        cursorX = MARGIN_X + cursorLinePos * display_fontwidth() + 5;
     }
 
     // Delete previous cursor line
@@ -274,12 +288,13 @@ void WP_render_cursor()
             app_log("Delete previous cursor line\n");
 #endif
             Rect_t area = display_rect(
-                cursorLinePos_prev * font_width,
-                font_height * (max(cursorLine - startLine, 0) + 1),
-                font_width * abs(cursorLinePos - cursorLinePos_prev + 1),
+                MARGIN_X + cursorLinePos_prev * display_fontwidth(),
+                MARGIN_Y + display_lineheight() * (max(cursorLine - startLine, 0)),
+                display_fontwidth() * abs(cursorLinePos - cursorLinePos_prev + 1),
                 10);
 
             epd_clear_quick(area, 8, 50);
+            // epd_clear_area(area);
 
             // render the cursor
             renderedCursorX = -1;
@@ -292,12 +307,12 @@ void WP_render_cursor()
         cursorLinePos_prev = cursorLinePos;
     }
 
-    // when there are no types for 5 seconds then
+    // when there are no types for a short duration then
     // display the cursor
-    if (renderedCursorX == -1 && last + 300 < millis())
+    if (renderedCursorX == -1 && last + 100 < millis())
     {
         // Cursor will be always at the bottom of the screen
-        int cursorY = font_height * (max(cursorLine - startLine, 0) + 1);
+        int cursorY = MARGIN_Y + display_lineheight() * (max(cursorLine - startLine, 0));
         writeln(display_EPD_font(), "_", &cursorX, &cursorY, NULL);
 
         //

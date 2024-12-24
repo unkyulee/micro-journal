@@ -57,7 +57,7 @@ void display_EPD_setup()
 
     // Turn off the display
     // turn off the board LED
-    //epd_poweroff_all();
+    // epd_poweroff_all();
     epd_poweroff();
 
     // Sleep Button Setup
@@ -78,7 +78,7 @@ void display_battery_level()
         epd_poweron();
         delay(10); // Make adc measurement more accurate
 
-         // battery pin - 14
+        // battery pin - 14
         uint16_t v = analogRead(14);
         float battery_voltage = ((float)v / 4095.0) * 2.0 * 3.3 * (1100 / 1000.0);
         if (battery_voltage >= 4.2)
@@ -236,4 +236,55 @@ Rect_t display_rect(int x, int y, int width, int height)
         area.height = 0;
 
     return area;
+}
+
+// DISPLAY CONFIGURATION
+int _x_init = 10;
+int _y_init = 10;
+int _line_height = 50;
+int _x_pos = 0;
+int _y_pos = 0;
+int _font_width = 30;
+
+void display_initialize(int x_init, int y_init, int line_height, int font_width)
+{
+    //
+    _x_init = x_init;
+    _y_init = y_init;
+    _line_height = line_height;
+    _font_width = font_width;
+
+    //
+    _x_pos = x_init;
+    _y_pos = y_init + _line_height;
+}
+
+void display_newline()
+{
+    _x_pos = _x_init;
+    _y_pos += _line_height;
+}
+
+void display_setline(int row)
+{
+    _x_pos = _x_init;
+    _y_pos = _y_init + _line_height * (row);
+}
+
+int display_x()
+{
+    return _x_pos;
+}
+
+int display_y()
+{
+    return _y_pos;
+}
+
+int display_lineheight() {
+    return _line_height;
+}
+
+int display_fontwidth() {
+    return _font_width;
 }

@@ -16,6 +16,7 @@ void WP_render_cursor();
 //
 void WP_render_text();
 void WP_render_text_line(int i, int cursorY);
+void WP_clear_row(int row);
 
 void WP_render_status();
 void WP_check_saved();
