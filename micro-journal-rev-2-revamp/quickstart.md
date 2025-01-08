@@ -240,42 +240,8 @@ https://www.reddit.com/r/writerDeck/comments/1hs2nrr/microjournal_rev_2_micro_te
 
 ### Customizing the Keyboard Layout
 
+Please refer to the PDF document 
 
-<img src="./keyboard/layout.png" />
-
-You can customize the keyboard layout. Here are the steps that has been discovered by Hook.
-
-So here is the method I have used and it works every time. I am working with a ThinkPad laptop with Windows 10. I assume it would be fine with Win 11 and Linux, but haven't tested.
-
-In order to do this, you first need to download and install Vial. The download and user manual are available here:
-
-get.vial.today/
-
-Once Vial is installed, you are ready to begin.
-
-1. Power down the Rev 2 by holding the bottom left hand power key on the keyboard. You can let go once the shutdown sequence begins.
-
-2. Set the power switch on the back to off.
-
-3. connect a USB cable from the USB port on the side of the keyboard (Micro-USB or USB-c) to your computer (USB-A in my case). That port is for the keyboard controller which Vial will access.
-
-4. Open Vial on your computer. When it opens, you will see a screen that looks like this.
-
-<img src="./keyboard/vial.jpg" />
-
-There are a lot of things you can do with Vial, but I have not explored them. You can do whatever you are comfortable with from the user manual, but I am only going to address the simple matter of changing the position of keys in the top layer of your keyboard.
-
-The smaller keyboard at the top is what Vial is reading from the Rev 2. You will notice it shows 5 rows but you only have 4. So ignore the 5th row. All those triangles means there is nothing there anyway. You can see there are tabs to change to you other layers (shift, arrow up and arrow down) but I am only going to deal with this top layer, the normal map for pressing a key and getting a character or function.
-
-Below is a larger set of keys. There are several tabs on this lower display allowing you to select from many kinds of keys. Everything you need is on the basic tab,. Until you learn more and are comfortable,if you don't know what something does, don't mess with it. Lol.
-
-To change a key, select it in the top image of your ortholinear keyboard and then select what key you want to replace it with on the keys in the bottom half of the screen. Click on it and that key will replace the key you previously selected. As soon as you do it, that change is reflected in the Micro Journal's keyboard. That's my keyboard up top. You can see I have changed my arrow navigation keys to a more conventional D-Pad configuration.
-
-5. When you are done, close Vial.
-
-6. Disconnect the USB cord from the keyboard USB port on the Micro Journal.
-
-That's it. When you start up the Micro Journal, you should have your key assignments that you changed.
 
 
 ### Powering Off
