@@ -240,7 +240,9 @@ https://www.reddit.com/r/writerDeck/comments/1hs2nrr/microjournal_rev_2_micro_te
 
 ### Customizing the Keyboard Layout
 
-Please refer to the PDF document 
+Please refer to the PDF document written by Hook:
+
+https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2-revamp/keyboard/Hooks-Keymap-Guide.pdf
 
 
 
