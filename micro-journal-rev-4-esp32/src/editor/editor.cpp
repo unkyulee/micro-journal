@@ -277,7 +277,7 @@ void Editor::keyboard(char key)
                     screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0] + line_length - 1;
 
                 // if last line then move to the end of the buffer
-                if (fileBuffer.cursorLine == screenBuffer.total_line)
+                if (fileBuffer.cursorLine == screenBuffer.total_line -1)
                     newCursorPos = fileBuffer.getBufferSize();
 
                 //
