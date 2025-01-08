@@ -218,6 +218,23 @@ You may need to be in the same wifi network as the Micro Journal in order to acc
 
 WordGrinder saves files in its own format. To read or share them easily, you must export the file as either **PDF** or **Plain Text**. To export a document, press the **ESC** key while in WordGrinder to access the export options.
 
+
+#### Using Micro as a editor
+
+To get Micro added:
+
+When Ranger pops up, hit q to quit.
+
+Type "sudo systemctl start NetworkManager" to start up your network connection
+
+Type "curl https://getmic.ro | bash"
+
+It should download micro and you can access it by hitting q in ranger to access the command line and typing "./micro"
+
+Git can be downloaded from the command line with "sudo apt-get install git" but setting that up is up to you. :)
+
+https://www.reddit.com/r/writerDeck/comments/1hs2nrr/microjournal_rev_2_micro_text_editor_git_awesome/
+
 ---
 
 
