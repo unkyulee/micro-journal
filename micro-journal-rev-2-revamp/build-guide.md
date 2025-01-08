@@ -9,7 +9,7 @@ You’ll also need access to 3D-printed parts to complete the build. Many 3D pri
 - Build Time: 4 ~ 6 hours
 - Basic level of soldering is required to complete the build
 
-[Buy a DIY Kit] TBD
+[Buy a DIY Kit](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-all-components/)
 
 # System Architecture
 
