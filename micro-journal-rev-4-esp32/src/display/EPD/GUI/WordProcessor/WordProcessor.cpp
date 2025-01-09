@@ -7,6 +7,7 @@
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 #include "keyboard/hid/nimble/ble.h"
+#include "service/Tools/Tools.h"
 
 //
 int last_sleep = millis();
@@ -75,6 +76,9 @@ void WP_render()
         // mark that the screen is cleared
         // so that following render functions will redraw
         cleared = true;
+
+        //
+        debug_log("WP_render::full refresh requested\n");
     }
 
     //
@@ -159,38 +163,22 @@ void WP_render_text()
     // start editing from 2nd Line
     if (startLine == -1)
     {
+        //
         startLine = max(cursorLine - 2, 0);
-        app_log("WP_render_text::Start Line Init: %d\n", startLine);
+        debug_log("WP_render_text::Start Line Init: %d cursorLine %d\n", startLine, cursorLine);
     }
 
     // when reaching the end of the screen reset the startLine
     if (totalLine - startLine > rows)
     {
+        //
         clear_request = true;
+
+        //
         startLine = max(cursorLine - 2, 0);
-        app_log("WP_render_text::Start Line Reset: %d\n", startLine);
+        debug_log("WP_render_text::Start Line Reset: %d cursorLine %d\n", startLine, cursorLine);
     }
 
-    /*
-        // editing in the middle
-        // delete and redraw the line
-        if (cursorPos != Editor::getInstance().fileBuffer.getBufferSize() && cursorPos != cursorPos_prev)
-        {
-            // clear the line and below
-            Rect_t area = display_rect(
-                0,
-                MARGIN_Y + display_lineheight() * (max(cursorLine - startLine, 0)),
-                EPD_WIDTH,
-                EPD_HEIGHT);
-
-            epd_clear_quick(area, 4, 50);
-
-            // mark it as cleared so that it
-            // cleared = true;
-
-            app_log("writing in the middle\n");
-        }
-    */
     //
     // Middle part of the text will be rendered
     // Only when refresh background is called
@@ -257,23 +245,13 @@ void WP_render_text()
         // Draw the new character entered
         if (cursorLinePos != cursorLinePos_prev)
         {
-            if (cursorPos == Editor::getInstance().fileBuffer.getBufferSize())
-            {
-                // render entire line
-                int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
-                display_setline(cursorLine - startLine);
-                int cursorY = display_y();
+            // render entire line
+            int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
+            display_setline(cursorLine - startLine);
+            int cursorY = display_y();
 
-                char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
-                writeln(display_EPD_font(), line + cursorLinePos_prev, &cursorX, &cursorY, NULL);
-            }
-
-            // writing in the middle
-            else
-            {
-                // delete a line and redraw the line
-                clear_request = true;
-            }
+            char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
+            writeln(display_EPD_font(), line + cursorLinePos_prev, &cursorX, &cursorY, NULL);
         }
     }
 
@@ -397,7 +375,6 @@ void WP_check_saved()
         if (!Editor::getInstance().saved)
         {
             Editor::getInstance().saveFile();
-            clear_request = true;
         }
     }
 }
@@ -420,6 +397,8 @@ void WP_check_sleep()
 // display character total
 // display keyboard layout - Rev.5 and Rev.7
 // display save status
+// FILE INDEX | BYTES | SAVED | LAYOUT
+// 160 | 200 ---- 200 | 100
 #define STATUS_REFRESH 300
 void WP_render_status()
 {
@@ -428,121 +407,107 @@ void WP_render_status()
 
     // status start Y position
     int cursorY = statusY + status_height - 8;
-    static size_t num_prev = 0;
 
+    //
+    static bool saved_prev = false;
+    static size_t filesize_prev = 0;
+    size_t filesize = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
+
+    // Full Redraw
     // Draw non-refreshing section
     if (cleared)
     {
-        // reset previous character size
-        num_prev = 0;
-
-        // FILE INDEX
-        int cursorX = 16;
+        ////////////////////////////////////////
+        // FILE INDEX 25 - 225
+        int cursorX = 25;
         String file = format("FILE %d", app["config"]["file_index"].as<int>());
         writeln((GFXfont *)&systemFont, file.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
+        ////////////////////////////////////////
 
-        // KEYBOARD LAYOUT
+        ////////////////////////////////////////
+        // FILE SIZE
+        cursorX = 200;
+        String filesizeFormatted = formatNumber(filesize);
+        writeln((GFXfont *)&systemFont, filesizeFormatted.c_str(), &cursorX, &cursorY, NULL);
+        ////////////////////////////////////////
+
+        ////////////////////////////////////////
+        // KEYBOARD LAYOUT 860 - 960
         String layout = app["config"]["keyboard_layout"].as<String>();
         if (layout == "null" || layout.isEmpty())
             layout = "US"; // defaults to US layout
-
-        cursorX = EPD_WIDTH - 180;
+        cursorX = 860;
         writeln((GFXfont *)&systemFont, layout.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
-
-        // BATTERY STATUS
-        float battery_voltage = app["battery_voltage"].as<float>();
-        float min_voltage = 3.5;
-        float max_voltage = 4.2;
-        int battery_level = 0;
-
-        if (battery_voltage < min_voltage)
-        {
-            battery_level = 0; // Below minimum voltage
-        }
-        else if (battery_voltage > max_voltage)
-        {
-            battery_level = 100; // Above maximum voltage
-        }
-        else
-        {
-            battery_level = (battery_voltage - min_voltage) / (max_voltage - min_voltage) * 100;
-        }
-
-        cursorX = EPD_WIDTH - 120;
-        writeln((GFXfont *)&systemFont, format("%d%%", battery_level).c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
+        ////////////////////////////////////////
     }
 
-    // Draw periodically refreshing section
+    // FILE SIZE DRAWS WHEN STOPPED EDITING FOR A WHILE
     static int last = millis();
-
-    // when cleared redraw the size
-    if (cleared)
-        num_prev = -1;
-
-    // FILE SIZE
-    static bool num_changed = false;
-    size_t num = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
-    if (num != num_prev)
+    static bool debouncing = false;
+    if (filesize != filesize_prev)
     {
-        //
-        num_prev = num;
-
-        //
-        num_changed = true;
-
         // debounce for status_refresh amount
         last = millis();
+
+        //
+        filesize_prev = filesize;
+        debouncing = true;
     }
 
-    if ((num_changed && last + STATUS_REFRESH < millis()) || cleared)
+    //
+    if (debouncing == true && last + STATUS_REFRESH < millis())
     {
         //
         last = millis();
-        num_changed = false;
+        debouncing = false;
+
+        // FILE SIZE 200 - 400
+        int cursorX = 200;
+
+        // remove previous text
+        Rect_t area = display_rect(
+            cursorX - 10,
+            statusY,
+            210,
+            status_height);
+        epd_clear_quick(area, 4, 50);
+
+        // redraw the new number
+        String filesizeFormatted = formatNumber(filesize);
+        writeln((GFXfont *)&systemFont, filesizeFormatted.c_str(), &cursorX, &cursorY, NULL);
+    }
+
+    /////////////////////////////////////
+    // DISPLAY SAVED STATE
+    /////////////////////////////////////
+    if (Editor::getInstance().saved != saved_prev || cleared)
+    {
+        int cursorX = 550;
+
+        // clear the status area
+        Rect_t area = display_rect(
+            cursorX - 10,
+            statusY,
+            210,
+            status_height);
+        //
+        epd_clear_quick(area, 4, 50);
 
         //
-        int cursorX = 160;
-
-        //
-        if (!cleared)
-        {
-            Rect_t area = display_rect(
-                cursorX,
-                statusY,
-                450,
-                status_height);
-            //
-            epd_clear_quick(area, 2, 100);
-        }
-
-        String formattedNumber = "";
-        int digitCount = 0;
-        if (num < 0)
-        {
-            formattedNumber += "-";
-            num = -num;
-        }
-        do
-        {
-            if (digitCount > 0 && digitCount % 3 == 0)
-            {
-                formattedNumber = "," + formattedNumber;
-            }
-            formattedNumber = String(num % 10) + formattedNumber;
-            num /= 10;
-            digitCount++;
-        } while (num > 0);
-
-        formattedNumber += " characters";
-
-        // SAVED STATUS
+        String savedText = "NOT SAVED";
         if (Editor::getInstance().saved)
         {
-            formattedNumber += " saved";
+            // file is saved
+            savedText = "SAVED";
         }
 
-        writeln((GFXfont *)&systemFont, formattedNumber.c_str(), &cursorX, &cursorY, NULL);
+        // display the text
+        writeln((GFXfont *)&systemFont, savedText.c_str(), &cursorX, &cursorY, NULL);
+
+        // previous values
+        saved_prev = Editor::getInstance().saved;
     }
+    /////////////////////////////////////
 }
 
 //
