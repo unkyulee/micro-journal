@@ -21,9 +21,16 @@ class MyEspUsbHost : public EspUsbHost
   // USB Keycode is sent when key is pressed or released
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
-#ifdef DEBUG
-    app_log("%02x %02x %02x %02x %02x %02x %02x %02x\n", report.modifier, report.reserved, report.keycode[0], report.keycode[1], report.keycode[2], report.keycode[3], report.keycode[4], report.keycode[5]);
-#endif
+    //
+    debug_log("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
+              report.modifier,
+              report.reserved,
+              report.keycode[0],
+              report.keycode[1],
+              report.keycode[2],
+              report.keycode[3],
+              report.keycode[4],
+              report.keycode[5]);
 
     // Key Pressed
     for (int i = 0; i < 6; i++)
@@ -102,13 +109,13 @@ void keyboard_usb_loop()
   // int sequence[] = {0x29, 0x07}; ESC, D
 
   // ESC W 1 TEST ENTER PASS ENTER
-  //int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
+  // int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
 
   // ESC W 1 TEST ENTER PASS ENTER B S
-  //int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
+  // int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
 
   //
-  int sequence[] = {0x52, 0x10, 0x2C, 0x51, 0x10, 0x2C};
+  int sequence[] = {0x52, 0x10, 0x2C, 0x51, 0x51};
 
   // simulate typingis
   static unsigned int last = millis();
@@ -117,14 +124,12 @@ void keyboard_usb_loop()
   {
     last = millis();
 
-
     keyboard_hid_pressed(sequence[seq_cnt], 0);
     seq_cnt++;
     if (seq_cnt >= sizeof(sequence) / sizeof(int))
     {
       seq_cnt = 0;
     }
-
 
     // ESC
     // keyboard_hid_pressed(0x29, 0);

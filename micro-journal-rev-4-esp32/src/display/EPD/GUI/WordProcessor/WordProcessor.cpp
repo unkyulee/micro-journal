@@ -160,7 +160,7 @@ void WP_render_text()
     if (startLine == -1)
     {
         startLine = max(cursorLine - 2, 0);
-        app_log("Start Line Init: %d -> ", startLine);
+        app_log("WP_render_text::Start Line Init: %d\n", startLine);
     }
 
     // when reaching the end of the screen reset the startLine
@@ -168,7 +168,7 @@ void WP_render_text()
     {
         clear_request = true;
         startLine = max(cursorLine - 2, 0);
-        app_log("Start Line Reset: %d -> ", startLine);
+        app_log("WP_render_text::Start Line Reset: %d\n", startLine);
     }
 
     /*
@@ -197,7 +197,7 @@ void WP_render_text()
     //
     if (cleared)
     {
-        app_log("Text Render Cleared\n");
+        app_log("WP_render_text::Text Render Cleared\n");
 
         // Draw from the first line
         display_setline(0);
@@ -304,14 +304,20 @@ void WP_render_cursor()
     int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
     int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
 
+    //
+    debug_log("WP_render_cursor::pos %d line %d line pos %d\n", cursorPos, cursorLine, cursorLinePos);
+
     // Calculate Cursor X position
     // reached the line where cursor is
     // distance X is cursorPos - pos
     int cursorX = MARGIN_X;
-    if (Editor::getInstance().fileBuffer.buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
+    if (Editor::getInstance().fileBuffer.buffer[max(cursorPos - 1, 0)] != '\n' && cursorLinePos != 0)
     {
         // where to display the cursor
         cursorX = MARGIN_X + cursorLinePos * display_fontwidth() + 5;
+
+        //
+        debug_log("WP_render_cursor::cursorX %d\n", cursorX);
     }
 
     // Delete previous cursor line
@@ -320,9 +326,9 @@ void WP_render_cursor()
         if (renderedCursorX > 0)
         {
             //
-#ifdef DEBUG
-            app_log("Delete previous cursor line\n");
-#endif
+            debug_log("Delete previous cursor line\n");
+
+            //
             Rect_t area = display_rect(
                 MARGIN_X + cursorLinePos_prev * display_fontwidth() - 10,
                 MARGIN_Y + CURSOR_MARGIN / 2 + display_lineheight() * (max(cursorLine - startLine, 0)),
@@ -556,9 +562,9 @@ void WP_keyboard(char key)
 
         //
         app["screen"] = MENUSCREEN;
-#ifdef DEBUG
-        app_log("WP - Moving to Menu Screen\n");
-#endif
+
+        //
+        debug_log("WP_keyboard::Moving to Menu Screen\n");
     }
 
     else

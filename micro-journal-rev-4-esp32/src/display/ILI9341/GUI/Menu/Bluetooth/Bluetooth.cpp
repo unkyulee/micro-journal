@@ -439,10 +439,8 @@ void Bluetooth_save()
     serializeJsonPretty(app["config"], jsonOutput);
     file.println(jsonOutput);
 
-// debug
-#ifdef DEBUG
-    app_log("%s\n", jsonOutput.c_str());
-#endif
+    // debug
+    debug_log("Bluetooth_save\n%s\n", jsonOutput.c_str());
 
     //
     app_log("BLE config updated successfully.\n");

@@ -163,6 +163,8 @@ void Editor::clearFile()
 // Handle Keyboard Input
 void Editor::keyboard(char key)
 {
+    debug_log("Editor::keyboard:: %c\n", key);
+
     //////////////////////////
     // BACKWARD EDITING
     //////////////////////////
@@ -269,19 +271,35 @@ void Editor::keyboard(char key)
         else if (key == 21)
         {
             // move the cursorPos to the start of the next line
-            if (fileBuffer.cursorLine <= screenBuffer.total_line)
+            if (fileBuffer.cursorLine < screenBuffer.total_line)
             {
                 //
                 int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine + 1], 1);
                 int newCursorPos =
                     screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0] + line_length - 1;
 
-                // if last line then move to the end of the buffer
-                if (fileBuffer.cursorLine == screenBuffer.total_line -1)
-                    newCursorPos = fileBuffer.getBufferSize();
+                debug_log("Editor::keyboard::DOWN buffer %d total_line %d cursorLine %d line_length %d newCursorPos %d\n",
+                          fileBuffer.getBufferSize(),
+                          screenBuffer.total_line,
+                          fileBuffer.cursorLine,
+                          line_length,
+                          newCursorPos);
 
                 //
                 fileBuffer.cursorPos = newCursorPos;
+
+                //
+                debug_log("Editor::keyboard::DOWN cursorPos %d\n", newCursorPos);
+            }
+
+            else if (fileBuffer.cursorLine == screenBuffer.total_line)
+            {
+
+                // if last line then move to the end of the buffer
+                fileBuffer.cursorPos = fileBuffer.getBufferSize();
+
+                debug_log("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
+                          fileBuffer.cursorPos);
             }
         }
 

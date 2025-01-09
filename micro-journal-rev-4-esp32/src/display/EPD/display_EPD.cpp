@@ -176,9 +176,7 @@ void display_EPD_loop()
 
 void display_EPD_keyboard(char key)
 {
-#ifdef DEBUG
-    app_log("RECEIVED %d %c\n", key, key);
-#endif
+    debug_log("display_EPD_keyboard::RECEIVED %d %c\n", key, key);
 
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
@@ -221,9 +219,8 @@ Rect_t display_rect(int x, int y, int width, int height)
         .height = height,
     };
 
-#ifdef DEBUG
-    app_log("Rect x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
-#endif
+    //
+    debug_log("display_rect::Rect x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
 
     // x can't exceed the EPD_WIDTH
     if (area.x + area.width > EPD_WIDTH)
@@ -240,6 +237,10 @@ Rect_t display_rect(int x, int y, int width, int height)
     // height can't be negative
     if (area.height < 0)
         area.height = 0;
+
+
+    //
+    debug_log("display_rect::corrected Rect x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
 
     return area;
 }

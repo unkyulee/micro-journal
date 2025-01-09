@@ -63,8 +63,8 @@ void config_load()
 
         // check if configString is empty
         if (configString.isEmpty())
-        {           
-            app_log("Configuration is empty setting default\n"); 
+        {
+            app_log("Configuration is empty setting default\n");
             _set_default_config();
 
             // to avoid deserialization failure whem empty
@@ -103,7 +103,7 @@ void config_load()
         app_log("config.json file doens't exist\n");
         delay(100);
         _set_default_config();
-        
+
         return;
     }
 }
@@ -130,16 +130,15 @@ void config_save()
         serializeJsonPretty(app["config"], jsonOutput);
         configFile.println(jsonOutput);
 
-// debug
-#ifdef DEBUG
-        app_log("%s\n", jsonOutput.c_str());
-#endif
+        // debug output configuration content
+        debug_log("config_save\n%s\n", jsonOutput.c_str());
 
-        //
+        // 
         app_log("Config updated successfully.\n");
     }
     else
     {
+        //
         app_log("No 'config' property found in app Document.\n");
     }
 

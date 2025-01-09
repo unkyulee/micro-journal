@@ -332,10 +332,8 @@ void Wifi_save()
         serializeJsonPretty(app["wifi"], jsonOutput);
         file.println(jsonOutput);
 
-// debug
-#ifdef DEBUG
-        app_log("%s\n", jsonOutput.c_str());
-#endif
+        // debug
+        debug_log("Wifi_save\n%s\n", jsonOutput.c_str());
 
         //
         app_log("Wifi config updated successfully.\n");

@@ -128,7 +128,7 @@ void FileBuffer::load(String fileName)
     delay(100);
 
     // log
-    app_log("Read size: %d, seek: %d, buffer: %d, cursor: %d\n", fileSize, seekPos, bufferSize, cursorPos);
+    debug_log("FileBuffer::load::Read size: %d, seek: %d, buffer: %d, cursor: %d\n", fileSize, seekPos, bufferSize, cursorPos);
 }
 
 void FileBuffer::save()
@@ -229,6 +229,8 @@ void FileBuffer::addChar(char c)
         //
         buffer[cursorPos++] = c;
         buffer[++bufferSize] = '\0';
+
+        debug_log("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
     }
 }
 
@@ -245,6 +247,9 @@ void FileBuffer::removeLastChar()
         // Decrease buffer size and cursor position
         --bufferSize;
         --cursorPos;
+
+        //
+        debug_log("FileBuffer::removeLastChar %d\n", cursorPos);
 
         // Null terminate the buffer
         buffer[bufferSize] = '\0';
@@ -300,6 +305,9 @@ void FileBuffer::removeLastWord()
     }
 
     cursorPos = bufferSize;
+
+    //
+    debug_log("FileBuffer::removeLastWord %d\n", cursorPos);
 }
 
 //
