@@ -50,13 +50,16 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - Raspberry Pi Pico (rp2040)
 - [48 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
 - [O-ring 10x5.2x2.4](https://www.aliexpress.com/item/1005002753756030.html)
+
 - [Lipo Battery Charger and Power Supply Module](https://www.aliexpress.com/item/1005006366996657.html)
 - [1S Lithium Battery Inidicator](https://www.aliexpress.com/item/1005007321718440.html)
+- 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html)
+- 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html)
+- [5mm SS12F15 Mini Size Black SPDT Slide Switch](https://www.aliexpress.com/item/1005007077815408.html)
+
 - 2x EC11 15mm Half handle for the knobs
 - 50x Diode IN4148
 - 48x Kailih Hot-Swappable PCB socket Cherry MX Switches (CPG151101S11)
-- 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html)
-- 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html)
 - Micro SD card minimum 4 GB
 - 2x [FPV mini HDMI connector](https://www.aliexpress.com/item/1005004374555360.html)
 - [FFC HDMI Cable](https://www.aliexpress.com/item/1005004374555360.html)
