@@ -15,6 +15,7 @@ void display_EPD_keyboard(char key);
 
 //
 uint8_t *display_EPD_framebuffer();
+void display_draw_buffer();
 
 //
 GFXfont* display_EPD_font();

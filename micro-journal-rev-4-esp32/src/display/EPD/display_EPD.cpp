@@ -24,6 +24,12 @@ uint8_t *display_EPD_framebuffer()
     return framebuffer;
 }
 
+void display_draw_buffer()
+{
+    epd_draw_grayscale_image(epd_full_screen(), display_EPD_framebuffer());
+    memset(display_EPD_framebuffer(), 0xFF, EPD_WIDTH * EPD_HEIGHT / 2);
+}
+
 Button2 btn1(21);
 void display_sleep_button_pressed(Button2 &b)
 {
@@ -281,10 +287,12 @@ int display_y()
     return _y_pos;
 }
 
-int display_lineheight() {
+int display_lineheight()
+{
     return _line_height;
 }
 
-int display_fontwidth() {
+int display_fontwidth()
+{
     return _font_width;
 }

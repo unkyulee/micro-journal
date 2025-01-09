@@ -67,7 +67,9 @@ void WP_render()
     if (clear_request)
     {
         // clear background
-        epd_clear();
+        epd_clear_quick(epd_full_screen(), 4, 50);
+
+        //
         clear_request = false;
 
         // mark that the screen is cleared
@@ -143,8 +145,10 @@ void WP_render_text()
     JsonDocument &app = app_status();
 
     // Cursor Information
+    static int cursorPos_prev = 0;
     static int cursorLine_prev = 0;
     static int cursorLinePos_prev = 0;
+    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
     int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
     int cursorLinePos = Editor::getInstance().fileBuffer.cursorLinePos;
 
@@ -167,6 +171,26 @@ void WP_render_text()
         app_log("Start Line Reset: %d -> ", startLine);
     }
 
+    /*
+        // editing in the middle
+        // delete and redraw the line
+        if (cursorPos != Editor::getInstance().fileBuffer.getBufferSize() && cursorPos != cursorPos_prev)
+        {
+            // clear the line and below
+            Rect_t area = display_rect(
+                0,
+                MARGIN_Y + display_lineheight() * (max(cursorLine - startLine, 0)),
+                EPD_WIDTH,
+                EPD_HEIGHT);
+
+            epd_clear_quick(area, 4, 50);
+
+            // mark it as cleared so that it
+            // cleared = true;
+
+            app_log("writing in the middle\n");
+        }
+    */
     //
     // Middle part of the text will be rendered
     // Only when refresh background is called
@@ -194,8 +218,7 @@ void WP_render_text()
 
         //
         // render frame to the display
-        epd_draw_grayscale_image(epd_full_screen(), display_EPD_framebuffer());
-        memset(display_EPD_framebuffer(), 0xFF, EPD_WIDTH * EPD_HEIGHT / 2);
+        display_draw_buffer();
     }
 
     // Partial Refresh Logic
@@ -234,23 +257,36 @@ void WP_render_text()
         // Draw the new character entered
         if (cursorLinePos != cursorLinePos_prev)
         {
-            // render entire line
-            int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
-            display_setline(cursorLine - startLine);
-            int cursorY = display_y();
+            if (cursorPos == Editor::getInstance().fileBuffer.getBufferSize())
+            {
+                // render entire line
+                int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
+                display_setline(cursorLine - startLine);
+                int cursorY = display_y();
 
-            char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
-            writeln(display_EPD_font(), line + cursorLinePos_prev, &cursorX, &cursorY, NULL);
+                char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
+                writeln(display_EPD_font(), line + cursorLinePos_prev, &cursorX, &cursorY, NULL);
+            }
+
+            // writing in the middle
+            else
+            {
+                // delete a line and redraw the line
+                clear_request = true;
+            }
         }
     }
 
     // reset prev flags
+    cursorPos_prev = cursorPos;
     cursorLinePos_prev = cursorLinePos;
     cursorLine_prev = cursorLine;
 }
 
 //
 // Render Cursor
+#define CURSOR_MARGIN 10
+#define CURSOR_THICKNESS 5
 void WP_render_cursor()
 {
     JsonDocument &app = app_status();
@@ -288,10 +324,10 @@ void WP_render_cursor()
             app_log("Delete previous cursor line\n");
 #endif
             Rect_t area = display_rect(
-                MARGIN_X + cursorLinePos_prev * display_fontwidth(),
-                MARGIN_Y + display_lineheight() * (max(cursorLine - startLine, 0)),
-                display_fontwidth() * abs(cursorLinePos - cursorLinePos_prev + 1),
-                10);
+                MARGIN_X + cursorLinePos_prev * display_fontwidth() - 10,
+                MARGIN_Y + CURSOR_MARGIN / 2 + display_lineheight() * (max(cursorLine - startLine, 0)),
+                display_fontwidth() * abs(cursorLinePos - cursorLinePos_prev + 1) + 20,
+                CURSOR_THICKNESS * 2);
 
             epd_clear_quick(area, 8, 50);
             // epd_clear_area(area);
@@ -312,8 +348,15 @@ void WP_render_cursor()
     if (renderedCursorX == -1 && last + 100 < millis())
     {
         // Cursor will be always at the bottom of the screen
-        int cursorY = MARGIN_Y + display_lineheight() * (max(cursorLine - startLine, 0));
-        writeln(display_EPD_font(), "_", &cursorX, &cursorY, NULL);
+        Rect_t area = display_rect(
+            MARGIN_X + cursorLinePos * display_fontwidth(),
+            MARGIN_Y + CURSOR_MARGIN + display_lineheight() * (max(cursorLine - startLine, 0)),
+            display_fontwidth() * abs(cursorLinePos - cursorLinePos_prev + 1),
+            CURSOR_THICKNESS);
+
+        //
+        epd_fill_rect(area.x, area.y, area.width, area.height, 0, display_EPD_framebuffer());
+        display_draw_buffer();
 
         //
         renderedCursorX = cursorX;
