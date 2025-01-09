@@ -114,13 +114,16 @@ void keyboard_usb_loop()
   // ESC W 1 TEST ENTER PASS ENTER B S
   // int sequence[] = {0x29, 0x1a, 0x1e, 0x17, 0x08, 0x16, 0x17, 0x28, 0x13, 0x13, 0x28};
 
-  //
-  int sequence[] = {0x52, 0x10, 0x2C, 0x51, 0x51};
+  // test go up once and write something and the down
+  int sequence[] = {0x52, 0x10, 0x2C, 0x51};
+
+  // testing to go up and up and up
+  //int sequence[] = {0x52};
 
   // simulate typingis
   static unsigned int last = millis();
   static int index = 0;
-  if (millis() - last > 500)
+  if (millis() - last > 3000)
   {
     last = millis();
 

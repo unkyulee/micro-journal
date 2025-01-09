@@ -259,9 +259,25 @@ void Editor::keyboard(char key)
             // move the cursorPos to the start of the previous line
             if (fileBuffer.cursorLine > 0)
             {
-                //
+                // look at the previous line and move to the start of the cursor
                 int newCursorPos =
                     screenBuffer.line_position[fileBuffer.cursorLine - 1] - screenBuffer.line_position[0];
+
+                // try to move the cursor to the middle of the line
+                int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine - 1], 1);
+                // if the line length is longer than half of the row then move the cursor to the middle
+                if (line_length > screenBuffer.cols / 2)
+                {
+                    newCursorPos += screenBuffer.cols / 2;
+                    debug_log("Editor::keyboard::UP moving the cursor to the middle of the line %d\n", newCursorPos);
+                }
+                else
+                {
+                    // if the line is short then try to put the cursor at the end of the line
+                    newCursorPos += line_length;
+                    debug_log("Editor::keyboard::UP moving the cursor to the end of the line %d\n", newCursorPos);
+                }
+
                 //
                 fileBuffer.cursorPos = newCursorPos;
             }
@@ -276,7 +292,7 @@ void Editor::keyboard(char key)
                 //
                 int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine + 1], 1);
                 int newCursorPos =
-                    screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0] + line_length - 1;
+                    screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0];
 
                 debug_log("Editor::keyboard::DOWN buffer %d total_line %d cursorLine %d line_length %d newCursorPos %d\n",
                           fileBuffer.getBufferSize(),
@@ -285,6 +301,20 @@ void Editor::keyboard(char key)
                           line_length,
                           newCursorPos);
 
+                // try to move the cursor to the middle of the line
+                // if the line length is longer than half of the row then move the cursor to the middle
+                if (line_length > screenBuffer.cols / 2)
+                {
+                    newCursorPos += screenBuffer.cols / 2;
+                    debug_log("Editor::keyboard::DOWN moving the cursor to the middle of the line %d\n", newCursorPos);
+                }
+                else
+                {
+                    // if the line is short then try to put the cursor at the end of the line
+                    newCursorPos += line_length;
+                    debug_log("Editor::keyboard::DOWN moving the cursor to the end of the line %d\n", newCursorPos);
+                }
+
                 //
                 fileBuffer.cursorPos = newCursorPos;
 
@@ -292,6 +322,7 @@ void Editor::keyboard(char key)
                 debug_log("Editor::keyboard::DOWN cursorPos %d\n", newCursorPos);
             }
 
+            // when trying to go down at the last line, move the cursor to the end
             else if (fileBuffer.cursorLine == screenBuffer.total_line)
             {
 

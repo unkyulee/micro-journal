@@ -171,9 +171,6 @@ Rect_t display_rect(int x, int y, int width, int height)
         .height = height,
     };
 
-    //
-    debug_log("display_rect::Rect x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
-
     // x can't exceed the EPD_WIDTH
     if (area.x + area.width > EPD_WIDTH)
         area.width = EPD_WIDTH - area.x;
@@ -192,7 +189,7 @@ Rect_t display_rect(int x, int y, int width, int height)
 
 
     //
-    debug_log("display_rect::corrected Rect x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
+    debug_log("display_rect:: x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
 
     return area;
 }
