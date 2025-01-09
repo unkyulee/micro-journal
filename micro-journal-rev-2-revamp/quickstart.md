@@ -204,7 +204,7 @@ You will be greeted by a web interface where you can download, manage, and extra
 
 #### Using Dropbox to sync files
 
-Detailed guide on how to setup Dropbox via Rclone written by Hoolies:
+Detailed guide on how to setup Dropbox via Rclone written by HollerPots:
 
 https://hoolis.net/posts/rev2.html
 
