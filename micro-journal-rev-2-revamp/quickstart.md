@@ -202,6 +202,12 @@ To share or access files from the Micro Journal, follow these steps:
 You will be greeted by a web interface where you can download, manage, and extract files stored in the **"documents"** folder on your Micro Journal.
 
 
+#### Using Dropbox to sync files
+
+Detailed guide on how to setup Dropbox via Rclone written by Hoolies:
+
+https://hoolis.net/posts/rev2.html
+
 ---
 
 
@@ -234,6 +240,7 @@ It should download micro and you can access it by hitting q in ranger to access 
 Git can be downloaded from the command line with "sudo apt-get install git" but setting that up is up to you. :)
 
 https://www.reddit.com/r/writerDeck/comments/1hs2nrr/microjournal_rev_2_micro_text_editor_git_awesome/
+
 
 ---
 
