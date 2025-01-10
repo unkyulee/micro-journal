@@ -317,9 +317,7 @@ void Editor::keyboard(char key)
 
                 //
                 fileBuffer.cursorPos = newCursorPos;
-
-                //
-                debug_log("Editor::keyboard::DOWN cursorPos %d\n", newCursorPos);
+                fileBuffer.cursorLine += 1;
             }
 
             // when trying to go down at the last line, move the cursor to the end

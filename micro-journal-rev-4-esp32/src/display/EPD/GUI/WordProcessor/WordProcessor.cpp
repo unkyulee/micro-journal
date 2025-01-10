@@ -128,7 +128,7 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
         writeln(display_EPD_font(), row, &cursorX, &cursorY, framebuffer);
 
         //
-        debug_log("WP_render_text_line::x %d y %d [%s]\n", cursorX, cursorY, row);
+        // debug_log("WP_render_text_line::x %d y %d [%s]\n", cursorX, cursorY, row);
     }
     else
     {
@@ -296,7 +296,7 @@ void WP_render_text()
             //
             int currentLine = max(0, cursorLine - startLine);
 
-            debug_log("WP_render_text::editing currentLine %d cursorLine %d startLine %d\n", currentLine, cursorLine, startLine);
+            debug_log("WP_render_text::editing currentLine %d cursorLine %d cursorLineprev %d startLine %d\n", currentLine, cursorLine, cursorLine_prev, startLine);
 
             // Draw from the currentLine
             display_setline(currentLine);
@@ -308,12 +308,6 @@ void WP_render_text()
             WP_render_text_line(cursorLine, display_y(), NULL);
         }
 
-        if (editing == true && cursorLine != cursorLine_prev)
-        {
-            // when line changes during the edit do full refresh
-            clear_request = true;        
-            debug_log("WP_render_text::editing line change\n");
-        }
         ////////////////////////////////////////////////
 
         //
@@ -341,15 +335,28 @@ void WP_render_text()
     // reset prev flags
     cursorPos_prev = cursorPos;
     cursorLinePos_prev = cursorLinePos;
-    cursorLine_prev = cursorLine;
     bufferSize_prev = bufferSize;
+
+    // line changed
+    if (cursorLine_prev != cursorLine)
+    {
+        if (editing == true)
+        {
+            // when line changes during the edit do full refresh
+            clear_request = true;
+            editing = false;
+            debug_log("WP_render_text::editing line change. %d %d %d %d\n", cursorLine, cursorLine_prev, cursorPos, cursorPos_prev);
+        }
+
+        cursorLine_prev = cursorLine;
+    }
 }
 
 //
 // Render Cursor
 #define CURSOR_MARGIN 10
 #define CURSOR_THICKNESS 5
-#define CURSOR_DELAY 300
+#define CURSOR_DELAY 30
 void WP_render_cursor()
 {
     JsonDocument &app = app_status();

@@ -189,7 +189,7 @@ Rect_t display_rect(int x, int y, int width, int height)
 
 
     //
-    debug_log("display_rect:: x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
+    //debug_log("display_rect:: x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);
 
     return area;
 }
