@@ -25,8 +25,10 @@ uint8_t *display_EPD_framebuffer()
 
 void display_draw_buffer()
 {
+    epd_poweron();
     epd_draw_grayscale_image(epd_full_screen(), display_EPD_framebuffer());
     memset(display_EPD_framebuffer(), 0xFF, EPD_WIDTH * EPD_HEIGHT / 2);
+    epd_poweroff_all();
 }
 
 //
@@ -45,19 +47,7 @@ void display_EPD_setup()
     // Initialize EPD Screen
     epd_init();
     app_log("E-ink display initialized\n");
-
-    // Turn on the display
-    epd_poweron();
-
-    // Clear Screen
-    epd_clear();
-
-    // Turn off the display
-    // turn off the board LED
-    // epd_poweroff_all();
-    epd_poweroff();
 }
-
 
 //
 void display_EPD_loop()
@@ -128,8 +118,6 @@ void display_EPD_loop()
 
 void display_EPD_keyboard(char key)
 {
-    debug_log("display_EPD_keyboard::RECEIVED %d %c\n", key, key);
-
     JsonDocument &app = app_status();
     int screen = app["screen"].as<int>();
 
@@ -186,7 +174,6 @@ Rect_t display_rect(int x, int y, int width, int height)
     // height can't be negative
     if (area.height < 0)
         area.height = 0;
-
 
     //
     debug_log("display_rect:: x: %d, y: %d, width: %d, height: %d\n", x, y, width, height);

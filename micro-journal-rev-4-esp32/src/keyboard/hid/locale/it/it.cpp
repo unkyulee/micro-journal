@@ -45,7 +45,7 @@ uint8_t hid_keycode_to_ascii_it[][3] = {
     {'9', ')', 0},       /* 0x26 */
     {'0', '=', 0},       /* 0x27 */
     {'\n', '\n', 0},     /* 0x28 */
-    {'\x1b', '\x1b', 0}, /* 0x29 */
+    {27, 27, 27},     /* 0x29 ESC */
     {'\b', '\b', 0},     /* 0x2a */
     {'\t', '\t', 0},     /* 0x2b */
     {' ', ' ', 0},       /* 0x2c */
@@ -128,6 +128,6 @@ uint8_t keyboard_keycode_ascii_it(int keycode, bool shift, bool alt)
 
     // go through capslock filter
     ascii = keyboard_caplock_filter(ascii);
-
+    
     return ascii;
 }

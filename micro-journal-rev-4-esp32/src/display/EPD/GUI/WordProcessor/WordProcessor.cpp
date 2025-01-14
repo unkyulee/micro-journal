@@ -57,21 +57,23 @@ void WP_setup()
     app_log("Word Processor Initialized %d.txt\n", file_index);
 
     // clear background
-    epd_clear_quick(epd_full_screen(), 4, 50);
-    clear_request = true;
+    clear_full = true;
 }
 
 //
 void WP_render()
 {
-    // Turn on the display
-    epd_poweron();
-
     // perform full screen clear routine
-    if(clear_full) {
+    if (clear_full)
+    {
+        //
+        epd_poweron();
+        epd_clear();
+        epd_poweroff_all();
+
+        //
         clear_full = false;
         clear_request = true;
-        epd_clear();
     }
 
     // Clear Background
@@ -101,10 +103,6 @@ void WP_render()
     // RENDER TEXT
     WP_render_text();
 
-    // Turn off the display
-    // epd_poweroff_all();
-    epd_poweroff();
-
     // clear background flag off
     cleared = false;
 }
@@ -132,7 +130,12 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
 
         int cursorX = display_x();
         int cursorY = display_y();
+
+        if (framebuffer == NULL)
+            epd_poweron();
         writeln(display_EPD_font(), row, &cursorX, &cursorY, framebuffer);
+        if (framebuffer == NULL)
+            epd_poweroff_all();
 
         //
         // debug_log("WP_render_text_line::x %d y %d [%s]\n", cursorX, cursorY, row);
@@ -145,6 +148,8 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
 
 void WP_clear_row(int row)
 {
+    epd_poweron();
+
     // delete a line and redraw the line
     Rect_t area =
         display_rect(
@@ -154,6 +159,8 @@ void WP_clear_row(int row)
             display_lineheight());
 
     epd_clear_quick(area, 4, 50);
+
+    epd_poweroff_all();
 }
 
 //
@@ -191,7 +198,11 @@ void WP_render_text()
     if (cursorLine - startLine > rows)
     {
         // clear background
+        epd_poweron();
         epd_clear_quick(epd_full_screen(), 4, 50);
+        epd_poweroff_all();
+
+        //
         cleared = true;
         clear_request = true; // status bar should be refreshed
 
@@ -222,7 +233,11 @@ void WP_render_text()
                   startLine);
 
         // clear background
+        epd_poweron();
         epd_clear_quick(epd_full_screen(), 4, 50);
+        epd_poweroff_all();
+
+        //
         cleared = true;
     }
 
@@ -240,9 +255,6 @@ void WP_render_text()
         //
         for (int i = startLine; i <= totalLine; i++)
         {
-            //
-            debug_log("WP_render_text::i %d startLine %d totalLine %d\n", i, startLine, totalLine);
-
             // stop when exceeding row
             if (i - startLine > rows)
             {
@@ -339,7 +351,10 @@ void WP_render_text()
             strncpy(row, line, copyLength);
             row[copyLength] = '\0';
 
+            //
+            epd_poweron();
             writeln(display_EPD_font(), row + cursorLinePos_prev, &cursorX, &cursorY, NULL);
+            epd_poweroff();
         }
     }
 
@@ -382,7 +397,7 @@ void WP_render_cursor()
 
     // Cursor information
     static int renderedCursorX = -1;
-    static int last = millis() + 2000;
+    static int last = 0;
 
     static int cursorLinePos_prev = 0;
     static int cursorPos_prev = 0;
@@ -423,7 +438,9 @@ void WP_render_cursor()
                 area.width + 20,
                 area.height + 10);
 
+            epd_poweron();
             epd_clear_quick(area, 8, 50);
+            epd_poweroff_all();
 
             // render the cursor
             renderedCursorX = -1;
@@ -583,11 +600,14 @@ void WP_render_status()
             statusY,
             210,
             status_height);
-        epd_clear_quick(area, 4, 50);
+
+        epd_poweron();
+        epd_clear_quick(area, 4, 50);        
 
         // redraw the new number
         String filesizeFormatted = formatNumber(filesize);
         writeln((GFXfont *)&systemFont, filesizeFormatted.c_str(), &cursorX, &cursorY, NULL);
+        epd_poweroff_all();
     }
 
     /////////////////////////////////////
@@ -605,8 +625,9 @@ void WP_render_status()
             210,
             status_height);
         //
+        epd_poweron();
         epd_clear_quick(area, 4, 50);
-
+        
         //
         String savedText = "NOT SAVED";
         if (Editor::getInstance().saved)
@@ -617,6 +638,7 @@ void WP_render_status()
 
         // display the text
         writeln((GFXfont *)&systemFont, savedText.c_str(), &cursorX, &cursorY, NULL);
+        epd_poweroff_all();
 
         // previous values
         saved_prev = Editor::getInstance().saved;
@@ -648,7 +670,7 @@ void WP_keyboard(char key)
 
     // REFRESH SCREEN F5
     else if (key == 5)
-    {        
+    {
         clear_full = true;
     }
 

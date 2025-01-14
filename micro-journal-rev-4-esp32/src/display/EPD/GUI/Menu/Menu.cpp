@@ -26,6 +26,8 @@ void Menu_setup()
 {
     // clear screen
     menu_clear = true;
+
+    app_log("Entering Menu Setup\n");
 }
 
 void Menu_render()
@@ -47,7 +49,9 @@ void Menu_render()
     }
 
     // Clear Screen
+    epd_poweron();
     epd_clear_quick(epd_full_screen(), 4, 50);
+    epd_poweroff_all();
 
     // deflag so that it doesn't repeatedely called
     menu_clear = false;
@@ -126,8 +130,7 @@ void Menu_render()
     }
 
     // render frambuffer
-    epd_draw_grayscale_image(epd_full_screen(), display_EPD_framebuffer());
-    memset(display_EPD_framebuffer(), 0xFF, EPD_WIDTH * EPD_HEIGHT / 2);
+    display_draw_buffer();
 
     ///////////////////////////
     // save prev state
