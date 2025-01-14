@@ -624,6 +624,7 @@ void WP_render_status()
             statusY,
             210,
             status_height);
+
         //
         epd_poweron();
         epd_clear_quick(area, 4, 50);
@@ -672,6 +673,7 @@ void WP_keyboard(char key)
     else if (key == 5)
     {
         clear_full = true;
+        Editor::getInstance().saveFile();
     }
 
     // SLEEP BUTTON - PAUSE
