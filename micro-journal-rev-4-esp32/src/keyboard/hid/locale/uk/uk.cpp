@@ -67,7 +67,7 @@ uint8_t hid_keycode_to_ascii_uk[][3] = {
     {0, 0},     /* 0x3b */
     {0, 0},     /* 0x3c */
     {0, 0},     /* 0x3d */
-    {0, 0},     /* 0x3e */
+    {5, 5},       /* 0x3e F5 */
     {0, 0},     /* 0x3f */
     {0, 0},     /* 0x40 */
     {0, 0},     /* 0x41 */
@@ -77,7 +77,7 @@ uint8_t hid_keycode_to_ascii_uk[][3] = {
     {0, 0},     /* 0x45 */
     {0, 0},     /* 0x46 */
     {0, 0},     /* 0x47 */
-    {0, 0},     /* 0x48 */
+    {24, 24},       /* 0x48 PAUSE */
     {0, 0},     /* 0x49 */
     {2, 0},     /* 0x4a */
     {22, 0},    /* 0x4b */
@@ -125,6 +125,9 @@ uint8_t keyboard_keycode_ascii_uk(int keycode, bool shift, bool alt)
         index += 1;
 
     uint8_t ascii = hid_keycode_to_ascii_uk[keycode][index];
+
+    // go through capslock filter
+    ascii = keyboard_caplock_filter(ascii);
 
     return ascii;
 }

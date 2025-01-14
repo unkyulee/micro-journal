@@ -33,6 +33,10 @@ void Home_render()
         writeln((GFXfont *)&systemFont, " [S] SYNC", &cursorX, &cursorY, display_EPD_framebuffer());
     }
 
+    cursorX = 10;
+    cursorY += 35;
+    writeln((GFXfont *)&systemFont, " [K] Keyboard Layout", &cursorX, &cursorY, display_EPD_framebuffer());
+
     // BACK
     cursorX = 10;
     cursorY += 50;
@@ -107,6 +111,13 @@ void Home_keyboard(char key)
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_WIFI;
+    }
+
+        // wifi setup
+    else if (key == 'k')
+    {
+        // move to keyboard layout
+        app["menu"]["state"] = MENU_LAYOUT;
     }
 
     // chose file

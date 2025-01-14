@@ -8,6 +8,7 @@
 #include "Home/Home.h"
 #include "Clear/Clear.h"
 #include "Wifi/Wifi.h"
+#include "Layout/Layout.h"
 #include "Sync/Sync.h"
 #include "Firmware/Firmware.h"
 
@@ -46,7 +47,7 @@ void Menu_render()
     }
 
     // Clear Screen
-    epd_clear();
+    epd_clear_quick(epd_full_screen(), 4, 50);
 
     // deflag so that it doesn't repeatedely called
     menu_clear = false;
@@ -95,6 +96,15 @@ void Menu_render()
             Wifi_setup();
 
         Wifi_render();
+    }
+
+    // Keyboard Layout
+    else if (menu_state == MENU_LAYOUT)
+    {
+        if (menu_state_prev != menu_state)
+            Layout_setup();
+
+        Layout_render();
     }
 
     // Sync
@@ -154,6 +164,13 @@ void Menu_keyboard(char key)
     else if (menu_state == MENU_WIFI)
     {
         Wifi_keyboard(key);
+        return;
+    }
+
+    // Layout
+    else if (menu_state == MENU_LAYOUT)
+    {
+        Layout_keyboard(key);
         return;
     }
 

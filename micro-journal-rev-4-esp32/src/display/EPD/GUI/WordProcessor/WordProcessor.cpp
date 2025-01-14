@@ -24,6 +24,7 @@ const int status_height = 30;
 const int statusY = EPD_HEIGHT - status_height - 5;
 
 // clear screen
+bool clear_full = false;
 bool clear_request = true;
 bool cleared = true;
 bool backspaced = false;
@@ -56,6 +57,7 @@ void WP_setup()
     app_log("Word Processor Initialized %d.txt\n", file_index);
 
     // clear background
+    epd_clear_quick(epd_full_screen(), 4, 50);
     clear_request = true;
 }
 
@@ -64,6 +66,13 @@ void WP_render()
 {
     // Turn on the display
     epd_poweron();
+
+    // perform full screen clear routine
+    if(clear_full) {
+        clear_full = false;
+        clear_request = true;
+        epd_clear();
+    }
 
     // Clear Background
     if (clear_request)
@@ -168,7 +177,7 @@ void WP_render_text()
     int totalLine = Editor::getInstance().screenBuffer.total_line;
     int rows = Editor::getInstance().screenBuffer.rows;
 
-    // when first turned on 
+    // when first turned on
     // start editing from last 2nd Line
     if (startLine == -1)
     {
@@ -635,6 +644,19 @@ void WP_keyboard(char key)
 
         //
         debug_log("WP_keyboard::Moving to Menu Screen\n");
+    }
+
+    // REFRESH SCREEN F5
+    else if (key == 5)
+    {        
+        clear_full = true;
+    }
+
+    // SLEEP BUTTON - PAUSE
+    else if (key == 24)
+    {
+        // go to sleep mode
+        app["screen"] = SLEEPSCREEN;
     }
 
     else
