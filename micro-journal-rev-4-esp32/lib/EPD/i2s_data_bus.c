@@ -45,6 +45,7 @@ static esp_lcd_panel_io_handle_t io_handle = NULL;
 /******************************************************************************/
 /***        local function prototypes                                       ***/
 /******************************************************************************/
+#if USER_I2S_REG
 
 /**
  * @brief Initializes a DMA descriptor.
@@ -61,11 +62,14 @@ static uint32_t dma_desc_addr();
  * @brief Set up a GPIO as output and route it to a signal.
  */
 static void gpio_setup_out(int32_t gpio, int32_t sig, bool invert);
+#endif
 
+#if USER_I2S_REG
 /**
  * @brief Resets "Start Pulse" signal when the current row output is done.
  */
 static void IRAM_ATTR i2s_int_hdl(void *arg);
+#endif
 
 /******************************************************************************/
 /***        exported variables                                              ***/
@@ -74,11 +78,12 @@ static void IRAM_ATTR i2s_int_hdl(void *arg);
 /******************************************************************************/
 /***        local variables                                                 ***/
 /******************************************************************************/
-
+#if USER_I2S_REG
 /**
  * @brief Indicates which line buffer is currently back / front.
  */
 static int32_t current_buffer = 0;
+#endif
 
 /**
  * @brief The I2S state instance.
@@ -96,7 +101,7 @@ static volatile bool output_done = true;
  * @brief The start pulse pin extracted from the configuration for use in
  *        the "done" interrupt.
  */
-static gpio_num_t start_pulse_pin;
+// static gpio_num_t start_pulse_pin;
 
 static uint8_t buffer[(960 + 32) / 4] = { 0 };
 
@@ -417,7 +422,7 @@ void i2s_deinit()
 /******************************************************************************/
 /***        local functions                                                 ***/
 /******************************************************************************/
-
+#if USER_I2S_REG
 /// Initializes a DMA descriptor.
 static void fill_dma_desc(volatile lldesc_t *dmadesc, uint8_t *buf,
                           i2s_bus_config *cfg)
@@ -431,7 +436,6 @@ static void fill_dma_desc(volatile lldesc_t *dmadesc, uint8_t *buf,
     dmadesc->qe.stqe_next = 0;
     dmadesc->offset = 0;
 }
-
 
 /// Address of the currently front DMA descriptor,
 /// which uses only the lower 20bits (according to TRM)
@@ -453,7 +457,6 @@ static void gpio_setup_out(int32_t gpio, int32_t sig, bool invert)
 }
 
 
-#if USER_I2S_REG
 /// Resets "Start Pulse" signal when the current row output is done.
 static void IRAM_ATTR i2s_int_hdl(void *arg)
 {

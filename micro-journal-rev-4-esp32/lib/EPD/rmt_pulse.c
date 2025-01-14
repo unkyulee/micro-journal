@@ -22,7 +22,7 @@
 /**
  * @brief Remote peripheral interrupt. Used to signal when transmission is done.
  */
-static void IRAM_ATTR rmt_interrupt_handler(void *arg);
+// static void IRAM_ATTR rmt_interrupt_handler(void *arg);
 
 /******************************************************************************/
 /***        exported variables                                              ***/
@@ -32,7 +32,7 @@ static void IRAM_ATTR rmt_interrupt_handler(void *arg);
 /***        local variables                                                 ***/
 /******************************************************************************/
 
-static intr_handle_t gRMT_intr_handle = NULL;
+// static intr_handle_t gRMT_intr_handle = NULL;
 
 /**
  * @brief the RMT channel configuration object

@@ -33,7 +33,7 @@
 #ifndef _swap_int
 #define _swap_int(a, b) \
     {                   \
-        int32_t t = a;  \
+        int32_t t = a;      \
         a = b;          \
         b = t;          \
     }
@@ -87,7 +87,7 @@ static void IRAM_ATTR provide_out(OutputParams *params);
 static void IRAM_ATTR feed_display(OutputParams *params);
 
 static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t corners, int32_t delta,
-                                   uint8_t color, uint8_t *framebuffer);
+                            uint8_t color, uint8_t *framebuffer);
 
 /******************************************************************************/
 /***        exported variables                                              ***/
@@ -144,7 +144,8 @@ static const DRAM_ATTR uint32_t lut_1bpp[256] = {
     0x5400, 0x5401, 0x5404, 0x5405, 0x5410, 0x5411, 0x5414, 0x5415,
     0x5440, 0x5441, 0x5444, 0x5445, 0x5450, 0x5451, 0x5454, 0x5455,
     0x5500, 0x5501, 0x5504, 0x5505, 0x5510, 0x5511, 0x5514, 0x5515,
-    0x5540, 0x5541, 0x5544, 0x5545, 0x5550, 0x5551, 0x5554, 0x5555};
+    0x5540, 0x5541, 0x5544, 0x5545, 0x5550, 0x5551, 0x5554, 0x5555
+};
 
 /******************************************************************************/
 /***        exported functions                                              ***/
@@ -160,9 +161,10 @@ void epd_init()
     output_queue = xQueueCreate(64, EPD_WIDTH / 2);
 }
 
+
 void epd_push_pixels(Rect_t area, int16_t time, int32_t color)
 {
-    uint8_t row[EPD_LINE_BYTES] = {0};
+    uint8_t row[EPD_LINE_BYTES] = { 0 };
 
     for (uint32_t i = 0; i < area.width; i++)
     {
@@ -208,9 +210,10 @@ void epd_push_pixels(Rect_t area, int16_t time, int32_t color)
     epd_end_frame();
 }
 
+
 void epd_clear_area(Rect_t area)
 {
-    epd_clear_area_cycles(area, 1, 50);
+    epd_clear_area_cycles(area, 4, 50);
 }
 
 void epd_clear_quick(Rect_t area, int cycle, int time)
@@ -239,16 +242,19 @@ void epd_clear_area_cycles(Rect_t area, int32_t cycles, int32_t cycle_time)
     }
 }
 
+
 Rect_t epd_full_screen()
 {
     Rect_t area = {.x = 0, .y = 0, .width = EPD_WIDTH, .height = EPD_HEIGHT};
     return area;
 }
 
+
 void epd_clear()
 {
     epd_clear_area(epd_full_screen());
 }
+
 
 void IRAM_ATTR calc_epd_input_4bpp(uint32_t *line_data, uint8_t *epd_input,
                                    uint8_t k, uint8_t *conversion_lut)
@@ -270,14 +276,15 @@ void IRAM_ATTR calc_epd_input_4bpp(uint32_t *line_data, uint8_t *epd_input,
                          conversion_lut[v3] |
                          conversion_lut[v4] << 8;
 #else
-        uint32_t pixel = (conversion_lut[v1]) << 0 |
-                         (conversion_lut[v2]) << 8 |
+        uint32_t pixel = (conversion_lut[v1]) << 0  |
+                         (conversion_lut[v2]) << 8  |
                          (conversion_lut[v3]) << 16 |
                          (conversion_lut[v4]) << 24;
 #endif
         wide_epd_input[j] = pixel;
     }
 }
+
 
 void IRAM_ATTR calc_epd_input_1bpp(uint8_t *line_data, uint8_t *epd_input,
                                    DrawMode_t mode)
@@ -294,10 +301,12 @@ void IRAM_ATTR calc_epd_input_1bpp(uint8_t *line_data, uint8_t *epd_input,
     }
 }
 
+
 inline uint32_t min(uint32_t x, uint32_t y)
 {
     return x < y ? x : y;
 }
+
 
 void epd_draw_hline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t *framebuffer)
 {
@@ -308,6 +317,7 @@ void epd_draw_hline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t
     }
 }
 
+
 void epd_draw_vline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t *framebuffer)
 {
     for (int32_t i = 0; i < length; i++)
@@ -316,6 +326,7 @@ void epd_draw_vline(int32_t x, int32_t y, int32_t length, uint8_t color, uint8_t
         epd_draw_pixel(x, yy, color, framebuffer);
     }
 }
+
 
 void epd_draw_pixel(int32_t x, int32_t y, uint8_t color, uint8_t *framebuffer)
 {
@@ -337,6 +348,7 @@ void epd_draw_pixel(int32_t x, int32_t y, uint8_t color, uint8_t *framebuffer)
         *buf_ptr = (*buf_ptr & 0xF0) | (color >> 4);
     }
 }
+
 
 void epd_draw_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *framebuffer)
 {
@@ -374,14 +386,16 @@ void epd_draw_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *
     }
 }
 
+
 void epd_fill_circle(int32_t x0, int32_t y0, int32_t r, uint8_t color, uint8_t *framebuffer)
 {
     epd_draw_vline(x0, y0 - r, 2 * r + 1, color, framebuffer);
     epd_fill_circle_helper(x0, y0, r, 3, 0, color, framebuffer);
 }
 
+
 static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t corners, int32_t delta,
-                                   uint8_t color, uint8_t *framebuffer)
+                            uint8_t color, uint8_t *framebuffer)
 {
     int32_t f = 1 - r;
     int32_t ddF_x = 1;
@@ -425,6 +439,7 @@ static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t co
     }
 }
 
+
 void epd_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, uint8_t *framebuffer)
 {
     epd_draw_hline(x, y, w, color, framebuffer);
@@ -433,6 +448,7 @@ void epd_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, ui
     epd_draw_vline(x + w - 1, y, h, color, framebuffer);
 }
 
+
 void epd_fill_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, uint8_t *framebuffer)
 {
     for (int32_t i = x; i < x + w; i++)
@@ -440,6 +456,7 @@ void epd_fill_rect(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t color, ui
         epd_draw_vline(i, y, h, color, framebuffer);
     }
 }
+
 
 void epd_write_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color, uint8_t *framebuffer)
 {
@@ -491,6 +508,7 @@ void epd_write_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t colo
     }
 }
 
+
 void epd_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color, uint8_t *framebuffer)
 {
     // Update in subclasses if desired!
@@ -512,6 +530,7 @@ void epd_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint8_t color
     }
 }
 
+
 void epd_draw_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
                        uint8_t color, uint8_t *framebuffer)
 {
@@ -519,6 +538,7 @@ void epd_draw_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x
     epd_draw_line(x1, y1, x2, y2, color, framebuffer);
     epd_draw_line(x2, y2, x0, y0, color, framebuffer);
 }
+
 
 void epd_fill_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x2, int32_t y2,
                        uint8_t color, uint8_t *framebuffer)
@@ -612,6 +632,7 @@ void epd_fill_triangle(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t x
     }
 }
 
+
 void epd_copy_to_framebuffer(Rect_t image_area, uint8_t *image_data,
                              uint8_t *framebuffer)
 {
@@ -651,10 +672,12 @@ void epd_copy_to_framebuffer(Rect_t image_area, uint8_t *image_data,
     }
 }
 
+
 void IRAM_ATTR epd_draw_grayscale_image(Rect_t area, uint8_t *data)
 {
     epd_draw_image(area, data, BLACK_ON_WHITE);
 }
+
 
 void IRAM_ATTR epd_draw_frame_1bit(Rect_t area, uint8_t *ptr,
                                    DrawMode_t mode, int32_t time)
@@ -744,6 +767,7 @@ void IRAM_ATTR epd_draw_frame_1bit(Rect_t area, uint8_t *ptr,
     epd_end_frame();
 }
 
+
 void IRAM_ATTR epd_draw_image(Rect_t area, uint8_t *data, DrawMode_t mode)
 {
     uint8_t frame_count = 15;
@@ -800,6 +824,7 @@ static void write_row(uint32_t output_time_dus)
     epd_output_row(output_time_dus);
 }
 
+
 static void skip_row(uint8_t pipeline_finish_time)
 {
     // output previously loaded row, fill buffer with no-ops.
@@ -831,6 +856,7 @@ static void skip_row(uint8_t pipeline_finish_time)
     skipping++;
 }
 
+
 static void reorder_line_buffer(uint32_t *line_data)
 {
     for (uint32_t i = 0; i < EPD_LINE_BYTES / 4; i++)
@@ -839,6 +865,7 @@ static void reorder_line_buffer(uint32_t *line_data)
         *(line_data++) = val >> 16 | ((val & 0x0000FFFF) << 16);
     }
 }
+
 
 static void IRAM_ATTR reset_lut(uint8_t *lut_mem, DrawMode_t mode)
 {
@@ -856,6 +883,7 @@ static void IRAM_ATTR reset_lut(uint8_t *lut_mem, DrawMode_t mode)
         break;
     }
 }
+
 
 static void IRAM_ATTR update_LUT(uint8_t *lut_mem, uint8_t k, DrawMode_t mode)
 {
@@ -890,6 +918,7 @@ static void IRAM_ATTR update_LUT(uint8_t *lut_mem, uint8_t k, DrawMode_t mode)
         lut_mem[p] &= 0x3F;
     }
 }
+
 
 static void IRAM_ATTR bit_shift_buffer_right(uint8_t *buf, uint32_t len, int32_t shift)
 {
@@ -993,6 +1022,7 @@ static void IRAM_ATTR provide_out(OutputParams *params)
     xSemaphoreGive(params->done_smphr);
     vTaskDelay(portMAX_DELAY);
 }
+
 
 static void IRAM_ATTR feed_display(OutputParams *params)
 {

@@ -17,7 +17,7 @@ extern "C" {
 
 #include <stdbool.h>
 #include <stdint.h>
-
+#include "utilities.h"
 /******************************************************************************/
 /***        macro definitions                                               ***/
 /******************************************************************************/
@@ -104,7 +104,6 @@ void epd_poweroff();
  */
 void epd_clear();
 void epd_clear_quick(Rect_t area, int cycle, int time);
-
 void epd_poweroff_all();
 
 /**

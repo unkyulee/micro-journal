@@ -10,6 +10,7 @@
 #include <xtensa/core-macros.h>
 
 #include <string.h>
+#include <hal/gpio_ll.h>
 
 /******************************************************************************/
 /***        macro definitions                                               ***/
@@ -213,7 +214,7 @@ static inline void latch_row()
     push_cfg(&config_reg);
 }
 
-void IRAM_ATTR epd_skip()
+void  epd_skip()
 {
 #if defined(CONFIG_EPD_DISPLAY_TYPE_ED097TC2)
     pulse_ckv_ticks(2, 2, false);
@@ -223,7 +224,7 @@ void IRAM_ATTR epd_skip()
 #endif
 }
 
-void IRAM_ATTR epd_output_row(uint32_t output_time_dus)
+void  epd_output_row(uint32_t output_time_dus)
 {
     while (i2s_is_busy());
 
@@ -245,12 +246,12 @@ void epd_end_frame()
     pulse_ckv_us(1, 1, true);
 }
 
-void IRAM_ATTR epd_switch_buffer()
+void  epd_switch_buffer()
 {
     i2s_switch_buffer();
 }
 
-uint8_t * IRAM_ATTR epd_get_current_buffer()
+uint8_t *  epd_get_current_buffer()
 {
     return (uint8_t *)i2s_get_current_buffer();
 }

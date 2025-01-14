@@ -21,11 +21,12 @@ const int rows = 7;
 
 // status bar
 const int status_height = 30;
-const int statusY = EPD_HEIGHT - status_height;
+const int statusY = EPD_HEIGHT - status_height - 5;
 
 // clear screen
 bool clear_request = true;
 bool cleared = true;
+bool backspaced = false;
 
 //
 int startLine = -1;
@@ -67,9 +68,6 @@ void WP_render()
     // Clear Background
     if (clear_request)
     {
-        // clear background
-        epd_clear_quick(epd_full_screen(), 4, 50);
-
         //
         clear_request = false;
 
@@ -170,24 +168,26 @@ void WP_render_text()
     int totalLine = Editor::getInstance().screenBuffer.total_line;
     int rows = Editor::getInstance().screenBuffer.rows;
 
-    // start editing from 2nd Line
+    // when first turned on 
+    // start editing from last 2nd Line
     if (startLine == -1)
     {
         //
-        startLine = max(cursorLine - 2, 0);
+        startLine = max(cursorLine - rows + 1, 0);
         debug_log("WP_render_text::Start Line Init: %d cursorLine %d\n", startLine, cursorLine);
     }
 
     //
     // when reaching the end of the screen reset the startLine
-    //
     if (cursorLine - startLine > rows)
     {
-        //
-        clear_request = true;
+        // clear background
+        epd_clear_quick(epd_full_screen(), 4, 50);
+        cleared = true;
+        clear_request = true; // status bar should be refreshed
 
         //
-        startLine = max(cursorLine - 2, 0);
+        startLine = max(cursorLine - 1, 0);
         debug_log("WP_render_text::New Page cursorLine %d startLine %d rows %d totalLine %d\n",
                   cursorLine,
                   startLine,
@@ -212,8 +212,9 @@ void WP_render_text()
         debug_log("WP_render_text::startLine updated %d \n",
                   startLine);
 
-        // clear the screen
-        clear_request = true;
+        // clear background
+        epd_clear_quick(epd_full_screen(), 4, 50);
+        cleared = true;
     }
 
     //
@@ -255,6 +256,20 @@ void WP_render_text()
     // Partial Refresh Logic
     if (cleared == false && bufferSize != bufferSize_prev)
     {
+        // handle backspace
+        if (backspaced)
+        {
+            // clear the currentLine and the previousLine
+            debug_log("WP_render_text::Handle Backspace\n");
+
+            // delete a line and redraw the line
+            WP_clear_row(max(cursorLine - startLine, 0));
+
+            // and redraw the line
+            cursorLinePos_prev = 0;
+            backspaced = false;
+        }
+
         // new line
         // when new line is detected than redraw the previous line
         // in case when there is a word wrap then what was written at the previous line is moved to the current line
@@ -269,19 +284,6 @@ void WP_render_text()
             WP_render_text_line(cursorLine_prev, display_y(), NULL);
 
             // render the entire line
-            cursorLinePos_prev = 0;
-        }
-
-        // handle backspace
-        if (cursorLinePos < cursorLinePos_prev && cursorLine == cursorLine_prev)
-        {
-            // clear the currentLine and the previousLine
-            debug_log("WP_render_text::Handle Backspace\n");
-
-            // delete a line and redraw the line
-            WP_clear_row(max(cursorLine - startLine, 0));
-
-            // and redraw the line
             cursorLinePos_prev = 0;
         }
 
@@ -343,7 +345,11 @@ void WP_render_text()
         if (editing == true)
         {
             // when line changes during the edit do full refresh
+
+            // clear background
+            epd_clear_quick(epd_full_screen(), 4, 50);
             clear_request = true;
+
             editing = false;
             debug_log("WP_render_text::editing line change. %d %d %d %d\n", cursorLine, cursorLine_prev, cursorPos, cursorPos_prev);
         }
@@ -356,7 +362,7 @@ void WP_render_text()
 // Render Cursor
 #define CURSOR_MARGIN 10
 #define CURSOR_THICKNESS 5
-#define CURSOR_DELAY 30
+#define CURSOR_DELAY 50
 void WP_render_cursor()
 {
     JsonDocument &app = app_status();
@@ -403,12 +409,12 @@ void WP_render_cursor()
 
             //
             area = display_rect(
-                area.x - 5,
+                area.x - 10,
                 area.y - 5,
-                area.width + 10,
+                area.width + 20,
                 area.height + 10);
 
-            epd_clear_quick(area, 4, 50);
+            epd_clear_quick(area, 8, 50);
 
             // render the cursor
             renderedCursorX = -1;
@@ -580,6 +586,7 @@ void WP_render_status()
     /////////////////////////////////////
     if (Editor::getInstance().saved != saved_prev || cleared)
     {
+        debug_log("Update Saved Status\n");
         int cursorX = 550;
 
         // clear the status area
@@ -632,6 +639,11 @@ void WP_keyboard(char key)
 
     else
     {
+        if (key == '\b')
+        {
+            backspaced = true;
+        }
+
         // send the keys to the editor
         Editor::getInstance().keyboard(key);
     }

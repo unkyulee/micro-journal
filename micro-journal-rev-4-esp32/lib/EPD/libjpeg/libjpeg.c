@@ -109,7 +109,7 @@ static uint8_t *decoded_image;   // RAW decoded image
 static uint8_t tjpgd_work[4096]; // tjpgd 4Kb buffer
 
 #if LIBJPEG_MEASURE
-static uint32_t time_epd_fullclear = 0;
+// static uint32_t time_epd_fullclear = 0;
 static uint32_t time_decomp = 0;
 static uint32_t time_update_screen = 0;
 static uint32_t time_render = 0;
