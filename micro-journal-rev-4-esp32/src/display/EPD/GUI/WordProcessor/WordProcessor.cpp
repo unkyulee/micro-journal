@@ -127,13 +127,19 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
 
         // Null-terminate the string
         row[copyLength] = '\0';
+        char utf8[512];
+        convert_extended_ascii_to_utf8(row, utf8, copyLength);
 
         int cursorX = display_x();
         int cursorY = display_y();
 
+        //
         if (framebuffer == NULL)
             epd_poweron();
-        writeln(display_EPD_font(), row, &cursorX, &cursorY, framebuffer);
+        //
+        writeln(display_EPD_font(), utf8, &cursorX, &cursorY, framebuffer);
+
+        //
         if (framebuffer == NULL)
             epd_poweroff_all();
 
@@ -351,9 +357,12 @@ void WP_render_text()
             strncpy(row, line, copyLength);
             row[copyLength] = '\0';
 
+            char utf8[512];
+            convert_extended_ascii_to_utf8(row + cursorLinePos_prev, utf8, copyLength);
+
             //
             epd_poweron();
-            writeln(display_EPD_font(), row + cursorLinePos_prev, &cursorX, &cursorY, NULL);
+            writeln(display_EPD_font(), utf8, &cursorX, &cursorY, NULL);
             epd_poweroff();
         }
     }
@@ -602,7 +611,7 @@ void WP_render_status()
             status_height);
 
         epd_poweron();
-        epd_clear_quick(area, 4, 50);        
+        epd_clear_quick(area, 4, 50);
 
         // redraw the new number
         String filesizeFormatted = formatNumber(filesize);
@@ -628,7 +637,7 @@ void WP_render_status()
         //
         epd_poweron();
         epd_clear_quick(area, 4, 50);
-        
+
         //
         String savedText = "NOT SAVED";
         if (Editor::getInstance().saved)
@@ -693,4 +702,38 @@ void WP_keyboard(char key)
         // send the keys to the editor
         Editor::getInstance().keyboard(key);
     }
+}
+
+//
+void convert_extended_ascii_to_utf8(const char *input, char *output, size_t output_size)
+{
+    size_t out_index = 0;
+
+    for (size_t i = 0; input[i] != '\0' && out_index < output_size - 1; i++)
+    {
+        unsigned char ch = (unsigned char)input[i];
+
+        if (ch < 128)
+        {
+            // ASCII character, copy directly.
+            output[out_index++] = ch;
+        }
+        else
+        {
+            // Extended ASCII, encode in UTF-8 (2 bytes).
+            if (out_index + 2 < output_size)
+            {
+                output[out_index++] = 0xC0 | (ch >> 6);   // First byte: 110xxxxx
+                output[out_index++] = 0x80 | (ch & 0x3F); // Second byte: 10xxxxxx
+            }
+            else
+            {
+                // Not enough space for encoding.
+                break;
+            }
+        }
+    }
+
+    // Null-terminate the output.
+    output[out_index] = '\0';
 }
