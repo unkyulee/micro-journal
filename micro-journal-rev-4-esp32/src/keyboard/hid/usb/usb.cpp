@@ -121,7 +121,10 @@ void keyboard_usb_loop()
   //int sequence[] = {0x52};
 
   // entering menu and back to word processor
-  int sequence[] = {0x29, 0x29};
+  //int sequence[] = {0x29, 0x29};
+
+  // backspace
+  int sequence[] = {0x2c, 0x18, 0x18, 0x18, 0x18, 0x2a};
 
   // simulate typingis
   static unsigned int last = millis();
@@ -131,6 +134,7 @@ void keyboard_usb_loop()
     last = millis();
 
     keyboard_hid_pressed(sequence[seq_cnt], 0);
+    keyboard_hid_released(sequence[seq_cnt], 0);
     seq_cnt++;
     if (seq_cnt >= sizeof(sequence) / sizeof(int))
     {

@@ -128,7 +128,7 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
         // Null-terminate the string
         row[copyLength] = '\0';
         char utf8[512];
-        convert_extended_ascii_to_utf8(row, utf8, copyLength);
+        convert_extended_ascii_to_utf8(row, utf8, 512);
 
         int cursorX = display_x();
         int cursorY = display_y();
@@ -144,7 +144,7 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
             epd_poweroff_all();
 
         //
-        // debug_log("WP_render_text_line::x %d y %d [%s]\n", cursorX, cursorY, row);
+        debug_log("WP_render_text_line::i %d x %d y %d [%s]\n", i, cursorX, cursorY, row);
     }
     else
     {
@@ -280,23 +280,25 @@ void WP_render_text()
         display_draw_buffer();
     }
 
-    // Partial Refresh Logic
-    if (cleared == false && bufferSize != bufferSize_prev)
+    // handle backspace
+    else if (backspaced)
     {
-        // handle backspace
-        if (backspaced)
-        {
-            // clear the currentLine and the previousLine
-            debug_log("WP_render_text::Handle Backspace\n");
+        //
+        backspaced = false;
 
-            // delete a line and redraw the line
-            WP_clear_row(max(cursorLine - startLine, 0));
+        // clear the currentLine and the previousLine
+        debug_log("WP_render_text::Handle Backspace\n");
 
-            // and redraw the line
-            cursorLinePos_prev = 0;
-            backspaced = false;
-        }
+        // delete a line and redraw the line
+        WP_clear_row(max(cursorLine - startLine, 0));
 
+        // and redraw the line
+        WP_render_text_line(cursorLine, display_y(), NULL);
+    }
+
+    // Partial Refresh Logic
+    else if (cleared == false && bufferSize != bufferSize_prev)
+    {
         // new line
         // when new line is detected than redraw the previous line
         // in case when there is a word wrap then what was written at the previous line is moved to the current line
@@ -358,7 +360,7 @@ void WP_render_text()
             row[copyLength] = '\0';
 
             char utf8[512];
-            convert_extended_ascii_to_utf8(row + cursorLinePos_prev, utf8, copyLength);
+            convert_extended_ascii_to_utf8(row + cursorLinePos_prev, utf8, 512);
 
             //
             epd_poweron();
@@ -387,6 +389,7 @@ void WP_render_text()
             debug_log("WP_render_text::editing line change. %d %d %d %d\n", cursorLine, cursorLine_prev, cursorPos, cursorPos_prev);
         }
 
+        // reset prev flag
         cursorLine_prev = cursorLine;
     }
 }
@@ -438,7 +441,7 @@ void WP_render_cursor()
         if (renderedCursorX > 0)
         {
             //
-            debug_log("Delete previous cursor line\n");
+            // debug_log("Delete previous cursor line\n");
 
             //
             area = display_rect(
@@ -694,13 +697,13 @@ void WP_keyboard(char key)
 
     else
     {
+        // send the keys to the editor
+        Editor::getInstance().keyboard(key);
+
         if (key == '\b')
         {
             backspaced = true;
         }
-
-        // send the keys to the editor
-        Editor::getInstance().keyboard(key);
     }
 }
 
