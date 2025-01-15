@@ -382,7 +382,9 @@ void WP_render_text()
             // when line changes during the edit do full refresh
 
             // clear background
+            epd_poweron();
             epd_clear_quick(epd_full_screen(), 4, 50);
+            epd_poweroff();
             clear_request = true;
 
             editing = false;
