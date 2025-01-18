@@ -11,6 +11,11 @@ You’ll also need access to 3D-printed parts to complete the build. Many 3D pri
 
 [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-all-components/)
 
+## Credit 
+
+Build guide credit goes to a reddit user with a name ruleugim who has sourced all the material by oneself and has been reporting me all the missing points and difficulties that has occurred during the build. Thanks for the reports and all the feedback has been reinforced to the build guide thanks to ruleugim.
+
+
 # System Architecture
 
 <img src="build/build_002.png">
@@ -57,7 +62,7 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html)
 - [5mm SS12F15 Mini Size Black SPDT Slide Switch](https://www.aliexpress.com/item/1005007077815408.html)
 
-- 2x EC11 15mm Half handle for the knobs
+- 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
 - 50x Diode IN4148
 - 48x Kailih Hot-Swappable PCB socket Cherry MX Switches (CPG151101S11)
 - Micro SD card minimum 4 GB
@@ -70,8 +75,12 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - 6x M3 Hex Screw Length 5mm
 
 - 11x M2 Heated Inserts OD 3.2mm Length 3mm
-- 7x M2 Screw Length 5mm
-- 4x M2 Screw Length 3mm
+- 7x M2 Hex Screw Length 5mm
+- 4x M2 HEx Screw Length 3mm
+
+- You will need TORX T10H to handle Hex screws 
+
+- Any typical wires for electronics would do. I use [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
 
 # Build Order
 
@@ -92,6 +101,11 @@ Please, refer to the image below for placement of the prints. Most of the prints
 <img src="build/build_001.png" width="400">
 
 Once the prints are done. Remove the support materials from the print.
+
+## Installing Heat Inserts
+
+<img src="build/build_001.1.png">
+
 
 # Keyboard PCB
 
@@ -137,6 +151,8 @@ Prepare the wires with the length
 
 <img src="build/build_003.png" width="600">
 
+When soldring the wire on the keyboard PCB. It is important to determine which side you should put the wires in. You need to solder the wires on the side where hot swap sockets are soldered on. Please, refer to the picture above and make sure that you are orienting the flat side of the PCB correctly showing the hot swappable socket while you are soldering the wires on. 
+
 Note where the pin 1 starts on the PCB. Pin 1 is the square marked hole.  
 On the keyboard PCB, pin 5 and 16 will have two wires connected.
 
@@ -173,6 +189,10 @@ Solder all the short wires from the keyboard PCB to the keyboard controller.
 
 # Preparing EC11 Rotary Encoder
 
+<img src="build/build_022.png" width="600">
+
+Rotary Encoder EC11 Looks like this. Make sure to user 15mm length and Half Handle shape.
+
 Prepare the wires with the length
 
 - 4x 18cm wires
@@ -189,6 +209,12 @@ On the three pin side. solder three wires. Middle pin is the ground. I have sold
 # Connecting EC11 Rotary encoder to the keyboard controller
 
 Position the EC11 encoders as it would be installed inside the enclosure. Long wire will go on the left hand side. Short wire will on the right hand side. Make the three pin facing top.
+
+Firstly, merge the button wire (which doesn't have diode) from both EC11 and solder it to Keyboard controller pin 18. After that solder the Rotary pins to the keyboard controller. Be careful with the left and right rotary. The EC11 on the left will have a long wire, and the right EC11 will have short wires. 
+
+Once all the wiring to keyboard controller is done. There should be diode that is remaining that hasn't been soldered yet. This diode connects to the keyboard PCB. There should be 5th pin and 16th pin that has extra wires coming out from the keyboard PCB. Those wires then should be solder to the EC11 button pin with diode. 
+
+Please, refer to the following table to get precise mapping to the pins and wiring. 
 
 <img src="build/build_007.png" width="600">
 
@@ -246,6 +272,8 @@ If the keyboard controller doesn't show up as a thumb drive, connect to the PC W
 
 - Switch connects to 2x Micro USB +
 
+Power supply unit has variable voltage output. Most of the modules comes with 5V preset, but sometimes they come with random voltages. Make sure to measure the vout voltage is in the range of 5 ~ 6 V before connecting to any components. 
+
 
 # Display installation
 
@@ -259,6 +287,7 @@ Glue is a typical hobby hot glue. Heat the glue gun and pour the glue around the
 
 Connect the display connector with the display and the display controller.
 
+Once the display and the display controller is well settled. You need to change the brightness of the display to the lowest. The power supply module and the battery capacity is not sufficient to drive the display with the higher brightness. Connect the display with the computer HDMI and also power the display with micro USB (5V) and then press the button on the display controller to change the brightness.
 
 
 # Prepare the mini HDMI cable
