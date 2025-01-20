@@ -53,12 +53,6 @@ void Layout_render()
     cursorX = 10;
     cursorY += 40;
     writeln((GFXfont *)&systemFont, "[u] US", &cursorX, &cursorY, display_EPD_framebuffer());
-
-    // BACK
-    cursorX = 10;
-    cursorY += 50;
-    writeln((GFXfont *)&systemFont, " [B] BACK", &cursorX, &cursorY, display_EPD_framebuffer());
-
 }
 
 //
