@@ -292,6 +292,12 @@ void WP_render_text()
         // delete a line and redraw the line
         WP_clear_row(max(cursorLine - startLine, 0));
 
+        // if line is change then also clear the previous line
+        if (cursorLine != cursorLine_prev)
+        {
+            WP_clear_row(max(cursorLine_prev - startLine, 0));
+        }
+
         // and redraw the line
         WP_render_text_line(cursorLine, display_y(), NULL);
     }
