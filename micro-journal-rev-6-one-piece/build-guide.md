@@ -191,6 +191,8 @@ Solder the battery holder to the correct polarity. Then wire up power output to 
 | GND       | Vout -         |
 | 5Vin      | Vout +         |
 
+Power supply unit has variable voltage output. Most of the modules comes with 5V preset, but sometimes they come with random voltages. Make sure to measure the vout voltage is in the range of 5 ~ 6 V before connecting to any components. 
+
 
 
 # Closing the enclosure
