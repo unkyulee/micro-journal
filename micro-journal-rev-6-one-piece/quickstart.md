@@ -81,7 +81,11 @@ When the battery is low, the screen may turn white or flicker—these are common
 
 When closing the panel back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the panel to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
 
+#### Charging the Battery
 
+Charging port is located on the right hand side of the rev.6. When charging there should be red light coming out from the hole. When fully charged it will become blue light. 
+If no light appears. Then it is possible that the charger is not compatible. PD chargers, USB c to c type chargers most likely won't work. 
+It needs to connect to the USB A to C type chargers which are used for phone charging. 
 
 
 # Step 2. Prepare SD card
