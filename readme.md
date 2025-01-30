@@ -5,6 +5,29 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 [Support Unkyu's Project](https://buymeacoffee.com/unkyulee)
 
 
+## Micro Journal Rev.7: Kindred Gift
+
+This is a distraction-free writing device with a paper-like display and a keyboard in a familiar, conventional form factor. Many have asked for a more traditional keyboard layout, and this version delivers. Powered by the ESP32-S3, it turns on instantly. Getting you into the writing flow in just a flicker of a second.
+
+<img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="400">
+
+[Buy from my Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+
+### Documents 
+
+[Design Story] TBD
+
+[Feature and Use Case of Rev.7](https://www.youtube.com/watch?v=lNPzFL1a6mI)
+
+[Quick Start Guide] TBD
+
+[Build Guide] TBD
+
+### Press
+
+
+---
+
 ## Micro Journal Rev.2.ReVamp: Mother of Twins 
 
 Bringing Revision 2 back to life with an upgraded, foldable enclosure that offers extra protection against the relentless curiosity of the twin boys. Powered by a Raspberry Pi Zero 2W, it features a 48-key mini keyboard and side knobs for easy scrolling. A modern take on the classic typewriter.
@@ -18,8 +41,6 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 ### Documents 
 
-[Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
-
 [Micro Journal Rev.2.ReVamp Design Story](/micro-journal-rev-2-revamp/readme.md)
 
 [Features and Introduction of Rev.2.ReVamp](https://youtu.be/IFmGwKtGXtQ)
@@ -27,6 +48,9 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 [Quick Start Guide](./micro-journal-rev-2-revamp/quickstart.md)
 
 [Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2-revamp/build-guide.md)
+
+[Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+
 
 
 ### Press
@@ -41,6 +65,9 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 [The Rev 2: One Month Later by Hook](https://www.flickr.com/groups/39436080@N00/discuss/72157721921183163/72157721921902230)
 
+[The MagPi: Raspberry Pi Zero 2 W Micro Journal](https://www.raspberrypi.com/news/raspberry-pi-zero-2-w-micro-journal/)
+
+---
 
 ## Micro Journal Rev.6: Vivian in New York
 
@@ -90,11 +117,13 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 [Tindie Blog: Micro Journal DIY Kit](https://blog.tindie.com/2024/11/micro-journal-diy-kit/)
 
 
+---
+
 ## Micro Journal Rev.5: A Personal Journey
 
 In this iteration, I delved into exploring the potential of utilizing the USB port to enable connectivity with a wide range of mechanical keyboards. This enhancement offers the flexibility for users to employ their preferred keyboard for writing purposes, thereby enhancing the personalized experience and comfort level during usage.
 
-![Micro Journal Rev.5](/micro-journal-rev-5-esp32-usbhost/images/001.jpg)
+<img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="400">
 
 So, I proceeded to design an enclosure to sit next to the keyboard, utilizing the ESP32-S3, which boasts native USB host features. I then updated the code, and voilà! The new version was born.
 
@@ -130,12 +159,14 @@ For those who already have the device: [Quick Start User Guide](/micro-journal-r
 
 [Tindie Blog: Micro Journal DIY Kit](https://blog.tindie.com/2024/11/micro-journal-diy-kit/)
 
+---
 
 ## Third iteration: Immeidate power on and writing
 
 Transitioning from the previous iteration using an old phone, I sought a solution that would provide an instant writing experience similar to commercial WriterDecks, utilizing an ESP32 microcontroller.
 
-![Micro Journal Rev.4](/micro-journal-rev-4-esp32/doc/001.webp)
+<img src="./micro-journal-rev-4-esp32/doc/001.webp" width="400">
+
 
 This version represents the most challenging DIY build among my iterations. Handwiring the keyboard directly to the ESP32 and connecting the display to the board required a hardcore DIY approach, as resources and guides for this specific setup were scarce. It demanded some prior knowledge and experimentation to get it up and running.
 
@@ -157,13 +188,13 @@ With these features in place, this build proves to be highly practical. It's per
 [Hackaday: ESP32 PROVIDES DISTRACTION-FREE WRITING EXPERIENCE](https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/)
 
 
-
+---
 
 ## Second iteration: Using an old phone to make a writerDeck
 
 In the next iteration, I explored building a writing device using easily accessible components, such as an old phone. Old phones still possess sufficient power to serve as effective writing tools when coupled with a keyboard.
 
-![Micro Journal Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/images/001.jpg)
+<img src="./micro-journal-rev-3-samsung-galaxy-s8/images/001.jpg" width="400">
 
 The primary focus of this build was to provide a platform for my daughter to write journals without the complexities associated with Linux commands. Since she was accustomed to tablet environments, this solution aligned well with her needs. She could simply pick up the device and begin writing.
 
@@ -178,12 +209,13 @@ It's important to note that achieving a distraction-free environment was challen
 [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1bfhnfz/writerdeck_with_samsung_s8_using_an_old_mobile/)
 
 
+---
 
 ## First iteration: Using Raspberry Pi and 30 Keys mechanical keyboards. 
 
 I experimented with various iterations to explore different options for creating a distraction-free writing device. The initial version involved using a Raspberry Pi 2W, a small Linux computer, paired with a 30-key mechanical keyboard.
 
-![Micro Journal Rev.2](/micro-journal-rev-2-raspberypi/images/rev2_6.png)
+<img src="./micro-journal-rev-2-raspberypi/images/rev2_6.png" width="400">
 
 A crucial aspect of achieving distraction-free writing is to eliminate all possible distractions. The Raspberry Pi 2W excelled in this regard due to its Linux terminal-based interface, devoid of any graphical user interface. This meant there were no avenues for distractions like YouTube or other similar distractions.
 
@@ -198,12 +230,13 @@ This is the write up for the build guide of ths raspberry pi build.
 [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1b6ff16/micro_journal_rev_2/)
 
 
+---
 # Further Information
 
 https://new.reddit.com/r/writerDeck\
 https://www.writerdeck.org/
 
-
+---
 
 # Online shop
 
