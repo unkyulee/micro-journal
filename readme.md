@@ -4,6 +4,7 @@ I aimed to create a specialized writing device, focusing on the tactile experien
 
 [Support Unkyu's Project](https://buymeacoffee.com/unkyulee)
 
+---
 
 ## Micro Journal Rev.7: Kindred Gift
 
@@ -15,7 +16,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 
 ### Documents 
 
-[Design Story] TBD
+[Design Story](./micro-journal-rev-7-e-ink/readme.md)
 
 [Feature and Use Case of Rev.7](https://www.youtube.com/watch?v=lNPzFL1a6mI)
 
