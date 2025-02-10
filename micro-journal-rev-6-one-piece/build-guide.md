@@ -8,6 +8,12 @@ You will need 3D prints, in order to complete the build. There should be many 3d
 
 [Buy a DIY Kit](https://www.tindie.com/products/36190/)
 
+# Required Tools
+
+- You will need TORX T10H to handle Hex screws 
+
+- Any typical wires for electronics would do. I use [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
+
 # Build Order
 
 1. Prepare the Enclosure
@@ -190,6 +196,8 @@ Solder the battery holder to the correct polarity. Then wire up power output to 
 | --------- | -------------- |
 | GND       | Vout -         |
 | 5Vin      | Vout +         |
+
+<img src="build/power_004.png" width="600">
 
 Power supply unit has variable voltage output. Most of the modules comes with 5V preset, but sometimes they come with random voltages. Make sure to measure the vout voltage is in the range of 5 ~ 6 V before connecting to any components. 
 
