@@ -263,20 +263,25 @@ void Editor::keyboard(char key)
                 int newCursorPos =
                     screenBuffer.line_position[fileBuffer.cursorLine - 1] - screenBuffer.line_position[0];
 
-                // try to move the cursor to the middle of the line
-                int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine - 1], 1);
-                // if the line length is longer than half of the row then move the cursor to the middle
-                if (line_length > screenBuffer.cols / 2)
+                // cusor position in the line
+                int cursorLinePos = fileBuffer.cursorLinePos;
+
+                // if previous line length is shorter than cursorLinePos
+                int previousLineLength = screenBuffer.line_length[fileBuffer.cursorLine - 1];
+                if (previousLineLength < cursorLinePos)
                 {
-                    newCursorPos += screenBuffer.cols / 2;
-                    debug_log("Editor::keyboard::UP moving the cursor to the middle of the line %d\n", newCursorPos);
+                    // then move to the end of the previous line
+                    newCursorPos += previousLineLength-1;
                 }
                 else
                 {
-                    // if the line is short then try to put the cursor at the end of the line
-                    newCursorPos += line_length;
-                    debug_log("Editor::keyboard::UP moving the cursor to the end of the line %d\n", newCursorPos);
+                    // if previous line length is long enough then move as much as the currentLineCursorPos
+                    newCursorPos += cursorLinePos;
                 }
+
+                // edge case
+                if (newCursorPos < 0)
+                    newCursorPos = 0;
 
                 //
                 fileBuffer.cursorPos = newCursorPos;
@@ -290,30 +295,30 @@ void Editor::keyboard(char key)
             if (fileBuffer.cursorLine < screenBuffer.total_line)
             {
                 //
-                int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine + 1], 1);
                 int newCursorPos =
                     screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0];
 
-                debug_log("Editor::keyboard::DOWN buffer %d total_line %d cursorLine %d line_length %d newCursorPos %d\n",
-                          fileBuffer.getBufferSize(),
-                          screenBuffer.total_line,
-                          fileBuffer.cursorLine,
-                          line_length,
-                          newCursorPos);
+                // cusor position in the line
+                int cursorLinePos = fileBuffer.cursorLinePos;
 
-                // try to move the cursor to the middle of the line
-                // if the line length is longer than half of the row then move the cursor to the middle
-                if (line_length > screenBuffer.cols / 2)
+                // next line length
+                int nextLineLength = max(screenBuffer.line_length[fileBuffer.cursorLine + 1], 1);
+
+                // if next line has shorter length of the current cursor pos 
+                // then move to the end of the next line
+                if (cursorLinePos > nextLineLength)
                 {
-                    newCursorPos += screenBuffer.cols / 2;
-                    debug_log("Editor::keyboard::DOWN moving the cursor to the middle of the line %d\n", newCursorPos);
+                    newCursorPos += nextLineLength -1;
                 }
                 else
                 {
-                    // if the line is short then try to put the cursor at the end of the line
-                    newCursorPos += line_length;
-                    debug_log("Editor::keyboard::DOWN moving the cursor to the end of the line %d\n", newCursorPos);
+                    // 
+                    newCursorPos += cursorLinePos;
                 }
+
+                // handle edge case
+                if (newCursorPos > fileBuffer.bufferSize)
+                    newCursorPos = fileBuffer.bufferSize;
 
                 //
                 fileBuffer.cursorPos = newCursorPos;

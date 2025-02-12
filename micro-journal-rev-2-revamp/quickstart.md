@@ -22,6 +22,8 @@ When you receive the **Micro Journal Rev.2**, you'll need to install a battery b
 
 https://www.reddit.com/r/writerDeck/comments/1hkx7ia/microjournal_rev2_case/
 
+https://www.reddit.com/r/writerDeck/comments/1inrlnr/micro_journal_rev2_jurassic_park_analog_case/
+
 
 # Battery Information
 
