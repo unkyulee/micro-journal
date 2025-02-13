@@ -88,6 +88,17 @@ If no light appears. Then it is possible that the charger is not compatible. PD 
 It needs to connect to the USB A to C type chargers which are used for phone charging. 
 
 
+#### Keep the battery charged
+
+When battery gets low. Screen may start to blink to white and flicker. This is because battery is not able to provide sufficient power to the device and it is keep getting turn on and off. 
+
+It is highly recommended to turn off the device and do not turn back on until the battery is fully charged. In this state, there are many reports that SD card gets corrupted and you can risk to lose your texts. 
+
+Make sure to backup your contents frequently, and keep the battery charged. Here is a user mod that can install a battery indicator.
+
+https://github.com/unkyulee/micro-journal/issues/21
+
+
 # Step 2. Prepare SD card
 
 **SD card is already setup in this Micro Journal Rev. 6. Refer to this step only when you are inserting a new one**
