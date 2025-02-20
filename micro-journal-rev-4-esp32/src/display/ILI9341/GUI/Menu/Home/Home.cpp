@@ -7,7 +7,42 @@
 #include "keyboard/keyboard.h"
 
 //
+#include <SD.h>
 #include <SPIFFS.h>
+
+// Get the size of a file in bytes
+size_t FileSize(String fileName)
+{
+    size_t file_size = 0;
+    if (SD.exists(fileName))
+    {
+        app_log("Checking file size\n");
+        File file = SD.open(fileName, FILE_READ);
+        if (!file)
+        {   //something bad happened
+            char buffer [32];
+            sprintf(buffer, "Failed to open a file. %s\n", fileName);
+            app_log(buffer);
+            file_size = -1;
+        }
+        else
+        {   //file exists
+            file_size = file.size();
+        }
+        //
+        file.close();
+    }
+    return file_size;
+}
+
+// Conviences function to get File Size with just an index
+size_t FileIndexSize (int index)
+{
+    char buffer [6];
+    sprintf(buffer, "/%d.txt", index);
+    size_t file_size = FileSize(buffer);
+    return file_size;
+}
 
 //
 void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -74,7 +109,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         }
 
         ptft->setCursor(pos_x, 45 + i * 16, 2);
-        ptft->printf(" [%d] File %d", i, i);
+        ptft->printf(" [%d]: %zu", i, FileIndexSize(i));
     }
     //
     ptft->setCursor(pos_x, 210, 2);
