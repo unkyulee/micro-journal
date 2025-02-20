@@ -442,6 +442,8 @@ void WP_keyboard(char key)
 
 
 // Create an array of String objects
+// Many of these ascii codes can be tracked back to:
+// https://en.wikipedia.org/wiki/ISO/IEC_8859 column 1 of the table
 static const String extended_ascii[128] = {
     "E", // 128 euro sign doesn't work on Micro Journal
     "",
