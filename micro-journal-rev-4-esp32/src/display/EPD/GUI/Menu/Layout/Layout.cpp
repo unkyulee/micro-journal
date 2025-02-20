@@ -40,6 +40,10 @@ void Layout_render()
     
     cursorX = 10;
     cursorY += 40;
+    writeln((GFXfont *)&systemFont, "[d] Dvorak", &cursorX, &cursorY, display_EPD_framebuffer());
+
+    cursorX = 10;
+    cursorY += 40;
     writeln((GFXfont *)&systemFont, "[g] German", &cursorX, &cursorY, display_EPD_framebuffer());
     
     cursorX = 10;
@@ -79,6 +83,15 @@ void Layout_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
+    else if (key == 'd')
+    {
+        // canadian multiligual
+        app["config"]["keyboard_layout"] = "DV";
+        config_save();
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
+    }
+
     else if (key == 'g')
     {
         // italian
@@ -106,19 +119,20 @@ void Layout_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
-    else if (key == 'u')
+    else if (key == 'a')
     {
         // us
-        app["config"]["keyboard_layout"] = "US";
+        app["config"]["keyboard_layout"] = "INT";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
     }
 
-    else if (key == 'a')
+    else
     {
-        // us
-        app["config"]["keyboard_layout"] = "INT";
+        // default to 'us' if software was not configured correctly or downgraded
+        // or the 'u' key was pressed
+        app["config"]["keyboard_layout"] = "US";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;

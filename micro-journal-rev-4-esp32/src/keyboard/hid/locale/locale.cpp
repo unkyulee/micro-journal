@@ -7,6 +7,7 @@
 #include "us/us.h"
 #include "be/be.h"
 #include "ca/ca.h"
+#include "dv/dv.h"
 #include "it/it.h"
 #include "uk/uk.h"
 #include "ge/ge.h"
@@ -42,6 +43,10 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
   {
     // Italian
     return keyboard_keycode_ascii_uk(keycode, shift, alt);
+  }
+  else if (locale == "DV")
+  {
+    return keyboard_keycode_ascii_dv(keycode, shift, alt);
   }
   // by default return US keyboard layout
   return keyboard_keycode_ascii_us(keycode, shift);
