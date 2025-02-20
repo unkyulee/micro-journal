@@ -27,6 +27,7 @@ void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println("[a] International");
     ptft->println("[b] Belgian");
     ptft->println("[c] Canadian Multiligual");
+    ptft->println("[d] Dvorak");
     ptft->println("[g] German");
     ptft->println("[i] Italian");
     ptft->println("[k] UK");
@@ -52,6 +53,15 @@ void Layout_keyboard(char key)
     {
         // canadian multiligual
         app["config"]["keyboard_layout"] = "CA";
+        config_save();
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
+    }
+
+    else if (key == 'd')
+    {
+        // us dvorak multiligual
+        app["config"]["keyboard_layout"] = "DV";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
@@ -84,19 +94,19 @@ void Layout_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
-    else if (key == 'u')
+    else if (key == 'a')
     {
         // us
-        app["config"]["keyboard_layout"] = "US";
+        app["config"]["keyboard_layout"] = "INT";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
     }
 
-    else if (key == 'a')
+    else
     {
-        // us
-        app["config"]["keyboard_layout"] = "INT";
+        // default to 'us' in the case where software is downgraded or the 'u' key was pressed
+        app["config"]["keyboard_layout"] = "US";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
