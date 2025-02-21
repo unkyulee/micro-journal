@@ -8,7 +8,42 @@
 #include <display/EPD/display_EPD.h>
 
 //
+#include <SD.h>
 #include <SPIFFS.h>
+
+// Get the size of a file in bytes
+size_t FileSize(String fileName)
+{
+    size_t file_size = 0;
+    if (SD.exists(fileName))
+    {
+        app_log("Checking file size\n");
+        File file = SD.open(fileName, FILE_READ);
+        if (!file)
+        {   //something bad happened
+            char buffer [32];
+            sprintf(buffer, "Failed to open a file. %s\n", fileName);
+            app_log(buffer);
+            file_size = -1;
+        }
+        else
+        {   //file exists
+            file_size = file.size();
+        }
+        //
+        file.close();
+    }
+    return file_size;
+}
+
+// Conviences function to get File Size with just an index
+size_t FileIndexSize (int index)
+{
+    char buffer [6];
+    sprintf(buffer, "/%d.txt", index);
+    size_t file_size = FileSize(buffer);
+    return file_size;
+}
 
 //
 void Home_setup()
@@ -56,7 +91,7 @@ void Home_render()
         cursorY += 30;
         writeln(
             (GFXfont *)&systemFont,
-            format(" [%d] File %d", i, i).c_str(),
+            format(" [%d]: %zu", i, FileIndexSize(i) ).c_str(),
             &cursorX, &cursorY,
             display_EPD_framebuffer());
 
