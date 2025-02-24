@@ -46,6 +46,9 @@ void Menu_render()
             // don't do anything
             return;
         }
+
+        // 
+        return;
     }
 
     // Clear Screen

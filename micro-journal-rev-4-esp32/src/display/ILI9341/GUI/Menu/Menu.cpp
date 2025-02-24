@@ -57,6 +57,11 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         //
         menu_clear = false;
     }
+    else
+    {
+        // do not render when menu clear is not requested
+        return;
+    }
 
     // display tool bar
     ptft->setCursor(0, 2, 2);
@@ -216,7 +221,6 @@ void Menu_keyboard(char key)
         return;
     }
 
-
 #ifdef ENV_USBHOST
     // Bluetooth
     else if (menu_state == MENU_BLUETOOTH)
@@ -225,7 +229,6 @@ void Menu_keyboard(char key)
         return;
     }
 #endif
-
 
     //
     else if (menu_state == MENU_STARTUP)

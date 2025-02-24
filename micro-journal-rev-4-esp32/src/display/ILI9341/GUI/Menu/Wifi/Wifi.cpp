@@ -5,24 +5,18 @@
 #include "display/display.h"
 #include "../../WordProcessor/WordProcessor.h"
 
-//
-#include <SPI.h>
-#include <SPIFFS.h>
-#include <SD.h>
+// services
+#include "service/Buffer/BufferService.h"
+#include "service/Wifi/WifiService.h"
 
 //
 #define WIFI_CONFIG_LIST 0
 #define WIFI_CONFIG_EDIT_SSID 1
 #define WIFI_CONFIG_EDIT_KEY 2
+
+//
 int wifi_config_status = 0;
 int wifi_config_index = 0;
-
-#define WIFI_CONFIG_BUFFER 256
-char wifi_config_buffer[WIFI_CONFIG_BUFFER];
-int wifi_config_buffer_pos = 0;
-
-void _wifi_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
-void _wifi_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 
 //
 void Wifi_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -30,38 +24,11 @@ void Wifi_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     Menu_clear();
 
-    // 
-    Wifi_load();
+    // load wifi configuration from SPIFF
+    wifi_config_load();
 
     //
     wifi_config_status = WIFI_CONFIG_LIST;
-
-    // set wifi entry as 5
-    JsonDocument &app = app_status();
-    JsonArray savedAccessPoints = app["config"]["network"]["access_points"].as<JsonArray>();
-
-    // Iterate through each available network
-    bool needSave = false;
-    for (int i = 0; i < 5; i++)
-    {
-        if (savedAccessPoints.size() > i)
-        {
-        }
-        else
-        {
-            needSave = true;
-
-            savedAccessPoints[i]["ssid"] = "";
-            savedAccessPoints[i]["password"] = "";
-        }
-    }
-
-    //
-    if (needSave)
-    {
-        app_log("Wifi settings needs saving\n");
-        config_save();
-    }
 }
 
 //
@@ -76,104 +43,18 @@ void Wifi_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" WIFI SETTINGS ");
     ptft->println("");
 
+    // RENDER based on the screen index
     if (wifi_config_status == WIFI_CONFIG_LIST)
     {
-        _wifi_saved_list(ptft, pu8f);
+        Wifi_render_list(ptft, pu8f);
     }
     else if (wifi_config_status >= WIFI_CONFIG_EDIT_SSID)
     {
-        _wifi_edit(ptft, pu8f);
+        Wifi_render_edit(ptft, pu8f);
     }
 }
 
-//
-void Wifi_keyboard(char key)
-{
-    JsonDocument &app = app_status();
-
-    if (wifi_config_status >= WIFI_CONFIG_EDIT_SSID)
-    {
-        // BACK SPACE
-        if (key == '\b')
-        {
-            // backspace
-            wifi_config_buffer[wifi_config_buffer_pos--] = '\0';
-        }
-        else if (key == '\n')
-        {
-            // next
-            if (wifi_config_status == WIFI_CONFIG_EDIT_SSID)
-            {
-                // save ssid
-                JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
-                savedAccessPoints[wifi_config_index]["ssid"] = String(wifi_config_buffer);
-
-                wifi_config_buffer[0] = '\0';
-                wifi_config_buffer_pos = 0;
-
-                //
-                wifi_config_status = WIFI_CONFIG_EDIT_KEY;
-            }
-            else if (wifi_config_status == WIFI_CONFIG_EDIT_KEY)
-            {
-                // save ssid
-                JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
-                savedAccessPoints[wifi_config_index]["password"] = String(wifi_config_buffer);
-
-                //
-                Wifi_save();
-
-                wifi_config_buffer[0] = '\0';
-                wifi_config_buffer_pos = 0;
-
-                //
-                wifi_config_status = WIFI_CONFIG_LIST;
-            }
-        }
-        else
-        {
-            // edit mode
-            wifi_config_buffer[wifi_config_buffer_pos++] = key;
-            wifi_config_buffer[wifi_config_buffer_pos] = '\0';
-        }
-
-        // OVERFLOW CONTROL
-        if (wifi_config_buffer_pos > WIFI_CONFIG_BUFFER)
-        {
-            wifi_config_buffer[0] = '\0';
-            wifi_config_buffer_pos = 0;
-        }
-    }
-    else
-    {
-        // back to home
-        if (key == 'B' || key == 'b')
-        {
-            //
-            // go back to home menu
-            app["menu"]["state"] = MENU_HOME;
-
-            return;
-        }
-
-        else if (key >= '1' && key <= '5')
-        {
-            //
-            // wifi entry chose to edit
-            wifi_config_index = key - '1';
-            wifi_config_status = WIFI_CONFIG_EDIT_SSID;
-            wifi_config_buffer[0] = '\0';
-            wifi_config_buffer_pos = 0;
-
-            //
-            Menu_clear();
-
-            return;
-        }
-    }
-}
-
-void _wifi_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void Wifi_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     ptft->println(" CHOOSE THE ENTRY TO EDIT: ");
     ptft->println("");
@@ -216,8 +97,9 @@ void _wifi_saved_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [B] BACK ");
 }
 
-void _wifi_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void Wifi_render_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+
     //
     JsonDocument &app = app_status();
 
@@ -235,7 +117,7 @@ void _wifi_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" TYPE SSID:");
         ptft->println("");
 
-        ptft->printf("      %s", wifi_config_buffer);
+        ptft->printf("      %s", buffer_get());
         ptft->println("");
         ptft->println("");
         ptft->println(" [ENTER] NEXT ");
@@ -245,104 +127,94 @@ void _wifi_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" TYPE WIFI KEY:");
         ptft->println("");
 
-        ptft->printf("      %s", wifi_config_buffer);
+        ptft->printf("      %s", buffer_get());
         ptft->println("");
         ptft->println("");
         ptft->println(" [ENTER] SAVE ");
     }
 }
 
-void Wifi_load()
+//
+void Wifi_keyboard(char key)
 {
-    //
     JsonDocument &app = app_status();
 
-    // load config.json
-    app_log("Opening wifi.json file\n");
-    File file = SPIFFS.open("/wifi.json", "r");
-    if (file)
+    if (wifi_config_status >= WIFI_CONFIG_EDIT_SSID)
     {
-        // read the file
-        app_log("Reading wifi.json file\n");
-        String wifiString = file.readString();
-        app_log("Closing wifi.json file\n");
-        file.close();
 
-        // check if configString is empty
-        if (wifiString.isEmpty())
+        // SAVE or NEXT
+        if (key == '\n')
         {
-            // to avoid deserialization failure whem empty
-            wifiString = "{}";
+            // NEXT step
+            if (wifi_config_status == WIFI_CONFIG_EDIT_SSID)
+            {
+                // save ssid
+                JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
+                savedAccessPoints[wifi_config_index]["ssid"] = String(buffer_get());
+
+                // clear buffer
+                buffer_clear();
+
+                // move to password enter screen
+                wifi_config_status = WIFI_CONFIG_EDIT_KEY;
+            }
+            else if (wifi_config_status == WIFI_CONFIG_EDIT_KEY)
+            {
+                // save ssid
+                JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
+                savedAccessPoints[wifi_config_index]["password"] = String(buffer_get());
+
+                // save the configuration
+                wifi_config_save();
+
+                //
+                buffer_clear();
+
+                // go back to the configuration list
+                wifi_config_status = WIFI_CONFIG_LIST;
+            }
         }
-
-        // Prepare a JsonDocument for the configuration
-        // The size should be adjusted according to your configuration's needs
-        JsonDocument configDoc;
-
-        // convert to JsonObject
-        DeserializationError error = deserializeJson(configDoc, wifiString);
-        app_log("Deserializing wifi.json file\n");
-        if (error)
+        // BACK SPACE
+        else if (key == '\b')
+        {
+            // backspace
+            buffer_remove();
+        }
+        // ADD KEYS
+        else
+        {
+            // edit mode
+            buffer_add(key);
+        }
+    }
+    else
+    {
+        // back to home
+        if (key == 'B' || key == 'b')
         {
             //
-            app_log("wifi.json deserializeJson() failed: %s\n", error.c_str());
-
-            //
-            app["error"] = "Wrong format wifi.json";
-            app["screen"] = ERRORSCREEN;
+            // go back to home menu
+            app["menu"]["state"] = MENU_HOME;
 
             return;
         }
 
-        // Assign the loaded configuration to "config" property of app
-        app_log("Loading wifi config\n");
-        app["wifi"] = configDoc.as<JsonObject>();
+        else if (key >= '1' && key <= '5')
+        {
+            //
+            // wifi entry chose to edit
+            //
 
-        // print out the configuration
-        app_log("Wifi config loaded successfully!\n");
+            // clear buffer
+            buffer_clear();
+
+            // determine the index to edit
+            wifi_config_index = key - '1';
+
+            // move the screen
+            wifi_config_status = WIFI_CONFIG_EDIT_SSID;
+
+            return;
+        }
     }
-    else
-    {
-        // file doesn't exist
-        app_log("wifi.json file doens't exist\n");
-        delay(100);
-
-        return;
-    }
-}
-
-void Wifi_save()
-{
-    // load app status
-    JsonDocument &app = app_status();
-
-    // save config
-    // Open the file for writing
-    File file = SPIFFS.open("/wifi.json", FILE_WRITE);
-    if (!file)
-    {
-        app_log("Failed to open wifi.json file for writing.\n");
-        return;
-    }
-
-    // Serialize the "config" property of the app Document directly to the file
-    if (app["wifi"].is<JsonObject>())
-    {
-        String jsonOutput;
-        serializeJsonPretty(app["wifi"], jsonOutput);
-        file.println(jsonOutput);
-
-        // debug
-        debug_log("Wifi_save\n%s\n", jsonOutput.c_str());
-
-        //
-        app_log("Wifi config updated successfully.\n");
-    }
-    else
-    {
-        app_log("No 'wifi' property found in app Document.\n");
-    }
-
-    // close config.json
-    file.close();
 }
