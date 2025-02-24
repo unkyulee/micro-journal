@@ -10,7 +10,7 @@
 //
 #include "usb/usb.h"
 //
-#include "locale/locale.h"
+#include "../locale/locale.h"
 
 // at the boot up BLE keyboard connection will be validated
 bool ble_keyboard = false;

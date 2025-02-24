@@ -12,6 +12,7 @@
 #include "uk/uk.h"
 #include "ge/ge.h"
 #include "latin/latin.h"
+#include "swedish/swedish.h"
 
 uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt)
 {
@@ -35,25 +36,30 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
   {
     // Canadian Layout
     return keyboard_keycode_ascii_ca(keycode, shift, alt);
-  }
-  
+  } 
+  else if (locale == "DV")
+  {
+    return keyboard_keycode_ascii_dv(keycode, shift, alt);
+  } 
   else if (locale == "IT")
   {
     // Italian
     return keyboard_keycode_ascii_it(keycode, shift, alt);
   }
+  else if (locale == "LAT")
+  {
+    // Latin American Spanish
+    return keyboard_keycode_ascii_latin(keycode, shift, alt);
+  }
+  else if (locale == "SWE")
+  {
+    // Swedish
+    return keyboard_keycode_ascii_swedish(keycode, shift, alt);
+  }
   else if (locale == "UK")
   {
     // Italian
     return keyboard_keycode_ascii_uk(keycode, shift, alt);
-  }
-  else if (locale == "DV")
-  {
-    return keyboard_keycode_ascii_dv(keycode, shift, alt);
-  }
-  else if (locale == "LAT")
-  {
-    return keyboard_keycode_ascii_latin(keycode, shift, alt);
   }
   // by default return US keyboard layout
   return keyboard_keycode_ascii_us(keycode, shift);

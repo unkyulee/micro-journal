@@ -32,6 +32,7 @@ void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println("[I] Italian");
     ptft->println("[K] UK");
     ptft->println("[L] Latin America");
+    ptft->println("[S] Swedish");
     ptft->println("[U] US");
 }
 
@@ -108,6 +109,15 @@ void Layout_keyboard(char key)
     {
         // italian
         app["config"]["keyboard_layout"] = "LAT";
+        config_save();
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
+    }
+
+    else if (key == 's')
+    {
+        // italian
+        app["config"]["keyboard_layout"] = "SWE";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
