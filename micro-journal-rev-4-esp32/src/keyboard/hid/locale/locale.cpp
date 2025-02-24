@@ -11,10 +11,17 @@
 #include "it/it.h"
 #include "uk/uk.h"
 #include "ge/ge.h"
+#include "latin/latin.h"
 
 uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt)
 {
-  if (locale == "BE")
+  if (locale == "INT")
+  {
+    // US International
+    return keyboard_precursor_filter(keyboard_keycode_ascii_us(keycode, shift));
+  }
+
+  else if (locale == "BE")
   {
     // Belgium Layout
     return keyboard_keycode_ascii_be(keycode, shift, alt);
@@ -29,11 +36,7 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
     // Canadian Layout
     return keyboard_keycode_ascii_ca(keycode, shift, alt);
   }
-  else if (locale == "INT")
-  {
-    // US International
-    return keyboard_precursor_filter(keyboard_keycode_ascii_us(keycode, shift));
-  }
+  
   else if (locale == "IT")
   {
     // Italian
@@ -47,6 +50,10 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
   else if (locale == "DV")
   {
     return keyboard_keycode_ascii_dv(keycode, shift, alt);
+  }
+  else if (locale == "LAT")
+  {
+    return keyboard_keycode_ascii_latin(keycode, shift, alt);
   }
   // by default return US keyboard layout
   return keyboard_keycode_ascii_us(keycode, shift);

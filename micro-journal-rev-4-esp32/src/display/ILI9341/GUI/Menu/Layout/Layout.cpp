@@ -24,14 +24,15 @@ void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" - Choose Keyboard Layout");
     ptft->println();
 
-    ptft->println("[a] International");
-    ptft->println("[b] Belgian");
-    ptft->println("[c] Canadian Multiligual");
-    ptft->println("[d] Dvorak");
-    ptft->println("[g] German");
-    ptft->println("[i] Italian");
-    ptft->println("[k] UK");
-    ptft->println("[u] US");
+    ptft->println("[A] International");
+    ptft->println("[B] Belgian");
+    ptft->println("[C] Canadian Multiligual");
+    ptft->println("[D] Dvorak");
+    ptft->println("[G] German");
+    ptft->println("[I] Italian");
+    ptft->println("[K] UK");
+    ptft->println("[L] Latin America");
+    ptft->println("[U] US");
 }
 
 //
@@ -40,7 +41,16 @@ void Layout_keyboard(char key)
     //
     JsonDocument &app = app_status();
 
-    if (key == 'b')
+    if (key == 'a')
+    {
+        // us
+        app["config"]["keyboard_layout"] = "INT";
+        config_save();
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
+    }
+
+    else if (key == 'b')
     {
         // canadian multiligual
         app["config"]["keyboard_layout"] = "BE";
@@ -94,10 +104,10 @@ void Layout_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
-    else if (key == 'a')
+    else if (key == 'l')
     {
-        // us
-        app["config"]["keyboard_layout"] = "INT";
+        // italian
+        app["config"]["keyboard_layout"] = "LAT";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
