@@ -6,10 +6,7 @@
 #include "config/config.h"
 #include "display/display.h"
 #include "keyboard/keyboard.h"
-
-#ifdef ENV_EPAPER
 #include "service/Wifi/WifiService.h"
-#endif
 
 // Dual Core Support
 TaskHandle_t Task0;
@@ -48,7 +45,6 @@ void setup()
         0,       // Priority of the task
         &Task0,  // Task handle.
         0);      // Core where the task should run
-
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -69,10 +65,8 @@ void Core0(void *parameter)
         //
         keyboard_loop();
 
-#ifdef ENV_EPAPER
         // check for background task request
         wifi_service_loop();
-#endif
 
         //
         yield();

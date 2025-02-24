@@ -45,8 +45,26 @@ void Menu_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    // clear background when necessary
-    if (menu_clear)
+    JsonDocument &app = app_status();
+
+    // check if app clear is set as well
+    if (app["clear"].as<bool>() == true)
+    {
+        // reset global clear flag
+        app["clear"] = false;
+
+        // clear screen
+        menu_clear = true;        
+    }
+
+    if (!menu_clear)
+    {
+        // nothing is changed
+        // skip this rendering cycle
+        return;
+    }
+    
+    // clear screen
     {
         //
         ptft->fillScreen(TFT_BLACK);
@@ -56,11 +74,6 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         //
         menu_clear = false;
-    }
-    else
-    {
-        // do not render when menu clear is not requested
-        return;
     }
 
     // display tool bar
@@ -82,8 +95,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 #ifdef ENV_EPAPER
     ptft->print(" REV.7 ");
 #endif
-    // draw sub module of menu
-    JsonDocument &app = app_status();
+    // draw sub module of menu    
     int menu_state = app["menu"]["state"].as<int>();
 
     if (menu_state == MENU_HOME)

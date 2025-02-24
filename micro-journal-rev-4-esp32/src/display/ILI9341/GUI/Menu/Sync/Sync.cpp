@@ -28,7 +28,7 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // header
     ptft->setCursor(0, 30, 2);
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println(" SYNC IN PROGRESS ");
+    ptft->println(" SYNC & BACKUP ");
 
     // SYNC STATE
     int sync_state = app["sync_state"].as<int>();
@@ -39,6 +39,7 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // Start Sync Process
         // 1) Connect to Wifi
         sync_start_request();
+        ptft->println(" - PREPREPARING ");
 
         String message = app["sync_message"].as<String>();
 

@@ -140,6 +140,8 @@ void wifi_sync_init()
     app["sync_state"] = SYNC_START;
     app["sync_error"] = "";
     app["sync_message"] = "";
+
+    app_log("wifi_sync_init'\n");
 }
 
 // start WIFI
@@ -147,6 +149,8 @@ void sync_start_request()
 {
     JsonDocument &app = app_status();
     app["task"] = "sync_start";
+
+    app_log("sync_start_request'\n");
 }
 
 // Start Sync Process

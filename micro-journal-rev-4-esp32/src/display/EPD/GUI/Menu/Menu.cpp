@@ -35,19 +35,15 @@ void Menu_render()
     //
     JsonDocument &app = app_status();
 
-    // when menu clear is not set
-    // no need to render
-    // except there is app clear
+    // check if app clear is set as well
+    if (app["clear"].as<bool>() == true)
+    {
+        menu_clear = true;
+    }
+
+    // if menu clear is not set the no need to refresh menu
     if (!menu_clear)
     {
-        // check if app clear is set as well
-        if (app["clear"].as<bool>() != true)
-        {
-            // don't do anything
-            return;
-        }
-
-        // 
         return;
     }
 

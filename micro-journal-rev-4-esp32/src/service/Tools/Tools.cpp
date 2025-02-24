@@ -45,12 +45,13 @@ size_t fileSize(String fileName)
             app_log(buffer);
             file_size = -1;
         }
-        else
+        else 
         {   //file exists
             file_size = file.size();
         }
         //
         file.close();
+        delay(10);
     }
     return file_size;
 }
