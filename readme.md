@@ -2,7 +2,7 @@
 
 I aimed to create a specialized writing device, focusing on the tactile experience of mechanical keyboards. This device would be portable, with a compact form factor, designed to enhance the writing process in a focused environment. The goal was to provide a distraction-free writing experience, allowing users to immerse themselves fully in their creative work.
 
-* [Support Unkyu's Project](https://buymeacoffee.com/unkyulee)
+* [Buy me a coffee](https://buymeacoffee.com/unkyulee)
 
 ---
 
@@ -12,7 +12,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 
 <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="400">
 
-* [Order from my Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
 
 ### Documents 
 
@@ -32,7 +32,7 @@ Bringing Revision 2 back to life with an upgraded, foldable enclosure that offer
 
 <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="400">
 
-* [Order from my Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
 
 A mother of twins (five in total) challenged me to create a foldable design, which is far more complex than other designs due to its many moving parts. The goal was to ensure durability while keeping the mechanism as simple as possible. It was quite a challenge, but I’m pleased with the outcome. Still, I wonder whether the design reflects my intention and skill or if it’s simply a happy accident that happened to turn out well.
 
@@ -76,7 +76,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 <img src="./micro-journal-rev-6-one-piece/images/005.jpg" width="400">
 
 
-* [Order from my Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
 
 
 ### Documents 
@@ -122,7 +122,7 @@ So, I proceeded to design an enclosure to sit next to the keyboard, utilizing th
 
 There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
 
-* [Order from my Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
 
 
 ### Documents 
