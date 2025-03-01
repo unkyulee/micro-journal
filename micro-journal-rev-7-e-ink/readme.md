@@ -133,8 +133,6 @@ That's a good sign.
 
 It's been a year of revisions and builds. Each one feeling like the ultimate version, bringing an incredible sense of satisfaction to myself. But once a build is finished, the weight of the next one sets in. Can I make something better? Will users see this as a true improvement over the last version? There's always room for refinement. I could push further. Did I stop too soon?
 
-But if there's one thing every iteration has in common, it's that I build something that truly satisfies me. It is keeping a promise to myself.
+But if there's one thing every iteration has in common, it's that I build something that truly satisfies me. I have fell in love with each and every revision (until the next revision). 
 
-Micro Journal isn't a job. It's not a business. It's not an obligation. It's a commitment to myself. That's why I put in the extra effort. So that, at the very least, I won't look back and feel ashamed of what I've built.
 
-This is my vision, my work, and my effort. I want to create something that, years from now, will still surprise me.
