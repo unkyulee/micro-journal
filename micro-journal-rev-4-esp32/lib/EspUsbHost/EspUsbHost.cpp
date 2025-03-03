@@ -1,8 +1,5 @@
 #include "EspUsbHost.h"
 
-//
-bool _isApple = false;
-
 void EspUsbHost::_printPcapText(const char *title, uint16_t function, uint8_t direction, uint8_t endpoint, uint8_t type, uint8_t size, uint8_t stage, const uint8_t *data)
 {
 #if (ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_INFO)
@@ -120,14 +117,6 @@ void EspUsbHost::_clientEventCallback(const usb_host_client_event_msg_t *eventMs
 
       // check if Apple Inc.
       Serial.println(getUsbDescString(dev_info.str_desc_manufacturer));
-      if (getUsbDescString(dev_info.str_desc_manufacturer) == "Apple Inc.")
-      {
-        _isApple = true;
-      }
-      else
-      {
-        _isApple = false;
-      }
     }
 
     const usb_device_desc_t *dev_desc;
@@ -642,31 +631,20 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
 
         // Step 1. Generate the Keycode Report
         hid_keyboard_report_t report = {};
-        if (_isApple)
-        {
-          // Apple Keyboard
-          // In case of Apple Keyboard
-          // Modifier is sent at transfer->data_buffer[1] instead of index 0
-          report.modifier = transfer->data_buffer[1];
-          report.reserved = transfer->data_buffer[0];
-          report.keycode[0] = transfer->data_buffer[3];
-          report.keycode[1] = transfer->data_buffer[4];
-          report.keycode[2] = transfer->data_buffer[5];
-          report.keycode[3] = transfer->data_buffer[6];
-          report.keycode[4] = transfer->data_buffer[7];
-        }
-        else
-        {
-          // Standard Keyboard
-          report.modifier = transfer->data_buffer[0];
-          report.reserved = transfer->data_buffer[1];
-          report.keycode[0] = transfer->data_buffer[2];
-          report.keycode[1] = transfer->data_buffer[3];
-          report.keycode[2] = transfer->data_buffer[4];
-          report.keycode[3] = transfer->data_buffer[5];
-          report.keycode[4] = transfer->data_buffer[6];
-          report.keycode[5] = transfer->data_buffer[7];
-        }
+
+        // Standard Keyboard
+        report.modifier = transfer->data_buffer[0];
+        report.reserved = transfer->data_buffer[1];
+        report.keycode[0] = transfer->data_buffer[2];
+        report.keycode[1] = transfer->data_buffer[3];
+        report.keycode[2] = transfer->data_buffer[4];
+        report.keycode[3] = transfer->data_buffer[5];
+        report.keycode[4] = transfer->data_buffer[6];
+        report.keycode[5] = transfer->data_buffer[7];
+
+        // if reserved comes with a value then set it as modifier
+        // apple keyboard uses reserved slot as modifier
+        if(report.reserved > 0x0) report.modifier = report.reserved;
 
         //////////////////////////////////////////
         // General Key is pressed
