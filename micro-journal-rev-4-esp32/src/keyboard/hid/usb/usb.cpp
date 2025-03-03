@@ -118,13 +118,16 @@ void keyboard_usb_loop()
   //int sequence[] = {0x52, 0x10, 0x2C, 0x51, 0x51, 0x10, 0x2C};
 
   // testing to go up and up and up
-  int sequence[] = {0x52,0x52, 0x51, 0x51};
+  //int sequence[] = {0x52,0x52, 0x51, 0x51};
 
   // entering menu and back to word processor
   //int sequence[] = {0x29, 0x29};
 
   // backspace
   //int sequence[] = {0x2c, 0x18, 0x18, 0x18, 0x18, 0x2a};
+
+  // tab 0x2b
+  int sequence[] = {0x2b};
 
   // simulate typingis
   static unsigned int last = millis();

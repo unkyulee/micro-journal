@@ -705,6 +705,9 @@ void WP_keyboard(char key)
 
     else
     {
+        // convert tab key to space
+        if( key == '\t') key = ' ';
+
         // send the keys to the editor
         Editor::getInstance().keyboard(key);
 

@@ -1,26 +1,36 @@
 # Distraction-Free writing device: WriterDeck using any USB mechanical keyboard
 
-![Micro Journal Rev.5](./images/001.jpg)
+<img src="./images/001.jpg" width=400>
 
 Introducing a distraction-free writing device powered by ESP32-S3 and featuring a 3-inch display. Simply connect any USB keyboard, and you're ready to start writing. The device comes in a simple enclosure designed to sit neatly next to your keyboard, and it's easily portable for on-the-go use.
 
-![Micro Journal Rev.5](./images/smile.png)
+<img src="./images/smile.png" width=400>
 
-[Buy a DIY Kit](https://www.tindie.com/products/36190/)
 
-# What made you to make the four devices that does the same thing?
+
+* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+
+
+# Typing Video
+
+* https://youtu.be/zcHL68JWXqc
+
+
+---
+
+# Why new version?
 
 Introducing the fourth iteration of writerDeck. In the previous version, I have introduced the ESP32, enabling instant power-on and seamless access to a minimalist writing environment. Personally, I found enjoyment in using this device. On numerous occasions, I simply picked it up and began writing, resulting in rather satisfying texts.
 
-![Micro Journal Rev.4](/micro-journal-rev-4-esp32/doc/001.webp)_My previous iteration_
+<img src="../micro-journal-rev-4-esp32/doc/001.webp" width=400>
 
 However, it's worth noting that the device features a fixed 30-key keyboard, meticulously tailored to my personal preferences. While the concept was solid and the ESP32 proved to be a fitting solution, the hyper-personalized keyboard layout posed a barrier for others to adopt and use the device.
 
-![Micro Journal Rev.5](./images/002.jpg)_This iteration_
+<img src="./images/002.jpg" width=400>
 
 I envisioned the writerDeck as a tool that could benefit a wider audience. However, the fixed keyboard layout posed a significant obstacle to this goal. What if this keyboard component could be separated and offer a USB interface?
 
-![Micro Journal Rev.5](./images/pink.png)
+<img src="./images/pink.png" width=400>
 
 Now, any mechanical keyboard with a USB interface can connect to it, opening up possibilities for a broader range of users. Additionally, by utilizing a 2.4 GHz dongle, typing remotely without cables becomes a fascinating option. Inspired by this potential, I began working on implementing these features.
 
@@ -28,7 +38,7 @@ Now, any mechanical keyboard with a USB interface can connect to it, opening up 
 
 To receive signals from a USB keyboard, the connecting device must function as a host. A host device is responsible for supplying voltage and current to connected devices, as well as managing the hierarchy of connections, especially when connected via hubs and multiple series of devices.
 
-![Micro Journal Rev.5](./images/006.jpg)_Is this the right side?_
+<img src="./images/006.jpg" width=400>
 
 While most PCs and smartphones possess USB host functionality natively, allowing keyboards to be plugged in and work seamlessly, the ESP32 operates differently. Unlike PCs and smartphones, the ESP32, particularly the ESP32 Wroom modules, does not inherently support these features. As a result, even if you were to connect a USB keyboard to an ESP32, it would not recognize key presses.
 
@@ -42,11 +52,12 @@ Looking back, I realize I should have conducted more thorough testing at this st
 
 ### This keyboard worked with USB SOFT HOST
 
-![Micro Journal Rev.5](./images/007.jpg)
+<img src="./images/007.jpg" width=400>
+
 
 ### But this keyboard did not work. It crashed esp32 continuously when connected.
 
-![Micro Journal Rev.5](./images/008.jpg)
+<img src="./images/008.jpg" width=400>
 
 Unfortunately, I only noticed this error after I had already printed the enclosure and finalized the assembly. Excited to put the device to the test, I plugged in my main keyboard into the writerDeck, only to discover that it didn't work at all. It was a devastating realization.
 
@@ -62,11 +73,11 @@ Upon realizing this limitation, I decided to purchase an ESP32-S3 devkit board. 
 
 Although the ESP32-S3 boasts native USB host implementation on its hardware base, I encountered challenges when attempting to connect a USB keyboard directly. Initially, I wired GPIO 20 to D+ and GPIO 19 to D- of the USB female port, along with connecting VIN and GND to the board as specified.
 
-![Micro Journal Rev.5](./images/010.jpg)
+<img src="./images/010.jpg" width=400>
 
 Despite the correct wiring and initialization of USB-related code, the keyboard remained unresponsive. Puzzled by this, I used a voltage measuring tool and discovered that there was no voltage present on the USB connector's VIN and GND pins.
 
-![Micro Journal Rev.5](./images/009.jpg)
+<img src="./images/009.jpg" width=400>
 
 Further investigation revealed that the devkit doesn't supply voltage to the VIN pin; it only receives voltage. This is due to a diode blocking voltage flow. Although it may seem intuitive to connect jumpers to supply voltage, it's crucial not to do so.
 
@@ -103,21 +114,30 @@ I utilized a micro SD card in this project. I noticed that some SanDisk cards we
 
 If you purchase an SD card larger than 32GB, you'll need to create a partition with a maximum size of 32GB due to the ESP32's architectural limitation of being 32-bit, preventing it from reading larger than 32GB.
 
-- Other components. USB-C female adaptor, Push button (6 mm), SPDT position switch, 3 mm threaded inserts and nuts, 2.5 mm machine screws...
+- USB-C female adaptor, Push button (6 mm), SPDT position switch
+- [8x M3 heat inserts Length 3mm](https://www.aliexpress.com/item/1005004535859664.html)
+- [8x M3 hex screw length 10mm](https://www.aliexpress.com/item/32442183034.html)
+- [2x M2 Machine Screw length 6mm](https://www.aliexpress.com/item/1005004177352184.html)
+
+
+- You will need TORX T10H to handle Hex screws 
+
+- Any typical wires for electronics would do. I use [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
+
 
 ## Step 1. Preparing the DISPLAY
 
 Remove the pins soldered on the display board using a nipper. Proceed slowly and gently to avoid scratching the board surface with the tools.
 
-![Micro Journal Rev.5](./images/011.jpg)
+<img src="./images/011.jpg" width=400>
 
 Apply additional solder to the pins, then use the nipper to remove them while melting the solder. Ensure to add extra solder when removing the pins.
 
-![Micro Journal Rev.5](./images/012.jpg)
+<img src="./images/012.jpg" width=400>
 
 Wire the MOSI, MISO, and CLK (SCK) pins from the SD card side of the pins to the DISPLAY part of the pins. Assign the CS pin of the SD card to the ESP32 board.
 
-![Micro Journal Rev.5](./images/013.jpg)
+<img src="./images/013.jpg" width=400>
 
 We will utilize the ILI9341 and SD card slot in this module, both utilizing the SPI interface. Therefore, the MOSI, MISO, and CLK pins are shared between the DISPLAY and SD functions.
 
@@ -133,7 +153,7 @@ Expose the following display pins as 10 cm wires from the board, which will late
 - CS DISPLAY
 - CS SD
 
-![Micro Journal Rev.5](./images/014.jpg)
+<img src="./images/014.jpg" width=400>
 
 Once done the board should like the picture above.
 
@@ -147,13 +167,13 @@ Connect the IN port to a USB-C female connector. This allows you to use USB-C ca
 
 Connect the BATT port to any battery case. In my build, I used an 18650 battery, but you can use any LiPo battery.
 
-![Micro Journal Rev.5](./images/015.jpg)
+<img src="./images/015.jpg" width=400>
 
 ## Step 3. Preparing USB-A female connector
 
 USB-A female connector is needs to accept USB connection from the keyboard. You can search with "USB A female connector" to find the modules that is used in rev.5.
 
-![Micro Journal Rev.5](./images/usb-a-female.png)
+<img src="./images/usb-a-female.png" width=400>
 
 https://www.aliexpress.com/item/4001146122421.html
 
@@ -194,13 +214,13 @@ Solder wires to the ESP32 board according to the pinout.
 | 19  | USB D-                    |
 | 20  | USB D+                    |
 
-![Micro Journal Rev.5](./images/005.jpg)
+<img src="./images/005.jpg" width=400>
 
 Once the wiring is completed, it may resemble a tangled mess of wires, often referred to as "spaghetti."
 
 ## Step 4. Enclosure
 
-![Micro Journal Rev.5](./images/016.jpg)
+<img src="./images/016.jpg" width=400>
 
 STL files can be found in the folder "STL".
 
@@ -210,13 +230,13 @@ STL files can be found in the folder "STL".
 
 The firmware for this iteration utilizes the same codebase as the previous version. To access the project repository for the micro-journal firmware, clone the repository from the following link:
 
-https://github.com/unkyulee/micro-journal.
+https://github.com/unkyulee/micro-journal
 
 Once cloned, navigate to the "/micro-journal-rev-4-esp32" folder to find the PlatformIO source project.
 
 To work with the project, open it using Visual Studio with the PlatformIO plugin installed. From there, you'll be able to compile and upload the firmware to the ESP32-S3.
 
-![Micro Journal Rev.5](./images/017.jpg)
+<img src="./images/017.jpg" width=400>
 
 You may need to modify the /src/service/keyboard/usb/usb.cpp file and adjust the usbHost.setHIDLocal() function call to match your keyboard layout.
 
@@ -257,18 +277,8 @@ Update the contents of the file with your WiFi connection information. This conf
 
 My wife and daughter, who've consistently shown indifference to my creations, surprisingly showed a glimmer of interest this time. Perhaps it was the shiny yellow printed parts, or maybe they found the color scheme oddly familiar (Ironman, anyone?). I confessed my feelings to my wife, and since then, she's been trying, albeit hard, to be supportive. But understanding the intricacies of mechanical keyboards and all that jazz seems to be a challenge for her. She's convinced that there might be only three people on Earth who care about keyboards in this way: me, my friend and You.
 
-![Micro Journal Rev.5](./images/004.jpg)
+
+<img src="./images/004.jpg" width=400>
 
 When life feels utterly meaningless, I'll reminisce about this moment—reflecting on the countless hours and energy poured into those iterations. Here I am, at the fifth version, with four physical devices that do nothing but type. I'm left wondering if my future will be any more meaningful than now. Nevertheless, I take solace in seeing the improvements with each iteration and reminding myself that I can (still) solve problems. Or perhaps, did I just create a problem for myself?
 
-# Typing Video
-
-https://youtu.be/zcHL68JWXqc
-
-# Shop
-
-In case if you want me to build this writerDeck for you:
-
-https://www.tindie.com/products/unkyulee/micro-journal-esp32-writerdeck/
-
-[Buy a DIY Kit](https://www.tindie.com/products/36190/)

@@ -642,34 +642,40 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
 
         // Step 1. Generate the Keycode Report
         hid_keyboard_report_t report = {};
-        report.modifier = transfer->data_buffer[0];
-        report.reserved = transfer->data_buffer[1];
-        report.keycode[0] = transfer->data_buffer[2]; // NUMLOCK and CAPSLOCK
-        report.keycode[1] = transfer->data_buffer[3];
-        report.keycode[2] = transfer->data_buffer[4];
-        report.keycode[3] = transfer->data_buffer[5];
-        report.keycode[4] = transfer->data_buffer[6];
-        report.keycode[5] = transfer->data_buffer[7];
-
-        // In case of Apple Keyboard
-        // Modifier is sent at transfer->data_buffer[1] instead of index 0
         if (_isApple)
         {
+          // Apple Keyboard
+          // In case of Apple Keyboard
+          // Modifier is sent at transfer->data_buffer[1] instead of index 0
           report.modifier = transfer->data_buffer[1];
+          report.reserved = transfer->data_buffer[0];
           report.keycode[0] = transfer->data_buffer[3];
           report.keycode[1] = transfer->data_buffer[4];
           report.keycode[2] = transfer->data_buffer[5];
           report.keycode[3] = transfer->data_buffer[6];
           report.keycode[4] = transfer->data_buffer[7];
         }
+        else
+        {
+          // Standard Keyboard
+          report.modifier = transfer->data_buffer[0];
+          report.reserved = transfer->data_buffer[1];
+          report.keycode[0] = transfer->data_buffer[2];
+          report.keycode[1] = transfer->data_buffer[3];
+          report.keycode[2] = transfer->data_buffer[4];
+          report.keycode[3] = transfer->data_buffer[5];
+          report.keycode[4] = transfer->data_buffer[6];
+          report.keycode[5] = transfer->data_buffer[7];
+        }
 
         //////////////////////////////////////////
         // General Key is pressed
-        if (memcmp(&last_report, transfer->data_buffer, sizeof(last_report)))
+        if (memcmp(&last_report, &report, sizeof(last_report)))
         {
           usbHost->onKeyboard(report, last_report);
           memcpy(&last_report, &report, sizeof(last_report));
         }
+
         ///////////////////////////////////////////////////////////////
         // Keycode Detection Logic END
         ///////////////////////////////////////////////////////////////
