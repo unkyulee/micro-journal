@@ -16,10 +16,37 @@ When you receive the **Micro Journal Rev.7**, you'll need to install a battery b
 
 ## 1. Battery Installation
 
-**Unscrew the two screws** located on the bottom compartment. Carefully lift the lid 
+### Step 1. Open the Bottom Compartment and Install the Battery
+
+<img src="../images/battery_001.jpg" width="400" />
+
+There are two screws on the battery cover. They are regular philips screws. Unscrew them and open the lid.
+
+<img src="../images/battery_002.jpg" width="400" />
+
+Once lifted, you will now see the battery holder. 
+
+<img src="../images/battery_003.jpg" width="400" />
 
 
-If you already have Google Sync Setup. No need to setup again. You can use the same URL that you have retrieved previously. URL can be found in the config.json file inside the SD card.
+**Check the battery polarity carefully.** The battery holder has markings for positive (+) and negative (-) polarity. The spring side of the holder is the negative (-) side. Incorrect polarity can cause irreversible damage to the device.
+
+**Install the 18650 battery,** ensuring you follow the correct polarity as shown on the battery holder.
+
+**Double-check the installation** to ensure the battery is properly seated and the polarity is correct. Having a tape sticked around the battery as shown in the picture, can help to easily and swiftly pull out the battery in case of any issues.
+
+<img src="../images/battery_004.jpg" width="400" />
+
+After installing the battery make sure that no cable is clipped on to the edge while closing the lid. 
+
+
+### Important Notes:
+
+**Check the battery polarity carefully.** The battery holder has markings for positive (+) and negative (-) polarity. The spring side of the holder is the negative (-) side. Incorrect polarity can cause irreversible damage to the device.
+
+**Ensure the battery is fully charged** before use. LiPo batteries are not shipped fully charged. After installing the battery, connect the device to the charging port and leave it charging for at least 4 hours before first use.
+
+**Battery installation safety:** Improper handling or installation can cause a fire. Be cautious and avoid over-tightening the screws. If the case doesn’t close easily, check that no cables are pinched, as this could lead to short circuits, damage, or fire hazards.
 
 
 ---
