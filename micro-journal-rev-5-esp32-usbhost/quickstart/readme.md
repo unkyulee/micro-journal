@@ -16,12 +16,8 @@ Also, please update the firmware when you receive the device. The firmware on th
 
 writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one. Both flatop and button top works fine. 
 
-* LiPo 18650
-* Flattop, Button Top both fine
-* Check for Short Circuit Protection on the battery
-* Not more than 3300 mAh capacity
-
 [Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
+
 
 
 **This is not AA battery or AAA battery.**
