@@ -8,6 +8,8 @@ When you receive the Micro Journal Rev.6, you need to first install a battery. P
 
 If you want to test the device without a battery, plug into the ESP32 UART port (Left-hand side) and the device will run without battery installation. Do not plug the charging cable on the right-hand side without a battery. Can be ok for some time (less than 10 minutes) but not too long without a battery. 
 
+You will also need TORX T10H hex screw driver in order to open up the display lid in order to place the battery
+
 **When the 'P' and 'Backspace' Keys Aren't Working**
 
 This issue usually occurs if the battery hasn't been installed or if the USB cable is plugged into the wrong port. Make sure not to use the USB-C port on the lower left side, which is closer to the keyboard. There are two USB-C ports on the left side of the device; always use the upper USB-C port to power the device properly.
