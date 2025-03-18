@@ -23,6 +23,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 
 ### Press
 
+* [Pascal Forget - UNE TASSE DE TECH SAISON 10](https://youtu.be/sFxOh5u75p4?t=2644)
 
 ---
 
