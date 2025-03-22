@@ -8,6 +8,7 @@
 #include "be/be.h"
 #include "ca/ca.h"
 #include "dv/dv.h"
+#include "finnish/finnish.h"
 #include "it/it.h"
 #include "uk/uk.h"
 #include "ge/ge.h"
@@ -41,6 +42,11 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
   {
     return keyboard_keycode_ascii_dv(keycode, shift, alt);
   } 
+  else if (locale == "FN")
+  {
+    // Finnish
+    return keyboard_keycode_ascii_finnish(keycode, shift, alt);
+  }
   else if (locale == "IT")
   {
     // Italian

@@ -44,6 +44,10 @@ void Layout_render()
 
     cursorX = 10;
     cursorY += 40;
+    writeln((GFXfont *)&systemFont, "[f] Finnish", &cursorX, &cursorY, display_EPD_framebuffer());
+
+    cursorX = 10;
+    cursorY += 40;
     writeln((GFXfont *)&systemFont, "[g] German", &cursorX, &cursorY, display_EPD_framebuffer());
     
     cursorX = 10;
@@ -57,6 +61,8 @@ void Layout_render()
     cursorX = 10;
     cursorY += 40;
     writeln((GFXfont *)&systemFont, "[u] US", &cursorX, &cursorY, display_EPD_framebuffer());
+
+
 }
 
 //
@@ -96,6 +102,15 @@ void Layout_keyboard(char key)
     {
         // italian
         app["config"]["keyboard_layout"] = "GE";
+        config_save();
+        // go back to the word processor
+        app["screen"] = WORDPROCESSOR;
+    }
+
+    else if (key == 'f')
+    {
+        // italian
+        app["config"]["keyboard_layout"] = "FN";
         config_save();
         // go back to the word processor
         app["screen"] = WORDPROCESSOR;
