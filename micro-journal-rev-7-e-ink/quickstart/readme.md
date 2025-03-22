@@ -14,6 +14,21 @@ When you receive the **Micro Journal Rev.7**, you'll need to install a battery b
 
 ---
 
+## Quick Instructions
+
+* USB port at the back is the battery charging port
+  * Red: Charging
+  * Blue: Fully Charged
+  * Green: No Battery
+
+* Khobs can be clicked
+  * Clicking the RIGHT knob will clear the screen
+  * Clicking the LEFT knob will go to sleep mode
+
+
+
+---
+
 ## 1. Battery Installation
 
 ### Step 1. Open the Bottom Compartment and Install the Battery
