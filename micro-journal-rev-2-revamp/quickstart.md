@@ -132,7 +132,7 @@ https://www.reddit.com/r/writerDeck/comments/1ja4hdg/adding_spellcheck_feature_t
 
 Credit to: Misplaced_Fan_15
 
-#### Using Micro as a editor
+#### Using Micro as an editor
 
 To get Micro added:
 
@@ -148,6 +148,10 @@ Git can be downloaded from the command line with "sudo apt-get install git" but 
 
 https://www.reddit.com/r/writerDeck/comments/1hs2nrr/microjournal_rev_2_micro_text_editor_git_awesome/
 
+
+#### Using NeoVim as an editor
+
+https://www.reddit.com/r/writerDeck/comments/1jf4fqm/micro_journal_rev_2_with_neovim_as_word_processor/
 
 ---
 
