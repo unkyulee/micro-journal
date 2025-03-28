@@ -20,6 +20,7 @@ void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     JsonDocument &app = app_status();
 
+    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
     ptft->setCursor(0, 30, 2);
 
     // Define layout options

@@ -9,6 +9,17 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
     // and product the data structure that is splitted in each line
     char *buffer = fileBuffer.getBuffer();
 
+    // Handle empty buffer
+    if (buffer[0] == '\0')
+    {
+        total_line = 0;
+        line_position[0] = buffer;
+        line_length[0] = 0;
+        fileBuffer.cursorLine = 0;
+        fileBuffer.cursorLinePos = 0;
+        return;
+    }
+
     // first line is the first of the buffer
     line_position[0] = &buffer[0];
     line_length[0] = 0;
@@ -24,7 +35,7 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
     //
     // BUFFER -> SPLIT IN LINES
     //
-    for (int i = 0; i < BUFFER_SIZE + 1; i++)
+    for (int i = 0; i < BUFFER_SIZE; i++) // Fixed loop condition
     {
         // When reaching the end of text, break
         if (buffer[i] == '\0')
@@ -75,6 +86,14 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
                 line_count -= last_space_position;
             }
 
+            // Handle word wrap when no spaces are found
+            else if (line_count == cols && last_space_index == -1)
+            {
+                line_length[total_line] = line_count;
+                line_position[++total_line] = &buffer[i];
+                line_count = 0;
+            }
+
             // This line doesn't requrie word wrap
             else
             {
@@ -92,6 +111,12 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
             last_space_index = -1;
             last_space_position = -1;
         }
+    }
+
+    // Handle cursor position beyond buffer
+    if (fileBuffer.cursorPos >= BUFFER_SIZE)
+    {
+        fileBuffer.cursorPos = BUFFER_SIZE - 1;
     }
 
     //
