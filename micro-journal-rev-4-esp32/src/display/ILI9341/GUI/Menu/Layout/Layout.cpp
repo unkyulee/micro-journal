@@ -5,134 +5,81 @@
 #include "display/display.h"
 #include "../../WordProcessor/WordProcessor.h"
 
-//
+#include <unordered_map>
+#include <functional>
+#include <utility>
+
 void Layout_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    // when entering the screen
-    // clear the screen
+    // Clear the screen
     Menu_clear();
+    ptft->fillScreen(TFT_BLACK);
 }
 
-//
 void Layout_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    //
     JsonDocument &app = app_status();
 
     ptft->setCursor(0, 30, 2);
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println(" - Choose Keyboard Layout");
-    ptft->println();
 
-    ptft->println("[A] International");
-    ptft->println("[B] Belgian");
-    ptft->println("[C] Canadian Multiligual");
-    ptft->println("[D] Dvorak");
-    ptft->println("[G] German");
-    ptft->println("[I] Italian");
-    ptft->println("[K] UK");
-    ptft->println("[L] Latin America");
-    ptft->println("[S] Swedish");
-    ptft->println("[U] US");
+    // Define layout options
+    static const char *layout_options[] = {
+        "[A] International",
+        "[B] Belgian",
+        "[C] Canadian",
+        "[D] Dvorak",
+        "[F] French",
+        "[G] German",
+        "[I] Italian",
+        "[K] UK",
+        "[L] Latin America",
+        "[S] Swedish",
+        "[U] US"
+    };
+
+    // Print each layout option
+    for (const char *option : layout_options)
+    {
+        ptft->println(option);
+    }
 }
 
-//
 void Layout_keyboard(char key)
 {
-    //
     JsonDocument &app = app_status();
 
-    if (key == 'a')
-    {
-        // us
-        app["config"]["keyboard_layout"] = "INT";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
+    // Map keys to keyboard layouts
+    static const std::unordered_map<char, const char *> layout_map = {
+        {'a', "INT"}, // International
+        {'b', "BE"},  // Belgian
+        {'c', "CA"},  // Canadian
+        {'d', "DV"},  // Dvorak
+        {'f', "FR"},  // French
+        {'g', "GE"},  // German
+        {'i', "IT"},  // Italian
+        {'k', "UK"},  // UK
+        {'l', "LAT"}, // Latin America
+        {'s', "SWE"}, // Swedish
+        {'u', "US"}   // US (default)
+    };
 
-    else if (key == 'b')
+    // Find the layout based on the key
+    auto it = layout_map.find(key);
+    if (it != layout_map.end())
     {
-        // canadian multiligual
-        app["config"]["keyboard_layout"] = "BE";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
+        app["config"]["keyboard_layout"] = it->second;
     }
-
-    else if (key == 'c')
-    {
-        // canadian multiligual
-        app["config"]["keyboard_layout"] = "CA";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'd')
-    {
-        // us dvorak multiligual
-        app["config"]["keyboard_layout"] = "DV";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'g')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "GE";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'i')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "IT";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'k')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "UK";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'l')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "LAT";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 's')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "SWE";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
     else
     {
-        // default to 'us' in the case where software is downgraded or the 'u' key was pressed
+        // Log invalid key
+        Serial.println("Invalid key pressed. Defaulting to US layout.");
         app["config"]["keyboard_layout"] = "US";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
     }
 
-    //
-    // go back to home menu
+    // Save configuration and update the screen
+    config_save();
+    app["screen"] = WORDPROCESSOR;
+
+    // Go back to the home menu
     app["menu"]["state"] = MENU_HOME;
 }

@@ -6,6 +6,7 @@
 #include "editor/editor.h"
 #include "keyboard/keyboard.h"
 #include <display/EPD/display_EPD.h>
+#include <map> // Include map for key-to-layout mapping
 
 //
 void Layout_setup()
@@ -22,138 +23,58 @@ void Layout_render()
 
     // Choose a keyboard layout
     int cursorX = 10;
-    int cursorY = 100;
-    writeln((GFXfont *)&systemFont, " - Choose a Keyboard Layout", &cursorX, &cursorY, display_EPD_framebuffer());
-    cursorY += 20;
+    int cursorY = 60;
 
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[a] International", &cursorX, &cursorY, display_EPD_framebuffer());
-    
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[b] Belgian", &cursorX, &cursorY, display_EPD_framebuffer());
-    
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[c] Canadian Multiligual", &cursorX, &cursorY, display_EPD_framebuffer());
-    
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[d] Dvorak", &cursorX, &cursorY, display_EPD_framebuffer());
+    const char *layouts[] = {
+        "[a] International",
+        "[b] Belgian",
+        "[c] Canadian",
+        "[d] Dvorak",
+        "[f] French",
+        "[g] German",
+        "[i] Italian",
+        "[k] UK",
+        "[n] Finnish",
+        "[u] US"
+    };
 
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[f] Finnish", &cursorX, &cursorY, display_EPD_framebuffer());
-
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[g] German", &cursorX, &cursorY, display_EPD_framebuffer());
-    
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[i] Italian", &cursorX, &cursorY, display_EPD_framebuffer());
-    
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[k] UK", &cursorX, &cursorY, display_EPD_framebuffer());
-    
-    cursorX = 10;
-    cursorY += 40;
-    writeln((GFXfont *)&systemFont, "[u] US", &cursorX, &cursorY, display_EPD_framebuffer());
-
-
+    for (int i = 0; i < sizeof(layouts) / sizeof(layouts[0]); ++i)
+    {
+        cursorX = 10;
+        cursorY += 40;
+        writeln((GFXfont *)&systemFont, layouts[i], &cursorX, &cursorY, display_EPD_framebuffer());
+    }
 }
 
 //
 void Layout_keyboard(char key)
 {
-    //
     JsonDocument &app = app_status();
 
-    if (key == 'b')
+    // Define a map for key-to-layout mappings
+    static const std::map<char, const char *> layoutMap = {
+        {'a', "INT"},
+        {'b', "BE"},
+        {'c', "CA"},
+        {'d', "DV"},
+        {'f', "FR"},
+        {'g', "GE"},
+        {'i', "IT"},
+        {'k', "UK"},
+        {'n', "FN"},
+        {'u', "US"} // Default US layout
+    };
+
+    // Find the layout corresponding to the key
+    const char *selectedLayout = "US"; // Default to US layout
+    auto it = layoutMap.find(key);
+    if (it != layoutMap.end())
     {
-        // canadian multiligual
-        app["config"]["keyboard_layout"] = "BE";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
+        selectedLayout = it->second;
     }
 
-    else if (key == 'c')
-    {
-        // canadian multiligual
-        app["config"]["keyboard_layout"] = "CA";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'd')
-    {
-        // canadian multiligual
-        app["config"]["keyboard_layout"] = "DV";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'g')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "GE";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'f')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "FN";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'i')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "IT";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'k')
-    {
-        // italian
-        app["config"]["keyboard_layout"] = "UK";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else if (key == 'a')
-    {
-        // us
-        app["config"]["keyboard_layout"] = "INT";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    else
-    {
-        // default to 'us' if software was not configured correctly or downgraded
-        // or the 'u' key was pressed
-        app["config"]["keyboard_layout"] = "US";
-        config_save();
-        // go back to the word processor
-        app["screen"] = WORDPROCESSOR;
-    }
-
-    //
-    // go back to home menu
+    app["config"]["keyboard_layout"] = selectedLayout;
+    config_save();
+    app["screen"] = WORDPROCESSOR;
     app["menu"]["state"] = MENU_HOME;
 }
