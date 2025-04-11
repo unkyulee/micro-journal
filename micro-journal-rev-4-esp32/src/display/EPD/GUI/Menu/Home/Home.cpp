@@ -17,7 +17,7 @@ size_t FileIndexSize (int index)
 {
     char buffer [6];
     sprintf(buffer, "/%d.txt", index);
-    size_t file_size = FileSize(buffer);
+    size_t file_size = fileSize(buffer);
     return file_size;
 }
 
