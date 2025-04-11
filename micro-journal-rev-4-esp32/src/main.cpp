@@ -30,9 +30,6 @@ void setup()
     // initialize config
     config_setup();
 
-    // keyboard setup
-    keyboard_setup();
-
     //
     display_setup();
 
@@ -60,6 +57,10 @@ void loop()
 void Core0(void *parameter)
 {
     app_log("Core0 Task Start\n");
+    
+    // keyboard setup
+    keyboard_setup();
+
     while (true)
     {
         //
