@@ -36,7 +36,6 @@ size_t fileSize(String fileName)
     size_t file_size = 0;
     if (SD.exists(fileName))
     {
-        app_log("Checking file size\n");
         File file = SD.open(fileName, FILE_READ);
         if (!file)
         {   //something bad happened

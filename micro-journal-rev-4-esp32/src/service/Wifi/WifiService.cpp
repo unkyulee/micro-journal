@@ -21,10 +21,13 @@ void wifi_service_loop()
     //
     JsonDocument &app = app_status();
     String task = app["task"].as<String>();
-
+    
     if (task == "sync_start")
     {
+        //
         app["task"] = "";
+
+        //
         sync_start();
     }
 }
@@ -118,7 +121,6 @@ void wifi_config_save()
         // debug
         debug_log("wifi_config_save\n%s\n", jsonOutput.c_str());
 
-
         //
         app_log("Wifi config updated successfully.\n");
     }
@@ -141,16 +143,21 @@ void wifi_sync_init()
     app["sync_error"] = "";
     app["sync_message"] = "";
 
-    app_log("wifi_sync_init'\n");
+    app_log("wifi_sync_init\n");
 }
 
 // start WIFI
 void sync_start_request()
 {
     JsonDocument &app = app_status();
-    app["task"] = "sync_start";
-
-    app_log("sync_start_request'\n");
+    String task = app["task"].as<String>();
+    //
+    if (task != "sync_start")
+    {
+        app["task"] = "sync_start";
+        app["sync_state"] = SYNC_PROGRESS;
+        app_log("Sync Start Requested\n");
+    }
 }
 
 // Start Sync Process
@@ -227,6 +234,7 @@ void sync_start()
 
                     // Sync File Start
                     sync_send();
+                    app_log("Sync Start has completed\n");
 
                     return; // Exit the function if successfully connected
                 }
@@ -248,7 +256,6 @@ void sync_start()
 void sync_stop()
 {
     WiFi.disconnect();
-    WiFi.mode(WIFI_OFF);
 }
 
 bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password)
@@ -308,6 +315,8 @@ bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password
 
 void sync_send()
 {
+    app_log("Sync Send\n");
+
     //
     JsonDocument &app = app_status();
 
@@ -406,7 +415,10 @@ void sync_send()
         }
 
         //
+        app_log("Sending file: %s\n", base64Filename.c_str());
+        app_log("File size: %d bytes\n", file.size());
         http.sendRequest("POST", &file, file.size());
+        app_log("File sent successfully\n");
 
         // close http connection
         http.end();
@@ -419,6 +431,8 @@ void sync_send()
 
         //
         app["sync_state"] = SYNC_COMPLETED;
+        app["clear"] = true;
+        app_log("Sync State: SYNC_COMPLETED\n");
     }
     else
     {

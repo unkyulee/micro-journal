@@ -14,6 +14,7 @@ void wifi_config_save();
 // 1 - waiting
 // 2 - sending
 #define SYNC_START 0
+#define SYNC_PROGRESS 1
 #define SYNC_ERROR -1
 #define SYNC_COMPLETED 2
 

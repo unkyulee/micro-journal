@@ -6,35 +6,11 @@
 #include "editor/editor.h"
 #include "keyboard/keyboard.h"
 #include <display/EPD/display_EPD.h>
+#include "service/Tools/Tools.h"
 
 //
 #include <SD.h>
 #include <SPIFFS.h>
-
-// Get the size of a file in bytes
-size_t FileSize(String fileName)
-{
-    size_t file_size = 0;
-    if (SD.exists(fileName))
-    {
-        app_log("Checking file size\n");
-        File file = SD.open(fileName, FILE_READ);
-        if (!file)
-        {   //something bad happened
-            char buffer [32];
-            sprintf(buffer, "Failed to open a file. %s\n", fileName);
-            app_log(buffer);
-            file_size = -1;
-        }
-        else
-        {   //file exists
-            file_size = file.size();
-        }
-        //
-        file.close();
-    }
-    return file_size;
-}
 
 // Conviences function to get File Size with just an index
 size_t FileIndexSize (int index)

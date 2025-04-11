@@ -53,7 +53,10 @@ void Sync_render()
         // Start Sync Process
         // 1) Connect to Wifi
         sync_start_request();
+    }
 
+    else if (sync_state == SYNC_PROGRESS)
+    {
         String message = app["sync_message"].as<String>();
 
         if (message != "")

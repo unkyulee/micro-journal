@@ -39,6 +39,11 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // Start Sync Process
         // 1) Connect to Wifi
         sync_start_request();
+    }
+
+    else if (sync_state == SYNC_PROGRESS)
+    {
+        //
         ptft->println(" - PREPREPARING ");
 
         String message = app["sync_message"].as<String>();
@@ -48,6 +53,7 @@ void Sync_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             ptft->println(message);
         }
     }
+    
     //
     // error
     //
