@@ -11,10 +11,9 @@ You’ll also need access to 3D-printed parts to complete the build. Many 3D pri
 
 [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-all-components/)
 
-## Credit 
+## Credit
 
 Build guide credit goes to a reddit user with a name ruleugim who has sourced all the material by oneself and has been reporting me all the missing points and difficulties that has occurred during the build. Thanks for the reports and all the feedback has been reinforced to the build guide thanks to ruleugim.
-
 
 # System Architecture
 
@@ -46,7 +45,7 @@ Screen received mini HDMI interface. This display is almost exact the size of th
 
 ### G. Power Supply
 
-This build uses a small power supply module that can charge 18650 battery and provide 5V power supply in one module.
+This build uses a USB-C Female Port that will be connected to external power supply such as a phone charger or a portable battery to supply power to the device.
 
 # Materials
 
@@ -55,9 +54,8 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - Raspberry Pi Pico (rp2040)
 - [48 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
 - [O-ring 10x5.2x2.4](https://www.aliexpress.com/item/1005002753756030.html)
-
-- [Lipo Battery Charger and Power Supply Module](https://www.aliexpress.com/item/1005006366996657.html)
-- [1S Lithium Battery Inidicator](https://www.aliexpress.com/item/1005007321718440.html)
+- [USB-C Female Port](https://it.aliexpress.com/item/1005007348932368.html)
+- [Micro USB Male Connector](https://it.aliexpress.com/item/33060931097.html)
 - 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html)
 - 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html)
 - [5mm SS12F15 Mini Size Black SPDT Slide Switch](https://www.aliexpress.com/item/1005007077815408.html)
@@ -65,7 +63,7 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
 - 50x Diode IN4148
 - 48x Kailih Hot-Swappable PCB socket Cherry MX Switches (CPG151101S11)
-- Micro SD card minimum 4 GB
+- Micro SD card minimum 8 GB
 - 2x [FPV mini HDMI connector](https://www.aliexpress.com/item/1005004374555360.html)
 - [FFC HDMI Cable](https://www.aliexpress.com/item/1005004374555360.html)
 
@@ -78,7 +76,7 @@ This build uses a small power supply module that can charge 18650 battery and pr
 - 7x M2 Hex Screw Length 5mm
 - 4x M2 HEx Screw Length 3mm
 
-- You will need TORX T10H to handle Hex screws 
+- You will need TORX T10H to handle Hex screws
 
 - Any typical wires for electronics would do. I use [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
 
@@ -105,7 +103,6 @@ Once the prints are done. Remove the support materials from the print.
 ## Installing Heat Inserts
 
 <img src="build/build_001.1.png">
-
 
 # Keyboard PCB
 
@@ -146,46 +143,13 @@ Do this for 48 times.
 
 Prepare the wires with the length
 
-- 17x 18cm wires
-- 1x 33cm wire
+- 16x 11cm wires
 
 <img src="build/build_003.png" width="600">
 
-When soldring the wire on the keyboard PCB. It is important to determine which side you should put the wires in. You need to solder the wires on the side where hot swap sockets are soldered on. Please, refer to the picture above and make sure that you are orienting the flat side of the PCB correctly showing the hot swappable socket while you are soldering the wires on. 
+When soldring the wire on the keyboard PCB. It is important to determine which side you should put the wires in. You need to solder the wires on the side where hot swap sockets are soldered on. Please, refer to the picture above and make sure that you are orienting the side of the PCB correctly showing the hot swappable socket while you are soldering the wires on.
 
-Note where the pin 1 starts on the PCB. Pin 1 is the square marked hole.  
-On the keyboard PCB, pin 5 and 16 will have two wires connected.
-
-Pin 5 has one long wire and one short wire. Pin 16 has two short wires.
-
-# Connecting Keyboard Controller to the Keyboard PCB
-
-Keyboard controller is raspberry pi PICO. Be careful with the temperature of the soldering iron. Do no exceed 310 degrees celcius. Also, cover the pico controller with the masking tape to prevent heat issues. I have broken quite a few controller when applying too high temperature.
-
-<img src="build/build_004.png" width="600">
-
-Solder all the short wires from the keyboard PCB to the keyboard controller.
-
-| Keyboard PIN No. | RP Pico PIN No. |
-| ---------------- | --------------- |
-| 1                | 2               |
-| 2                | 3               |
-| 3                | 4               |
-| 4                | 5               |
-| 5                | 6               |
-| 6                | 7               |
-| 7                | 8               |
-| 8                | 9               |
-| 9                | 10              |
-| 10               | 11              |
-| 11               | 12              |
-| 12               | 13              |
-| 13               | 14              |
-| 14               | 15              |
-| 15               | 16              |
-| 16               | 17              |
-
-<img src="build/build_005.png" width="600">
+Note where the pin 1 starts on the PCB. Pin 1 is the square marked hole.
 
 # Preparing EC11 Rotary Encoder
 
@@ -195,8 +159,8 @@ Rotary Encoder EC11 Looks like this. Make sure to user 15mm length and Half Hand
 
 Prepare the wires with the length
 
-- 4x 18cm wires
-- 4x 33cm wire
+- 10x 18cm wires
+- 2x Diode IN4148
 
 <img src="build/build_006.png" width="600">
 
@@ -206,50 +170,55 @@ On the two pin side solder one wire and on the other pin solder on a DIODE. Note
 
 On the three pin side. solder three wires. Middle pin is the ground. I have soldered a different color wire so that it is easy to detect in the midst of bunch of wires.
 
-# Connecting EC11 Rotary encoder to the keyboard controller
+# Connecting Keyboard Controller to the Keyboard PCB
 
-Position the EC11 encoders as it would be installed inside the enclosure. Long wire will go on the left hand side. Short wire will on the right hand side. Make the three pin facing top.
+Keyboard controller is raspberry pi PICO. Be careful with the temperature of the soldering iron. Do no exceed 310 degrees celcius. Also, cover the pico controller with the masking tape to prevent heat issues. I have broken quite a few controller when applying too high temperature.
 
-Firstly, merge the button wire (which doesn't have diode) from both EC11 and solder it to Keyboard controller pin 18. After that solder the Rotary pins to the keyboard controller. Be careful with the left and right rotary. The EC11 on the left will have a long wire, and the right EC11 will have short wires. 
+<img src="build/build_004.png" width="600">
 
-Once all the wiring to keyboard controller is done. There should be diode that is remaining that hasn't been soldered yet. This diode connects to the keyboard PCB. There should be 5th pin and 16th pin that has extra wires coming out from the keyboard PCB. Those wires then should be solder to the EC11 button pin with diode. 
-
-Please, refer to the following table to get precise mapping to the pins and wiring. 
+<img src="build/build_005.png" width="600">
 
 <img src="build/build_007.png" width="600">
 
-| Long Wired EC11 | RP Pico PIN No. |
-| --------------- | --------------- |
-| Button Wire     | 18              |
-| Encoder         | 19              |
-| Encoder         | 20              |
-| GND             | GND             |
+| Keyboard PIN No. | RP Pico PIN No. | EC11 Rotary            |
+| ---------------- | --------------- | ---------------------- |
+| 1                | 2               |                        |
+| 2                | 3               |                        |
+| 3                | 4               |                        |
+| 4                | 5               |                        |
+| 5                | 6               | Left Diode Leg         |
+| 6                | 7               |                        |
+| 7                | 8               |                        |
+| 8                | 9               |                        |
+| 9                | 10              |                        |
+| 10               | 11              |                        |
+| 11               | 12              |                        |
+| 12               | 13              |                        |
+| 13               | 14              |                        |
+| 14               | 15              |                        |
+| 15               | 16              |                        |
+| 16               | 17              | Right Diode Leg        |
+|                  | 18              | Merge Both Button Legs |
+|                  | 19              | Left Rotary            |
+|                  | 20              | Left Rotary            |
+|                  | 21              | Right Rotary           |
+|                  | GND             | Merge Both GND Legs    |
+|                  | 22              | Right Rotary           |
 
-- Long wired EC11 diode connects to long wire of keyboard PCB (Keyboard PCB Pin5)
-
-| Short Wired EC11 | RP Pico PIN No. |
-| ---------------- | --------------- |
-| Button Wire      | 18              |
-| Encoder          | 21              |
-| Encoder          | 22              |
-| GND              | GND             |
-
-- Short wired EC11 diode connects to short wire of keyboard PCB (Keyboard PCB Pin16)
-
-# Soldering micro USB cable to keyboard controller
+# Preparing a Micro USB to Micro USB Cable
 
 <img src="build/build_008.png" width="600">
 
 Prepare the USB cable as such. Strip off the black insulation.
 
-On the back of the keyboard controller. Solder the wire as the following
+Solder a Micro USB Connector
 
-| USB Cable | RP Pico PIN No. |
-| --------- | --------------- |
-| Black     | GND             |
-| Red       | VBus            |
-| White     | TP2             |
-| Green     | TP3             |
+| USB Cable | Connector Pin from Left |
+| --------- | ----------------------- |
+| Red       | 0                       |
+| White     | 1                       |
+| Green     | 2                       |
+| Black     | 3                       |
 
 <img src="build/build_009.png" width="600">
 
@@ -259,29 +228,23 @@ Connect the keyboard controller to the PC. If everything went well... Keyboard c
 
 If the keyboard controller doesn't show up as a thumb drive, connect to the PC WHILE pressing down the reset button on the controller.
 
-# Power Supply Module
+# USB-C Female Port as a Power Supply receiver 
 
 <img src="build/build_010.png" width="600">
 
-| Power Supply Module | Connected to                         |
-| ------------------- | ------------------------------------ |
-| Bat+                | Battery Holder + and Battery Meter + |
-| Bat-                | Battery Holder - and Battery Meter - |
-| Vout+               | Switch                               |
-| Vout-               | 2x Micro USB -                       |
+Merge Micro USB Cable (with 2 cable) and solder the cables to the USB-C Female Connector
 
-- Switch connects to 2x Micro USB +
+<img src="build/build_010_1.png" width="600">
 
-Power supply unit has variable voltage output. Most of the modules comes with 5V preset, but sometimes they come with random voltages. Make sure to measure the vout voltage is in the range of 5 ~ 6 V before connecting to any components. 
-
+Use hot glue to place the connector on the bottom enclosure
 
 # Display installation
 
 <img src="build/build_011.png" width="600">
 
-Glue the display to the display port. Make sure that the grill is facing upwards and the connector is oriented as the picture above. Let the glue dry. 
+Glue the display to the display port. Make sure that the grill is facing upwards and the connector is oriented as the picture above. Let the glue dry.
 
-Glue is a typical hobby hot glue. Heat the glue gun and pour the glue around the edges of the display. 
+Glue is a typical hobby hot glue. Heat the glue gun and pour the glue around the edges of the display.
 
 <img src="build/build_012.png" width="600">
 
@@ -289,18 +252,15 @@ Connect the display connector with the display and the display controller.
 
 Once the display and the display controller is well settled. You need to change the brightness of the display to the lowest. The power supply module and the battery capacity is not sufficient to drive the display with the higher brightness. Connect the display with the computer HDMI and also power the display with micro USB (5V) and then press the button on the display controller to change the brightness.
 
-
 # Prepare the mini HDMI cable
 
 This component is called FPV mini HDMI cable. It consists of two mini HDMI male connectors and a think film. Connect those elements together as the picture. Place the tape around the connector in order to prevent the cable being disconnected.
 
 <img src="build/build_013.png" width="600">
 
-
-
 # Display Enclosure Assembly
 
-Insert total of 12x M3 heated inserts into the display holder. You need to insert both back side and the front side. 
+Insert total of 12x M3 heated inserts into the display holder. You need to insert both back side and the front side.
 
 <img src="build/build_014.png" width="600">
 
@@ -309,7 +269,6 @@ Once the heated inserts are in place. Then place the display panel on the front 
 <img src="build/build_015.png" width="600">
 
 Leave the back panel open for now. It should be the last step to complete.
-
 
 # Hinge Assembly
 
@@ -326,32 +285,13 @@ Place the display hinge below the bolt, and place the bolt tightly in the hole.
 Place the display on top the the hinge and tighten it with m3 10 mm screw.
 
 
-
-# Power Supply Assembly
-
-<img src="build/build_018.png" width="600">
-
-Place the power supply modules according to the picture.
-
-Use a double sided tape to fix the battery holder. Use hot glue or double sided tape to fix the charger module place. Before installing the back panel, wire the battery indicator outside and glue the indicator in place. 
-
-Do not close the enclosure yet. 
-
-
-
-
 # Keyboard Components Assembly
 
-Place the keyboard PCB and the controller as such in the picture. 
+Place the keyboard PCB and the controller as such in the picture.
 
-<img src="build/build_019.png" width="600">
+<img src="build/build_019.jpg" width="600">
 
-Push the two knobs through hole indicated as "1" in the picture. Tighten the knob on each side. Long wired knob will be place on the left hand side, short wired knob will be placed on the right hand side.
-
-Also, push through the USB cable through the hole.
-
-Once all the wires have passed through the hole. Place the controller on the right hand side place, make sure that the usb port is aligned. Use hot glue or double sided tape to fix the controller in place.
-
+Tighten the knob on each side. 
 
 # Finalize the wiring
 
@@ -359,12 +299,11 @@ Two cables with red/black wires, and one cable with 4 wries goes through the hol
 
 <img src="build/build_020.png" width="600">
 
-Make sure to remove the SD card from the rasbperry pi before closing the lid. 
-
+Make sure to remove the SD card from the rasbperry pi before closing the lid.
 
 # Final Assembly
 
-Use m3 20mm screws to close the enclosure. Be very careful not to clip any wires inside. 
+Use m3 20mm screws to close the enclosure. Be very careful not to clip any wires inside.
 
 <img src="build/build_021.png" width="600">
 
