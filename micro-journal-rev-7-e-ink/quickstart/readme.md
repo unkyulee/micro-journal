@@ -14,6 +14,14 @@ When you receive the **Micro Journal Rev.7**, you'll need to install a battery b
 
 ---
 
+## Keyboard Freezing Issue
+
+For the build that are shipped before 10th April, there are issues on the cable that connects the keyboard to the display and it is known as a cause of the keyboard freezing issue. Not all but some of the builds are showing these problems. The fix is to replace the cable or clean up the connector. Please, follow the link below in order to discover the detail of the issue.
+
+https://github.com/unkyulee/micro-journal/issues/55
+
+---
+
 ## Quick Instructions
 
 * USB port at the back is the battery charging port
