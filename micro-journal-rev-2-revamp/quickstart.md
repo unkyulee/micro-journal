@@ -168,6 +168,14 @@ https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2-revamp/k
 https://www.reddit.com/r/writerDeck/comments/1k35sem/micro_journal_rev2_french_azerty/
 
 
+* Run raspi-config
+* Choose fr_FR.UTF-8 in the locales
+* Change Keyboard Layout. Choose 101
+* Select "Other" in country origin menuy
+* Choose "French" in the next menu
+* "French (AZERTY)" 
+
+
 ### Powering Off
 
 Pressing LOWER + POWER key for 3 seconds will turn off the raspberry pi. Then turn off the switch at the back in order to turn off the display.

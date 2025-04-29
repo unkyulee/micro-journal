@@ -55,8 +55,24 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
         {
             last_space_index = i;
             last_space_position = line_count;
-        }
+        } 
+        
+        // Handle words longer than `cols`
+        if (line_count == cols && last_space_index == -1)
+        {
+            // Register the line count
+            line_length[total_line] = line_count;
 
+            // Start a new line
+            line_position[++total_line] = &buffer[i + 1];
+
+            // Reset counters
+            line_count = 0;
+            last_space_index = -1;
+            last_space_position = -1;
+
+            continue;
+        }
         // When receiving a newline or max characters reached, start a new line
         if (buffer[i] == '\n' || line_count == cols)
         {
@@ -67,7 +83,7 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
                 line_length[total_line] = line_count;
 
                 // start of the new line
-                line_position[++total_line] = &buffer[i+1];
+                line_position[++total_line] = &buffer[i + 1];
 
                 // reset counters
                 line_count = 0;
@@ -86,14 +102,6 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
                 line_count -= last_space_position;
             }
 
-            // Handle word wrap when no spaces are found
-            else if (line_count == cols && last_space_index == -1)
-            {
-                line_length[total_line] = line_count;
-                line_position[++total_line] = &buffer[i];
-                line_count = 0;
-            }
-
             // This line doesn't requrie word wrap
             else
             {
@@ -101,7 +109,7 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
                 line_length[total_line] = line_count;
 
                 //
-                line_position[++total_line] = &buffer[i+1];
+                line_position[++total_line] = &buffer[i + 1];
 
                 //
                 line_count = 0;
@@ -127,7 +135,7 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
     //
     fileBuffer.cursorLine = 0;
     fileBuffer.cursorLinePos = line_length[0];
-    
+
     // caculate the which line cursor is located and the line position
     for (int i = total_line; i >= 0; i--)
     {
@@ -141,5 +149,4 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
             break;
         }
     }
-
 }
