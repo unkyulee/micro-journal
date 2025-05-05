@@ -35,6 +35,24 @@ void app_log(const char *format, ...)
 
     // Print to Serial
     Serial.printf("[%d] %s", millis(), message);
+
+    // Write Log to SD card
+    // Check if SD card is initialized and the file exists
+    if (SD.exists("/log.txt"))
+    {
+        File logFile = SD.open("/log.txt", FILE_APPEND);
+        if (logFile)
+        {
+            // Write the log entry to the file
+            logFile.printf("[%d] %s", millis(), message);
+            logFile.close();
+        }
+        else
+        {
+            // Fallback to Serial if the file cannot be opened
+            Serial.println("Error opening log.txt file!");
+        }
+    }
 }
 
 //

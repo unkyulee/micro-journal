@@ -11,6 +11,7 @@
 #include "Layout/Layout.h"
 #include "Sync/Sync.h"
 #include "Firmware/Firmware.h"
+#include "Reset/Reset.h"
 
 // state
 bool menu_clear = false;
@@ -128,6 +129,15 @@ void Menu_render()
         Firmware_render();
     }
 
+    // Reset
+    else if (menu_state == MENU_RESET)
+    {
+        if (menu_state_prev != menu_state)
+            Reset_setup();
+
+        Reset_render();
+    }
+
     // render frambuffer
     display_draw_buffer();
 
@@ -188,6 +198,13 @@ void Menu_keyboard(char key)
     {
         Firmware_keyboard(key);
     }
+
+    // Reset
+    else if (menu_state == MENU_RESET)
+    {
+        Reset_keyboard(key);
+    }
+    
 }
 
 //

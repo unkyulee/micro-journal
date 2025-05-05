@@ -51,6 +51,8 @@ void SD_setup()
 
         return;
     }
+
+    // Check for card type
     app_log("SD Device Initialized\n");
     uint8_t cardType = SD.cardType();
 
@@ -68,6 +70,10 @@ void SD_setup()
     //
     app_log("SD Card detected\n");
 
+    // Create an empty log.txt file
+    File logFile = SD.open("/log.txt", FILE_WRITE);
+    logFile.close();
+    
     // Check if there are firmware.bin in the SD card
 #ifdef ENV_USBHOST
     const char *firmware_filename = "/firmware_rev_5.bin";
@@ -84,4 +90,6 @@ void SD_setup()
         app["screen"] = MENUSCREEN;
         app["menu"]["state"] = MENU_FIRMWARE;
     }
+
+
 }

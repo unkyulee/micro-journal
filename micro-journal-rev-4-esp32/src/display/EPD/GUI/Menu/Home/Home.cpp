@@ -13,9 +13,9 @@
 #include <SPIFFS.h>
 
 // Conviences function to get File Size with just an index
-size_t FileIndexSize (int index)
+size_t FileIndexSize(int index)
 {
-    char buffer [6];
+    char buffer[6];
     sprintf(buffer, "/%d.txt", index);
     size_t file_size = fileSize(buffer);
     return file_size;
@@ -48,6 +48,11 @@ void Home_render()
     cursorY += 35;
     writeln((GFXfont *)&systemFont, " [K] Keyboard Layout", &cursorX, &cursorY, display_EPD_framebuffer());
 
+    // Reset
+    cursorX = 10;
+    cursorY += 35;
+    writeln((GFXfont *)&systemFont, " [R] Reset", &cursorX, &cursorY, display_EPD_framebuffer());
+
     // BACK
     cursorX = 10;
     cursorY += 50;
@@ -67,7 +72,7 @@ void Home_render()
         cursorY += 30;
         writeln(
             (GFXfont *)&systemFont,
-            format(" [%d]: %zu", i, FileIndexSize(i) ).c_str(),
+            format(" [%d]: %zu", i, FileIndexSize(i)).c_str(),
             &cursorX, &cursorY,
             display_EPD_framebuffer());
 
@@ -124,11 +129,17 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
-        // wifi setup
+    // wifi setup
     else if (key == 'k')
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_LAYOUT;
+    }
+
+    // Reset
+    else if (key == 'r')
+    {
+        app["menu"]["state"] = MENU_RESET;
     }
 
     // chose file
