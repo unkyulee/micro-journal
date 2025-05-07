@@ -17,6 +17,8 @@ void Sync_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // init sync
     wifi_sync_init();
+
+    app_log("Sync Setup\n");
 }
 
 //

@@ -164,6 +164,8 @@ void sync_start_request()
 // Search for WIFI ACCESS POINTS
 void sync_start()
 {
+    app_log("Sync Start\n");
+
     //
     JsonDocument &app = app_status();
 
@@ -194,7 +196,7 @@ void sync_start()
         String ssid = WiFi.SSID(i);
 
         // print out the information
-        // app_log("%d: %s (%d dBm)\n", i + 1, ssid.c_str(), WiFi.RSSI(i));
+        app_log("%d: %s (%d dBm)\n", i + 1, ssid.c_str(), WiFi.RSSI(i));
 
         // add to the access_points list
         access_points.add(ssid);
