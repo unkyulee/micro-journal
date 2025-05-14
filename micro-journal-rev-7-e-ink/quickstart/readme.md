@@ -12,13 +12,6 @@ When you receive the **Micro Journal Rev.7**, you'll need to install a battery b
 
 3. **Power on**: Once the battery is installed, you're ready to power on and begin using your device.
 
----
-
-## Keyboard Freezing Issue
-
-For the build that are shipped before 10th April, there are issues on the cable that connects the keyboard to the display and it is known as a cause of the keyboard freezing issue. Not all but some of the builds are showing these problems. The fix is to replace the cable or clean up the connector. Please, follow the link below in order to discover the detail of the issue.
-
-https://github.com/unkyulee/micro-journal/issues/55
 
 ---
 
@@ -26,8 +19,7 @@ https://github.com/unkyulee/micro-journal/issues/55
 
 * USB port at the back is the battery charging port
   * Red: Charging
-  * Blue: Fully Charged
-  * Green: No Battery
+  * Blue or Green: Fully Charged
 
 * Khobs can be clicked
   * Clicking the RIGHT knob will clear the screen
@@ -39,7 +31,7 @@ https://github.com/unkyulee/micro-journal/issues/55
 
 ## 1. Battery Installation
 
-### Step 1. Open the Bottom Compartment and Install the Battery
+#### Step 1. Open the Bottom Compartment and Install the Battery
 
 <img src="../images/battery_001.jpg" width="400" />
 
@@ -71,7 +63,12 @@ After installing the battery make sure that no cable is clipped on to the edge w
 
 **Battery installation safety:** Improper handling or installation can cause a fire. Be cautious and avoid over-tightening the screws. If the case doesn’t close easily, check that no cables are pinched, as this could lead to short circuits, damage, or fire hazards.
 
+
+#### Step 2. Charging the battery
+
+
 **USB-C cable:** Please, make sure that when you plug in the charger you see the red or green light coming out from the enclosure. When you don't see any lights means that it is not charging. This means, charger is not compatible. Please, use USB-A to C cable. Most likely, USB-C to C cable will not be able to charge the device. Modern USB-C chargers that has PD (Power Delivery) will not work. Use older phone charger which most likely supplies USB-A to C type of cables.
+
 
 
 ---
