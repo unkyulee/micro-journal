@@ -71,6 +71,8 @@ After installing the battery make sure that no cable is clipped on to the edge w
 
 **Battery installation safety:** Improper handling or installation can cause a fire. Be cautious and avoid over-tightening the screws. If the case doesn’t close easily, check that no cables are pinched, as this could lead to short circuits, damage, or fire hazards.
 
+**USB-C cable:** Please, make sure that when you plug in the charger you see the red or green light coming out from the enclosure. When you don't see any lights means that it is not charging. This means, charger is not compatible. Please, use USB-A to C cable. Most likely, USB-C to C cable will not be able to charge the device. Modern USB-C chargers that has PD (Power Delivery) will not work. Use older phone charger which most likely supplies USB-A to C type of cables.
+
 
 ---
 
