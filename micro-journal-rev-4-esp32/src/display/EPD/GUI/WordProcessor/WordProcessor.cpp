@@ -252,9 +252,7 @@ void WP_render_text()
     // Only when refresh background is called
     //
     if (cleared)
-    {
-        app_log("WP_render_text::Rendering Full Text starting line %d out of total line %d\n", startLine, totalLine);
-
+    {        
         // Draw from the first line
         display_setline(0);
 
