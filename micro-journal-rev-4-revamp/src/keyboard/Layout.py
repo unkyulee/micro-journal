@@ -4,11 +4,17 @@ import keypad
 
 import usb_hid
 from adafruit_hid.keyboard import Keyboard
+from adafruit_hid.keycode import Keycode
 
-from keyboard.KeyMap import KEYMAP
+
+from keyboard.KeyMap import KEYMAPS
 
 
 class KeyboardLayout:
+    
+    # Default layer
+    layer = 0 
+    
     #
     def setup(self):      
         # USB HID Setup
@@ -24,18 +30,37 @@ class KeyboardLayout:
         
     #
     def loop(self): 
+        # Retrieve Keybaord Event
         event = self.km.events.get()
         
-        if event and event.pressed:
-            key_index = event.key_number
-            if 0 <= key_index < len(KEYMAP):
-                keycode = KEYMAP[key_index].get("default")
-                if keycode:
-                    self.kbd.send(keycode)
-        if event and event.released:
-            key_index = event.key_number
-            if 0 <= key_index < len(KEYMAP):
-                keycode = KEYMAP[key_index].get("default")
-                if keycode:
-                    self.kbd.send(keycode)
         
+        # If any key events
+        if event:
+            # Get key index from event
+            key_index = event.key_number
+            
+            # get keycode from KEYMAP
+            if key_index < len(KEYMAPS[self.layer]):
+                keycode = KEYMAPS[self.layer][key_index]
+            else:
+                # If key index is out of bounds, ignore the event
+                return
+
+            # if key is layer switch then add the layer
+            if keycode == Keycode.F24 and event.pressed:
+                self.layer = 1
+                return
+            elif keycode == Keycode.F24 and event.released:
+                self.layer = 0  
+                return
+            
+            # Debug keycode
+            # print(f"Key {key_index} pressed: {keycode} (Layer: {self.layer})")
+            
+            # If key is pressed
+            if event.pressed:
+                # Send the keycode
+                self.kbd.press(keycode)
+            else:
+                # Release the keycode
+                self.kbd.release(keycode)
