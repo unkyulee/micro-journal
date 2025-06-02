@@ -1,0 +1,3 @@
+Adafruit CircuitPython 9.0.4 on 2024-04-16; Waveshare RP2040-LCD-0.96 with rp2040
+Board ID:waveshare_rp2040_lcd_0_96
+UID:E6625C05E7347F25
