@@ -21,7 +21,7 @@ class ScreenBuffer:
 
     # Every changes in the buffer will trigger an update of the screen buffer
     def update(self, file_buffer):
-        
+     
         #
         self.total_line = 0
             
@@ -41,13 +41,10 @@ class ScreenBuffer:
         if not buffer or len(buffer) == 0:
             # return as there are no calculation needed
             return
-
-
         
         # Space tracking for word wrapping
         last_space_index = -1
         last_space_position = -1
-
 
         # Iterate through the buffer to calculate line breaks
         current_line = 0
@@ -66,7 +63,8 @@ class ScreenBuffer:
             
             # increase the current line count
             current_line_length += 1
-         
+            self.line_length[self.total_line] = current_line_length
+                     
             # If space is found then remmember the position
             # for the next word wrap
             if c == " ":
@@ -74,13 +72,13 @@ class ScreenBuffer:
                 last_space_position = current_line_length
                 
             # When there are new line characters, we need to break the line
-            if c == "\n":
-                # Increment the total line count
-                self.total_line += 1
-                
+            if c == "\n":                
                 # Save the current line length
                 # Do not count the newline character because we don't want that to be rendered in the screen
                 self.line_length[self.total_line] = current_line_length -1
+                
+                # Increment the total line count
+                self.total_line += 1
                                 
                 # Set the next line starting position
                 self.line_position[self.total_line] = i + 1
@@ -99,12 +97,10 @@ class ScreenBuffer:
             # Then we need to break the line
             # last_space_index is checked to see if the line needs broken at the last space for word wrapping
             if current_line_length == self.cols and last_space_index == -1:
+               
                 # Increment the total line count
                 self.total_line += 1
-                
-                # Save the current line length
-                self.line_length[self.total_line] = current_line_length
-                                
+                                                
                 # Set the next line starting position
                 self.line_position[self.total_line] = i + 1
                 
@@ -120,12 +116,13 @@ class ScreenBuffer:
                         
             # Word Wrap Required
             if current_line_length == self.cols and last_space_index != -1:
-                # Increment the total line count
-                self.total_line += 1
 
                 # Save the current line length at the last space position
                 self.line_length[self.total_line] = last_space_position
                 
+                # Increment the total line count
+                self.total_line += 1
+                                
                 # Set the next line starting position at the last space index + 1
                 self.line_position[self.total_line] = last_space_index + 1
                 
@@ -147,10 +144,7 @@ class ScreenBuffer:
                 
                 # Increment the total line count
                 self.total_line += 1
-                
-                # Save the current line length
-                self.line_length[self.total_line] = current_line_length
-                                
+                                                
                 # Set the next line starting position
                 self.line_position[self.total_line] = i + 1
                 
@@ -185,6 +179,6 @@ class ScreenBuffer:
             
             
         # debug
-        print(f"ScreenBuffer updated: total_line={self.total_line}, cursor_line={file_buffer.cursor_line}, cursor_line_pos={file_buffer.cursor_line_pos}")
-        print(self.line_position[:self.total_line + 1])     
-        print(self.line_length[:self.total_line + 1])  
+        #print(f"ScreenBuffer updated: total_line={self.total_line}, cursor_line={file_buffer.cursor_line}, cursor_line_pos={file_buffer.cursor_line_pos}")
+        #print(self.line_position[:self.total_line + 1])     
+        #print(self.line_length[:self.total_line + 1])  

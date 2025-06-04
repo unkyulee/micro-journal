@@ -58,7 +58,7 @@ class FileBuffer:
             self.buffer_size += 1
             
             # debug
-            print(f"Added char: '{c}', new buffer size: {self.buffer_size} cursor: {self.cursor_pos} buffer: {self.buffer}")
+            # print(f"Added char: '{c}', new buffer size: {self.buffer_size} cursor: {self.cursor_pos} buffer: {self.buffer}")
         
     def remove_last_char(self):
         if self.buffer_size > 0 and self.cursor_pos > 0:

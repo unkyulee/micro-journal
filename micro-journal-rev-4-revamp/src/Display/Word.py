@@ -22,6 +22,9 @@ class Word:
         self.font_height = 18
         self.font_width = 12
         
+        # how manu lines to render
+        self.render_lines = 2
+        
         # Screen dimensions
         self.screen_width = 160  # Adjust as needed
         self.screen_height = 80  # Adjust as needed
@@ -43,12 +46,12 @@ class Word:
         
         # create the label
         self.textArea = label.Label(
-            font=terminalio.FONT, text="Initializing ...", scale=1
+            font=terminalio.FONT, text="writerDeck", scale=2
         )
 
         # set label position on the display
-        self.textArea.anchor_point = (0, 12)
-        self.textArea.anchored_position = (0, 0)
+        self.textArea.anchor_point = (0, 0)
+        self.textArea.anchored_position = (0, 20)
 
         # add label to group that is showing on display
         self.display.root_group = group
@@ -67,41 +70,37 @@ class Word:
 
     # Render the visible lines of text on the display
     def render_text(self):
+        # render only when the screen buffer is updated
+        if not writer.pending_screen_buffer_updated:
+            return
         
+        start_time = time.monotonic()
         # Get lines from screen buffer
         lines = []
         buf = writer.file_buffer.get_buffer()
         sb = writer.screen_buffer
         total_lines = sb.total_line
-        for i in range(total_lines + 1):
+        
+        start_line = max(0, total_lines - self.render_lines +1)
+        for i in range(start_line, total_lines+1):
             start = sb.line_position[i]
             length = sb.line_length[i]
-            lines.append(buf[start:start+length].replace('\n', ''))
-            
-        # Render the visible lines of text
-        visible_lines = "\n".join(lines[-4:])
-        self.textArea.text = visible_lines
+            # Extract the line and remove any embedded newlines
+            line = buf[start:start+length].replace('\n', '')
+            lines.append(line)
+        # Only keep the last 5 lines
+
+        # Merge all lines into one string with line breaks
+        merged_text = "\n".join(lines)
+        self.textArea.text = merged_text
+        elapsed = time.monotonic() - start_time
+        
+        writer.pending_screen_buffer_updated = False
+        
+        # debug
+        # print(f"render_text elapsed: {elapsed:.6f} seconds")
         
         
-        """"
-       
-
-        # Only show last N lines that fit the screen
-        max_lines = min(len(lines), (self.screen_height - self.font_height) // self.font_height)
-        visible_lines = lines[-max_lines:]
-
-        for idx, line in enumerate(visible_lines):
-            text_area = label.Label(
-                terminalio.FONT,
-                text=line,
-                color=0xFFFFFF,
-                x=2,
-                y=2 + idx * self.font_height
-            )
-            group.append(text_area)
-
-        
-        """
         
     def check_saved(self):
         # Auto-save after 4 seconds of inactivity

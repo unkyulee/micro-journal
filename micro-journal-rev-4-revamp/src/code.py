@@ -9,7 +9,7 @@ from Services.Status import status
 
 # Keyboard Loop
 async def keyboard_loop():
-    # loop interval: 10 ms
+    # loop interval: 100 ms
     interval = 0.01
    
     # Setup Keyboard Layout
@@ -32,8 +32,8 @@ async def keyboard_loop():
 
 # WriterDeck Loop
 async def writer_loop():
-    # loop interval: 1000 ms
-    interval = 1
+    # loop interval: 100 ms
+    interval = 0.1
    
     # Setup Keyboard Layout
     writer.setup()
@@ -56,8 +56,8 @@ async def writer_loop():
 # Display Loop
 async def display_loop():
     # loop interval: 50 ms, 20 FPS
-    # interval = 0.05
-    interval = 3
+    interval = 0.1
+    # interval = 1
    
     # Setup Keyboard Layout
     display = Display()

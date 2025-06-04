@@ -1,16 +1,12 @@
+#
+import time
+
+#
 from Writer.FileBuffer import FileBuffer
 from Writer.ScreenBuffer import ScreenBuffer
 
 # TBD
 class Writer:
-    
-    def setup(self):
-        pass
-        
-        
-    def loop(self):
-        pass
-    
     # Singleton pattern for Writer class
     _instance = None
 
@@ -23,11 +19,34 @@ class Writer:
         # Only initialize once
         if not hasattr(self, "initialized"):
             self.file_buffer = FileBuffer()
-            
-            #
-            self.screen_buffer = ScreenBuffer(cols=4, max_lines=100)
+            self.screen_buffer = ScreenBuffer(cols=13, max_lines=100)
             self.saved = True
             self.initialized = True
+            self.last_screen_buffer_update = 0
+            self.pending_screen_buffer_update = False
+            self.pending_screen_buffer_updated = False
+            self.pending_screen_buffer_update_timer = 0.1
+    
+    
+    def setup(self):
+        pass
+        
+    
+    def loop(self):
+        # Call this periodically in your main loop
+        if self.pending_screen_buffer_update:
+            now = time.monotonic()
+            if now - self.last_screen_buffer_update >= self.pending_screen_buffer_update_timer:
+                self._do_screen_buffer_update()
+    
+    def _do_screen_buffer_update(self):
+        start_time = time.monotonic()
+        self.screen_buffer.update(self.file_buffer)
+        elapsed = time.monotonic() - start_time
+        self.last_screen_buffer_update = time.monotonic()
+        self.pending_screen_buffer_update = False
+        self.pending_screen_buffer_updated = True
+        # print(f"Finished ScreenBuffer... (elapsed: {elapsed:.6f} seconds)")
 
     def load_file(self, file_name):
         if not file_name:
@@ -217,10 +236,13 @@ class Writer:
             self.saved = False
 
         # Update the screen buffer after any change
-        self.screen_buffer.update(self.file_buffer)
-        
-        # debug
-        # print(self.file_buffer.get_buffer())
+        # Debounced screen buffer update
+        self.pending_screen_buffer_update = True
+            
+            
+            
+    
+
 
 # Global singleton instance
 writer = Writer()

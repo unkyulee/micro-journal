@@ -6,7 +6,7 @@ class Status:
     # Define global context
     data = {
         # keyboard, writer
-        'mode': 'keyboard',        
+        'mode': 'writer',        
         'display': {      
             # gif, menu, timer, word    
             'screen': 'gif',
