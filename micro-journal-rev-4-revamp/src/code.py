@@ -2,10 +2,10 @@ import asyncio
 import time
 
 # Service Libraries
-from Keyboard.Keyboard import Keyboard
-from WriterDeck.Writer import Writer
+from Keyboard.KeyboardHandler import KeyboardHandler
+from Writer.Writer import writer
 from Display.Display import Display
-from Services.Status import Status
+from Services.Status import status
 
 # Keyboard Loop
 async def keyboard_loop():
@@ -13,8 +13,8 @@ async def keyboard_loop():
     interval = 0.01
    
     # Setup Keyboard Layout
-    keyboard = Keyboard()
-    keyboard.setup()
+    keyboardHandler = KeyboardHandler()
+    keyboardHandler.setup()
     
     # Task Loop
     while True:
@@ -22,7 +22,7 @@ async def keyboard_loop():
         start_time = time.monotonic()
         
         # Code
-        keyboard.loop()
+        keyboardHandler.loop()
         
         # Loop Measure Interval - End
         elapsed_time = time.monotonic() - start_time
@@ -36,7 +36,6 @@ async def writer_loop():
     interval = 1
    
     # Setup Keyboard Layout
-    writer = Writer()
     writer.setup()
     
     # Task Loop
@@ -57,7 +56,8 @@ async def writer_loop():
 # Display Loop
 async def display_loop():
     # loop interval: 50 ms, 20 FPS
-    interval = 0.05
+    # interval = 0.05
+    interval = 3
    
     # Setup Keyboard Layout
     display = Display()
@@ -81,13 +81,17 @@ async def display_loop():
 # Battery status, and other house keeping tasks can be added here.
 async def global_status_loop():
     # loop interval: 60 seconds
-    interval = 60
+    interval = 1
+    
+    #
+    status.setup()
     
     while True:
         # Loop Measure Interval - Begin
         start_time = time.monotonic()
         
         # Code for global status updates can be added here
+        status.loop()
         
         # Loop Measure Interval - End
         elapsed_time = time.monotonic() - start_time

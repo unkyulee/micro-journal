@@ -12,7 +12,7 @@ from Services.Status import status
 # Display Services
 from Display.GIF import GIF
 from Display.Menu import Menu   
-from Display.WordProcessor import WordProcessor   
+from Display.Word import Word   
 from Display.Timer import Timer
 
 # Handles the display 
@@ -20,6 +20,9 @@ from Display.Timer import Timer
 # There can be cases of starting up, idle, typing, and sleep mode.
 # During sleep mode it will turn off the backlight
 class Display:
+    # default screen
+    screen = ""
+    
     #
     def setup(self):      
         # Pins
@@ -35,25 +38,31 @@ class Display:
         self.width = 160
         self.height = 80
         
+        #
         self.spi = busio.SPI(clock=self.clk, MOSI=self.mosi)
-        self.display_bus = displayio.FourWire(self.spi, command=self.dc, chip_select=self.cs, reset=self.rst)
-        self.display = ST7735R(
+        
+        #
+        self.display_bus = displayio.FourWire(
+            self.spi, command=self.dc, chip_select=self.cs, reset=self.rst)
+        
+        #
+        self.display = ST7735R( 
             self.display_bus, 
             width=self.width, 
             height=self.height,
-            rotation=270,
+            rotation=90,
             rowstart=1,
             colstart=26,
             invert=True,
             backlight_pin=self.bl)
         
         # set default brightness
-        self.display.brightness = status.data.display.brightness
-        
+        self.display.brightness = status.data["display"]["brightness"]
+       
         # Display Services
         self.gif = GIF()
         self.menu = Menu()
-        self.wordProcessor = WordProcessor(self.display)
+        self.word = Word(self.display)
         self.timer = Timer()
         
         
@@ -61,9 +70,11 @@ class Display:
     def loop(self): 
         
         # Define display modes
-        mode = status.data.mode
-        screen = status.data.display.screen
-                                
+        mode = status.data["mode"]
+        screen = status.data["display"]["screen"]
+        
+        # print(f"Display loop: mode={mode}, screen={screen} prev={self.screen}")
+                                       
         if mode == "keyboard":
             # If USB Keyboard mode then display GIF
             screen = "gif"            
@@ -74,24 +85,26 @@ class Display:
 
         elif mode == "writer":    
             #            
-            if status.data.display.screen == "menu":
+            if screen == "menu":
                 if self.screen != screen: self.menu.setup()
                 # If menu mode then display menu
                 self.menu.loop()
-            elif status.data.display.screen == "timer":
+            elif screen == "timer":
                 if self.screen != screen: self.timer.setup()
                 # If timer mode then display timer
                 self.timer.loop()
             else:
-                if self.screen != screen: self.wordProcessor.setup()
+                if self.screen != "word" or self.screen != screen: self.word.setup()
                 # by default WriterDeck mode
-                screen = "wordProcessor"
+                screen = "word"
                 
                 # If WriterDeck mode then display text
-                self.wordProcessor.loop()
+                self.word.loop()
+       
                 
                 
         # save prev screen mode
+        status.data["display"]["screen"] = screen
         self.screen = screen
         
 
