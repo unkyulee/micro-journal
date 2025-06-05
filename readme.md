@@ -19,7 +19,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [Design Story](./micro-journal-rev-7-e-ink/readme.md)
 * [Feature and Use Case of Rev.7](https://www.youtube.com/watch?v=lNPzFL1a6mI)
 * [Quick Start Guide](./micro-journal-rev-7-e-ink/quickstart/)
-* [Build Guide] TBD
+* [Build Guide](./micro-journal-rev-7-e-ink/build-guide.md)
 
 ### Press
 

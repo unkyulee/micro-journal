@@ -1,10 +1,10 @@
-# Rev.2. Build Guide
+# Micro Journal Rev.2. Build Guide
 
 This guide is for building the **Micro Journal Rev.2.ReVamp**, allowing you to assemble one on your own. It provides detailed information for troubleshooting if any parts of the build encounter issues and serves as a resource for those curious about the construction of the Micro Journal Rev.2.ReVamp.
 
-To complete this build, basic soldering skills are necessary, though advanced skills aren’t required. All components are through-hole types, so with some practice, you’ll be able to achieve the level needed.
+To complete this build, basic soldering skills are necessary, though advanced skills aren't required. All components are through-hole types, so with some practice, you'll be able to achieve the level needed.
 
-You’ll also need access to 3D-printed parts to complete the build. Many 3D printing services are available, but if you’d prefer to assemble your own and are having difficulty sourcing components, feel free to contact me—I’ll do my best to help provide a DIY kit.
+You'll also need access to 3D-printed parts to complete the build. Many 3D printing services are available, but if you'd prefer to assemble your own and are having difficulty sourcing components, feel free to contact me—I'll do my best to help provide a DIY kit.
 
 - Build Time: 4 ~ 6 hours
 - Basic level of soldering is required to complete the build
@@ -43,9 +43,6 @@ Raspberry Pi Zero 2W is at the heart of the build. Providing Linux terminal envi
 
 Screen received mini HDMI interface. This display is almost exact the size of the keyboard and it has a bit quirky aspect ratio, but attractive writing environment.
 
-### G. Power Supply
-
-This build uses a USB-C Female Port that will be connected to external power supply such as a phone charger or a portable battery to supply power to the device.
 
 # Materials
 
