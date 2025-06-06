@@ -55,7 +55,14 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 - 12x M2 Hex Screw Length 5mm
 - 2x M2 HEx Screw Length 3mm
 
+- [LiPo Charger and Step Up Controller](https://www.aliexpress.com/item/1005006366996657.html)
+- [Battery Inidicator 1SLithium 4.2V](https://www.aliexpress.com/item/1005006350742151.html)
+- [18650 Battery Holder](https://www.aliexpress.com/item/1005005084346241.html)
+- [2 Pin Round Snap Rocker Switch 0.65 inch](https://www.aliexpress.com/item/1005006005552235.html)
+
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
+
+- [B-7000 Glue](https://www.aliexpress.com/item/1005005379063116.html)
 
 - You will need TORX T10H to handle Hex screws
 - A Wire Wrap Hand Tool can be a life saver for a lot of tasks - WSU-30
@@ -65,6 +72,11 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 # Build Order
 
 1. Enclosure Preparation
+2. Display Preparation
+3. Power Supply
+4. EC11 Rotary Encoder Preparation
+5. Keyboard PCB Wiring
+
 
 ### Enclosure Preparation
 
@@ -72,19 +84,77 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 
 Please, refer to the image below for placement of the prints. Vertical placements of the enclosure parts gave the best prints results, so far in my builds. This orientation gives the most coverage of the smooth surfaces.
 
-<img src="build/001.png" width="400">
+<img src="build/001.png" width="600">
 
 Once the prints are done. Remove the support materials from the print.
 
 ### Installing Heat Inserts
 
-<img src="build/002.png">
+<img src="build/002.png" width="600">
 
-<img src="build/003.png">
+<img src="build/003.png" width="600">
 
-<img src="build/004.png">
+<img src="build/004.png" width="600">
 
-<img src="build/005.png">
+<img src="build/005.png" width="600">
+
+
+### Display Preparation
+
+Use B-7000 glue to apply on the display rim. Then attach to the display body.
+
+<img src="build/010.png" width="600">
+
+ Make sure to apply some pressure on the display while glue is dried. Leave some heave book on top of it for an hour before using it for the assembly.
+
+### Power Supply
+
+Cut fours wires in 15 cm (6 inches) length. 
+
+Merge battery indicator and battery holder and solder it to the power supply module.
+Solder two wires on the Vout+ and Vout-. Preferrably, use different colored wires or place a label for each polarity. This can be useful to identify the wires to connect with the power switch. 
+
+<img src="build/006.png" width="600">
+
+Prepare the round switch. Attach wires, preferrably same color. Apply some hot glue one the leads if possible. This will prevent any shorts while moving around. 
+
+<img src="build/007.png" width="600">
+
+
+Pick up the middle enclosure. The order of the installation is important. If you place the battery holder first, then you can't push the battery indicator. So, make sure to follow the order
+
+1) Use hot glue on the bottom of the power supply module and stick it in.
+2) Then, push the battery indicator towards outside, and glue it in
+3) Lastly, use a double sided tape or hot glue to place the battery holder
+4) Power switch can be pushed in from the outside. 
+
+<img src="build/008.png" width="600">
+
+Take one wire from the switch, and then take Vout+ wire from the power supply module. Merge these two wires. Insulate it with a tape or hot glue. 
+
+<img src="build/009.png" width="600">
+
+
+### EC11 Rotary Encoder Preparation
+
+EC11 rotary encode needs to be prep'd. You can use Wire Wrap Hand Tool to make things easier to wrap around the wire to those legs. 
+
+Cut 10x 30 cm wires. Make two with different colors to identify the GND pin if possible. 
+
+<img src="build/011.png" width="600">
+
+There are two holes in the tool. Pass through the wire into the hole closer to the surface. Then pass through the leg to the hole in the middle. That roll it. Afer some several roles. Wires are neatly wrapped on to the leg. 
+
+<img src="build/012.png" width="600">
+
+Wire up all 5 legs. Making one leg in the middle as a different color can be useful. This is GND point. The wires are pretty well stuck so, no need to do further actions. But, if you want to make sure then apply the solder in order to stick it permanently. 
+
+
+
+
+### Keyboard PCB Wiring
+
+Cut 22x 12 cm wires. 
 
 
 
