@@ -1,11 +1,16 @@
-// Handling Keyboard and Providing Interface to GUI (display)
-
 #include "keyboard.h"
 #include "app/app.h"
-#include "config/config.h"
-#include "display/display.h"
 
-#ifdef ENV_KEYBOARD
+// Keybaord inputs can be coming from two sources:
+// 1. Directly from the keypad (Rev.6)
+// 2. From USB or Bluetooth (BLE) HID devices (Rev.5 and Rev.7)
+// The code is designed to handle both scenarios based on the environment configuration.
+
+// Environment configuration is defined in the platformio.ini file
+// KEYPAD is defined for Rev.6 and Rev.4
+// USBHOST is defined for Rev.5 and Rev.7
+
+#ifdef ENV_KEYPAD
 // Rev.6 receives Key presses directly from the keypad
 #include "keypad/keypad.h"
 #endif
@@ -15,7 +20,6 @@
 #include "hid/hid.h"
 #endif
 
-bool keyboard_setup_completed = false;
 
 void keyboard_setup()
 {
