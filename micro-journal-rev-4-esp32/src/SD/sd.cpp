@@ -6,7 +6,10 @@
 #include <SPI.h>
 #include <FS.h>
 #include <SD.h>
+
+#ifdef BOARD_ESP32_S3
 #include <SPIFFS.h>
+#endif
 
 #define FORMAT_SPIFFS_IF_FAILED true
 
@@ -15,7 +18,7 @@ void SD_setup()
 {
     //
     JsonDocument &app = app_status();
-
+#ifdef BOARD_ESP32_S3
     // Mount SPIFFS
     if (!SPIFFS.begin())
     {
@@ -32,10 +35,11 @@ void SD_setup()
     {
         app_log("SPIFFS mount succeeded!\n");
     }
-
     // initialize SD card
     app_log("SD Device CS: %d\n", SD_CS);
-#ifdef ENV_EPAPER
+#endif
+    
+#if defined(ENV_EPAPER)
     SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
     if (!SD.begin(SD_CS, SPI))
 #else
@@ -83,6 +87,9 @@ void SD_setup()
 #endif
 #ifdef ENV_EPAPER
     const char *firmware_filename = "/firmware_rev_7.bin";
+#endif
+#ifdef ENV_KEYBOARD_68
+    const char *firmware_filename = "/firmware_rev_4_68.bin";
 #endif
 
     if (SD.exists(firmware_filename))

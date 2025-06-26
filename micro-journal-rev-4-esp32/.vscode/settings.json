@@ -26,6 +26,9 @@
     "fstream": "cpp",
     "cstring": "cpp",
     "list": "cpp",
-    "*.tpp": "cpp"
+    "*.tpp": "cpp",
+    "format": "cpp",
+    "span": "cpp",
+    "text_encoding": "cpp"
   }
 }

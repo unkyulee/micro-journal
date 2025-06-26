@@ -4,7 +4,10 @@
 //
 //
 #include <SD.h>
+
+#ifdef BOARD_ESP32_S3
 #include <SPIFFS.h>
+#endif
 
 String formatNumber(int num)
 {

@@ -8,7 +8,9 @@
 #ifdef ENV_KEYBOARD
 // Rev.6 receives Key presses directly from the keypad
 #include "keypad/keypad.h"
-#else
+#endif
+
+#ifdef ENV_USBHOST
 // Rev.5 and Rev.7 receives USB and Bluetooth (BLE) Keyboards
 #include "hid/hid.h"
 #endif
@@ -21,7 +23,9 @@ void keyboard_setup()
 #ifdef ENV_KEYBOARD
   // keypad setup
   keyboard_keypad_setup();
-#else
+#endif
+
+#ifdef ENV_USBHOST
   keyboard_hid_setup();
 #endif
 
@@ -39,7 +43,9 @@ void keyboard_loop()
 #ifdef ENV_KEYBOARD
   // keypad loop
   keyboard_keypad_loop();
-#else
+#endif
+
+#ifdef ENV_USBHOST
   keyboard_hid_loop();
 #endif
 

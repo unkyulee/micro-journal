@@ -6,11 +6,10 @@
 #include "config/config.h"
 #include "display/display.h"
 #include "keyboard/keyboard.h"
-#include "service/Wifi/WifiService.h"
 
-// Dual Core Support
-TaskHandle_t Task0;
-void Core0(void *parameter);
+#ifdef BOARD_ESP32_S3
+#include "service/Wifi/WifiService.h"
+#endif
 
 void setup()
 {
@@ -32,16 +31,6 @@ void setup()
 
     //
     display_setup();
-
-    //
-    xTaskCreatePinnedToCore(
-        Core0,   // Function to implement the task
-        "Core0", // Name of the task
-        10000,   // Stack size in words
-        NULL,    // Task input parameter
-        0,       // Priority of the task
-        &Task0,  // Task handle.
-        0);      // Core where the task should run
 }
 
 // Main loop is ignored as the tasks are separated per core
@@ -54,21 +43,22 @@ void loop()
     yield();
 }
 
-void Core0(void *parameter)
+void setup1()
 {
-    app_log("Core0 Task Start\n");
-    
     // keyboard setup
     keyboard_setup();
+}
 
+void loop1()
+{
     while (true)
     {
         //
         keyboard_loop();
-
+#ifdef BOARD_ESP32_S3
         // check for background task request
         wifi_service_loop();
-
+#endif
         //
         yield();
     }

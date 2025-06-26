@@ -2,6 +2,10 @@
 #include <FS.h>
 #include <SD.h>
 
+#ifdef BOARD_PICO
+#define FILE_APPEND "a"
+#endif
+
 // global status
 JsonDocument status;
 
