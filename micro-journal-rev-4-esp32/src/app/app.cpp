@@ -1,13 +1,12 @@
 #include "app.h"
-
-#include "FileSystem/FileSystem.h"
-#ifdef BOARD_PICO
-#include "FileSystem/RP2040/RP2040.h"
-#endif
+#include "display/display.h"
+#include <SPI.h>
 
 #ifdef BOARD_ESP32_S3
-#include "FileSystem/ESP32/ESP32.h"
+#include <SPIFFS.h>
+#include <SD.h>
 #endif
+
 
 // global status
 JsonDocument status;
@@ -18,7 +17,7 @@ JsonDocument &app_status()
 
 // file system instance
 FileSystem *fileSystem = nullptr;
-FileSystem *getFileSystem()
+FileSystem *app_fs()
 {
     if (fileSystem == nullptr)
     {
@@ -28,7 +27,7 @@ FileSystem *getFileSystem()
 #endif
 
 #ifdef BOARD_ESP32_S3
-        fileSystem = (FileSystem *)new ESP32();
+        fileSystem = (FileSystem *)new SD();
 #endif
     }
 
@@ -44,25 +43,102 @@ void app_setup()
     app_log("Device Started. Baud rate: %d\n", 115200);
     Serial.begin(115200);
 
+    // File System Check
+    if(app_filesystem_check() == false) {
+        // if file system check fails then do not proceed further
+        return;
+    }
 
+    // Firmware Update Check
+    if(app_firmware_check() == true) {
+        // new firmare is found do not proceed further
+        return;
+    }
 
-    /*
+    // Empty log.txt file
+    app_log_empty();
 
-
-    // initialize config
-    config_setup();
-
-*/
+    // Load Configuration for the first time
+    app_config_load();
 }
 
 void app_loop()
 {
-    app_log("Device Started. Baud rate: %d\n", 115200);
-    delay(1000);
 #ifdef BOARD_ESP32_S3
     // check for background task request
     wifi_service_loop();
 #endif
+}
+
+// check if file system is correctly loaded
+bool app_filesystem_check()
+{    
+    //
+    JsonDocument &app = app_status();
+
+#ifdef BOARD_ESP32_S3
+    // CHECK IF SPIFFS is formatted
+    // Mount SPIFFS
+    if (!SPIFFS.begin())
+    {
+        //
+        app_log("SPIFFS mount failed!\n");
+
+        //
+        app["error"] = "SPIFFS NOT FORMATTED";
+        app["screen"] = ERRORSCREEN
+
+        return false;
+    }
+
+    // Initialize SD Card
+#if defined(ENV_EPAPER)
+    // 
+    SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+    if (!SD.begin(SD_CS, SPI))
+#else
+    //
+    if (!SD.begin(SD_CS))
+#endif
+    {
+        //
+        app_log("Card Mount Failed\n");
+
+        //
+        app["error"] = " SD CARD MISSING ";
+        app["screen"] = ERRORSCREEN;
+
+        return false;
+    }
+
+    // Check for card type
+    app_log("SD Device Initialized\n");
+    uint8_t cardType = SD.cardType();
+
+    if (cardType == CARD_NONE)
+    {
+        //
+        app_log("No SD card attached\n");
+        //
+        app["error"] = " SD CARD NOT DETECTED ";
+        app["screen"] = ERRORSCREEN;
+
+        return false;
+    }
+
+    //
+    app_log("SD Card detected\n");
+#endif
+
+    // file system check pass
+    return true;
+}
+
+// Clear log.txt content when boot
+void app_log_empty()
+{
+    File logFile = app_fs()->open("/log.txt", "w");
+    logFile.close();
 }
 
 //
@@ -87,22 +163,18 @@ void app_log(const char *format, ...)
     // Print to Serial
     Serial.printf("[%d] %s", millis(), message);
 
-    // Write Log to SD card
-    // Check if SD card is initialized and the file exists
-    if (SD.exists("/log.txt"))
+    // Write Log to the main file system
+    File logFile = app_fs()->open("/log.txt", "a");
+    if (logFile)
     {
-        File logFile = SD.open("/log.txt", FILE_APPEND);
-        if (logFile)
-        {
-            // Write the log entry to the file
-            logFile.printf("[%d] %s", millis(), message);
-            logFile.close();
-        }
-        else
-        {
-            // Fallback to Serial if the file cannot be opened
-            Serial.println("Error opening log.txt file!");
-        }
+        // Write the log entry to the file
+        logFile.printf("[%d] %s", millis(), message);
+        logFile.close();
+    }
+    else
+    {
+        // Fallback to Serial if the file cannot be opened
+        Serial.println("Error opening log.txt file!");
     }
 }
 
@@ -141,8 +213,7 @@ String format(const char *format, ...)
     return String(buffer);
 }
 
-/*
-
+// Default Configuration
 void _set_default_config()
 {
     app_log("Creating default config.json template\n");
@@ -155,52 +226,37 @@ void _set_default_config()
     app["config"]["ble"]["remote"] = "";
 
     //
-    config_save();
+    app_config_save();
 }
 
 //
-void config_setup()
-{
-    // load config
-    config_load();
-}
-
-//
-void config_load()
+void app_config_load()
 {
     //
     app_log("Loading config ... %s\n", VERSION);
 
-#ifdef ENV_USBHOST
-    app_log(" REV.5 \n");
-#endif
-
-#ifdef ENV_KEYBOARD
-    app_log(" REV.6 \n");
-#endif
-
     // load app status
     JsonDocument &app = app_status();
-    app_log("App Status loaded\n");
 
     // load config.json
     app_log("Opening config.json file\n");
-    File configFile = SD.open("/config.json", "r");
+    File configFile = app_fs()->open("/config.json", "r");
     if (configFile)
     {
         // read the file
         String configString = configFile.readString();
         configFile.close();
-        delay(100);
+        delay(100); // safe to wait for a few seconds after closing a file
 
         // check if configString is empty
-        if (configString.isEmpty())
+        if (configString.length() == 0)
         {
-            app_log("Configuration is empty setting default\n");
+            // create a default config.json
             _set_default_config();
 
-            // to avoid deserialization failure whem empty
-            configString = "{}";
+            // configuration is loaded with default
+            // no need to proceed further
+            return;
         }
 
         // Prepare a JsonDocument for the configuration
@@ -217,7 +273,7 @@ void config_load()
 
             //
             app["error"] = "Wrong format config.json";
-            app["screen"] = ERRORSCREEN;
+            app["screen"] = ERRORSCREEN; // ERROR SCREEN IS 0
 
             return;
         }
@@ -233,7 +289,8 @@ void config_load()
     {
         // file doesn't exist
         app_log("config.json file doens't exist\n");
-        delay(100);
+
+        // create a default config.json
         _set_default_config();
 
         return;
@@ -241,17 +298,22 @@ void config_load()
 }
 
 //
-void config_save()
+void app_config_save()
 {
     // load app status
     JsonDocument &app = app_status();
 
     // save config
     // Open the file for writing
-    File configFile = SD.open("/config.json", FILE_WRITE);
+    File configFile = app_fs()->open("/config.json", "w");
     if (!configFile)
     {
-        app_log("Failed to open config.json file for writing.\n");
+        //
+        app["error"] = "Failed to open config.json file for writing.\n";
+        app["screen"] = ERRORSCREEN; // ERROR SCREEN IS 0
+
+        app_log(app["error"]);
+
         return;
     }
 
@@ -271,12 +333,31 @@ void config_save()
     else
     {
         //
-        app_log("No 'config' property found in app Document.\n");
+        app["error"] = "No 'config' property found in app Document.\n";
+        app["screen"] = 0; // ERROR SCREEN IS 0
+
+        app_log(app["error"]);
     }
 
     // close config.json
     configFile.close();
 }
 
+// check firmware update
+bool app_firmware_check()
+{    
+    // load app status
+    JsonDocument &app = app_status();
+    
+    // Check if there are firmware.bin in the SD card
+    if (app_fs()->exists(FIRMWARE))
+    {
+        // move to firmware update screen
+        app["screen"] = MENUSCREEN;
+        app["menu"]["state"] = MENU_FIRMWARE;
 
-*/
+        return false;
+    }
+
+    return true;
+}

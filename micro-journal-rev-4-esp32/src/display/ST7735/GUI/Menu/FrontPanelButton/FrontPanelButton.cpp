@@ -1,7 +1,6 @@
 #include "FrontPanelButton.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
 #include "../../WordProcessor/WordProcessor.h"
 
@@ -55,7 +54,7 @@ void FrontPanelButton_keyboard(char key)
         app["config"]["front_panel_button_disabled"] = false;
 
         // 
-        config_save();
+        app_config_save();
 
         return;
     }
@@ -65,7 +64,7 @@ void FrontPanelButton_keyboard(char key)
         app["config"]["front_panel_button_disabled"] = true;
 
         //
-        config_save();
+        app_config_save();
 
         return;
     }

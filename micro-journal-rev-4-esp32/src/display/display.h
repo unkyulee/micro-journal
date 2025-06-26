@@ -3,6 +3,8 @@
 
 // Screen Type
 #define WORDPROCESSOR 0
+
+//
 #define ERRORSCREEN 1
 #define MENUSCREEN 2
 #define WAKEUPSCREEN 3
@@ -26,6 +28,8 @@
 //
 void display_setup();
 void display_loop();
+
+//
 void display_keyboard(char key);
 
 #endif

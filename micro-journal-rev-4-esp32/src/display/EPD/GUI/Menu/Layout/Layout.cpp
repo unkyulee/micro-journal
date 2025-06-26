@@ -74,7 +74,7 @@ void Layout_keyboard(char key)
     }
 
     app["config"]["keyboard_layout"] = selectedLayout;
-    config_save();
+    app_config_save();
     app["screen"] = WORDPROCESSOR;
     app["menu"]["state"] = MENU_HOME;
 }

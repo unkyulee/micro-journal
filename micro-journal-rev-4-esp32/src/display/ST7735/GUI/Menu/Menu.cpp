@@ -1,6 +1,5 @@
 #include "Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
 #include "../WordProcessor/WordProcessor.h"
 

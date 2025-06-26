@@ -148,7 +148,7 @@ void Home_keyboard(char key)
         // save config
         int file_index = key - 48;
         app["config"]["file_index"] = file_index;
-        config_save();
+        app_config_save();
 
         // load editor
         Editor::getInstance().loadFile(format("/%d.txt", file_index));

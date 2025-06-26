@@ -1,9 +1,8 @@
 #include "Clear.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
+#include "service/editor/editor.h"
 
 //
 void Clear_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)

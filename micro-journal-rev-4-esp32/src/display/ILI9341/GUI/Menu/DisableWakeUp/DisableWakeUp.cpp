@@ -55,7 +55,7 @@ void DisableWakeUp_keyboard(char key)
         app["config"]["wakeup_animation_disabled"] = false;
 
         // 
-        config_save();
+        app_config_save();
 
         return;
     }
@@ -65,7 +65,7 @@ void DisableWakeUp_keyboard(char key)
         app["config"]["wakeup_animation_disabled"] = true;
 
         //
-        config_save();
+        app_config_save();
 
         return;
     }

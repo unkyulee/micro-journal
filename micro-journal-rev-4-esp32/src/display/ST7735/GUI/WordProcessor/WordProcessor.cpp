@@ -1,6 +1,6 @@
 #include "WordProcessor.h"
 #include "app/app.h"
-#include "editor/editor.h"
+#include "service/editor/editor.h"
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 #include "display/ST7735/display_ST7735.h"

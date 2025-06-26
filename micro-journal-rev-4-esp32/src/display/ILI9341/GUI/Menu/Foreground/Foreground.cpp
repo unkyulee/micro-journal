@@ -103,122 +103,122 @@ void Foreground_keyboard(char key)
     if (key == 'a')
     {
         app["config"]["foreground_color"] = TFT_BLACK;
-        config_save();
+        app_config_save();
     }
     else if (key == 'b')
     {
         app["config"]["foreground_color"] = TFT_WHITE;
-        config_save();
+        app_config_save();
     }
     else if (key == 'c')
     {
         app["config"]["foreground_color"] = TFT_NAVY;
-        config_save();
+        app_config_save();
     }
     else if (key == 'd')
     {
         app["config"]["foreground_color"] = TFT_DARKGREEN;
-        config_save();
+        app_config_save();
     }
     else if (key == 'e')
     {
         app["config"]["foreground_color"] = TFT_DARKCYAN;
-        config_save();
+        app_config_save();
     }
     else if (key == 'f')
     {
         app["config"]["foreground_color"] = TFT_MAROON;
-        config_save();
+        app_config_save();
     }
     else if (key == 'g')
     {
         app["config"]["foreground_color"] = TFT_PURPLE;
-        config_save();
+        app_config_save();
     }
     else if (key == 'h')
     {
         app["config"]["foreground_color"] = TFT_OLIVE;
-        config_save();
+        app_config_save();
     }
     else if (key == 'i')
     {
         app["config"]["foreground_color"] = TFT_LIGHTGREY;
-        config_save();
+        app_config_save();
     }
     else if (key == 'j')
     {
         app["config"]["foreground_color"] = TFT_DARKGREY;
-        config_save();
+        app_config_save();
     }
     else if (key == 'k')
     {
         app["config"]["foreground_color"] = TFT_BLUE;
-        config_save();
+        app_config_save();
     }
     else if (key == 'l')
     {
         app["config"]["foreground_color"] = TFT_GREEN;
-        config_save();
+        app_config_save();
     }
     else if (key == 'm')
     {
         app["config"]["foreground_color"] = TFT_CYAN;
-        config_save();
+        app_config_save();
     }
     else if (key == 'n')
     {
         app["config"]["foreground_color"] = TFT_RED;
-        config_save();
+        app_config_save();
     }
     else if (key == 'o')
     {
         app["config"]["foreground_color"] = TFT_MAGENTA;
-        config_save();
+        app_config_save();
     }
     else if (key == 'p')
     {
         app["config"]["foreground_color"] = TFT_YELLOW;
-        config_save();
+        app_config_save();
     }
     else if (key == 'q')
     {
         app["config"]["foreground_color"] = TFT_ORANGE;
-        config_save();
+        app_config_save();
     }
     else if (key == 'r')
     {
         app["config"]["foreground_color"] = TFT_GREENYELLOW;
-        config_save();
+        app_config_save();
     }
     else if (key == 's')
     {
         app["config"]["foreground_color"] = TFT_PINK;
-        config_save();
+        app_config_save();
     }
     else if (key == 't')
     {
         app["config"]["foreground_color"] = TFT_BROWN;
-        config_save();
+        app_config_save();
     }
     else if (key == 'u')
     {
         app["config"]["foreground_color"] = TFT_GOLD;
-        config_save();
+        app_config_save();
     }
     else if (key == 'v')
     {
         app["config"]["foreground_color"] = TFT_SILVER;
-        config_save();
+        app_config_save();
     }
     else if (key == 'w')
     {
         app["config"]["foreground_color"] = TFT_SKYBLUE;
-        config_save();
+        app_config_save();
     }
     else if (key == 'x')
     {
         app["config"]["foreground_color"] = TFT_VIOLET;
-        config_save();
+        app_config_save();
     }
 
     // go back to the word processor

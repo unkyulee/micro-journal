@@ -1,4 +1,4 @@
-#include "editor/editor.h"
+#include "service/editor/editor.h"
 
 #ifndef ScreenBuffer_h
 #define ScreenBuffer_h

@@ -1,7 +1,6 @@
 #include "Layout.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
 #include "../../WordProcessor/WordProcessor.h"
 
@@ -78,7 +77,7 @@ void Layout_keyboard(char key)
     }
 
     // Save configuration and update the screen
-    config_save();
+    app_config_save();
     app["screen"] = WORDPROCESSOR;
 
     // Go back to the home menu

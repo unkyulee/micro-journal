@@ -1,9 +1,8 @@
 #include "Home.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
+#include "service/editor/editor.h"
 #include "keyboard/keyboard.h"
 
 //
@@ -174,7 +173,7 @@ void Home_keyboard(char key)
         // save config
         int file_index = key - 48;
         app["config"]["file_index"] = file_index;
-        config_save();
+        app_config_save();
 
         // load editor
         Editor::getInstance().loadFile(format("/%d.txt", file_index));

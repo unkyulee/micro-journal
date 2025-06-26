@@ -4,7 +4,7 @@
 #include "app/app.h"
 
 // display
-//#include "display/display.h"
+#include "display/display.h"
 
 // keyboard
 //#include "keyboard/keyboard.h"
@@ -40,7 +40,7 @@ void setup1()
     app_setup();
 
     //
-    //display_setup();
+    display_setup();
 }
 
 void loop1()
@@ -49,5 +49,5 @@ void loop1()
     app_loop();
 
     //
-    //display_loop();
+    display_loop();
 }

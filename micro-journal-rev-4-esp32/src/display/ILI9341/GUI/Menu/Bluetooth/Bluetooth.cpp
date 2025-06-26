@@ -237,7 +237,7 @@ void Bluetooth_keyboard(char key)
         {
             // remove the BLE config
             app["config"]["ble"]["remote"] = "";
-            config_save();
+            app_config_save();
 
             /*
             // bluetooth entry chose to edit

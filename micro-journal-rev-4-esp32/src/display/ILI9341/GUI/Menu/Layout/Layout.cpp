@@ -78,7 +78,7 @@ void Layout_keyboard(char key)
     }
 
     // Save configuration and update the screen
-    config_save();
+    app_config_save();
     app["screen"] = WORDPROCESSOR;
 
     // Go back to the home menu

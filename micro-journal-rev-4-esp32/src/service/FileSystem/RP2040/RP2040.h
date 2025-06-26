@@ -1,5 +1,5 @@
 #pragma once
-#include "app/FileSystem/FileSystem.h"
+#include "../FileSystem.h"
 #include <LittleFS.h>
 
 class FSLittleFS : public FileSystem {
