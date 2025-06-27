@@ -7,7 +7,6 @@
 #include <SD.h>
 #endif
 
-
 // global status
 JsonDocument status;
 JsonDocument &app_status()
@@ -23,11 +22,12 @@ FileSystem *app_fs()
     {
 // Initialize the file system here
 #ifdef BOARD_PICO
-        fileSystem = (FileSystem *)new RP2040();
+        fileSystem = new FSLittleFS();
+        app_log("LittleFS File System Initialized\n");
 #endif
 
 #ifdef BOARD_ESP32_S3
-        fileSystem = (FileSystem *)new SD();
+        fileSystem = new SDFS();
 #endif
     }
 
@@ -44,22 +44,24 @@ void app_setup()
     Serial.begin(115200);
 
     // File System Check
-    if(app_filesystem_check() == false) {
+    if (app_filesystem_check() == false)
+    {
         // if file system check fails then do not proceed further
+        app_log("File system check failed. Exiting setup.\n");
         return;
     }
 
     // Firmware Update Check
-    if(app_firmware_check() == true) {
+    if (app_firmware_check() == true)
+    {
         // new firmare is found do not proceed further
+        app_log("Firmware update found. Exiting setup.\n");
         return;
     }
 
-    // Empty log.txt file
-    app_log_empty();
-
     // Load Configuration for the first time
     app_config_load();
+
 }
 
 void app_loop()
@@ -72,7 +74,7 @@ void app_loop()
 
 // check if file system is correctly loaded
 bool app_filesystem_check()
-{    
+{
     //
     JsonDocument &app = app_status();
 
@@ -88,12 +90,12 @@ bool app_filesystem_check()
         app["error"] = "SPIFFS NOT FORMATTED";
         app["screen"] = ERRORSCREEN
 
-        return false;
+            return false;
     }
 
     // Initialize SD Card
 #if defined(ENV_EPAPER)
-    // 
+    //
     SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
     if (!SD.begin(SD_CS, SPI))
 #else
@@ -134,12 +136,6 @@ bool app_filesystem_check()
     return true;
 }
 
-// Clear log.txt content when boot
-void app_log_empty()
-{
-    File logFile = app_fs()->open("/log.txt", "w");
-    logFile.close();
-}
 
 //
 // APP LOG
@@ -163,6 +159,7 @@ void app_log(const char *format, ...)
     // Print to Serial
     Serial.printf("[%d] %s", millis(), message);
 
+    /*
     // Write Log to the main file system
     File logFile = app_fs()->open("/log.txt", "a");
     if (logFile)
@@ -176,6 +173,7 @@ void app_log(const char *format, ...)
         // Fallback to Serial if the file cannot be opened
         Serial.println("Error opening log.txt file!");
     }
+    */
 }
 
 //
@@ -345,10 +343,10 @@ void app_config_save()
 
 // check firmware update
 bool app_firmware_check()
-{    
+{
     // load app status
     JsonDocument &app = app_status();
-    
+
     // Check if there are firmware.bin in the SD card
     if (app_fs()->exists(FIRMWARE))
     {

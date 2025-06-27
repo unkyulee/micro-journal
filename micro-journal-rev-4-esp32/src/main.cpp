@@ -17,15 +17,23 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
-    // keyboard setup
-    //keyboard_setup();
+    // initialize app
+    app_setup();
+
+    //
+    display_setup();
+    
 }
 
 // Main loop is ignored as the tasks are separated per core
 void loop()
 {
     //
-    //keyboard_loop();
+    app_loop();
+
+    //
+    display_loop();
+
 }
 
 /*----------------------------------------------
@@ -36,18 +44,11 @@ Such as display updates and background tasks.
 ----------------------------------------------*/
 void setup1()
 {
-    // initialize app
-    app_setup();
-
-    //
-    display_setup();
+    
 }
 
 void loop1()
 {
-    //
-    app_loop();
-
-    //
-    display_loop();
+    
+    
 }

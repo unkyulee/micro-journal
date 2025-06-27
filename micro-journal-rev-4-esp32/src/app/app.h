@@ -8,7 +8,7 @@
 #include "service/FileSystem/FileSystem.h"
 
 #ifdef BOARD_PICO
-#include "service/FileSystem/RP2040/RP2040.h"
+#include "service/FileSystem/FSLittleFS/FSLittleFS.h"
 #endif
 
 #ifdef BOARD_ESP32_S3
@@ -26,7 +26,6 @@ void app_setup();
 void app_loop();
 
 // logging
-void app_log_empty();
 void app_log(const char *format, ...);
 void debug_log(const char *format, ...);
 String format(const char *format, ...);
