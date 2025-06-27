@@ -8,7 +8,6 @@
 
 // keyboard
 // #include "keyboard/keyboard.h"
-#include <FatFS.h> // or #include <FatFS.h> or #include <SPIFFS.h>
 
 
 /*----------------------------------------------
@@ -18,9 +17,9 @@ to it will take the critical tasks such as
 keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
-{   
+{
     delay(4000);
-    
+
     // initialize app
     app_setup();
 
@@ -28,17 +27,17 @@ void setup()
     display_setup();
 
     //
-    // keyboard_setup();    
+    // keyboard_setup();
 }
 
-// 
+//
 void loop()
 {
     //
     display_loop();
 
     //
-    // keyboard_loop();
+    // keyboard_loop();    
 
     // try to yield to avoid infinite loop
     yield();
@@ -50,6 +49,8 @@ Second core will contain tasks that can get blocked
 and slowed and yet has still less impact.
 Such as background tasks.
 ----------------------------------------------*/
+
+
 void setup1()
 {
 }
