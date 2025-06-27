@@ -1,66 +1,36 @@
 #include "keyboard.h"
 #include "app/app.h"
 
-// Keybaord inputs can be coming from two sources:
-// 1. Directly from the keypad (Rev.6)
-// 2. From USB or Bluetooth (BLE) HID devices (Rev.5 and Rev.7)
-// The code is designed to handle both scenarios based on the environment configuration.
-
-// Environment configuration is defined in the platformio.ini file
-// KEYPAD is defined for Rev.6 and Rev.4
-// USBHOST is defined for Rev.5 and Rev.7
-
-#ifdef ENV_KEYPAD
-// Rev.6 receives Key presses directly from the keypad
-#include "keypad/keypad.h"
+#ifdef KEYPAD_68
+#include "service/InputMethod/Keypad_68/keypad_68.h"
 #endif
 
-#ifdef ENV_USBHOST
-// Rev.5 and Rev.7 receives USB and Bluetooth (BLE) Keyboards
-#include "hid/hid.h"
-#endif
-
-
+//
 void keyboard_setup()
 {
- 
-#ifdef ENV_KEYBOARD
-  // keypad setup
-  keyboard_keypad_setup();
+#ifdef KEYPAD_68
+  keyboard_keypad_68_setup();
 #endif
-
-#ifdef ENV_USBHOST
-  keyboard_hid_setup();
-#endif
-
-  // Keyboard setup is completed
-  // Keyboard loop can initiate
-  keyboard_setup_completed = true;
-}
-
-void keyboard_loop()
-{
-  // Wait until the keyboard setup is completed
-  if (!keyboard_setup_completed)
-    return;
-
-#ifdef ENV_KEYBOARD
-  // keypad loop
-  keyboard_keypad_loop();
-#endif
-
-#ifdef ENV_USBHOST
-  keyboard_hid_loop();
-#endif
-
 }
 
 //
+void keyboard_loop()
+{
+#ifdef KEYPAD_68
+  keyboard_keypad_68_loop();
+#endif
+}
+
+
+
+/*
+// TBD: tracking press and release and trigger multiple times until released
 int _backspace_last = 0;
 int keyboard_backspace_last()
 {
   return _backspace_last;
 }
+
 void keyboard_backspace_last_set(int last)
 {
   _backspace_last = last;
@@ -77,12 +47,14 @@ void keyboard_backspace_pressed_set(bool pressed)
   _backspace_pressed = pressed;
 }
 
+
 // capslock
 bool _capslock = false;
 bool keyboard_capslock()
 {
   return _capslock;
 }
+
 void keyboard_capslock_toggle()
 {
   _capslock = !_capslock;
@@ -94,7 +66,9 @@ bool keyboard_numlock()
 {
   return _numlock;
 }
+
 void keyboard_numlock_toggle()
 {
   _numlock = !_numlock;
 }
+*/

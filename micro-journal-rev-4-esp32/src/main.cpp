@@ -7,7 +7,9 @@
 #include "display/display.h"
 
 // keyboard
-//#include "keyboard/keyboard.h"
+// #include "keyboard/keyboard.h"
+#include <FatFS.h> // or #include <FatFS.h> or #include <SPIFFS.h>
+
 
 /*----------------------------------------------
 Dual Core: First Core
@@ -16,39 +18,47 @@ to it will take the critical tasks such as
 keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
-{
+{   
+    delay(4000);
+    
     // initialize app
     app_setup();
 
     //
     display_setup();
-    
+
+    //
+    // keyboard_setup();    
 }
 
-// Main loop is ignored as the tasks are separated per core
+// 
 void loop()
 {
     //
-    app_loop();
-
-    //
     display_loop();
 
+    //
+    // keyboard_loop();
+
+    // try to yield to avoid infinite loop
+    yield();
 }
 
 /*----------------------------------------------
 Dual Core: Second Core
-Second core will contain tasks that can get blocked 
-and slowed and yet has still less impact. 
-Such as display updates and background tasks.
+Second core will contain tasks that can get blocked
+and slowed and yet has still less impact.
+Such as background tasks.
 ----------------------------------------------*/
 void setup1()
 {
-    
 }
 
 void loop1()
 {
-    
-    
+    // background tasks will be handled
+    app_loop();
+
+    // try to yield to avoid infinite loop
+    yield();
 }

@@ -19,7 +19,7 @@
 void wifi_service_loop()
 {
     //
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
     String task = app["task"].as<String>();
     
     if (task == "sync_start")
@@ -37,17 +37,17 @@ void wifi_service_loop()
 void wifi_config_load()
 {
     //
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     // load config.json
-    app_log("Opening wifi.json file from internal storage\n");
+    _log("Opening wifi.json file from internal storage\n");
     File file = SPIFFS.open("/wifi.json", "r");
     if (file)
     {
         // read the file
-        app_log("Reading wifi.json file\n");
+        _log("Reading wifi.json file\n");
         String wifiString = file.readString();
-        app_log("Closing wifi.json file\n");
+        _log("Closing wifi.json file\n");
         file.close();
 
         // check if configString is empty
@@ -63,11 +63,11 @@ void wifi_config_load()
 
         // convert to JsonObject
         DeserializationError error = deserializeJson(configDoc, wifiString);
-        app_log("Deserializing wifi.json file\n");
+        _log("Deserializing wifi.json file\n");
         if (error)
         {
             //
-            app_log("wifi.json deserializeJson() failed: %s\n", error.c_str());
+            _log("wifi.json deserializeJson() failed: %s\n", error.c_str());
 
             //
             app["error"] = "Wrong format wifi.json";
@@ -80,16 +80,16 @@ void wifi_config_load()
         }
 
         // Assign the loaded configuration to "config" property of app
-        app_log("Loading wifi config\n");
+        _log("Loading wifi config\n");
         app["wifi"] = configDoc.as<JsonObject>();
 
         // print out the configuration
-        app_log("Wifi config loaded successfully!\n");
+        _log("Wifi config loaded successfully!\n");
     }
     else
     {
         // file doesn't exist
-        app_log("wifi.json file doens't exist\n");
+        _log("wifi.json file doens't exist\n");
         delay(100);
 
         return;
@@ -100,14 +100,14 @@ void wifi_config_load()
 void wifi_config_save()
 {
     // load app status
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     // save config
     // Open the file for writing
     File file = SPIFFS.open("/wifi.json", FILE_WRITE);
     if (!file)
     {
-        app_log("Failed to open wifi.json file for writing.\n");
+        _log("Failed to open wifi.json file for writing.\n");
         return;
     }
 
@@ -122,11 +122,11 @@ void wifi_config_save()
         debug_log("wifi_config_save\n%s\n", jsonOutput.c_str());
 
         //
-        app_log("Wifi config updated successfully.\n");
+        _log("Wifi config updated successfully.\n");
     }
     else
     {
-        app_log("No 'wifi' property found in app Document.\n");
+        _log("No 'wifi' property found in app Document.\n");
     }
 
     // close config.json
@@ -138,25 +138,25 @@ void wifi_sync_init()
 {
     // reset the sync state
     // update app sync state
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
     app["sync_state"] = SYNC_START;
     app["sync_error"] = "";
     app["sync_message"] = "";
 
-    app_log("wifi_sync_init\n");
+    _log("wifi_sync_init\n");
 }
 
 // start WIFI
 void sync_start_request()
 {
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
     String task = app["task"].as<String>();
     //
     if (task != "sync_start")
     {
         app["task"] = "sync_start";
         app["sync_state"] = SYNC_PROGRESS;
-        app_log("Sync Start Requested\n");
+        _log("Sync Start Requested\n");
     }
 }
 
@@ -164,10 +164,10 @@ void sync_start_request()
 // Search for WIFI ACCESS POINTS
 void sync_start()
 {
-    app_log("Sync Start\n");
+    _log("Sync Start\n");
 
     //
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     //
     app["sync_message"] = "Connecting to WiFi";
@@ -196,7 +196,7 @@ void sync_start()
         String ssid = WiFi.SSID(i);
 
         // print out the information
-        app_log("%d: %s (%d dBm)\n", i + 1, ssid.c_str(), WiFi.RSSI(i));
+        _log("%d: %s (%d dBm)\n", i + 1, ssid.c_str(), WiFi.RSSI(i));
 
         // add to the access_points list
         access_points.add(ssid);
@@ -236,7 +236,7 @@ void sync_start()
 
                     // Sync File Start
                     sync_send();
-                    app_log("Sync Start has completed\n");
+                    _log("Sync Start has completed\n");
 
                     return; // Exit the function if successfully connected
                 }
@@ -301,7 +301,7 @@ bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password
     }
     else
     {
-        app_log("Failed to connect to WiFi. Please check your credentials.\n");
+        _log("Failed to connect to WiFi. Please check your credentials.\n");
 
         //
         app["sync_error"] = format("Failed to connect to %s", ssid);
@@ -317,10 +317,10 @@ bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password
 
 void sync_send()
 {
-    app_log("Sync Send\n");
+    _log("Sync Send\n");
 
     //
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     // preparing the file
     app["sync_message"] = "Preparing the file ... ";
@@ -393,8 +393,8 @@ void sync_send()
     String url = app["config"]["sync"]["url"].as<String>();
     if (!url.isEmpty() && url != "null")
     {
-        app_log("Requesting sync ... \n");
-        app_log("%s\n", url.c_str());
+        _log("Requesting sync ... \n");
+        _log("%s\n", url.c_str());
 
         // prepare http client
         HTTPClient http;
@@ -417,10 +417,10 @@ void sync_send()
         }
 
         //
-        app_log("Sending file: %s\n", base64Filename.c_str());
-        app_log("File size: %d bytes\n", file.size());
+        _log("Sending file: %s\n", base64Filename.c_str());
+        _log("File size: %d bytes\n", file.size());
         http.sendRequest("POST", &file, file.size());
-        app_log("File sent successfully\n");
+        _log("File sent successfully\n");
 
         // close http connection
         http.end();
@@ -434,7 +434,7 @@ void sync_send()
         //
         app["sync_state"] = SYNC_COMPLETED;
         app["clear"] = true;
-        app_log("Sync State: SYNC_COMPLETED\n");
+        _log("Sync State: SYNC_COMPLETED\n");
     }
     else
     {

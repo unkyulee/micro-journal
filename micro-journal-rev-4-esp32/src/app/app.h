@@ -1,42 +1,28 @@
-#ifndef App_h
-#define App_h
+#pragma once
 
 // app version
 #define VERSION "1.0.19.dev"
 
+// default utility headers
 #include <ArduinoJson.h>
+#include "Log/Log.h"
 #include "filesystem/FileSystem.h"
-
-#ifdef BOARD_PICO
-#include "service/FileSystem/FSLittleFS/FSLittleFS.h"
-#endif
-
-#ifdef BOARD_ESP32_S3
-#include "service/FileSystem/SD/SD.h"
-#endif
-
-// app status
-JsonDocument &app_status();
-
-// file system 
-FileSystem *app_fs();
+#include "Config/Config.h"
+#include "Verification/Verification.h"
+#include "service/Tools/Tools.h"
 
 // 
 void app_setup();
 void app_loop();
 
-// logging
-void app_log(const char *format, ...);
-void debug_log(const char *format, ...);
-String format(const char *format, ...);
+// is app ready?
+bool app_ready();
 
-// configuration
-void app_config_setup();
-void app_config_load();
-void app_config_save();
+// app status
+JsonDocument &status();
 
-// firmware update
-bool app_filesystem_check();
-bool app_firmware_check();
-
-#endif
+// ESP32 has SD or SPIFFS 
+// RP2040 has LittleFS
+// This is a pattern to hide the implementation of the file system
+// and provide a common interface to access the file system
+FileSystem *gfs();

@@ -44,7 +44,7 @@ size_t fileSize(String fileName)
         {   //something bad happened
             char buffer [32];
             sprintf(buffer, "Failed to open a file. %s\n", fileName);
-            app_log(buffer);
+            _log(buffer);
             file_size = -1;
         }
         else 
@@ -200,4 +200,16 @@ String asciiToUnicode(uint8_t value)
 
   uint8_t code = value - 128;
   return extended_ascii[code];
+}
+
+
+
+String format(const char *format, ...)
+{
+    char buffer[256]; // Adjust the size according to your needs
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, sizeof(buffer), format, args);
+    va_end(args);
+    return String(buffer);
 }

@@ -14,7 +14,7 @@ void Editor::init(int cols, int rows)
     screenBuffer.rows = rows;
 
     // You can add any additional setup logic here
-    app_log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
+    _log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
 }
 
 // Given the fileName, go through the loading process
@@ -22,7 +22,7 @@ void Editor::init(int cols, int rows)
 void Editor::loadFile(String fileName)
 {
     // app status
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     // if no current file is specified then skip
     if (fileName.length() == 0)
@@ -32,27 +32,27 @@ void Editor::loadFile(String fileName)
         app["screen"] = ERRORSCREEN;
 
         //
-        app_log(app["error"]);
+        _log(app["error"]);
 
         return;
     }
 
     //
-    app_log("Editor loading file %s\n", fileName);
+    _log("Editor loading file %s\n", fileName.c_str());
 
     // Step 1. Create file if necessary
-    if (!app_fs()->exists(fileName.c_str()))
+    if (!gfs()->exists(fileName.c_str()))
     {
-        app_log("Creating an empty file since it's new\n");
-        File file = app_fs()->open(fileName.c_str(), "w");
+        _log("Creating an empty file since it's new\n");
+        File file = gfs()->open(fileName.c_str(), "w");
         if (!file)
         {
             //
-            app["error"] = format("Failed to create a file. %s\n", fileName);
+            app["error"] = format("Failed to create a file. %s\n", fileName.c_str());
             app["screen"] = ERRORSCREEN;
 
             //
-            app_log(app["error"].as<const char *>());
+            _log(app["error"].as<const char *>());
             
             return;
         }
@@ -62,7 +62,7 @@ void Editor::loadFile(String fileName)
         delay(100);
 
         //
-        app_log("File created. %s\n", fileName);
+        _log("File created. %s\n", fileName.c_str());
     }
 
     // Step 2. Initialize the FileBuffer
@@ -76,7 +76,7 @@ void Editor::loadFile(String fileName)
 void Editor::saveFile()
 {
     //
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     // if no current file is specified then skip
     if (fileBuffer.getFileName().length() == 0)
@@ -86,7 +86,7 @@ void Editor::saveFile()
         app["screen"] = ERRORSCREEN;
 
         //
-        app_log(app["error"]);
+        _log(app["error"]);
         
         return;
     }
@@ -94,7 +94,7 @@ void Editor::saveFile()
     // if already save nothing to do
     if (this->saved)
     {
-        app_log("File already saved\n");
+        _log("File already saved\n");
         return;
     }
 
@@ -109,7 +109,7 @@ void Editor::saveFile()
 void Editor::clearFile()
 {
     //
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     // if no current file is specified then skip
     if (fileBuffer.getFileName().length() == 0)
@@ -119,7 +119,7 @@ void Editor::clearFile()
         app["screen"] = ERRORSCREEN;
 
         //
-        app_log(app["error"]);
+        _log(app["error"]);
         
         return;
     }
@@ -128,28 +128,28 @@ void Editor::clearFile()
     // remove it if already exists
     String backupFileName = format("/%s_backup.txt", fileBuffer.getFileName());
 
-    if (app_fs()->exists(backupFileName.c_str()))
+    if (gfs()->exists(backupFileName.c_str()))
     {
         // remove the backup file
-        app_fs()->remove(backupFileName.c_str());
+        gfs()->remove(backupFileName.c_str());
     }
 
     // Step 2. Rename the current file to the backup.txt
-    if (app_fs()->rename(fileBuffer.getFileName().c_str(), backupFileName.c_str()))
+    if (gfs()->rename(fileBuffer.getFileName().c_str(), backupFileName.c_str()))
     {
-        app_log("File renamed successfully: %s.\n", backupFileName);
+        _log("File renamed successfully: %s.\n", backupFileName);
     }
     else
     {
         app["error"] = format("Error making a backup file. %s\n", backupFileName);
-        app_log(app["error"].as<const char *>());
+        _log(app["error"].as<const char *>());
         app["screen"] = ERRORSCREEN;
 
         return;
     }
 
     // Step 3. Empty the current file by opening it with FILE_WRITE
-    File file = app_fs()->open(fileBuffer.getFileName().c_str(), "w");
+    File file = gfs()->open(fileBuffer.getFileName().c_str(), "w");
     if (!file)
     {
         //
@@ -157,7 +157,7 @@ void Editor::clearFile()
         app["screen"] = ERRORSCREEN;
 
         //
-        app_log(app["error"]);
+        _log(app["error"]);
         
         return;
     }
@@ -174,7 +174,7 @@ void Editor::clearFile()
 // Handle Keyboard Input
 void Editor::keyboard(char key)
 {
-    debug_log("Editor::keyboard:: %c\n", key);
+    _debug("Editor::keyboard:: %c\n", key);
 
     //////////////////////////
     // BACKWARD EDITING
@@ -192,7 +192,7 @@ void Editor::keyboard(char key)
         else
         {
             // Load previous contents from the file if at the beginning of the buffer
-            app_log("Backspace reached the beginning of the buffer\n");
+            _log("Backspace reached the beginning of the buffer\n");
 
             //
             saveFile();
@@ -226,7 +226,7 @@ void Editor::keyboard(char key)
         else
         {
             // Load previous contents from the file if at the beginning of the buffer
-            app_log("Delete word reached the beginning of the buffer\n");
+            _log("Delete word reached the beginning of the buffer\n");
 
             //
             saveFile();
@@ -343,7 +343,7 @@ void Editor::keyboard(char key)
                 // if last line then move to the end of the buffer
                 fileBuffer.cursorPos = fileBuffer.getBufferSize();
 
-                debug_log("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
+                _debug("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
                           fileBuffer.cursorPos);
             }
         }
@@ -410,7 +410,7 @@ void Editor::keyboard(char key)
         // add to the edit buffer new character
         if (!fileBuffer.available())
         {
-            app_log("Text buffer full\n");
+            _log("Text buffer full\n");
 
             //
             saveFile();

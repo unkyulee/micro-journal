@@ -20,10 +20,10 @@ String FileBuffer::getFileName()
 void FileBuffer::load(String fileName)
 {
     // app status
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     //
-    if (fileName.isEmpty())
+    if (fileName.length() == 0)
     {
         //
         app["error"] = "Load file failed. File name is empty.";
@@ -36,9 +36,9 @@ void FileBuffer::load(String fileName)
     this->fileName = fileName;
 
     // Check if the file exists, create if not
-    if (!app_fs()->exists(fileName.c_str()))
+    if (!gfs()->exists(fileName.c_str()))
     {
-        File file = app_fs()->open(fileName.c_str(), "w");
+        File file = gfs()->open(fileName.c_str(), "w");
         if (!file)
         {
             //
@@ -58,23 +58,23 @@ void FileBuffer::load(String fileName)
     }
 
     // open the text file
-    app_log("Loading file %s\n", fileName);
-    File file = app_fs()->open(fileName.c_str(), "r");
+    _log("Loading file %s\n", fileName.c_str());
+    File file = gfs()->open(fileName.c_str(), "r");
     if (!file)
     {
         //
-        app["error"] = format("file open failed %s\n", fileName);
+        app["error"] = format("file open failed %s\n", fileName.c_str());
         app["screen"] = ERRORSCREEN;
 
         //
-        app_log(app["error"]);
+        _log(app["error"]);
 
         return;
     }
 
     // Determine file size and set buffer accordingly
     fileSize = file.size();
-    app_log("File: %s of size: %d\n", fileName, fileSize);
+    _log("File: %s of size: %d\n", fileName.c_str(), fileSize);
 
     // calcualte the file offset
     seekPos = 0;
@@ -106,7 +106,7 @@ void FileBuffer::load(String fileName)
         //
         app["error"] = format("Failed to seek file pointer. fileSize: %d seekPos: %d\n", fileSize, seekPos);
         app["screen"] = ERRORSCREEN;
-        app_log(app["error"].as<const char *>());
+        _log(app["error"].as<const char *>());
 
         return;
     }
@@ -128,23 +128,23 @@ void FileBuffer::load(String fileName)
     delay(100);
 
     // log
-    debug_log("FileBuffer::load::Read size: %d, seek: %d, buffer: %d, cursor: %d\n", fileSize, seekPos, bufferSize, cursorPos);
+    _debug("FileBuffer::load::Read size: %d, seek: %d, buffer: %d, cursor: %d\n", fileSize, seekPos, bufferSize, cursorPos);
 }
 
 void FileBuffer::save()
 {
     // app status
-    JsonDocument &app = app_status();
+    JsonDocument &app = status();
 
     //
-    app_log("Saving file %s\n", fileName);
-    File file = app_fs()->open(fileName.c_str(), "w");
+    _log("Saving file %s\n", fileName);
+    File file = gfs()->open(fileName.c_str(), "w");
     if (!file)
     {
         //
         app["error"] = "Failed to open file for writing\n";
         app["screen"] = ERRORSCREEN;
-        app_log(app["error"].as<const char *>());
+        _log(app["error"].as<const char *>());
 
         return;
     }
@@ -152,25 +152,25 @@ void FileBuffer::save()
     // Seek to the last loaded offset
     if (!file.seek(seekPos))
     {
-        app_log("Failed to seek file pointer\n");
+        _log("Failed to seek file pointer\n");
         file.close();
         delay(100);
 
         return;
     }
-    app_log("Writing file at: %d\n", seekPos);
+    _log("Writing file at: %d\n", seekPos);
 
     // writing the file content
     size_t length = file.print(buffer);
     if (length >= 0)
     {
-        app_log("File written: %d bytes\n", length);
+        _log("File written: %d bytes\n", length);
     }
     else
     {
         app["error"] = "Save failed\n";
         app["screen"] = ERRORSCREEN;
-        app_log(app["error"].as<const char *>());
+        _log(app["error"].as<const char *>());
     }
 
     //
@@ -179,7 +179,7 @@ void FileBuffer::save()
 
     // recalculate the file size
     // calculate the file size
-    file = app_fs()->open(fileName.c_str(), "r");
+    file = gfs()->open(fileName.c_str(), "r");
     if (!file)
     {
         //
@@ -187,7 +187,7 @@ void FileBuffer::save()
         app["screen"] = ERRORSCREEN;
 
         //
-        app_log(app["error"]);
+        _log(app["error"]);
         
         //
         return;
@@ -235,7 +235,7 @@ void FileBuffer::addChar(char c)
         buffer[cursorPos++] = c;
         buffer[++bufferSize] = '\0';
 
-        debug_log("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
+        _debug("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
     }
 }
 
@@ -254,7 +254,7 @@ void FileBuffer::removeLastChar()
         --cursorPos;
 
         //
-        debug_log("FileBuffer::removeLastChar %d\n", cursorPos);
+        _debug("FileBuffer::removeLastChar %d\n", cursorPos);
 
         // Null terminate the buffer
         buffer[bufferSize] = '\0';
@@ -312,7 +312,7 @@ void FileBuffer::removeLastWord()
     cursorPos = bufferSize;
 
     //
-    debug_log("FileBuffer::removeLastWord %d\n", cursorPos);
+    _debug("FileBuffer::removeLastWord %d\n", cursorPos);
 }
 
 //
