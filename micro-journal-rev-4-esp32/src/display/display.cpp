@@ -3,17 +3,17 @@
 
 // ILI9341 DISPLAY 
 #ifdef ILI9341_DRIVER
-#include "ILI9341/display_ILI9341.h"
+#include "service/DisplayDriver/ILI9341/display_ILI9341.h"
 #endif
 
 // EPD DISPLAY
 #ifdef LILYGO_T5_EPD47_S3
-#include "EPD/display_EPD.h"
+#include "service/DisplayDriver/EPD/display_EPD.h"
 #endif
 
 // Lilygo 0.96 LCD Display
 #ifdef ST7735_DRIVER
-#include "ST7735/display_ST7735.h"
+#include "service/DisplayDriver/ST7735/display_ST7735.h"
 #endif
 
 //
@@ -37,6 +37,7 @@ void display_setup()
   // Identifying which screen to show  
   JsonDocument &app = app_status();
   int screen = app["screen"].as<int>();
+  app["screen_prev"] = -1;
 
   //
   app_log("Display initializing with screen %d\n", screen);
@@ -52,14 +53,12 @@ void display_setup()
     if (disabled)
     {
       // show the word processor immediately when wakeup is disabled
-      app["screen"] = WORDPROCESSOR;
-      app["screen_prev"] = -1;
+      app["screen"] = WORDPROCESSOR;      
     }
     else
     {
       // show wakeup screen
       app["screen"] = WAKEUPSCREEN;
-      app["screen_prev"] = -1;
     }
   }
 

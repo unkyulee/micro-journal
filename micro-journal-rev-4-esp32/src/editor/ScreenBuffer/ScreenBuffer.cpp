@@ -15,8 +15,8 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
         total_line = 0;
         line_position[0] = buffer;
         line_length[0] = 0;
-        fileBuffer.cursorLine = 0;
-        fileBuffer.cursorLinePos = 0;
+        cursorLine = 0;
+        cursorLinePos = 0;
         return;
     }
 
@@ -133,8 +133,8 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
     char *pCursorPos = &fileBuffer.buffer[fileBuffer.cursorPos];
 
     //
-    fileBuffer.cursorLine = 0;
-    fileBuffer.cursorLinePos = line_length[0];
+    cursorLine = 0;
+    cursorLinePos = line_length[0];
 
     // caculate the which line cursor is located and the line position
     for (int i = total_line; i >= 0; i--)
@@ -143,9 +143,9 @@ void ScreenBuffer::Update(FileBuffer &fileBuffer)
         if (pCursorPos >= line_position[i])
         {
             // found the line index
-            fileBuffer.cursorLine = i;
+            cursorLine = i;
             // calculate the cursor position within the line
-            fileBuffer.cursorLinePos = pCursorPos - line_position[i];
+            cursorLinePos = pCursorPos - line_position[i];
             break;
         }
     }

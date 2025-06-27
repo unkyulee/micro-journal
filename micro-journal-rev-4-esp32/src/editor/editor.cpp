@@ -2,54 +2,58 @@
 #include "app/app.h"
 #include "display/display.h"
 
-//
-#include <FS.h>
-#include <SD.h>
+// EDITOR CLASS IMPLEMENTATION
+// File Buffer will handle the file handling situation
+// Screen Buffer will handle the position of the cursors and text lines
+
+// Editor Initialization with column and row setup
+void Editor::init(int cols, int rows)
+{
+    // If you have a screenBuffer or similar, initialize it as well
+    screenBuffer.cols = cols;
+    screenBuffer.rows = rows;
+
+    // You can add any additional setup logic here
+    app_log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
+}
 
 // Given the fileName, go through the loading process
 // initialize FileBuffer and ScreenBuffer
 void Editor::loadFile(String fileName)
 {
-    // do not load file while there are on-going process
-    if (locked)
-        return;
-
-    // lock
-    locked = true;
-
     // app status
     JsonDocument &app = app_status();
 
-    //
-    app_log("Editor loading file %s\n", fileName.c_str());
-
     // if no current file is specified then skip
-    if (fileName.isEmpty())
+    if (fileName.length() == 0)
     {
-        app["error"] = format("Filename is empty. Can't load.\n");
-        app_log(app["error"].as<const char *>());
+        //
+        app["error"] = "Filename is empty. Can't load.\n";
         app["screen"] = ERRORSCREEN;
 
-        // unlock
-        locked = false;
+        //
+        app_log(app["error"]);
 
         return;
     }
 
+    //
+    app_log("Editor loading file %s\n", fileName);
+
     // Step 1. Create file if necessary
-    if (!SD.exists(fileName))
+    if (!app_fs()->exists(fileName.c_str()))
     {
         app_log("Creating an empty file since it's new\n");
-        File file = SD.open(fileName, FILE_WRITE);
+        File file = app_fs()->open(fileName.c_str(), "w");
         if (!file)
         {
+            //
             app["error"] = format("Failed to create a file. %s\n", fileName);
-            app_log(app["error"].as<const char *>());
             app["screen"] = ERRORSCREEN;
 
-            // unlock
-            locked = false;
-
+            //
+            app_log(app["error"].as<const char *>());
+            
             return;
         }
 
@@ -64,11 +68,8 @@ void Editor::loadFile(String fileName)
     // Step 2. Initialize the FileBuffer
     fileBuffer.load(fileName);
 
-    // Update the Screen Buffer
+    // Step 3. Update the Screen Buffer
     screenBuffer.Update(fileBuffer);
-
-    // unlock
-    locked = false;
 }
 
 //
@@ -78,12 +79,15 @@ void Editor::saveFile()
     JsonDocument &app = app_status();
 
     // if no current file is specified then skip
-    if (fileBuffer.getFileName().isEmpty())
+    if (fileBuffer.getFileName().length() == 0)
     {
-        app["error"] = format("Filename is empty. Can't save.\n");
-        app_log(app["error"].as<const char *>());
+        //
+        app["error"] = "Filename is empty. Can't save.\n";
         app["screen"] = ERRORSCREEN;
 
+        //
+        app_log(app["error"]);
+        
         return;
     }
 
@@ -108,27 +112,30 @@ void Editor::clearFile()
     JsonDocument &app = app_status();
 
     // if no current file is specified then skip
-    String fileName = fileBuffer.getFileName();
-    if (fileName.isEmpty())
+    if (fileBuffer.getFileName().length() == 0)
     {
-        app["error"] = format("Filename is empty. Can't clear.\n");
-        app_log(app["error"].as<const char *>());
+        //
+        app["error"] = "Filename is empty. Can't clear.\n";
         app["screen"] = ERRORSCREEN;
 
+        //
+        app_log(app["error"]);
+        
         return;
     }
 
     // Step 1. Check if the backup file exists
     // remove it if already exists
     String backupFileName = format("/%s_backup.txt", fileBuffer.getFileName());
-    if (SD.exists(backupFileName))
+
+    if (app_fs()->exists(backupFileName.c_str()))
     {
         // remove the backup file
-        SD.remove(backupFileName);
+        app_fs()->remove(backupFileName.c_str());
     }
 
     // Step 2. Rename the current file to the backup.txt
-    if (SD.rename(fileBuffer.getFileName(), backupFileName))
+    if (app_fs()->rename(fileBuffer.getFileName().c_str(), backupFileName.c_str()))
     {
         app_log("File renamed successfully: %s.\n", backupFileName);
     }
@@ -142,13 +149,16 @@ void Editor::clearFile()
     }
 
     // Step 3. Empty the current file by opening it with FILE_WRITE
-    File file = SD.open(fileName, FILE_WRITE);
+    File file = app_fs()->open(fileBuffer.getFileName().c_str(), "w");
     if (!file)
     {
-        app["error"] = format("Failed to create an empty file %s\n", fileName);
-        app_log(app["error"].as<const char *>());
+        //
+        app["error"] = format("Failed to create an empty file %s\n", fileBuffer.getFileName());
         app["screen"] = ERRORSCREEN;
 
+        //
+        app_log(app["error"]);
+        
         return;
     }
 
@@ -157,8 +167,9 @@ void Editor::clearFile()
     delay(100);
 
     // Step 4. Go through the loading process of the empty file
-    loadFile(fileName);
+    loadFile(fileBuffer.getFileName());
 }
+
 
 // Handle Keyboard Input
 void Editor::keyboard(char key)
@@ -257,21 +268,21 @@ void Editor::keyboard(char key)
         else if (key == 20)
         {
             // move the cursorPos to the start of the previous line
-            if (fileBuffer.cursorLine > 0)
+            if (screenBuffer.cursorLine > 0)
             {
                 // look at the previous line and move to the start of the cursor
                 int newCursorPos =
-                    screenBuffer.line_position[fileBuffer.cursorLine - 1] - screenBuffer.line_position[0];
+                    screenBuffer.line_position[screenBuffer.cursorLine - 1] - screenBuffer.line_position[0];
 
                 // cusor position in the line
-                int cursorLinePos = fileBuffer.cursorLinePos;
+                int cursorLinePos = screenBuffer.cursorLinePos;
 
                 // if previous line length is shorter than cursorLinePos
-                int previousLineLength = screenBuffer.line_length[fileBuffer.cursorLine - 1];
+                int previousLineLength = screenBuffer.line_length[screenBuffer.cursorLine - 1];
                 if (previousLineLength < cursorLinePos)
                 {
                     // then move to the end of the previous line
-                    newCursorPos += previousLineLength-1;
+                    newCursorPos += previousLineLength - 1;
                 }
                 else
                 {
@@ -292,27 +303,27 @@ void Editor::keyboard(char key)
         else if (key == 21)
         {
             // move the cursorPos to the start of the next line
-            if (fileBuffer.cursorLine < screenBuffer.total_line)
+            if (screenBuffer.cursorLine < screenBuffer.total_line)
             {
                 //
                 int newCursorPos =
-                    screenBuffer.line_position[fileBuffer.cursorLine + 1] - screenBuffer.line_position[0];
+                    screenBuffer.line_position[screenBuffer.cursorLine + 1] - screenBuffer.line_position[0];
 
                 // cusor position in the line
-                int cursorLinePos = fileBuffer.cursorLinePos;
+                int cursorLinePos = screenBuffer.cursorLinePos;
 
                 // next line length
-                int nextLineLength = max(screenBuffer.line_length[fileBuffer.cursorLine + 1], 1);
+                int nextLineLength = max(screenBuffer.line_length[screenBuffer.cursorLine + 1], 1);
 
-                // if next line has shorter length of the current cursor pos 
+                // if next line has shorter length of the current cursor pos
                 // then move to the end of the next line
                 if (cursorLinePos > nextLineLength)
                 {
-                    newCursorPos += nextLineLength -1;
+                    newCursorPos += nextLineLength - 1;
                 }
                 else
                 {
-                    // 
+                    //
                     newCursorPos += cursorLinePos;
                 }
 
@@ -322,11 +333,11 @@ void Editor::keyboard(char key)
 
                 //
                 fileBuffer.cursorPos = newCursorPos;
-                fileBuffer.cursorLine += 1;
+                screenBuffer.cursorLine += 1;
             }
 
             // when trying to go down at the last line, move the cursor to the end
-            else if (fileBuffer.cursorLine == screenBuffer.total_line)
+            else if (screenBuffer.cursorLine == screenBuffer.total_line)
             {
 
                 // if last line then move to the end of the buffer
@@ -342,7 +353,7 @@ void Editor::keyboard(char key)
         {
             // home - move to the start of the line
             int newCursorPos =
-                screenBuffer.line_position[fileBuffer.cursorLine] - screenBuffer.line_position[0];
+                screenBuffer.line_position[screenBuffer.cursorLine] - screenBuffer.line_position[0];
             //
             fileBuffer.cursorPos = newCursorPos;
         }
@@ -351,12 +362,12 @@ void Editor::keyboard(char key)
         else if (key == 3)
         {
             // end - move to the end of the line
-            int line_length = max(screenBuffer.line_length[fileBuffer.cursorLine], 1);
+            int line_length = max(screenBuffer.line_length[screenBuffer.cursorLine], 1);
             int newCursorPos =
-                screenBuffer.line_position[fileBuffer.cursorLine] - screenBuffer.line_position[0] + line_length - 1;
+                screenBuffer.line_position[screenBuffer.cursorLine] - screenBuffer.line_position[0] + line_length - 1;
 
             // if last line then move to the end of the buffer
-            if (fileBuffer.cursorLine == screenBuffer.total_line)
+            if (screenBuffer.cursorLine == screenBuffer.total_line)
                 newCursorPos = fileBuffer.getBufferSize();
 
             //
@@ -366,7 +377,7 @@ void Editor::keyboard(char key)
         // PAGE UP
         else if (key == 22)
         {
-            int newCursorLine = max(fileBuffer.cursorLine - screenBuffer.rows, 0);
+            int newCursorLine = max(screenBuffer.cursorLine - screenBuffer.rows, 0);
             int newCursorPos =
                 screenBuffer.line_position[newCursorLine] - screenBuffer.line_position[0];
 
@@ -377,13 +388,13 @@ void Editor::keyboard(char key)
         // PAGE DOWN
         else if (key == 23)
         {
-            int newCursorLine = min(fileBuffer.cursorLine + screenBuffer.rows, screenBuffer.total_line);
+            int newCursorLine = min(screenBuffer.cursorLine + screenBuffer.rows, screenBuffer.total_line);
             int line_length = max(screenBuffer.line_length[newCursorLine], 1);
             int newCursorPos =
                 screenBuffer.line_position[newCursorLine] - screenBuffer.line_position[0] + line_length - 1;
 
             // if last line then move to the end of the buffer
-            if (fileBuffer.cursorLine == screenBuffer.total_line)
+            if (screenBuffer.cursorLine == screenBuffer.total_line)
                 newCursorPos = fileBuffer.getBufferSize();
 
             //

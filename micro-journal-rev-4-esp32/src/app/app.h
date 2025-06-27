@@ -5,7 +5,7 @@
 #define VERSION "1.0.19.dev"
 
 #include <ArduinoJson.h>
-#include "service/FileSystem/FileSystem.h"
+#include "filesystem/FileSystem.h"
 
 #ifdef BOARD_PICO
 #include "service/FileSystem/FSLittleFS/FSLittleFS.h"

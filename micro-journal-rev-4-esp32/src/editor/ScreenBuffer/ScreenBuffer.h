@@ -1,4 +1,4 @@
-#include "service/editor/editor.h"
+#include "editor/editor.h"
 
 #ifndef ScreenBuffer_h
 #define ScreenBuffer_h
@@ -12,6 +12,11 @@ public:
     //
     int rows = 10;
     int cols = 26;
+    
+
+    //
+    int cursorLine = 0;
+    int cursorLinePos = 0;
 
     //
     char *line_position[SCREEN_BUFFER_SIZE + 2];

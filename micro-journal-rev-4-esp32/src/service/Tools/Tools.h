@@ -5,5 +5,6 @@
 
 String formatNumber(int num);
 size_t fileSize(String fileName);
+String asciiToUnicode(uint8_t value);
 
 #endif

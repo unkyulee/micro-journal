@@ -1,10 +1,8 @@
 #include "FileBuffer.h"
 #include "app/app.h"
-#include "display/display.h"
 
-//
-#include <FS.h>
-#include <SD.h>
+// to identify the screen
+#include "display/display.h"
 
 //
 int FileBuffer::getSeekPos()
@@ -38,9 +36,9 @@ void FileBuffer::load(String fileName)
     this->fileName = fileName;
 
     // Check if the file exists, create if not
-    if (!SD.exists(fileName))
+    if (!app_fs()->exists(fileName.c_str()))
     {
-        File file = SD.open(fileName, FILE_WRITE);
+        File file = app_fs()->open(fileName.c_str(), "w");
         if (!file)
         {
             //
@@ -61,13 +59,15 @@ void FileBuffer::load(String fileName)
 
     // open the text file
     app_log("Loading file %s\n", fileName);
-    File file = SD.open(fileName);
+    File file = app_fs()->open(fileName.c_str(), "r");
     if (!file)
     {
         //
         app["error"] = format("file open failed %s\n", fileName);
         app["screen"] = ERRORSCREEN;
-        app_log(app["error"].as<const char *>());
+
+        //
+        app_log(app["error"]);
 
         return;
     }
@@ -138,7 +138,7 @@ void FileBuffer::save()
 
     //
     app_log("Saving file %s\n", fileName);
-    File file = SD.open(fileName, FILE_WRITE);
+    File file = app_fs()->open(fileName.c_str(), "w");
     if (!file)
     {
         //
@@ -179,19 +179,24 @@ void FileBuffer::save()
 
     // recalculate the file size
     // calculate the file size
-    file = SD.open(fileName, FILE_READ);
+    file = app_fs()->open(fileName.c_str(), "r");
     if (!file)
     {
+        //
         app["error"] = "Failed to open file for reading\n";
-        app_log(app["error"].as<const char *>());
         app["screen"] = ERRORSCREEN;
 
+        //
+        app_log(app["error"]);
+        
         //
         return;
     }
 
     //
     fileSize = file.size();
+
+    //
     file.close();
     delay(100);
 }

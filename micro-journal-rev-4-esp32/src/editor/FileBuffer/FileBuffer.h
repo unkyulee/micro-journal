@@ -18,8 +18,6 @@ public:
         fileSize = 0;
         seekPos = 0;
         cursorPos = 0;
-        cursorLine = 0;
-        cursorLinePos = 0;
     }
 
     //
@@ -42,8 +40,7 @@ public:
     size_t seekPos;
     //
     int cursorPos;
-    int cursorLine;
-    int cursorLinePos;
+
 
     //
     void reset();
