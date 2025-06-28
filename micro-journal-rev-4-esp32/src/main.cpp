@@ -7,7 +7,7 @@
 #include "display/display.h"
 
 // keyboard
-// #include "keyboard/keyboard.h"
+#include "keyboard/keyboard.h"
 
 
 /*----------------------------------------------
@@ -18,7 +18,7 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
-    delay(4000);
+    delay(1000);
 
     // initialize app
     app_setup();
@@ -27,7 +27,7 @@ void setup()
     display_setup();
 
     //
-    // keyboard_setup();
+    keyboard_setup();
 }
 
 //
@@ -37,7 +37,7 @@ void loop()
     display_loop();
 
     //
-    // keyboard_loop();    
+    keyboard_loop();    
 
     // try to yield to avoid infinite loop
     yield();

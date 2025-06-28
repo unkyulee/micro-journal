@@ -30,6 +30,6 @@ void display_setup();
 void display_loop();
 
 //
-void display_keyboard(char key);
+void display_keyboard(int key);
 
 #endif

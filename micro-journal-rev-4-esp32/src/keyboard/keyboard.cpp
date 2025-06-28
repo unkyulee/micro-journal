@@ -1,8 +1,9 @@
 #include "keyboard.h"
 #include "app/app.h"
+#include "display/display.h"
 
 #ifdef KEYPAD_68
-#include "service/InputMethod/Keypad_68/keypad_68.h"
+#include "keyboard/InputMethod/Keypad_68/keypad_68.h"
 #endif
 
 //
@@ -21,6 +22,22 @@ void keyboard_loop()
 #endif
 }
 
+// Receive the key press from the input method
+void keyboard_receive(int key, bool pressed) 
+{
+  
+  // send the key press to the display
+  if (pressed)
+  {
+    _debug("[keyboard_receive] Key pressed: %d\n", key);
+    display_keyboard(key);
+  }
+  else
+  {
+    _debug("[keyboard_receive] Key released: %d\n", key);
+    // handle key release if needed
+  }
+}
 
 
 /*

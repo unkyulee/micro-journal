@@ -27,7 +27,7 @@ void WP_render_line(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f, int line_num);
 void WP_render_cursor(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 
 // 
-void WP_keyboard(char key);
+void WP_keyboard(int key);
 
 //
 String formatNumberWithCommas(long num);

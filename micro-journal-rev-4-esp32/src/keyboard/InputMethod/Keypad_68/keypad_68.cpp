@@ -116,14 +116,35 @@ void keyboard_keypad_68_loop()
         {
             //
             keypadEvent e = customKeypad.read();
-            _log("Key: %d, Event: %d, Row: %d, Col: %d\n",
-                    e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL);
+            _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d\n",
+                 e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL);
+
+            // check if the key is pressed
+            int character = keyboard_keypad_68_get_key(e);
+            _debug("[keyboard_keypad_68_get_key] Character: '%c' [%d]\n", character, character);
+
+            // send over the key to the keyboard handler
+            keyboard_receive(character, e.bit.EVENT == KEY_JUST_PRESSED);
         }
     }
 }
 
+// Translate the key press into a key code
 int keyboard_keypad_68_get_key(keypadEvent e)
 {
+    // define the layer
+    layer = 0;
+
+    // check if the layer key is pressed
+    if (_fn_pressed)
+        layer = 2;
+    // check if the shift key is pressed
+    if (_shift_pressed)
+        layer += 1;
+
+    // return the corresponding key
+    return layers[layer][e.bit.KEY];
+
     /*
     // release back space when any other keys are pressed
     if (keyboard_backspace_pressed())
@@ -179,22 +200,7 @@ int keyboard_keypad_68_get_key(keypadEvent e)
         }
     }
 
-    // step 2. process the key
-    if (e.bit.EVENT == KEY_JUST_PRESSED)
-    {
-        // define the layer
-        layer = 0;
 
-        // check if the layer key is pressed
-        if (_fn_pressed)
-            layer = 2;
-        // check if the shift key is pressed
-        if (_shift_pressed)
-            layer += 1;
-
-        // return the corresponding key
-        return layers[layer][e.bit.KEY];
-    }
 
     */
 

@@ -79,8 +79,10 @@ void display_loop()
 #endif
 }
 
-void display_keyboard(char key)
+void display_keyboard(int key)
 {
+  _debug("[display_keyboard] Key: %c [%d]\n", key, key);
+
 #ifdef ILI9341_DRIVER
   display_ILI9341_keyboard(key);
 #endif

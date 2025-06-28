@@ -70,6 +70,10 @@ void display_ST7735_loop()
     // Word Processor
     else if (screen == WAKEUPSCREEN || screen == WORDPROCESSOR)
     {
+      // TBD: to be deleted: skip wakeupscreen
+      screen = WORDPROCESSOR;
+      app["screen"] = WORDPROCESSOR;
+
       // setup only once
       if (screen != screen_prev)
         WP_setup(&tft, &u8f);
@@ -80,11 +84,25 @@ void display_ST7735_loop()
 
     //
     app["screen_prev"] = screen;
-        
   }
 }
 
 // Redirect the key press to the current GUI
-void display_ST7735_keyboard(char key)
+void display_ST7735_keyboard(int key)
 {
+  //
+  JsonDocument &app = status();
+  int screen = app["screen"].as<int>();
+
+  _debug("[display_ST7735_keyboard] Key: %c [%d] Screen: %d\n", key, key, screen);
+
+  if (screen == ERRORSCREEN)
+  {
+    ErrorScreen_keyboard(key);
+  }
+  else if (screen == WORDPROCESSOR)
+  {
+    // send the key stroke to word processor
+    WP_keyboard(key);
+  }
 }

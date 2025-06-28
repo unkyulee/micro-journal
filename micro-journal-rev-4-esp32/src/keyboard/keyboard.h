@@ -14,6 +14,10 @@
 void keyboard_setup();
 void keyboard_loop();
 
+void keyboard_receive(int key, bool pressed);
+
+
+/*
 // Tracking backspace
 int keyboard_backspace_last();
 void keyboard_backspace_last_set(int last);
@@ -28,5 +32,7 @@ void keyboard_capslock_toggle();
 // numlock
 bool keyboard_numlock();
 void keyboard_numlock_toggle();
+*/
+
 
 #endif
