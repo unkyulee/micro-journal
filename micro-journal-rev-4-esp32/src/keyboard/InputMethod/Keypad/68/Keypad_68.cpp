@@ -4,7 +4,7 @@
 #include "app/app.h"
 
 //
-#include "keyboard/keyboard.h"
+#include "display/display.h"
 
 //
 #define LAYERS 4 // layers
@@ -131,8 +131,8 @@ void keyboard_keypad_68_loop()
             int character = keyboard_keypad_68_get_key(e);
             _debug("[keyboard_keypad_68_get_key] Character: '%c' [%d]\n", character, character);
 
-            // send over the key to the keyboard handler
-            keyboard_receive(character, e.bit.EVENT == KEY_JUST_PRESSED);
+            // send over the key to the display
+            display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED);         
         }
     }
 }
@@ -152,66 +152,4 @@ int keyboard_keypad_68_get_key(keypadEvent e)
 
     // return the corresponding key
     return layers[layer][e.bit.KEY];
-
-    /*
-    // release back space when any other keys are pressed
-    if (keyboard_backspace_pressed())
-    {
-        keyboard_backspace_pressed_set(false);
-    }
-
-    //
-    // step 1. layer or speical key processing
-    //
-    int key = layers[layer][e.bit.KEY];
-    if (key == 17)
-    {
-        if (e.bit.EVENT == KEY_JUST_PRESSED)
-        {
-            _fn_pressed = true;
-            return 0;
-        }
-        else
-        {
-            _fn_pressed = false;
-            return 0;
-        }
-    }
-    else if (key == 14)
-    {
-        if (e.bit.EVENT == KEY_JUST_PRESSED)
-        {
-            _shift_pressed = true;
-            return 0;
-        }
-
-        else if (e.bit.EVENT == KEY_JUST_RELEASED)
-        {
-            _shift_pressed = false;
-            return 0;
-        }
-    }
-    // mark back space press
-    else if (key == '\b')
-    {
-        if (e.bit.EVENT == KEY_JUST_PRESSED)
-        {
-            keyboard_backspace_last_set(millis() + 500);
-            keyboard_backspace_pressed_set(true);
-        }
-
-        else if (e.bit.EVENT == KEY_JUST_RELEASED)
-        {
-            // register the timer
-            keyboard_backspace_last_set(millis());
-            keyboard_backspace_pressed_set(false);
-        }
-    }
-
-
-
-    */
-
-    // Serial.printf("KEY: %d EVENT: %d\n", e.bit.KEY, e.bit.EVENT);
-    return 0;
 }

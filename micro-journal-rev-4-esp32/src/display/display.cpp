@@ -79,9 +79,31 @@ void display_loop()
 #endif
 }
 
-void display_keyboard(int key)
+
+//
+
+/*
+// Tracking backspace
+int keyboard_backspace_last();
+void keyboard_backspace_last_set(int last);
+
+bool keyboard_backspace_pressed();
+void keyboard_backspace_pressed_set(bool pressed);
+
+// capslock
+bool keyboard_capslock();
+void keyboard_capslock_toggle();
+
+// numlock
+bool keyboard_numlock();
+void keyboard_numlock_toggle();
+*/
+
+
+//
+void display_keyboard(int key, bool pressed)
 {
-  _debug("[display_keyboard] Key: %c [%d]\n", key, key);
+  _debug("[display_keyboard] Key: %c [%d] pressed: %d\n", key, key, pressed);
 
 #ifdef ILI9341_DRIVER
   display_ILI9341_keyboard(key);
@@ -92,6 +114,6 @@ void display_keyboard(int key)
 #endif
 
 #ifdef ST7735_DRIVER
-  display_ST7735_keyboard(key);
+  display_ST7735_keyboard(key, pressed);
 #endif
 }

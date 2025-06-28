@@ -30,6 +30,7 @@
     "format": "cpp",
     "span": "cpp",
     "text_encoding": "cpp",
-    "new": "cpp"
+    "new": "cpp",
+    "memory": "cpp"
   }
 }

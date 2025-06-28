@@ -12,6 +12,6 @@ TFT_eSprite& display_ST7735_sprite();
 //
 void display_ST7735_setup();
 void display_ST7735_loop();
-void display_ST7735_keyboard(int key);
+void display_ST7735_keyboard(int key, bool pressed);
 
 #endif

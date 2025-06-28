@@ -90,7 +90,7 @@ void WP_check_saved()
 
     //
     // when idle for 4 seconds then auto save
-    if (millis() - last > 4000)
+    if (millis() - last > 3000)
     {
         //
         last = millis();

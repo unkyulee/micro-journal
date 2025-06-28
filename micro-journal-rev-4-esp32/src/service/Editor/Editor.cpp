@@ -2,16 +2,17 @@
 #include "app/app.h"
 #include "display/display.h"
 
+//
 // EDITOR CLASS IMPLEMENTATION
-// File Buffer will handle the file handling situation
-// Screen Buffer will handle the position of the cursors and text lines
+//
 
+//
 // Editor Initialization with column and row setup
 void Editor::init(int cols, int rows)
 {
-    // If you have a screenBuffer or similar, initialize it as well
-    screenBuffer.cols = cols;
-    screenBuffer.rows = rows;
+    // Define Screen Size
+    this->cols = cols;
+    this->rows = rows;
 
     // You can add any additional setup logic here
     _log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
@@ -53,7 +54,7 @@ void Editor::loadFile(String fileName)
 
             //
             _log(app["error"].as<const char *>());
-            
+
             return;
         }
 
@@ -65,11 +66,83 @@ void Editor::loadFile(String fileName)
         _log("File created. %s\n", fileName.c_str());
     }
 
-    // Step 2. Initialize the FileBuffer
-    fileBuffer.load(fileName);
+    // Save filen name
+    this->fileName = fileName;
 
-    // Step 3. Update the Screen Buffer
-    screenBuffer.Update(fileBuffer);
+    // Open File
+    File file = gfs()->open(fileName.c_str(), "r");
+    if (!file)
+    {
+        //
+        app["error"] = format("file open failed %s\n", fileName.c_str());
+        app["screen"] = ERRORSCREEN;
+
+        //
+        _log(app["error"]);
+
+        return;
+    }
+
+    // Determine file size and set buffer accordingly
+    fileSize = file.size();
+    _log("File: %s of size: %d\n", fileName.c_str(), fileSize);
+
+    // calcualte the file offset
+    seekPos = 0;
+    int stepSize = BUFFER_SIZE / 2; // use half of the buffer
+    if (fileSize > 0)
+    {
+        // this offset will offer last portion of the buffer
+        seekPos = (fileSize / stepSize) * stepSize;
+    }
+
+    // when it is exactly the buffer end
+    // go one buffer behind so that screen will show something
+    if (fileSize == seekPos && seekPos > 0)
+    {
+        if (seekPos > stepSize)
+            seekPos -= stepSize;
+        else
+            // defensive code in order for the offset not to go negative (MAX in unsigned in)
+            seekPos = 0;
+    }
+
+    // move the file position to offset
+    if (!file.seek(seekPos))
+    {
+        //
+        file.close();
+        delay(100);
+
+        //
+        app["error"] = format("Failed to seek file pointer. fileSize: %d seekPos: %d\n", fileSize, seekPos);
+        app["screen"] = ERRORSCREEN;
+        _log(app["error"].as<const char *>());
+
+        return;
+    }
+
+    // reset the buffer
+    resetBuffer();
+
+    // Read file content into text buffer    
+    int bufferSize = 0;
+    while (file.available())
+    {
+        buffer[bufferSize++] = file.read();
+    }
+    cursorPos = bufferSize;
+
+    //
+    file.close();
+    delay(100);
+
+    // log
+    _debug("Editor::loadFile size: %d, seek: %d, buffer: %d, cursor: %d\n", 
+        fileSize, seekPos, bufferSize, cursorPos);
+
+    // Update the Screen Buffer
+    updateScreen();
 }
 
 //
@@ -79,7 +152,7 @@ void Editor::saveFile()
     JsonDocument &app = status();
 
     // if no current file is specified then skip
-    if (fileBuffer.getFileName().length() == 0)
+    if (fileName.length() == 0)
     {
         //
         app["error"] = "Filename is empty. Can't save.\n";
@@ -87,19 +160,82 @@ void Editor::saveFile()
 
         //
         _log(app["error"]);
-        
+
         return;
     }
 
     // if already save nothing to do
     if (this->saved)
     {
-        _log("File already saved\n");
+        _log("File already saved. No operation required.\n");
         return;
     }
 
     //
-    fileBuffer.save();
+    _log("Saving file %s\n", fileName);
+    File file = gfs()->open(fileName.c_str(), "w");
+    if (!file)
+    {
+        //
+        app["error"] = "Failed to open file for writing\n";
+        app["screen"] = ERRORSCREEN;
+
+        //
+        _log(app["error"]);
+
+        return;
+    }
+
+    // Seek to the last loaded offset
+    if (!file.seek(seekPos))
+    {
+        _log("Failed to seek file pointer\n");
+        file.close();
+        delay(100);
+
+        return;
+    }
+    _log("Writing file at: %d\n", seekPos);
+
+    // writing the file content
+    size_t length = file.print(buffer);
+    if (length >= 0)
+    {
+        _log("File written: %d bytes\n", length);
+    }
+    else
+    {
+        app["error"] = "Save failed\n";
+        app["screen"] = ERRORSCREEN;
+        _log(app["error"].as<const char *>());
+    }
+
+    //
+    file.close();
+    delay(100);
+
+    // recalculate the file size
+    // calculate the file size
+    file = gfs()->open(fileName.c_str(), "r");
+    if (!file)
+    {
+        //
+        app["error"] = "Failed to open file for reading\n";
+        app["screen"] = ERRORSCREEN;
+
+        //
+        _log(app["error"]);
+
+        //
+        return;
+    }
+
+    //
+    fileSize = file.size();
+
+    //
+    file.close();
+    delay(100);
 
     // flag to save
     this->saved = true;
@@ -112,7 +248,7 @@ void Editor::clearFile()
     JsonDocument &app = status();
 
     // if no current file is specified then skip
-    if (fileBuffer.getFileName().length() == 0)
+    if (fileName.length() == 0)
     {
         //
         app["error"] = "Filename is empty. Can't clear.\n";
@@ -120,14 +256,14 @@ void Editor::clearFile()
 
         //
         _log(app["error"]);
-        
+
         return;
     }
 
     // Step 1. Check if the backup file exists
     // remove it if already exists
-    String backupFileName = format("/%s_backup.txt", fileBuffer.getFileName());
-
+    String backupFileName = format("/%s_backup.txt", fileName.c_str());
+    _debug("backupFilename: %s\n", backupFileName);
     if (gfs()->exists(backupFileName.c_str()))
     {
         // remove the backup file
@@ -135,30 +271,33 @@ void Editor::clearFile()
     }
 
     // Step 2. Rename the current file to the backup.txt
-    if (gfs()->rename(fileBuffer.getFileName().c_str(), backupFileName.c_str()))
+    if (gfs()->rename(fileName.c_str(), backupFileName.c_str()))
     {
-        _log("File renamed successfully: %s.\n", backupFileName);
+        _log("File renamed successfully: %s -> %s.\n", fileName.c_str(), backupFileName.c_str());
     }
     else
     {
+        //
         app["error"] = format("Error making a backup file. %s\n", backupFileName);
-        _log(app["error"].as<const char *>());
-        app["screen"] = ERRORSCREEN;
+        app["screen"] = ERRORSCREEN;    
+
+        //
+        _log(app["error"]);        
 
         return;
     }
 
     // Step 3. Empty the current file by opening it with FILE_WRITE
-    File file = gfs()->open(fileBuffer.getFileName().c_str(), "w");
+    File file = gfs()->open(fileName.c_str(), "w");
     if (!file)
     {
         //
-        app["error"] = format("Failed to create an empty file %s\n", fileBuffer.getFileName());
+        app["error"] = format("Failed to create an empty file %s\n", fileName.c_str());
         app["screen"] = ERRORSCREEN;
 
         //
         _log(app["error"]);
-        
+
         return;
     }
 
@@ -166,10 +305,9 @@ void Editor::clearFile()
     file.close();
     delay(100);
 
-    // Step 4. Go through the loading process of the empty file
-    loadFile(fileBuffer.getFileName());
+    // Go through the loading process of the empty file
+    loadFile(fileName);
 }
-
 
 // Handle Keyboard Input
 void Editor::keyboard(char key)
@@ -182,9 +320,9 @@ void Editor::keyboard(char key)
     if (key == '\b')
     {
         // buffer has more than 1 character
-        if (fileBuffer.getBufferSize() > 0)
+        if (getBufferSize() > 0)
         {
-            fileBuffer.removeLastChar();
+            removeLastChar();
             // set saved flag to false
             this->saved = false;
         }
@@ -193,30 +331,24 @@ void Editor::keyboard(char key)
         {
             // Load previous contents from the file if at the beginning of the buffer
             _log("Backspace reached the beginning of the buffer\n");
-
-            //
-            saveFile();
-
-            //
-            loadFile(fileBuffer.fileName);
         }
     }
 
     // DEL key deletes the word
     else if (key == 127)
     {
-        if (fileBuffer.getBufferSize() > 0)
+        if (getBufferSize() > 0)
         {
             // if editing at the end of the line then remove word
-            if (fileBuffer.cursorPos == fileBuffer.bufferSize)
+            if (cursorPos == getBufferSize())
             {
-                fileBuffer.removeLastWord();
+                removeLastWord();
             }
 
             else
             {
                 // remove word in front
-                fileBuffer.removeCharAtCursor();
+                removeCharAtCursor();
             }
 
             // set saved flag to false
@@ -227,12 +359,6 @@ void Editor::keyboard(char key)
         {
             // Load previous contents from the file if at the beginning of the buffer
             _log("Delete word reached the beginning of the buffer\n");
-
-            //
-            saveFile();
-
-            //
-            loadFile(fileBuffer.fileName);
         }
     }
 
@@ -247,38 +373,35 @@ void Editor::keyboard(char key)
         // 2 - Home 3 - End
         if (key == 18)
         {
-            if (fileBuffer.cursorPos == 0)
+            if (cursorPos == 0)
             {
                 // load previous page
             }
             else
             {
                 // left
-                --fileBuffer.cursorPos;
+                --cursorPos;
             }
         }
         else if (key == 19)
         {
             // cursor can't move outside the last text
-            if (fileBuffer.cursorPos < fileBuffer.getBufferSize())
-                ++fileBuffer.cursorPos;
+            if (cursorPos < getBufferSize())
+                ++cursorPos;
         }
 
         // UP
         else if (key == 20)
         {
             // move the cursorPos to the start of the previous line
-            if (screenBuffer.cursorLine > 0)
+            if (cursorLine > 0)
             {
                 // look at the previous line and move to the start of the cursor
                 int newCursorPos =
-                    screenBuffer.line_position[screenBuffer.cursorLine - 1] - screenBuffer.line_position[0];
-
-                // cusor position in the line
-                int cursorLinePos = screenBuffer.cursorLinePos;
+                    linePositions[cursorLine - 1] - linePositions[0];
 
                 // if previous line length is shorter than cursorLinePos
-                int previousLineLength = screenBuffer.line_length[screenBuffer.cursorLine - 1];
+                int previousLineLength = lineLengths[cursorLine - 1];
                 if (previousLineLength < cursorLinePos)
                 {
                     // then move to the end of the previous line
@@ -286,7 +409,8 @@ void Editor::keyboard(char key)
                 }
                 else
                 {
-                    // if previous line length is long enough then move as much as the currentLineCursorPos
+                    // if previous line length is long enough 
+                    // then move as much as the currentLineCursorPos
                     newCursorPos += cursorLinePos;
                 }
 
@@ -295,7 +419,7 @@ void Editor::keyboard(char key)
                     newCursorPos = 0;
 
                 //
-                fileBuffer.cursorPos = newCursorPos;
+                cursorPos = newCursorPos;
             }
         }
 
@@ -303,17 +427,14 @@ void Editor::keyboard(char key)
         else if (key == 21)
         {
             // move the cursorPos to the start of the next line
-            if (screenBuffer.cursorLine < screenBuffer.total_line)
+            if (cursorLine < totalLine)
             {
                 //
                 int newCursorPos =
-                    screenBuffer.line_position[screenBuffer.cursorLine + 1] - screenBuffer.line_position[0];
-
-                // cusor position in the line
-                int cursorLinePos = screenBuffer.cursorLinePos;
+                    linePositions[cursorLine + 1] - linePositions[0];
 
                 // next line length
-                int nextLineLength = max(screenBuffer.line_length[screenBuffer.cursorLine + 1], 1);
+                int nextLineLength = max(lineLengths[cursorLine + 1], 1);
 
                 // if next line has shorter length of the current cursor pos
                 // then move to the end of the next line
@@ -328,23 +449,23 @@ void Editor::keyboard(char key)
                 }
 
                 // handle edge case
-                if (newCursorPos > fileBuffer.bufferSize)
-                    newCursorPos = fileBuffer.bufferSize;
+                if (newCursorPos > getBufferSize())
+                    newCursorPos = getBufferSize();
 
                 //
-                fileBuffer.cursorPos = newCursorPos;
-                screenBuffer.cursorLine += 1;
+                cursorPos = newCursorPos;
+                cursorLine += 1;
             }
 
             // when trying to go down at the last line, move the cursor to the end
-            else if (screenBuffer.cursorLine == screenBuffer.total_line)
+            else if (cursorLine == totalLine)
             {
 
                 // if last line then move to the end of the buffer
-                fileBuffer.cursorPos = fileBuffer.getBufferSize();
+                cursorPos = getBufferSize();
 
                 _debug("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
-                          fileBuffer.cursorPos);
+                       cursorPos);
             }
         }
 
@@ -353,52 +474,52 @@ void Editor::keyboard(char key)
         {
             // home - move to the start of the line
             int newCursorPos =
-                screenBuffer.line_position[screenBuffer.cursorLine] - screenBuffer.line_position[0];
+                linePositions[cursorLine] - linePositions[0];
             //
-            fileBuffer.cursorPos = newCursorPos;
+            cursorPos = newCursorPos;
         }
 
         // END
         else if (key == 3)
         {
             // end - move to the end of the line
-            int line_length = max(screenBuffer.line_length[screenBuffer.cursorLine], 1);
+            int lineLength = max(lineLengths[cursorLine], 1);
             int newCursorPos =
-                screenBuffer.line_position[screenBuffer.cursorLine] - screenBuffer.line_position[0] + line_length - 1;
+                linePositions[cursorLine] - linePositions[0] + lineLength - 1;
 
             // if last line then move to the end of the buffer
-            if (screenBuffer.cursorLine == screenBuffer.total_line)
-                newCursorPos = fileBuffer.getBufferSize();
+            if (cursorLine == totalLine)
+                newCursorPos = getBufferSize();
 
             //
-            fileBuffer.cursorPos = newCursorPos;
+            cursorPos = newCursorPos;
         }
 
         // PAGE UP
         else if (key == 22)
         {
-            int newCursorLine = max(screenBuffer.cursorLine - screenBuffer.rows, 0);
+            int newCursorLine = max(cursorLine - rows, 0);
             int newCursorPos =
-                screenBuffer.line_position[newCursorLine] - screenBuffer.line_position[0];
+                linePositions[newCursorLine] - linePositions[0];
 
             //
-            fileBuffer.cursorPos = newCursorPos;
+            cursorPos = newCursorPos;
         }
 
         // PAGE DOWN
         else if (key == 23)
         {
-            int newCursorLine = min(screenBuffer.cursorLine + screenBuffer.rows, screenBuffer.total_line);
-            int line_length = max(screenBuffer.line_length[newCursorLine], 1);
+            int newCursorLine = min(cursorLine + rows, totalLine);
+            int lineLength = max(lineLengths[newCursorLine], 1);
             int newCursorPos =
-                screenBuffer.line_position[newCursorLine] - screenBuffer.line_position[0] + line_length - 1;
+                linePositions[newCursorLine] - linePositions[0] + lineLength - 1;
 
             // if last line then move to the end of the buffer
-            if (screenBuffer.cursorLine == screenBuffer.total_line)
-                newCursorPos = fileBuffer.getBufferSize();
+            if (cursorLine == totalLine)
+                newCursorPos = getBufferSize();
 
             //
-            fileBuffer.cursorPos = newCursorPos;
+            cursorPos = newCursorPos;
         }
     }
 
@@ -408,7 +529,7 @@ void Editor::keyboard(char key)
     else
     {
         // add to the edit buffer new character
-        if (!fileBuffer.available())
+        if (getBufferSize() > BUFFER_SIZE)
         {
             _log("Text buffer full\n");
 
@@ -416,15 +537,259 @@ void Editor::keyboard(char key)
             saveFile();
 
             //
-            loadFile(fileBuffer.fileName);
+            loadFile(fileName);
         }
 
         //
-        fileBuffer.addChar(key);
+        addChar(key);
+
         // set saved flag to false
         this->saved = false;
     }
 
     // update the screen buffer
-    screenBuffer.Update(fileBuffer);
+    updateScreen();
+}
+
+//
+void Editor::updateScreen()
+{
+    // Loop through the text buffer
+    // and product the data structure that is splitted in each line    
+
+    _debug("Editor::updateScreen called");
+
+    // Handle empty buffer
+    if (buffer[0] == '\0')
+    {
+        totalLine = 0;
+        linePositions[0] = buffer;
+        lineLengths[0] = 0;
+        cursorLine = 0;
+        cursorLinePos = 0;
+        return;
+    }
+
+    // first line is the first of the buffer
+    linePositions[0] = &buffer[0];
+    lineLengths[0] = 0;
+
+    //
+    this->totalLine = 0;
+    int line_count = 0;
+
+    // remember the last space position to use it for the word wrap
+    int last_space_index = -1;
+    int last_space_position = -1;
+
+    //
+    // BUFFER -> SPLIT IN LINES
+    //
+    for (int i = 0; i < BUFFER_SIZE; i++) // Fixed loop condition
+    {
+        // When reaching the end of text, break
+        if (buffer[i] == '\0')
+        {
+            // Update the length of the last line
+            lineLengths[totalLine] = line_count;
+
+            //
+            break;
+        }
+
+        // Count total characters in a line
+        line_count++;
+
+        // Track the position of the last space
+        if (buffer[i] == ' ')
+        {
+            last_space_index = i;
+            last_space_position = line_count;
+        } 
+        
+        // Handle words longer than `cols`
+        if (line_count == cols && last_space_index == -1)
+        {
+            // Register the line count
+            lineLengths[totalLine] = line_count;
+
+            // Start a new line
+            linePositions[++totalLine] = &buffer[i + 1];
+
+            // Reset counters
+            line_count = 0;
+            last_space_index = -1;
+            last_space_position = -1;
+
+            continue;
+        }
+        // When receiving a newline or max characters reached, start a new line
+        if (buffer[i] == '\n' || line_count == cols)
+        {
+            // when ENTER key is found
+            if (buffer[i] == '\n')
+            {
+                // register the line count
+                lineLengths[totalLine] = line_count;
+
+                // start of the new line
+                linePositions[++totalLine] = &buffer[i + 1];
+
+                // reset counters
+                line_count = 0;
+            }
+
+            // This line requires word-wrap
+            else if (last_space_index != -1 && buffer[i] != '\n')
+            {
+                // register the line position as the last space position
+                lineLengths[totalLine] = last_space_position;
+
+                // new line starts from just after the space
+                linePositions[++totalLine] = &buffer[last_space_index + 1];
+
+                // new line count starts from the wrapped word
+                line_count -= last_space_position;
+            }
+
+            // This line doesn't requrie word wrap
+            else
+            {
+                // register the line count
+                lineLengths[totalLine] = line_count;
+
+                //
+                linePositions[++totalLine] = &buffer[i + 1];
+
+                //
+                line_count = 0;
+            }
+
+            // reset the word wrap flags
+            last_space_index = -1;
+            last_space_position = -1;
+        }
+    }
+
+    // Handle cursor position beyond buffer
+    if (cursorPos >= BUFFER_SIZE)
+    {
+        cursorPos = BUFFER_SIZE - 1;
+    }
+
+    //
+    // CALCULATE CURSOR INFORMATION
+    //
+    char *pCursorPos = &buffer[cursorPos];
+
+    //
+    cursorLine = 0;
+    cursorLinePos = lineLengths[0];
+
+    // caculate the which line cursor is located and the line position
+    for (int i = totalLine; i >= 0; i--)
+    {
+        //
+        if (pCursorPos >= linePositions[i])
+        {
+            // found the line index
+            cursorLine = i;
+            // calculate the cursor position within the line
+            cursorLinePos = pCursorPos - linePositions[i];
+            break;
+        }
+    }
+}
+
+void Editor::addChar(char c)
+{
+    int bufferSize = getBufferSize();
+    if (bufferSize < BUFFER_SIZE)
+    {
+        // shift the trailing texts
+        if (bufferSize > cursorPos)
+            memmove(buffer + cursorPos + 1, buffer + cursorPos, bufferSize - cursorPos);
+
+        //
+        buffer[cursorPos++] = c;
+        buffer[++bufferSize] = '\0';
+
+        _debug("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
+    }
+}
+
+void Editor::removeLastChar()
+{
+    int bufferSize = getBufferSize();
+    if (bufferSize > 0 && cursorPos > 0)
+    {
+        // Shift the trailing texts left by one position
+        if (bufferSize > cursorPos)
+        {
+            memmove(buffer + cursorPos - 1, buffer + cursorPos, bufferSize - cursorPos);
+        }
+
+        // Decrease buffer size and cursor position
+        --bufferSize;
+        --cursorPos;
+
+        //
+        _debug("FileBuffer::removeLastChar %d\n", cursorPos);
+
+        // Null terminate the buffer
+        buffer[bufferSize] = '\0';
+    }
+}
+
+void Editor::removeCharAtCursor()
+{
+    int bufferSize = getBufferSize();
+    if (bufferSize > 0 && cursorPos < bufferSize)
+    {
+        // Shift the trailing text left by one position
+        if (bufferSize > cursorPos + 1)
+        {
+            memmove(buffer + cursorPos, buffer + cursorPos + 1, bufferSize - cursorPos - 1);
+        }
+
+        // Decrease buffer size
+        --bufferSize;
+
+        // Null terminate the buffer
+        buffer[bufferSize] = '\0';
+    }
+}
+
+void Editor::removeLastWord()
+{
+    int length = getBufferSize();
+    if (length == 0)
+        return;
+
+    int end = length - 1;
+    while (end >= 0 && buffer[end] == ' ')
+        end--;
+
+    if (end < 0)
+        return;
+
+    int start = end;
+    while (start >= 0 && buffer[start] != ' ' && buffer[start] != '\n')
+        start--;
+
+    if (start <= 0)
+    {
+        start = 0;
+        buffer[0] = '\0';        
+    }
+    else
+    {
+        buffer[start] = ' ';
+        buffer[start + 1] = '\0';        
+    }
+
+    cursorPos = getBufferSize();
+
+    //
+    _debug("FileBuffer::removeLastWord %d\n", cursorPos);
 }

@@ -84,11 +84,12 @@ void display_ST7735_loop()
 
     //
     app["screen_prev"] = screen;
-  }
+  }  
+
 }
 
 // Redirect the key press to the current GUI
-void display_ST7735_keyboard(int key)
+void display_ST7735_keyboard(int key, bool pressed)
 {
   //
   JsonDocument &app = status();
@@ -103,6 +104,6 @@ void display_ST7735_keyboard(int key)
   else if (screen == WORDPROCESSOR)
   {
     // send the key stroke to word processor
-    WP_keyboard(key);
+    WP_keyboard(key, pressed);
   }
 }

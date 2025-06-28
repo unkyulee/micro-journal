@@ -1,38 +1,76 @@
-#ifndef Editor_h
-#define Editor_h
+#pragma once
 
 //
 #include <Arduino.h>
 
-//
-#include "FileBuffer/FileBuffer.h"
-
-//
-#include "ScreenBuffer/ScreenBuffer.h"
+#define BUFFER_SIZE 8000
 
 //
 class Editor
 {
 public:
-    // Initialize the editor with the number of columns and rows
-    void init(int columns, int rows);
+    // Text Buffer
+    char buffer[BUFFER_SIZE+2];
+   
+    // Saved Status
+    bool saved = true;
 
-    // Editor Operation
+    // Current File Name
+    String fileName;
+
+    // Current File Total Size
+    size_t fileSize = 0;
+
+    // Last File Load Position
+    // This is a place where save should occurs with current buffer
+    size_t seekPos = 0;
+
+    // Screen Size Definition
+    int rows = 10;
+    int cols = 26;
+
+    // Each line starting point is saved in this array
+    char *linePositions[BUFFER_SIZE + 2];
+
+    // Length of each line 
+    int lineLengths[BUFFER_SIZE + 2];
+
+    // Total number of lines in the buffer
+    int totalLine = 0;
+
+    // Cursor Position in terms of buffer
+    int cursorPos = 0;
+
+    // Which line the cursor is placed
+    int cursorLine = 0;
+
+    // Cursor position within the line 
+    int cursorLinePos = 0;
+
+    // Initialize the editor with the number of columns and rows
+    void init(int cols, int rows);
+
+    // File Operation
     void loadFile(String fileName);
     void saveFile();
     void clearFile();
 
     // Handle Keyboard Inputs
     void keyboard(char key);
-
-    // Saved Status
-    bool saved = true;
+    
+    //
+    int getBufferSize() { return strlen(buffer); }
+    void resetBuffer() { memset(buffer, '\0', sizeof(buffer)); }
 
     //
-    FileBuffer fileBuffer;
+    void addChar(char c);
+    void removeLastChar();
+    void removeCharAtCursor();
+    void removeLastWord();
+    
+    // 
+    void updateScreen();
 
-    //
-    ScreenBuffer screenBuffer;
 
     //////////////////////////////////
     // SINGLETON PATTERN
@@ -52,5 +90,3 @@ private:
     // Private constructor to prevent instantiation
     Editor() {}
 };
-
-#endif

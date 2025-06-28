@@ -32,10 +32,8 @@ unsigned int last_sleep = millis();
 //
 void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    // editor instantiate
-    Editor &editor = Editor::getInstance();
-    editor.screenBuffer.rows = 4;
-    editor.screenBuffer.cols = 17;
+    // Editor Init - setup screen size
+    Editor::getInstance().init(17, 4);
 
     // setup default color
     JsonDocument &app = status();
@@ -96,9 +94,9 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // Cursor Information
     static int cursorLine_prev = 0;
     static int cursorLinePos_prev = 0;
-    int cursorLine = Editor::getInstance().screenBuffer.cursorLine;
-    int cursorLinePos = Editor::getInstance().screenBuffer.cursorLinePos;
-    int totalLine = Editor::getInstance().screenBuffer.total_line;
+    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int totalLine = Editor::getInstance().totalLine;
 
     //
     // Middle part of the text will be rendered
@@ -121,7 +119,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         pu8f->setCursor(0, font_height);
 
         // start line
-        int rows = Editor::getInstance().screenBuffer.rows;
+        int rows = Editor::getInstance().rows;
 
         //
         for (int i = cursorLine - rows; i < cursorLine; i++)
@@ -156,8 +154,8 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_render_line(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f, int line_num)
 {
-    char *line = Editor::getInstance().screenBuffer.line_position[line_num];
-    int length = Editor::getInstance().screenBuffer.line_length[line_num];
+    char *line = Editor::getInstance().linePositions[line_num];
+    int length = Editor::getInstance().lineLengths[line_num];
 
     //_debug("WP_render_line %d, length: %d\n", line_num, length);
 
@@ -189,15 +187,15 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // Cursor information
     static int cursorLinePos_prev = 0;
-    int cursorLinePos = Editor::getInstance().screenBuffer.cursorLinePos;
-    int cursorLine = Editor::getInstance().screenBuffer.cursorLine;
-    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorPos = Editor::getInstance().cursorPos;
 
     // Calculate Cursor X position
     // reached the line where cursor is
     // distance X is cursorPos - pos
     int cursorX = 0;
-    if (Editor::getInstance().fileBuffer.buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
+    if (Editor::getInstance().buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
     {
         // font width 12
         cursorX = cursorLinePos * font_width;
@@ -239,7 +237,7 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     {
         color = TFT_GREEN;
     }
-    
+
     //
     ptft->fillRect(screen_width - width, 0, width, width, color);
 }
@@ -268,14 +266,14 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     static int cursorLine_prev = 0;
     static int cursorPos_prev = 0;
-    int cursorLine = Editor::getInstance().screenBuffer.cursorLine;
-    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
-    int cursorLinePos = Editor::getInstance().screenBuffer.cursorLinePos;
-    int cursorLineLength = Editor::getInstance().screenBuffer.line_length[cursorLine];
+    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorPos = Editor::getInstance().cursorPos;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int cursorLineLength = Editor::getInstance().lineLengths[cursorLine];
 
     //
     static int bufferSize_prev = 0;
-    int bufferSize = Editor::getInstance().fileBuffer.bufferSize;
+    int bufferSize = Editor::getInstance().getBufferSize();
 
     // When new line clear everything
     if (cursorLine_prev != cursorLine)
@@ -295,7 +293,7 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (cursorPos_prev != cursorPos)
     {
         // if it is typing at the end don't flicker
-        if (cursorPos != Editor::getInstance().fileBuffer.bufferSize)
+        if (cursorPos != bufferSize)
         {
             // if the edit line is empty then don't flicker
             //
@@ -315,7 +313,7 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 //
 //
-void WP_keyboard(int key)
+void WP_keyboard(int key, bool pressed)
 {
     _debug("WP_keyboard %c\n", key);
 
@@ -333,7 +331,8 @@ void WP_keyboard(int key)
     else
     {
         // send the keys to the editor
-        Editor::getInstance().keyboard(key);
+        if (pressed)
+            Editor::getInstance().keyboard(key);
     }
 }
 
@@ -341,10 +340,53 @@ void WP_keyboard(int key)
 // Check if text is saved
 void WP_check_saved()
 {
+    //
+    static unsigned int last = millis();
+    static int lastBufferSize = Editor::getInstance().getBufferSize();
+    int bufferSize = Editor::getInstance().getBufferSize();
+
+    //
+    // when the file is saved then extend the autosave timer
+    if (lastBufferSize != bufferSize)
+    {
+        last = millis();
+
+        //
+        lastBufferSize = bufferSize;
+    }
+
+    //
+    // when idle for 3 seconds then auto save
+    if (millis() - last > 3000)
+    {
+        //
+        last = millis();
+
+        if (!Editor::getInstance().saved)
+            Editor::getInstance().saveFile();
+    }
 }
 
 //
 //
 void WP_check_sleep()
 {
+    //
+    // when the file is saved then extend the sleep timer
+    if (!Editor::getInstance().saved)
+    {
+        // when typed then reset sleep timer
+        last_sleep = millis();
+    }
+
+    // 600 seconds - 10 minutes
+    if (millis() - last_sleep > 600000)
+    {
+        // if no action for 10 minute go to sleep
+        last_sleep = millis();
+
+        //
+        JsonDocument &app = status();
+        app["screen"] = SLEEPSCREEN;
+    }
 }

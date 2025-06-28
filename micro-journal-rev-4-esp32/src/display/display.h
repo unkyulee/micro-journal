@@ -1,5 +1,4 @@
-#ifndef Display_h
-#define Display_h
+#pragma once
 
 // Screen Type
 #define WORDPROCESSOR 0
@@ -25,11 +24,20 @@
 #define MENU_STARTUP 10
 #define MENU_BLUETOOTH 11
 
+// MENU button
+#define FN 28 
+
+// 
+#define SHIFT 0x02
+
+// special key
+#define EMPTY 0x0
+#define MENU 0x6
+
 //
 void display_setup();
 void display_loop();
 
 //
-void display_keyboard(int key);
+void display_keyboard(int key, bool pressed);
 
-#endif
