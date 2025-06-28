@@ -556,8 +556,7 @@ void Editor::updateScreen()
 {
     // Loop through the text buffer
     // and product the data structure that is splitted in each line    
-
-    _debug("Editor::updateScreen called");
+    _debug("Editor::updateScreen called\n");
 
     // Handle empty buffer
     if (buffer[0] == '\0')
