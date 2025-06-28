@@ -9,20 +9,25 @@
 //
 #include "display/ST7735/display_ST7735.h"
 
-//
-int STATUSBAR_Y = 140;
-int screen_width = 160;
-int screen_height = 80;
-bool clear_background = true;
-unsigned int last_sleep = millis();
+#define FONT u8g2_font_profont17_tf
 
 //
-const int font_width = 12;
-const int font_height = 18;
-const int cursorY = 50;
-const int cursorHeight = 2;
+int screen_width = 160;
+int screen_height = 80;
+
 //
-const int editY = cursorY - 4;
+const int font_width = 9;
+const int font_height = 14;
+
+// Lines will be rendered at the bottom on the screen
+// need to calculate the Y position considering the status bar height
+const int editY = 72;
+const int cursorY = 75;
+const int cursorHeight = 2;
+
+// Some flags
+bool clear_background = true;
+unsigned int last_sleep = millis();
 
 //
 void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -30,7 +35,7 @@ void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // editor instantiate
     Editor &editor = Editor::getInstance();
     editor.screenBuffer.rows = 4;
-    editor.screenBuffer.cols = 20;
+    editor.screenBuffer.cols = 17;
 
     // setup default color
     JsonDocument &app = status();
@@ -63,11 +68,11 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // RENDER TEXT
     WP_render_text(ptft, pu8f);
 
-    // RENDER STATUS BAR
-    WP_render_status(ptft, pu8f);
-
     // BLINK CURSOR
     WP_render_cursor(ptft, pu8f);
+
+    // STATUS
+    WP_render_status(ptft, pu8f);
 
     //
     if (clear_background)
@@ -84,7 +89,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // SET FONT
-    pu8f->setFont(u8g2_font_profont15_tf);
+    pu8f->setFont(FONT);
     pu8f->setForegroundColor(foreground_color);
     pu8f->setFontMode(1);
 
@@ -108,12 +113,12 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         //
         pu8f->begin(sprite);
-        pu8f->setFont(u8g2_font_profont15_mf);
+        pu8f->setFont(FONT);
         pu8f->setForegroundColor(foreground_color);
         pu8f->setFontMode(1);
 
         //
-        pu8f->setCursor(0, font_height + font_height / 2);
+        pu8f->setCursor(0, font_height);
 
         // start line
         int rows = Editor::getInstance().screenBuffer.rows;
@@ -138,6 +143,8 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // Clean up sprite
     if (clear_background)
     {
+        _debug("Pushing sprite, cursorLine: %d, cursorLinePos: %d\n", cursorLine, cursorLinePos);
+
         // push sprite
         sprite.pushSprite(0, 0);
         sprite.deleteSprite();
@@ -171,27 +178,70 @@ void WP_render_line(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f, int line_num)
 }
 
 //
-// Check if text is saved
-void WP_check_saved()
-{
-}
-
-//
-//
-void WP_check_sleep()
-{
-}
-
-//
-//
-void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
-{
-}
-
-//
 // Render Cursor
 void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    JsonDocument &app = status();
+
+    // retrieve color information
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+    // Cursor information
+    static int cursorLinePos_prev = 0;
+    int cursorLinePos = Editor::getInstance().screenBuffer.cursorLinePos;
+    int cursorLine = Editor::getInstance().screenBuffer.cursorLine;
+    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
+
+    // Calculate Cursor X position
+    // reached the line where cursor is
+    // distance X is cursorPos - pos
+    int cursorX = 0;
+    if (Editor::getInstance().fileBuffer.buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
+    {
+        // font width 12
+        cursorX = cursorLinePos * font_width;
+    }
+
+    // Blink the cursor every 500 ms
+    static bool blink = false;
+    static unsigned int last = millis();
+    if (millis() - last > 500)
+    {
+        last = millis();
+        blink = !blink;
+    }
+
+    // Delete previous cursor line
+    if (cursorLinePos != cursorLinePos_prev)
+    {
+        //
+        ptft->fillRect(cursorLinePos_prev * font_width, cursorY, font_width, cursorHeight, background_color);
+
+        //
+        cursorLinePos_prev = cursorLinePos;
+    }
+
+    // Cursor Blink will be always at the bottom of the screen
+    if (blink)
+        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, foreground_color);
+    else
+        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, background_color);
+}
+
+//
+void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+{
+    const int width = 5;
+    int color = TFT_RED;
+    // SAVE STATUS
+    if (Editor::getInstance().saved)
+    {
+        color = TFT_GREEN;
+    }
+    
+    //
+    ptft->fillRect(screen_width - width, 0, width, width, color);
 }
 
 //
@@ -200,6 +250,67 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    // clear background
+    if (clear_background)
+    {
+        // when clearing background
+        // sprite will be activated to reduce the flicker
+        return;
+    }
+
+    //
+    JsonDocument &app = status();
+
+    // LOAD COLORS
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+    //
+    static int cursorLine_prev = 0;
+    static int cursorPos_prev = 0;
+    int cursorLine = Editor::getInstance().screenBuffer.cursorLine;
+    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
+    int cursorLinePos = Editor::getInstance().screenBuffer.cursorLinePos;
+    int cursorLineLength = Editor::getInstance().screenBuffer.line_length[cursorLine];
+
+    //
+    static int bufferSize_prev = 0;
+    int bufferSize = Editor::getInstance().fileBuffer.bufferSize;
+
+    // When new line clear everything
+    if (cursorLine_prev != cursorLine)
+    {
+        //
+        clear_background = true;
+
+        //
+        cursorLine_prev = cursorLine;
+    }
+
+    // When Backspace, trailing characters should be deleted
+    // if it is backspace or del key
+    if (cursorPos_prev >= cursorPos && bufferSize_prev != bufferSize)
+        clear_background = true;
+
+    if (cursorPos_prev != cursorPos)
+    {
+        // if it is typing at the end don't flicker
+        if (cursorPos != Editor::getInstance().fileBuffer.bufferSize)
+        {
+            // if the edit line is empty then don't flicker
+            //
+            if (cursorLinePos + 1 != cursorLineLength)
+                clear_background = true;
+        }
+
+        //
+        cursorPos_prev = cursorPos;
+    }
+
+    if (bufferSize != bufferSize_prev)
+    {
+        bufferSize_prev = bufferSize;
+    }
 }
 
 //
@@ -224,4 +335,16 @@ void WP_keyboard(int key)
         // send the keys to the editor
         Editor::getInstance().keyboard(key);
     }
+}
+
+//
+// Check if text is saved
+void WP_check_saved()
+{
+}
+
+//
+//
+void WP_check_sleep()
+{
 }

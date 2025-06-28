@@ -21,21 +21,27 @@ byte colPins[COLS] = {13, 14, 15, 16, 17, 18, 19, 20, 21};
 //
 
 // https://www.ascii-code.com/
-// ESC - 27
-// BACKSPACE - 8
-// CAPSLOCK - 6
-// SHIFT - 14
-// ALT - 17
-// DEL - 127
 
-// arrow keys
-// 18 - Left, 19 - Right, 20 - Up, 21 - Down
-// 2 - Home 3 - End
+// 2 - Home
+// 3 - End
+
+// 4 - Ctrl
+// 5 - Alt
+// 6 - Gui
+
+// 14 - SHIFT
+// 17 - LAYER
+
+// 18 - Left
+// 19 - Right
+// 20 - Up
+// 21 - Down
+
 // 22 - Page Up
 // 23 - Page Down
-// 1 - Ctrl
-// 4 - Alt
-// 7 - Gui
+
+// 26 - CAPSLOCK 
+// 27 - ESC
 
 // layers
 // prettier-ignore
@@ -43,10 +49,10 @@ int layers[LAYERS][ROWS * COLS] = {
 
     {// normal layers
      27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', 127,
-     '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 22,
+     '\t', 'Q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 22,
      7, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '\\', 23,
      14, '`', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 14, 20, 3,
-     1, 7, 4, ' ', 4, 17, 2, 18, 21, 19},
+     1, 7, ' ', ' ', 4, 17, 2, 18, 21, 19},
 
     {// when shift is pressed
      27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', 127,
@@ -81,7 +87,9 @@ char keys[ROWS][COLS] = {
     {36, 37, 38, 39, 40, 41, 42, 43, 44},
     {45, 46, 47, 48, 49, 50, 51, 52, 53},
     {54, 55, 56, 57, 58, 59, 60, 61, 62},
-    {63, 64, 65, 66, 67, 68, 69, 70, 71}};
+    {63, 64, 65, 66, 67, 68, 69, 70, 71}    
+}; 
+    
 
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 

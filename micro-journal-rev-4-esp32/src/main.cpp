@@ -18,7 +18,7 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
-    delay(1000);
+    delay(3000);
 
     // initialize app
     app_setup();

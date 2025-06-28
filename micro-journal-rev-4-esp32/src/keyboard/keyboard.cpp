@@ -3,7 +3,7 @@
 #include "display/display.h"
 
 #ifdef KEYPAD_68
-#include "keyboard/InputMethod/Keypad_68/keypad_68.h"
+#include "keyboard/InputMethod/Keypad/68/keypad_68.h"
 #endif
 
 //

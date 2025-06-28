@@ -49,6 +49,6 @@ void _debug(const char *format, ...)
     va_end(args);
 
     // Print to Serial
-    Serial.printf("[%d] %s", millis(), message);
+    Serial.printf("[%d][%d] %s", COREID, millis(), message);
 #endif
 }
