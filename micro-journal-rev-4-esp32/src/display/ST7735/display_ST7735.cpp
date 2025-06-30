@@ -5,6 +5,7 @@
 // screens
 #include "GUI/ErrorScreen/ErrorScreen.h"
 #include "GUI/WordProcessor/WordProcessor.h"
+#include "GUI/Menu/Menu.h"
 
 /*
 #include "GUI/Menu/Menu.h"
@@ -82,6 +83,19 @@ void display_ST7735_loop()
         WP_render(&tft, &u8f);
     }
 
+    // Menu Screen
+    else if (screen == MENUSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        Menu_setup(&tft, &u8f);
+      else
+        // loop
+        Menu_render(&tft, &u8f);
+    }
+
+
+
     //
     app["screen_prev"] = screen;
   }  
@@ -105,5 +119,10 @@ void display_ST7735_keyboard(int key, bool pressed)
   {
     // send the key stroke to word processor
     WP_keyboard(key, pressed);
+  }
+  else if (screen == MENUSCREEN)
+  {
+    // send the key stroke to word processor
+    Menu_keyboard(key, pressed);
   }
 }

@@ -315,11 +315,12 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_keyboard(int key, bool pressed)
 {
-    _debug("WP_keyboard %c\n", key);
+    _debug("WP_keyboard %d\n", key);
 
     // Check if menu key is pressed
     if (key == MENU)
     {
+        _debug("Menu key pressed\n");
         // Save before transitioning to the menu
         Editor::getInstance().saveFile();
 
