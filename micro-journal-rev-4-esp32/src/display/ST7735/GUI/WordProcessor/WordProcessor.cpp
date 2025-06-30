@@ -320,13 +320,16 @@ void WP_keyboard(int key, bool pressed)
     // Check if menu key is pressed
     if (key == MENU)
     {
-        _debug("Menu key pressed\n");
-        // Save before transitioning to the menu
-        Editor::getInstance().saveFile();
+        if (pressed)
+        {
+            _debug("Menu key pressed\n");
+            // Save before transitioning to the menu
+            Editor::getInstance().saveFile();
 
-        //
-        JsonDocument &app = status();
-        app["screen"] = MENUSCREEN;
+            //
+            JsonDocument &app = status();
+            app["screen"] = MENUSCREEN;
+        }
     }
 
     else
