@@ -4,6 +4,7 @@
 
 #ifdef BOARD_PICO
 #include "app/FileSystem/FileSystemRP2040.h"
+#include "service/MassStorage/MassStorage.h"
 #endif
 
 // When app is not ready. Such as file system is not initialized
@@ -62,9 +63,9 @@ void app_loop()
         return;
     }
 
-#ifdef BOARD_ESP32_S3
-    // check for background task request
-    wifi_service_loop();
+#ifdef BOARD_PICO
+    // Mass Storage Control Loop
+    ms_loop();
 #endif
 }
 

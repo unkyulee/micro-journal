@@ -8,10 +8,10 @@ int selectedHome = 0;
 
 //
 const char *menu[] = {
-    "USB Keyboard",
+    "Keyboard",
     "writerDeck",
-    "Export Text",
-    "Info Text"
+    "Export File",
+    "Info Text",
     "Clear Text",
     "Color BG",
     "Color Font",
@@ -74,7 +74,7 @@ void Home_keyboard(char key, bool pressed)
     JsonDocument &app = status();
 
     // UP
-    if (key == 20)
+    if (key == 21)
     {
         selectedHome++;
         if (selectedHome >= sizeof(menu) / sizeof(menu[0]))
@@ -84,7 +84,7 @@ void Home_keyboard(char key, bool pressed)
     }
 
     // DOWN
-    else if (key == 21)
+    else if (key == 20)
     {
         selectedHome--;
         if (selectedHome < 0)
@@ -96,9 +96,15 @@ void Home_keyboard(char key, bool pressed)
     // MENU - SELECTED ACTION
     else if (key == 6 || key == '\n')
     {
+        // 2 - Export File
+        if (selectedHome == 2)
+        {
+            _debug("Export File Selected\n");
+            app["menu"]["state"] = MENU_STORAGE;
+        }
 
         // last item is EXIT
-        if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
+        else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
         {
             _debug("Home Keyboard Exit is selected. Moving to Word Processor\n");
             app["screen"] = WORDPROCESSOR;

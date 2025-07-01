@@ -4,6 +4,7 @@
 
 // sub menu module
 #include "Home/Home.h"
+#include "Storage/Storage.h"
 
 // state
 bool menu_clear = false;
@@ -33,7 +34,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         app["clear"] = false;
 
         // clear screen
-        menu_clear = true;        
+        menu_clear = true;
     }
 
     if (!menu_clear)
@@ -42,7 +43,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // skip this rendering cycle
         return;
     }
-    
+
     // clear screen
     {
         //
@@ -52,7 +53,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         menu_clear = false;
     }
 
-    // draw sub module of menu    
+    // draw sub module of menu
     int menu_state = app["menu"]["state"].as<int>();
 
     if (menu_state == MENU_HOME)
@@ -62,7 +63,15 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Home_render(ptft, pu8f);
     }
-    
+
+    else if (menu_state == MENU_STORAGE)
+    {
+        if (menu_state_prev != menu_state)
+            Storage_setup(ptft, pu8f);
+
+        Storage_render(ptft, pu8f);
+    }
+
     // save prev state
     menu_state_prev = menu_state;
 }
@@ -70,8 +79,9 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Menu_keyboard(char key, bool pressed)
 {
-    if(!pressed) return;
-    
+    if (!pressed)
+        return;
+
     //
     JsonDocument &app = status();
 
@@ -85,7 +95,11 @@ void Menu_keyboard(char key, bool pressed)
         Home_keyboard(key, pressed);
         return;
     }
-
+    else if(menu_state == MENU_STORAGE)
+    {
+        Storage_keyboard(key, pressed);
+        return;
+    }
 }
 
 //
