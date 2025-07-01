@@ -1,5 +1,4 @@
-#ifndef Display_ST7735_h
-#define Display_ST7735_h
+#pragma once
 
 // TFT_eSPI setup
 #include <SPI.h>
@@ -12,6 +11,4 @@ TFT_eSprite& display_ST7735_sprite();
 //
 void display_ST7735_setup();
 void display_ST7735_loop();
-void display_ST7735_keyboard(int key, bool pressed);
-
-#endif
+void display_ST7735_keyboard(int key, bool pressed, int index);

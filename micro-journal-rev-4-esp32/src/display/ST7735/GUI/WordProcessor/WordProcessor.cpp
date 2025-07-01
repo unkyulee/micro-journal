@@ -320,7 +320,7 @@ void WP_keyboard(int key, bool pressed)
     // Check if menu key is pressed
     if (key == MENU)
     {
-        if (pressed)
+        if (!pressed)
         {
             _debug("Menu key pressed\n");
             // Save before transitioning to the menu

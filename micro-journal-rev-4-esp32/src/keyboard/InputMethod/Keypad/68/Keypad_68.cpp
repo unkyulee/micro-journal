@@ -7,6 +7,7 @@
 //
 #include "display/display.h"
 
+
 //
 #define LAYERS 4 // layers
 #define COLS 9   // columns
@@ -127,7 +128,7 @@ void keyboard_keypad_68_loop()
             if (character != 0)
             {
                 _debug("[keyboard_keypad_68_get_key] Character: '%c' [%d]\n", character, character);
-                display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED);
+                display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
             }
         }
     }

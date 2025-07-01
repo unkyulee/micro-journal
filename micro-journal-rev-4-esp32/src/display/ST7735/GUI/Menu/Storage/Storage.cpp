@@ -32,19 +32,22 @@ void Storage_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Storage_keyboard(char key, bool pressed)
 {
-     _debug("Storage_Keyboard %d\n", key);
+    _debug("Storage_Keyboard %d\n", key);
     JsonDocument &app = status();
 
     // MENU - SELECTED ACTION
     if (key == 6 || key == '\n')
     {
-        // Go back to Home
-        _log("Exit Mass Storage");
+        if (!pressed)
+        {
+            // Go back to Home
+            _log("Exit Mass Storage");
 
-        // turn off USB drive
-        app["massStorage"] = false;
+            // turn off USB drive
+            app["massStorage"] = false;
 
-        //
-        app["menu"]["state"] = MENU_HOME;
+            //
+            app["menu"]["state"] = MENU_HOME;
+        }
     }
 }

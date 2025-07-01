@@ -8,7 +8,8 @@
 #define MENUSCREEN 2
 #define WAKEUPSCREEN 3
 #define SLEEPSCREEN 4
-#define USBDRIVESCREEN 5
+#define KEYBOARDSCREEN 5
+
 
 // menu id
 #define MENU_HOME 0
@@ -40,5 +41,5 @@ void display_setup();
 void display_loop();
 
 //
-void display_keyboard(int key, bool pressed);
+void display_keyboard(int key, bool pressed, int index = -1);
 

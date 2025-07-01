@@ -19,6 +19,7 @@ void knob_setup()
     attachInterrupt(digitalPinToInterrupt(26), checkPosition, CHANGE);
 }
 
+//
 void knob_loop()
 {
     static int lastPos = 0;

@@ -36,7 +36,7 @@ void display_setup()
   int screen = app["screen"].as<int>();
   app["screen_prev"] = -1;
 
-  //  
+  //
   _log("Display initializing with screen %d\n", screen);
 
   //
@@ -46,8 +46,16 @@ void display_setup()
     // if screen is not specified
     // then load the wake animation then the word processor
     //
-    bool disabled = app["config"]["wakeup_animation_disabled"].as<bool>();
-    if (disabled)
+    bool disabledWakeUp = app["config"]["wakeup_animation_disabled"].as<bool>();
+    bool usbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
+
+    // Check if USB Keyboard is enabled
+    if (usbKeyboard)
+    {
+      app["screen"] = KEYBOARDSCREEN;
+    }
+
+    else if (disabledWakeUp)
     {
       // show the word processor immediately when wakeup is disabled
       app["screen"] = WORDPROCESSOR;
@@ -79,29 +87,8 @@ void display_loop()
 #endif
 }
 
-
 //
-
-/*
-// Tracking backspace
-int keyboard_backspace_last();
-void keyboard_backspace_last_set(int last);
-
-bool keyboard_backspace_pressed();
-void keyboard_backspace_pressed_set(bool pressed);
-
-// capslock
-bool keyboard_capslock();
-void keyboard_capslock_toggle();
-
-// numlock
-bool keyboard_numlock();
-void keyboard_numlock_toggle();
-*/
-
-
-//
-void display_keyboard(int key, bool pressed)
+void display_keyboard(int key, bool pressed, int index)
 {
   _debug("[display_keyboard] Key: %c [%d] pressed: %d\n", key, key, pressed);
 
@@ -114,6 +101,6 @@ void display_keyboard(int key, bool pressed)
 #endif
 
 #ifdef ST7735_DRIVER
-  display_ST7735_keyboard(key, pressed);
+  display_ST7735_keyboard(key, pressed, index);
 #endif
 }

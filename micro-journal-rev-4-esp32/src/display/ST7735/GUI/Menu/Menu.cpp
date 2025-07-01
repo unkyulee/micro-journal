@@ -79,9 +79,6 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Menu_keyboard(char key, bool pressed)
 {
-    if (!pressed)
-        return;
-
     //
     JsonDocument &app = status();
 

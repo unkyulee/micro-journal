@@ -6,6 +6,7 @@
 #include "GUI/ErrorScreen/ErrorScreen.h"
 #include "GUI/WordProcessor/WordProcessor.h"
 #include "GUI/Menu/Menu.h"
+#include "GUI/Keyboard/Keyboard.h"
 
 /*
 #include "GUI/Menu/Menu.h"
@@ -94,22 +95,30 @@ void display_ST7735_loop()
         Menu_render(&tft, &u8f);
     }
 
-
+    // KEYBOARDSCREEN
+    else if (screen == KEYBOARDSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        KeyboardScreen_setup(&tft, &u8f);
+      else
+        // loop
+        KeyboardScreen_render(&tft, &u8f);
+    }
 
     //
     app["screen_prev"] = screen;
-  }  
-
+  }
 }
 
 // Redirect the key press to the current GUI
-void display_ST7735_keyboard(int key, bool pressed)
+void display_ST7735_keyboard(int key, bool pressed, int index)
 {
   //
   JsonDocument &app = status();
   int screen = app["screen"].as<int>();
 
-  _debug("[display_ST7735_keyboard] Key: %c [%d] Screen: %d\n", key, key, screen);
+  _debug("[display_ST7735_keyboard] Key: %c [%d][%d] Screen: %d\n", key, key, index, screen);
 
   if (screen == ERRORSCREEN)
   {
@@ -124,5 +133,8 @@ void display_ST7735_keyboard(int key, bool pressed)
   {
     // send the key stroke to word processor
     Menu_keyboard(key, pressed);
+  }
+  else if(screen == KEYBOARDSCREEN) {
+    KeyboardScreen_keyboard(key, pressed, index);
   }
 }

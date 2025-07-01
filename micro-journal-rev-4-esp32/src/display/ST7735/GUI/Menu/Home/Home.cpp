@@ -70,7 +70,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Home_keyboard(char key, bool pressed)
 {
-    _debug("Home_Keyboard %d\n", key);
+    _debug("Home_Keyboard %d selectedHome %d\n", key, selectedHome);
     JsonDocument &app = status();
 
     // UP
@@ -96,18 +96,50 @@ void Home_keyboard(char key, bool pressed)
     // MENU - SELECTED ACTION
     else if (key == 6 || key == '\n')
     {
-        // 2 - Export File
-        if (selectedHome == 2)
+        if (!pressed)
         {
-            _debug("Export File Selected\n");
-            app["menu"]["state"] = MENU_STORAGE;
-        }
+            // 0 - USB Keyboard
+            if (selectedHome == 0)
+            {
+                _debug("USB Keyboard Selected\n");
+                app["config"]["UsbKeyboard"] = true;
+                config_save();
 
-        // last item is EXIT
-        else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
-        {
-            _debug("Home Keyboard Exit is selected. Moving to Word Processor\n");
-            app["screen"] = WORDPROCESSOR;
+                // load USB Keyboard
+                app["screen"] = KEYBOARDSCREEN;
+            }
+
+            // 1 - writerDeck
+            if (selectedHome == 1)
+            {
+                _debug("writerDeck Selected\n");
+                app["config"]["UsbKeyboard"] = false;
+                config_save();
+
+                // load USB Keyboard
+                app["screen"] = WORDPROCESSOR;
+            }
+
+            // 2 - Export File
+            else if (selectedHome == 2)
+            {
+                _debug("Export File Selected\n");
+                app["menu"]["state"] = MENU_STORAGE;
+            }
+
+            // last item is EXIT
+            else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
+            {
+                _debug("Home Keyboard Exit is selected. Moving to Word Processor\n");
+                if (app["config"]["UsbKeyboard"].as<bool>())
+                {
+                    app["screen"] = KEYBOARDSCREEN;
+                }
+                else
+                {
+                    app["screen"] = WORDPROCESSOR;
+                }
+            }
         }
     }
 }
