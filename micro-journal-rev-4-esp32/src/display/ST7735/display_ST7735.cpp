@@ -6,7 +6,7 @@
 #include "GUI/ErrorScreen/ErrorScreen.h"
 #include "GUI/WordProcessor/WordProcessor.h"
 #include "GUI/Menu/Menu.h"
-#include "GUI/Keyboard/Keyboard.h"
+#include "GUI/KeyboardScreen/KeyboardScreen.h"
 
 /*
 #include "GUI/Menu/Menu.h"
@@ -70,7 +70,7 @@ void display_ST7735_loop()
 
     // TBD: Wakeup Screen
     // Word Processor
-    else if (screen == WAKEUPSCREEN || screen == WORDPROCESSOR)
+    else if (screen == SLEEPSCREEN || screen == WAKEUPSCREEN || screen == WORDPROCESSOR)
     {
       // TBD: to be deleted: skip wakeupscreen
       screen = WORDPROCESSOR;
@@ -124,7 +124,7 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
   {
     ErrorScreen_keyboard(key);
   }
-  else if (screen == WORDPROCESSOR)
+  else if (screen == WORDPROCESSOR || screen == SLEEPSCREEN || screen == WAKEUPSCREEN)
   {
     // send the key stroke to word processor
     WP_keyboard(key, pressed);
