@@ -39,6 +39,7 @@
 //
 void display_setup();
 void display_loop();
+int display_core(); // show which core to run display routine
 
 //
 void display_keyboard(int key, bool pressed, int index = -1);

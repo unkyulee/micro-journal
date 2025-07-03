@@ -7,6 +7,7 @@
 #include "GUI/WordProcessor/WordProcessor.h"
 #include "GUI/Menu/Menu.h"
 #include "GUI/KeyboardScreen/KeyboardScreen.h"
+#include "GUI/WakeUp/WakeUp.h"
 
 /*
 #include "GUI/Menu/Menu.h"
@@ -68,14 +69,22 @@ void display_ST7735_loop()
         ErrorScreen_render(&tft, &u8f);
     }
 
-    // TBD: Wakeup Screen
-    // Word Processor
-    else if (screen == SLEEPSCREEN || screen == WAKEUPSCREEN || screen == WORDPROCESSOR)
+    // Wakeup Screen
+    else if (screen == WAKEUPSCREEN)
     {
-      // TBD: to be deleted: skip wakeupscreen
-      screen = WORDPROCESSOR;
-      app["screen"] = WORDPROCESSOR;
+      // setup only once
+      if (screen != screen_prev)
+        WakeUp_setup(&tft, &u8f);
+      else
+        // loop
+        WakeUp_render(&tft, &u8f);
+    }
 
+    // TBD: Sleep Screen
+    
+    // Word Processor
+    else if (screen == WORDPROCESSOR)
+    {
       // setup only once
       if (screen != screen_prev)
         WP_setup(&tft, &u8f);
@@ -134,7 +143,23 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
     // send the key stroke to word processor
     Menu_keyboard(key, pressed);
   }
-  else if(screen == KEYBOARDSCREEN) {
+  else if (screen == KEYBOARDSCREEN)
+  {
     KeyboardScreen_keyboard(key, pressed, index);
   }
+}
+
+int display_ST7735_core()
+{
+  // in case of using GIF or blocking task then move it to core 1
+  JsonDocument &app = status();
+  int screen = app["screen"].as<int>();
+
+  if (screen == KEYBOARDSCREEN || screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
+  {
+    return 1;
+  }
+
+  // by default run at the main core
+  return 0;
 }

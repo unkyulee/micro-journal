@@ -115,7 +115,7 @@ void keyboard_keypad_68_loop()
     static bool knob_pressed = false;
 
     // check if knob is long pressed - 2 seconds
-    if (knob_pressed == true && millis() - knob_press_time > 2000 && app["knobLongPressed"].as<bool>() == false)
+    if (knob_pressed == true && millis() - knob_press_time > 1000 && app["knobLongPressed"].as<bool>() == false)
     {
         // knob is long pressed
         // mark the flag and send out released event        

@@ -9,7 +9,6 @@
 // keyboard
 #include "keyboard/keyboard.h"
 
-
 /*----------------------------------------------
 Dual Core: First Core
 First core will have slightly higher priority
@@ -34,10 +33,11 @@ void setup()
 void loop()
 {
     //
-    display_loop();
+    if (display_core() == 0)
+        display_loop();
 
     //
-    keyboard_loop();    
+    keyboard_loop();
 
     // try to yield to avoid infinite loop
     yield();
@@ -50,7 +50,6 @@ and slowed and yet has still less impact.
 Such as background tasks.
 ----------------------------------------------*/
 
-
 void setup1()
 {
 }
@@ -59,6 +58,10 @@ void loop1()
 {
     // background tasks will be handled
     app_loop();
+
+    //
+    if (display_core() == 1)
+        display_loop();
 
     // try to yield to avoid infinite loop
     yield();

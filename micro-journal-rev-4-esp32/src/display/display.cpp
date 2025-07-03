@@ -39,8 +39,13 @@ void display_setup()
   //
   _log("Display initializing with screen %d\n", screen);
 
-  //
-  if (screen != ERRORSCREEN)
+  // Show Error Screen if error is set
+  if (screen == ERRORSCREEN)
+  {
+    _log("Display Error Screen\n");
+    return;
+  }
+  else
   {
     //
     // if screen is not specified
@@ -102,5 +107,21 @@ void display_keyboard(int key, bool pressed, int index)
 
 #ifdef ST7735_DRIVER
   display_ST7735_keyboard(key, pressed, index);
+#endif
+}
+
+int display_core()
+{
+
+#ifdef ILI9341_DRIVER
+  display_ILI9341_core();
+#endif
+
+#ifdef LILYGO_T5_EPD47_S3
+  display_EPD_core();
+#endif
+
+#ifdef ST7735_DRIVER
+  return display_ST7735_core();
 #endif
 }
