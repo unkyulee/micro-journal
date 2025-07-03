@@ -1,5 +1,6 @@
 #include "Knob.h"
 #include "display/display.h"
+#include "app/app.h"
 
 #include <RotaryEncoder.h>
 

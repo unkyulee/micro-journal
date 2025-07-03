@@ -315,6 +315,7 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_keyboard(int key, bool pressed)
 {
+    JsonDocument &app = status();
     _debug("WP_keyboard %d\n", key);
 
     // Check if menu key is pressed
@@ -326,9 +327,18 @@ void WP_keyboard(int key, bool pressed)
             // Save before transitioning to the menu
             Editor::getInstance().saveFile();
 
-            //
-            JsonDocument &app = status();
-            app["screen"] = MENUSCREEN;
+            if (app["knobLongPressed"].as<bool>())
+            {
+                // move to writerDeck
+                _debug("WP_keyboard - Received LONG PRESS MENU Key\n");
+                app["screen"] = KEYBOARDSCREEN;
+            }
+            else
+            {
+                // open menu
+                _debug("WP_keyboard - Received MENU Key\n");
+                app["screen"] = MENUSCREEN;
+            }
         }
     }
 

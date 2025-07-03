@@ -97,6 +97,10 @@ void keyboard_keypad_68_setup()
     //
     customKeypad.begin();
 
+    // reset long press flag
+    JsonDocument &app = status();
+    app["knobLongPressed"] = false;
+
     //
     _log("Keypad initialized\n");
 }
@@ -104,6 +108,24 @@ void keyboard_keypad_68_setup()
 //
 void keyboard_keypad_68_loop()
 {
+    JsonDocument &app = status();
+
+    // knob long press logic
+    static unsigned long knob_press_time = 0;
+    static bool knob_pressed = false;
+
+    // check if knob is long pressed - 2 seconds
+    if (knob_pressed == true && millis() - knob_press_time > 2000 && app["knobLongPressed"].as<bool>() == false)
+    {
+        // knob is long pressed
+        // mark the flag and send out released event        
+        app["knobLongPressed"] = true;
+
+        _debug("[keyboard_keypad_68_loop] knob long press detected\n");
+        display_keyboard(MENU, KEY_JUST_RELEASED, 69);
+    }
+
+    //
     static unsigned int last = 0;
     if (millis() - last > 10)
     {
@@ -112,7 +134,6 @@ void keyboard_keypad_68_loop()
 
         // put your main code here, to run repeatedly:
         customKeypad.tick();
-
         while (customKeypad.available())
         {
             //
@@ -120,6 +141,31 @@ void keyboard_keypad_68_loop()
             _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d\n",
                    e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL);
 
+            // Check if knob is long pressed
+            if (e.bit.KEY == 69)
+            {
+                if (e.bit.EVENT == KEY_JUST_PRESSED)
+                {
+                    knob_press_time = millis();
+                    knob_pressed = true;
+                }
+                else
+                {
+                    knob_pressed = false;
+                    // reset long press flag
+                    JsonDocument &app = status();
+                    if (app["knobLongPressed"].as<bool>())
+                    {
+                        app["knobLongPressed"] = false;
+
+                        // do not send out a released event
+                        _debug("[keyboard_keypad_68_loop] knob long pressed and ignore actual released event\n");
+                        return;
+                    }
+                }
+            }
+
+            //
             // check if the key is pressed
             int character = keyboard_keypad_68_get_key(e);
 

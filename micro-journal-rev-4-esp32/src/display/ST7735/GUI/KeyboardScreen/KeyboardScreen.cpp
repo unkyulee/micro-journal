@@ -65,10 +65,24 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
     //
     if (index == 69)
     {
+        //
         if (!pressed)
         {
-            _debug("KeyboardScreen_keyboard - Received MENU Key\n");
-            app["screen"] = MENUSCREEN;
+            // check if this is a long press
+            // then toggle to writerDeck
+
+            if (app["knobLongPressed"].as<bool>())
+            {
+                // move to writerDeck
+                _debug("KeyboardScreen_keyboard - Received LONG PRESS MENU Key\n");
+                app["screen"] = WORDPROCESSOR;
+            }
+            else
+            {
+                // open menu
+                _debug("KeyboardScreen_keyboard - Received MENU Key\n");
+                app["screen"] = MENUSCREEN;
+            }
         }
 
         return;
