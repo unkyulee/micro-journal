@@ -159,7 +159,7 @@ void Home_keyboard(char key)
     else if (key == 'c')
     {
         // move to keyboard layout
-        app["menu"]["state"] = MENU_FOREGROUND;
+        app["menu"]["state"] = MENU_FONTCOLOR;
     }
 
     else if (key == 'r')

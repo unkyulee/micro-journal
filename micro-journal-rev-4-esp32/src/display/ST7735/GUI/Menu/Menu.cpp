@@ -6,6 +6,8 @@
 #include "Home/Home.h"
 #include "Storage/Storage.h"
 #include "Brightness/Brightness.h"
+#include "Background/Background.h"
+#include "FontColor/FontColor.h"
 
 // state
 bool menu_clear = false;
@@ -81,6 +83,21 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         Brightness_render(ptft, pu8f);
     }
 
+    else if (menu_state == MENU_BACKGROUND)
+    {
+        if (menu_state_prev != menu_state)
+            Background_setup(ptft, pu8f);
+
+        Background_render(ptft, pu8f);
+    }
+
+    else if (menu_state == MENU_FONTCOLOR)
+    {
+        if (menu_state_prev != menu_state)
+            FontColor_setup(ptft, pu8f);
+
+        FontColor_render(ptft, pu8f);
+    }
 
     // save prev state
     menu_state_prev = menu_state;
@@ -104,16 +121,30 @@ void Menu_keyboard(char key, bool pressed)
     }
 
     //
-    else if(menu_state == MENU_STORAGE)
+    else if (menu_state == MENU_STORAGE)
     {
         Storage_keyboard(key, pressed);
         return;
     }
 
     //
-    else if(menu_state == MENU_BRIGHTNESS)
+    else if (menu_state == MENU_BRIGHTNESS)
     {
         Brightness_keyboard(key, pressed);
+        return;
+    }
+
+        //
+    else if (menu_state == MENU_BACKGROUND)
+    {
+        Background_keyboard(key, pressed);
+        return;
+    }
+
+        //
+    else if (menu_state == MENU_FONTCOLOR)
+    {
+        FontColor_keyboard(key, pressed);
         return;
     }
 }

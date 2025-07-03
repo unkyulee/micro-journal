@@ -166,7 +166,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Background_render(ptft, pu8f);
     }
-    else if (menu_state == MENU_FOREGROUND)
+    else if (menu_state == MENU_FONTCOLOR)
     {
         if (menu_state_prev != menu_state)
             Foreground_setup(ptft, pu8f);
@@ -256,7 +256,7 @@ void Menu_keyboard(char key)
     }
 
     //
-    else if (menu_state == MENU_FOREGROUND)
+    else if (menu_state == MENU_FONTCOLOR)
     {
         Foreground_keyboard(key);
     }
