@@ -8,6 +8,7 @@
 #include "Brightness/Brightness.h"
 #include "Background/Background.h"
 #include "FontColor/FontColor.h"
+#include "Clear/Clear.h"
 
 // state
 bool menu_clear = false;
@@ -24,6 +25,7 @@ void Menu_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // refresh the background
     menu_clear = true;
     menu_state_prev = -1;
+    app["menu"]["state"] = MENU_HOME;
 }
 
 void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
@@ -99,6 +101,14 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         FontColor_render(ptft, pu8f);
     }
 
+    else if (menu_state == MENU_CLEAR)
+    {
+        if (menu_state_prev != menu_state)
+            Clear_setup(ptft, pu8f);
+
+        Clear_render(ptft, pu8f);
+    }
+
     // save prev state
     menu_state_prev = menu_state;
 }
@@ -134,17 +144,24 @@ void Menu_keyboard(char key, bool pressed)
         return;
     }
 
-        //
+    //
     else if (menu_state == MENU_BACKGROUND)
     {
         Background_keyboard(key, pressed);
         return;
     }
 
-        //
+    //
     else if (menu_state == MENU_FONTCOLOR)
     {
         FontColor_keyboard(key, pressed);
+        return;
+    }
+
+    //
+    else if (menu_state == MENU_CLEAR)
+    {
+        Clear_keyboard(key, pressed);
         return;
     }
 }

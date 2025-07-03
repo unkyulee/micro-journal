@@ -51,10 +51,12 @@ void knob_loop()
                 if (newDir == 1)
                 {
                     display_keyboard(21, true);
+                    display_keyboard(21, false);
                 }
                 else if (newDir == -1)
                 {
                     display_keyboard(20, true);
+                    display_keyboard(20, false);
                 }
             }
         }

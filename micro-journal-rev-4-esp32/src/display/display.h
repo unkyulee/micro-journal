@@ -9,6 +9,7 @@
 #define WAKEUPSCREEN 3
 #define SLEEPSCREEN 4
 #define KEYBOARDSCREEN 5
+#define UPDATESCREEN 6
 
 
 // menu id

@@ -45,6 +45,11 @@ void display_setup()
     _log("Display Error Screen\n");
     return;
   }
+  else if(screen == UPDATESCREEN) {
+    // go to firmware update screen
+    _log("Firmware Update Screen\n");
+    return;
+  }
   else
   {
     //

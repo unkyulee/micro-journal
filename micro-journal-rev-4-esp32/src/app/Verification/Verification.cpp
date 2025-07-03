@@ -5,6 +5,7 @@
 // check firmware update
 bool firmware_check()
 {
+#ifdef BOARD_ESP32_S3
     // load app status
     JsonDocument &app = status();
 
@@ -14,16 +15,14 @@ bool firmware_check()
     if (gfs()->exists(FIRMWARE))
     {
         // move to firmware update screen
-        app["screen"] = MENUSCREEN;
-        app["menu"]["state"] = MENU_FIRMWARE;
+        app["screen"] = UPDATESCREEN;
 
         return true;
     }
+#endif
 
     return false;
 }
-
-
 
 // check if file system is correctly loaded
 bool filesystem_check()

@@ -8,15 +8,15 @@ int selectedHome = 0;
 
 //
 const char *menu[] = {
-    "Keyboard",
-    "writerDeck",
-    "Export File",
+    "Keyboard",         // 0
+    "writerDeck",       // 1
+    "Export File",      // 2
     "Info Text",
-    "Brightness",
-    "Color BG",
-    "Color Font",
-    "Battery Level",
-    "Clear Text",
+    "Brightness",      // 4
+    "Color BG",        // 5
+    "Color Font",      // 6
+    "FW Update",       // 7
+    "Clear Text",      // 8
     "Exit"};
 
 //
@@ -71,8 +71,13 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Home_keyboard(char key, bool pressed)
 {
+    // react to only key release
+    if(pressed) return;
+
+    //
     _debug("Home_Keyboard %d selectedHome %d\n", key, selectedHome);
     JsonDocument &app = status();
+   
 
     // UP
     if (key == 21)
@@ -147,6 +152,24 @@ void Home_keyboard(char key, bool pressed)
             {
                 _debug("Font Color Selected\n");
                 app["menu"]["state"] = MENU_FONTCOLOR;
+            }
+
+            // 7 - Firmware Update
+            else if (selectedHome == 7)
+            {
+                _debug("Firmware Update Selected\n");
+
+                // Reboot RP2040 with Boot Mode
+                rp2040.rebootToBootloader();
+            }
+
+            // 8 - Clear Text
+            else if (selectedHome == 8)
+            {
+                _debug("Clear Text Selected\n");
+
+                // Delete file content
+                app["menu"]["state"] = MENU_CLEAR;
             }
 
             // last item is EXIT

@@ -4,12 +4,12 @@
 #include "service/Editor/Editor.h"
 
 // screens
-#include "GUI/ErrorScreen/ErrorScreen.h"
-#include "GUI/WordProcessor/WordProcessor.h"
-#include "GUI/Menu/Menu.h"
-#include "GUI/KeyboardScreen/KeyboardScreen.h"
-#include "GUI/WakeUp/WakeUp.h"
-#include "GUI/Sleep/Sleep.h"
+#include "ErrorScreen/ErrorScreen.h"
+#include "WordProcessor/WordProcessor.h"
+#include "Menu/Menu.h"
+#include "KeyboardScreen/KeyboardScreen.h"
+#include "WakeUp/WakeUp.h"
+#include "Sleep/Sleep.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
