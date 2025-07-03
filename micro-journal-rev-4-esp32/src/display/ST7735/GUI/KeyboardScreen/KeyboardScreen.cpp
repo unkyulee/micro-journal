@@ -1,31 +1,28 @@
 #include "KeyboardScreen.h"
 #include "app/app.h"
 #include "display/display.h"
+#include "service/GIF/GIF.h"
 
 #include <Keyboard.h>
+
+bool _keyboard_gif_loaded = false;
 
 //
 void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    //
     ptft->fillScreen(TFT_BLACK);
+
+    //
+    _keyboard_gif_loaded = gif_setup(ptft, pu8f, "/keyboard.gif", KEYBOARDSCREEN, false);
 }
 
 //
 void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    ///
-    ptft->setTextSize(2); // Adjust text size as needed
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-
-    // Draw text in the middle of the screen
-    ptft->setCursor(0, 0);
-    ptft->print("\n");
-    ptft->print("\n");
-    ptft->print("USB Keyboard ");
-
-    // Setup USB Keyboard
-
-    // TBD: Play GIF
+    // Play GIF
+    if (_keyboard_gif_loaded)
+        gif_render(ptft, pu8f);
 }
 
 /*
@@ -70,18 +67,28 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
         {
             // check if this is a long press
             // then toggle to writerDeck
-
             if (app["knobLongPressed"].as<bool>())
             {
                 // move to writerDeck
                 _debug("KeyboardScreen_keyboard - Received LONG PRESS MENU Key\n");
-                app["screen"] = WORDPROCESSOR;
+                Keyboard.releaseAll();
+
+                if (_keyboard_gif_loaded)
+                    gif_stop(WAKEUPSCREEN);
+                else
+                    app["screen"] = WAKEUPSCREEN;
             }
             else
             {
                 // open menu
                 _debug("KeyboardScreen_keyboard - Received MENU Key\n");
-                app["screen"] = MENUSCREEN;
+                Keyboard.releaseAll();
+
+                if (_keyboard_gif_loaded)
+                    gif_stop(MENUSCREEN);
+                else
+                    app["screen"] = MENUSCREEN;
+
             }
         }
 

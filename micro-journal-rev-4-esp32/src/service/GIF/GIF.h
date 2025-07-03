@@ -7,7 +7,7 @@
 #define NORMAL_SPEED // Comment out for rame rate for render speed test
 
 //
-void gif_setup(
+bool gif_setup(
     TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f, 
     String filename,
     int screenNext, 
@@ -15,6 +15,6 @@ void gif_setup(
 );
 void gif_render(TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f);
 
-void gif_stop();
-void gif_load(String filename);
+void gif_stop(int screen_next = -1);
+bool gif_load(String filename);
 void gif_unload();

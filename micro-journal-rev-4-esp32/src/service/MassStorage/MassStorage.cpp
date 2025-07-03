@@ -8,7 +8,6 @@ bool massStorageStarted = false;
 
 void ms_setup()
 {
-
 }
 
 void ms_loop()
@@ -32,7 +31,9 @@ void ms_loop()
 
                 _log("FatFSUSB begin\n");
             }
-        } else {
+        }
+        else
+        {
             if (massStorageStarted == true)
             {
                 FatFSUSB.end();

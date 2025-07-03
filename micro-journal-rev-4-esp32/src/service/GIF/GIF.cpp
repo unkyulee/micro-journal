@@ -31,8 +31,11 @@ bool play_once = false;
 int screen_next;
 
 //
-void gif_setup(TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f, String filename, int screenNext, bool playOnce)
+bool gif_setup(TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f, String filename, int screenNext, bool playOnce)
 {
+    //
+    gif_unload();
+
     // save the display handle
     ptft = p;
 
@@ -45,7 +48,8 @@ void gif_setup(TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f, String filename, int screen
     screen_next = screenNext;
 
     // load gif image
-    gif_load(filename);
+    _log("[gif_setup] GIF setup completed and loaded file: %s\n", filename.c_str());
+    return gif_load(filename);    
 }
 
 void gif_unload()
@@ -73,10 +77,12 @@ void gif_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         }
         gif.close();
         ptft->endWrite(); // Release TFT chip select for other SPI devices
+    } else {
+        //_debug("[gif_render] gif.open returned false\n");
     }
 
     // just play once
-    if (play_once)
+    if (play_once || stop_gif)
     {
         // free memory
         gif_unload();
@@ -88,18 +94,19 @@ void gif_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 //
-void gif_load(String filename)
+bool gif_load(String filename)
 {
-    // check if file exists in SD card
+    // check if file exists 
+    _log("[gif_load] checking if file exists: %s\n", filename.c_str());
     if (gfs()->exists(filename.c_str()))
     {
-        _log("[gif_load] Loading %s from SD\n", filename.c_str());
+        _log("[gif_load] Loading %s from the file system\n", filename.c_str());
         // load image
         File file = gfs()->open(filename.c_str(), "r");
         if (!file)
         {
             _log("[gif_load] Failed to open file for reading\n");
-            return;
+            return false;
         }
 
         // Allocate memory for the image
@@ -109,7 +116,7 @@ void gif_load(String filename)
         if (gif_image_size > 1100000)
         {
             _log("[gif_load] File size too big %d from SD\n", gif_image_size);
-            return;
+            return false;
         }
 
         //
@@ -118,7 +125,7 @@ void gif_load(String filename)
         if (gif_image == NULL)
         {
             _log("[gif_load] Failed to allocate memory\n");
-            return;
+            return false;
         }
         _log("[gif_load] File alloc success\n");
 
@@ -128,13 +135,23 @@ void gif_load(String filename)
 
         // Close the file
         file.close();
+
+        // gif loading success
+        return true;
+    } else {
+        _log("[gif_load] file doesn't not exist: %s\n", filename.c_str());
+        return false;
     }
 }
 
 //
-void gif_stop()
+void gif_stop(int _screen_next)
 {
-    _log("wakeup stop keyboard\n");
+    //
+    if(_screen_next != -1) screen_next = _screen_next;
+
+    //
+    _log("Stop GIF animation6 to move to next screen %d\n", screen_next);
 
     // at the next frame gif will stop
     stop_gif = true;

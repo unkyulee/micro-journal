@@ -8,10 +8,7 @@
 #include "GUI/Menu/Menu.h"
 #include "GUI/KeyboardScreen/KeyboardScreen.h"
 #include "GUI/WakeUp/WakeUp.h"
-
-/*
-#include "GUI/Menu/Menu.h"
-*/
+#include "GUI/Sleep/Sleep.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
@@ -80,7 +77,16 @@ void display_ST7735_loop()
         WakeUp_render(&tft, &u8f);
     }
 
-    // TBD: Sleep Screen
+    // Sleep Screen
+        else if (screen == SLEEPSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        Sleep_setup(&tft, &u8f);
+      else
+        // loop
+        Sleep_render(&tft, &u8f);
+    }
     
     // Word Processor
     else if (screen == WORDPROCESSOR)
@@ -133,10 +139,20 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
   {
     ErrorScreen_keyboard(key);
   }
-  else if (screen == WORDPROCESSOR || screen == SLEEPSCREEN || screen == WAKEUPSCREEN)
+  else if (screen == WORDPROCESSOR)
   {
     // send the key stroke to word processor
     WP_keyboard(key, pressed);
+  }
+  else if (screen == WAKEUPSCREEN)
+  {
+    // send the key stroke to wakeup screen
+    WakeUp_keyboard(key, pressed, index);
+  }
+  else if (screen == SLEEPSCREEN)
+  {
+    // send the key stroke to sleep screen
+    Sleep_keyboard(key, pressed, index);
   }
   else if (screen == MENUSCREEN)
   {
