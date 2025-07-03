@@ -25,6 +25,7 @@
 #define MENU_STARTUP 10
 #define MENU_BLUETOOTH 11
 #define MENU_STORAGE 12
+#define MENU_BRIGHTNESS 13
 
 // MENU button
 #define FN 28 

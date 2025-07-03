@@ -5,6 +5,7 @@
 // sub menu module
 #include "Home/Home.h"
 #include "Storage/Storage.h"
+#include "Brightness/Brightness.h"
 
 // state
 bool menu_clear = false;
@@ -72,6 +73,15 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         Storage_render(ptft, pu8f);
     }
 
+    else if (menu_state == MENU_BRIGHTNESS)
+    {
+        if (menu_state_prev != menu_state)
+            Brightness_setup(ptft, pu8f);
+
+        Brightness_render(ptft, pu8f);
+    }
+
+
     // save prev state
     menu_state_prev = menu_state;
 }
@@ -92,9 +102,18 @@ void Menu_keyboard(char key, bool pressed)
         Home_keyboard(key, pressed);
         return;
     }
+
+    //
     else if(menu_state == MENU_STORAGE)
     {
         Storage_keyboard(key, pressed);
+        return;
+    }
+
+    //
+    else if(menu_state == MENU_BRIGHTNESS)
+    {
+        Brightness_keyboard(key, pressed);
         return;
     }
 }

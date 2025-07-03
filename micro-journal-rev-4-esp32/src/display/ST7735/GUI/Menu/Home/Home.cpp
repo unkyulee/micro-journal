@@ -12,9 +12,10 @@ const char *menu[] = {
     "writerDeck",
     "Export File",
     "Info Text",
+    "Brightness",    
     "Clear Text",
     "Color BG",
-    "Color Font",
+    "Color Font",    
     "Battery Level",
     "Exit"};
 
@@ -125,6 +126,13 @@ void Home_keyboard(char key, bool pressed)
             {
                 _debug("Export File Selected\n");
                 app["menu"]["state"] = MENU_STORAGE;
+            }
+
+             // 4 - Brightness
+            else if (selectedHome == 4)
+            {
+                _debug("Brightness Selected\n");
+                app["menu"]["state"] = MENU_BRIGHTNESS;
             }
 
             // last item is EXIT

@@ -39,6 +39,18 @@ void display_ST7735_setup()
 
   // connect u8g2 procedures to TFT_eSPI
   u8f.begin(tft);
+
+  // set brightness to 10 if config not set
+  JsonDocument &app = status();
+  if (!app["config"]["brightness"].is<int>())
+  {
+    app["config"]["brightness"] = 10;
+  }
+
+  //
+  int brightness = app["config"]["brightness"].as<int>();
+  pinMode(TFT_BL, OUTPUT);
+  analogWrite(TFT_BL, 255/(11-brightness)); // Set brightness (0=off, 255=full)
 }
 
 //
@@ -52,6 +64,8 @@ void display_ST7735_loop()
     JsonDocument &app = status();
     int screen = app["screen"].as<int>();
     int screen_prev = app["screen_prev"].as<int>();
+    int brightness = app["config"]["brightness"].as<int>();
+    analogWrite(TFT_BL, 255/(11-brightness)); // Set brightness (0=off, 255=full)
 
     //_log("Display ST7735 loop called, screen: %d, screen_prev: %d\n", screen, screen_prev);
 
@@ -78,7 +92,7 @@ void display_ST7735_loop()
     }
 
     // Sleep Screen
-        else if (screen == SLEEPSCREEN)
+    else if (screen == SLEEPSCREEN)
     {
       // setup only once
       if (screen != screen_prev)
@@ -87,7 +101,7 @@ void display_ST7735_loop()
         // loop
         Sleep_render(&tft, &u8f);
     }
-    
+
     // Word Processor
     else if (screen == WORDPROCESSOR)
     {
