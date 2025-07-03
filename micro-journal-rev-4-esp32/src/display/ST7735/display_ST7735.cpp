@@ -1,6 +1,7 @@
 #include "display_ST7735.h"
 #include "display/display.h"
 #include "app/app.h"
+#include "service/Editor/Editor.h"
 
 // screens
 #include "GUI/ErrorScreen/ErrorScreen.h"
@@ -50,22 +51,24 @@ void display_ST7735_setup()
   //
   int brightness = app["config"]["brightness"].as<int>();
   pinMode(TFT_BL, OUTPUT);
-  analogWrite(TFT_BL, 255/(11-brightness)); // Set brightness (0=off, 255=full)
+  analogWrite(TFT_BL, 255 / (11 - brightness)); // Set brightness (0=off, 255=full)
 }
 
 //
 void display_ST7735_loop()
 {
+  JsonDocument &app = status();
+  int screen = app["screen"].as<int>();
+
+  //
   static unsigned int last = millis();
   if (millis() - last > 150)
   {
     last = millis();
 
-    JsonDocument &app = status();
-    int screen = app["screen"].as<int>();
     int screen_prev = app["screen_prev"].as<int>();
     int brightness = app["config"]["brightness"].as<int>();
-    analogWrite(TFT_BL, 255/(11-brightness)); // Set brightness (0=off, 255=full)
+    analogWrite(TFT_BL, 255 / (11 - brightness)); // Set brightness (0=off, 255=full)
 
     //_log("Display ST7735 loop called, screen: %d, screen_prev: %d\n", screen, screen_prev);
 
@@ -138,6 +141,10 @@ void display_ST7735_loop()
     //
     app["screen_prev"] = screen;
   }
+
+  // Editor house keeping
+  if (screen == WORDPROCESSOR)
+    Editor::getInstance().loop();
 }
 
 // Redirect the key press to the current GUI

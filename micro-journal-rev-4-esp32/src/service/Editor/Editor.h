@@ -49,6 +49,7 @@ public:
 
     // Initialize the editor with the number of columns and rows
     void init(int cols, int rows);
+    void loop(); // house keeping tasks
 
     // File Operation
     void loadFile(String fileName);
@@ -56,7 +57,11 @@ public:
     void clearFile();
 
     // Handle Keyboard Inputs
-    void keyboard(char key);
+    void keyboard(char key, bool pressed);
+    char lastKey = 0;
+    unsigned long lastPressTime = 0;
+    unsigned long repeatInterval = 80; // ms between repeats
+    unsigned long repeatDelay = 300;   // ms before repeat starts
     
     //
     int getBufferSize() { return strlen(buffer); }

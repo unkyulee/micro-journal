@@ -345,8 +345,7 @@ void WP_keyboard(int key, bool pressed)
     else
     {
         // send the keys to the editor
-        if (pressed)
-            Editor::getInstance().keyboard(key);
+        Editor::getInstance().keyboard(key, pressed);
     }
 }
 

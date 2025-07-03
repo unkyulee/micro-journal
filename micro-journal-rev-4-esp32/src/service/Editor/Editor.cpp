@@ -125,7 +125,7 @@ void Editor::loadFile(String fileName)
     // reset the buffer
     resetBuffer();
 
-    // Read file content into text buffer    
+    // Read file content into text buffer
     int bufferSize = 0;
     while (file.available())
     {
@@ -138,8 +138,8 @@ void Editor::loadFile(String fileName)
     delay(100);
 
     // log
-    _debug("Editor::loadFile size: %d, seek: %d, buffer: %d, cursor: %d\n", 
-        fileSize, seekPos, bufferSize, cursorPos);
+    _debug("Editor::loadFile size: %d, seek: %d, buffer: %d, cursor: %d\n",
+           fileSize, seekPos, bufferSize, cursorPos);
 
     // Update the Screen Buffer
     updateScreen();
@@ -279,10 +279,10 @@ void Editor::clearFile()
     {
         //
         app["error"] = format("Error making a backup file. %s\n", backupFileName);
-        app["screen"] = ERRORSCREEN;    
+        app["screen"] = ERRORSCREEN;
 
         //
-        _log(app["error"]);        
+        _log(app["error"]);
 
         return;
     }
@@ -309,253 +309,302 @@ void Editor::clearFile()
     loadFile(fileName);
 }
 
-// Handle Keyboard Input
-void Editor::keyboard(char key)
+// House Keeping Tasks
+void Editor::loop()
 {
-    _debug("Editor::keyboard:: %c\n", key);
-
-    //////////////////////////
-    // BACKWARD EDITING
-    //////////////////////////
-    if (key == '\b')
+    unsigned long now = millis();
+    // Auto Repeat is activated
+    if (lastKey != 0)
     {
-        // buffer has more than 1 character
-        if (getBufferSize() > 0)
+        // check if past point of repeatDelay
+        if (now - lastPressTime > repeatDelay)
         {
-            removeLastChar();
-            // set saved flag to false
-            this->saved = false;
-        }
-        // buffer emptied
-        else
-        {
-            // Load previous contents from the file if at the beginning of the buffer
-            _log("Backspace reached the beginning of the buffer\n");
+            // Check if past repeatInterval
+            if (now - lastPressTime - repeatDelay >= repeatInterval)
+            {
+                keyboard(lastKey, true);
+                lastPressTime = now - repeatDelay;
+            }
         }
     }
+}
 
-    // DEL key deletes the word
-    else if (key == 127)
+// Handle Keyboard Input
+void Editor::keyboard(char key, bool pressed)
+{
+    // ignore 0 character
+    if (key == 0)
+        return;
+
+    //
+    _debug("Editor::keyboard:: %c pressed: %d \n", key, pressed);
+
+    // when any key is pressed track the last key pressed and if they don't release
+    // keep issueing press events so that it keeps on typing on the screen
+    if (pressed)
     {
-        if (getBufferSize() > 0)
+        if (key != lastKey)
         {
-            // if editing at the end of the line then remove word
-            if (cursorPos == getBufferSize())
-            {
-                removeLastWord();
-            }
-
-            else
-            {
-                // remove word in front
-                removeCharAtCursor();
-            }
-
-            // set saved flag to false
-            this->saved = false;
-        }
-        // buffer emptied
-        else
-        {
-            // Load previous contents from the file if at the beginning of the buffer
-            _log("Delete word reached the beginning of the buffer\n");
+            // New key or new press: process immediately
+            lastKey = key;
+            lastPressTime = millis();
+            _debug("Auto Repeat %d %d\n", lastKey, lastPressTime);
         }
     }
-
-    //////////////////////////
-    // CURSORS
-    //////////////////////////
-    else if (key >= 18 && key <= 23 || key == 2 || key == 3)
+    else
     {
-        // arrow keys
-        // 18 - Left, 19 - Right, 20 - Up, 21 - Down
-        // 22 - Page Up, 23 - Page Down
-        // 2 - Home 3 - End
-        if (key == 18)
+        _debug("Auto Repeat Release %d\n", lastKey);
+        // Key released: reset state
+        lastKey = 0;
+        lastPressTime = 0;
+    }
+
+    // below is only for when the key is pressed
+    if (pressed)
+    {
+        //////////////////////////
+        // BACKWARD EDITING
+        //////////////////////////
+        if (key == '\b')
         {
-            if (cursorPos == 0)
+            // buffer has more than 1 character
+            if (getBufferSize() > 0)
             {
-                // load previous page
+                removeLastChar();
+                // set saved flag to false
+                this->saved = false;
             }
+            // buffer emptied
             else
             {
-                // left
-                --cursorPos;
+                // Load previous contents from the file if at the beginning of the buffer
+                _log("Backspace reached the beginning of the buffer\n");
             }
         }
-        else if (key == 19)
-        {
-            // cursor can't move outside the last text
-            if (cursorPos < getBufferSize())
-                ++cursorPos;
-        }
 
-        // UP
-        else if (key == 20)
+        // DEL key deletes the word
+        else if (key == 127)
         {
-            // move the cursorPos to the start of the previous line
-            if (cursorLine > 0)
+            if (getBufferSize() > 0)
             {
-                // look at the previous line and move to the start of the cursor
-                int newCursorPos =
-                    linePositions[cursorLine - 1] - linePositions[0];
-
-                // if previous line length is shorter than cursorLinePos
-                int previousLineLength = lineLengths[cursorLine - 1];
-                if (previousLineLength < cursorLinePos)
+                // if editing at the end of the line then remove word
+                if (cursorPos == getBufferSize())
                 {
-                    // then move to the end of the previous line
-                    newCursorPos += previousLineLength - 1;
+                    removeLastWord();
+                }
+
+                else
+                {
+                    // remove word in front
+                    removeCharAtCursor();
+                }
+
+                // set saved flag to false
+                this->saved = false;
+            }
+            // buffer emptied
+            else
+            {
+                // Load previous contents from the file if at the beginning of the buffer
+                _log("Delete word reached the beginning of the buffer\n");
+            }
+        }
+
+        //////////////////////////
+        // CURSORS
+        //////////////////////////
+        else if (key >= 18 && key <= 23 || key == 2 || key == 3)
+        {
+            // arrow keys
+            // 18 - Left, 19 - Right, 20 - Up, 21 - Down
+            // 22 - Page Up, 23 - Page Down
+            // 2 - Home 3 - End
+            if (key == 18)
+            {
+                if (cursorPos == 0)
+                {
+                    // load previous page
                 }
                 else
                 {
-                    // if previous line length is long enough 
-                    // then move as much as the currentLineCursorPos
-                    newCursorPos += cursorLinePos;
+                    // left
+                    --cursorPos;
+                }
+            }
+            else if (key == 19)
+            {
+                // cursor can't move outside the last text
+                if (cursorPos < getBufferSize())
+                    ++cursorPos;
+            }
+
+            // UP
+            else if (key == 20)
+            {
+                // move the cursorPos to the start of the previous line
+                if (cursorLine > 0)
+                {
+                    // look at the previous line and move to the start of the cursor
+                    int newCursorPos =
+                        linePositions[cursorLine - 1] - linePositions[0];
+
+                    // if previous line length is shorter than cursorLinePos
+                    int previousLineLength = lineLengths[cursorLine - 1];
+                    if (previousLineLength < cursorLinePos)
+                    {
+                        // then move to the end of the previous line
+                        newCursorPos += previousLineLength - 1;
+                    }
+                    else
+                    {
+                        // if previous line length is long enough
+                        // then move as much as the currentLineCursorPos
+                        newCursorPos += cursorLinePos;
+                    }
+
+                    // edge case
+                    if (newCursorPos < 0)
+                        newCursorPos = 0;
+
+                    //
+                    cursorPos = newCursorPos;
+                }
+            }
+
+            // DOWN
+            else if (key == 21)
+            {
+                // move the cursorPos to the start of the next line
+                if (cursorLine < totalLine)
+                {
+                    //
+                    int newCursorPos =
+                        linePositions[cursorLine + 1] - linePositions[0];
+
+                    // next line length
+                    int nextLineLength = max(lineLengths[cursorLine + 1], 1);
+
+                    // if next line has shorter length of the current cursor pos
+                    // then move to the end of the next line
+                    if (cursorLinePos > nextLineLength)
+                    {
+                        newCursorPos += nextLineLength - 1;
+                    }
+                    else
+                    {
+                        //
+                        newCursorPos += cursorLinePos;
+                    }
+
+                    // handle edge case
+                    if (newCursorPos > getBufferSize())
+                        newCursorPos = getBufferSize();
+
+                    //
+                    cursorPos = newCursorPos;
+                    cursorLine += 1;
                 }
 
-                // edge case
-                if (newCursorPos < 0)
-                    newCursorPos = 0;
+                // when trying to go down at the last line, move the cursor to the end
+                else if (cursorLine == totalLine)
+                {
 
+                    // if last line then move to the end of the buffer
+                    cursorPos = getBufferSize();
+
+                    _debug("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
+                           cursorPos);
+                }
+            }
+
+            // HOME
+            else if (key == 2)
+            {
+                // home - move to the start of the line
+                int newCursorPos =
+                    linePositions[cursorLine] - linePositions[0];
                 //
                 cursorPos = newCursorPos;
             }
-        }
 
-        // DOWN
-        else if (key == 21)
-        {
-            // move the cursorPos to the start of the next line
-            if (cursorLine < totalLine)
+            // END
+            else if (key == 3)
             {
-                //
+                // end - move to the end of the line
+                int lineLength = max(lineLengths[cursorLine], 1);
                 int newCursorPos =
-                    linePositions[cursorLine + 1] - linePositions[0];
+                    linePositions[cursorLine] - linePositions[0] + lineLength - 1;
 
-                // next line length
-                int nextLineLength = max(lineLengths[cursorLine + 1], 1);
-
-                // if next line has shorter length of the current cursor pos
-                // then move to the end of the next line
-                if (cursorLinePos > nextLineLength)
-                {
-                    newCursorPos += nextLineLength - 1;
-                }
-                else
-                {
-                    //
-                    newCursorPos += cursorLinePos;
-                }
-
-                // handle edge case
-                if (newCursorPos > getBufferSize())
+                // if last line then move to the end of the buffer
+                if (cursorLine == totalLine)
                     newCursorPos = getBufferSize();
 
                 //
                 cursorPos = newCursorPos;
-                cursorLine += 1;
             }
 
-            // when trying to go down at the last line, move the cursor to the end
-            else if (cursorLine == totalLine)
+            // PAGE UP
+            else if (key == 22)
             {
+                int newCursorLine = max(cursorLine - rows, 0);
+                int newCursorPos =
+                    linePositions[newCursorLine] - linePositions[0];
+
+                //
+                cursorPos = newCursorPos;
+            }
+
+            // PAGE DOWN
+            else if (key == 23)
+            {
+                int newCursorLine = min(cursorLine + rows, totalLine);
+                int lineLength = max(lineLengths[newCursorLine], 1);
+                int newCursorPos =
+                    linePositions[newCursorLine] - linePositions[0] + lineLength - 1;
 
                 // if last line then move to the end of the buffer
-                cursorPos = getBufferSize();
+                if (cursorLine == totalLine)
+                    newCursorPos = getBufferSize();
 
-                _debug("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
-                       cursorPos);
+                //
+                cursorPos = newCursorPos;
             }
         }
 
-        // HOME
-        else if (key == 2)
+        //////////////////////////
+        // FORWARD EDITING
+        //////////////////////////
+        else
         {
-            // home - move to the start of the line
-            int newCursorPos =
-                linePositions[cursorLine] - linePositions[0];
-            //
-            cursorPos = newCursorPos;
-        }
+            // add to the edit buffer new character
+            if (getBufferSize() > BUFFER_SIZE)
+            {
+                _log("Text buffer full\n");
 
-        // END
-        else if (key == 3)
-        {
-            // end - move to the end of the line
-            int lineLength = max(lineLengths[cursorLine], 1);
-            int newCursorPos =
-                linePositions[cursorLine] - linePositions[0] + lineLength - 1;
+                //
+                saveFile();
 
-            // if last line then move to the end of the buffer
-            if (cursorLine == totalLine)
-                newCursorPos = getBufferSize();
+                //
+                loadFile(fileName);
+            }
 
             //
-            cursorPos = newCursorPos;
+            addChar(key);
+
+            // set saved flag to false
+            this->saved = false;
         }
 
-        // PAGE UP
-        else if (key == 22)
-        {
-            int newCursorLine = max(cursorLine - rows, 0);
-            int newCursorPos =
-                linePositions[newCursorLine] - linePositions[0];
-
-            //
-            cursorPos = newCursorPos;
-        }
-
-        // PAGE DOWN
-        else if (key == 23)
-        {
-            int newCursorLine = min(cursorLine + rows, totalLine);
-            int lineLength = max(lineLengths[newCursorLine], 1);
-            int newCursorPos =
-                linePositions[newCursorLine] - linePositions[0] + lineLength - 1;
-
-            // if last line then move to the end of the buffer
-            if (cursorLine == totalLine)
-                newCursorPos = getBufferSize();
-
-            //
-            cursorPos = newCursorPos;
-        }
+        // update the screen buffer
+        updateScreen();
     }
-
-    //////////////////////////
-    // FORWARD EDITING
-    //////////////////////////
-    else
-    {
-        // add to the edit buffer new character
-        if (getBufferSize() > BUFFER_SIZE)
-        {
-            _log("Text buffer full\n");
-
-            //
-            saveFile();
-
-            //
-            loadFile(fileName);
-        }
-
-        //
-        addChar(key);
-
-        // set saved flag to false
-        this->saved = false;
-    }
-
-    // update the screen buffer
-    updateScreen();
 }
 
 //
 void Editor::updateScreen()
 {
     // Loop through the text buffer
-    // and product the data structure that is splitted in each line    
+    // and product the data structure that is splitted in each line
     _debug("Editor::updateScreen called\n");
 
     // Handle empty buffer
@@ -604,8 +653,8 @@ void Editor::updateScreen()
         {
             last_space_index = i;
             last_space_position = line_count;
-        } 
-        
+        }
+
         // Handle words longer than `cols`
         if (line_count == cols && last_space_index == -1)
         {
@@ -779,12 +828,12 @@ void Editor::removeLastWord()
     if (start <= 0)
     {
         start = 0;
-        buffer[0] = '\0';        
+        buffer[0] = '\0';
     }
     else
     {
         buffer[start] = ' ';
-        buffer[start + 1] = '\0';        
+        buffer[start + 1] = '\0';
     }
 
     cursorPos = getBufferSize();
