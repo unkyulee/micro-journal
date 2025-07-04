@@ -32,11 +32,6 @@ void _log(const char *format, ...)
 
     // Print to Serial
     Serial.printf("[%d][%d] %s", COREID, millis(), message);
-
-#if defined(DEBUG) && defined(LILYGO_T5_EPD47_S3)
-    // TX = GPIO16, RX = GPIO15, baud = 115200
-    Serial2.printf("[%d][%d] %s", COREID, millis(), message);
-#endif
 }
 
 //
@@ -60,9 +55,5 @@ void _debug(const char *format, ...)
     va_end(args);
 
     Serial.printf("[%d][%d] %s", COREID, millis(), message);
-#if defined(DEBUG) && defined(LILYGO_T5_EPD47_S3)
-    // TX = GPIO16, RX = GPIO15, baud = 115200
-    Serial2.printf("[%d][%d] %s", COREID, millis(), message);
-#endif
 #endif
 }
