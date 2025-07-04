@@ -42,21 +42,20 @@ void knob_loop()
             dirCount++;
             if (dirCount == 2)
             {
-                Serial.print("Valid rotation detected! Direction: ");
-                Serial.println(newDir);
+                _debug("Valid rotation detected! Direction: %d\n", newDir);
                 dirCount = 0; // Reset after valid rotation
 
                 // newDir - 1 UP
                 // newDir - -1 DOWN
                 if (newDir == 1)
                 {
-                    display_keyboard(21, true);
-                    display_keyboard(21, false);
+                    display_keyboard(21, true, 57);
+                    display_keyboard(21, false, 57);
                 }
                 else if (newDir == -1)
                 {
-                    display_keyboard(20, true);
-                    display_keyboard(20, false);
+                    display_keyboard(20, true, 67);
+                    display_keyboard(20, false, 67);
                 }
             }
         }

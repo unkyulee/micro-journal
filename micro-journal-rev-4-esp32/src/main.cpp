@@ -17,8 +17,6 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
-    delay(3000);
-
     // initialize app
     app_setup();
 
@@ -52,10 +50,18 @@ Such as background tasks.
 
 void setup1()
 {
+    // wait until the app is ready
+    while(true) {
+        if(app_ready()) break;
+        delay(1);
+    }
+
+    _log("Core 1 started.\n");
+    delay(1000);
 }
 
 void loop1()
-{
+{    
     // background tasks will be handled
     app_loop();
 

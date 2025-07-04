@@ -141,10 +141,6 @@ void display_ST7735_loop()
     //
     app["screen_prev"] = screen;
   }
-
-  // Editor house keeping
-  if (screen == WORDPROCESSOR)
-    Editor::getInstance().loop();
 }
 
 // Redirect the key press to the current GUI

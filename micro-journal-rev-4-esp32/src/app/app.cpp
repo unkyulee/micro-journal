@@ -7,6 +7,10 @@
 #include "service/MassStorage/MassStorage.h"
 #endif
 
+#ifdef BATTERY
+#include "service/Battery/Battery.h"
+#endif
+
 // When app is not ready. Such as file system is not initialized
 // then no more operation should occur.
 // this is a flag to check if the app is ready
@@ -48,6 +52,10 @@ void app_setup()
         return;
     }
 
+#ifdef BATTERY
+    battery_setup();
+#endif
+
     // app ready
     _ready = true;
 }
@@ -67,6 +75,11 @@ void app_loop()
     // Mass Storage Control Loop
     ms_loop();
 #endif
+
+#ifdef BATTERY
+    battery_loop();
+#endif
+
 }
 
 // status storage

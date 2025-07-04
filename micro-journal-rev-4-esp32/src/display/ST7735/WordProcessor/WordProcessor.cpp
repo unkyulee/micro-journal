@@ -75,6 +75,9 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     if (clear_background)
         clear_background = false;
+
+    //
+    Editor::getInstance().loop();
 }
 
 //
@@ -230,7 +233,11 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    const int width = 5;
+    //
+    JsonDocument &app = status();
+
+    //
+    const int width = 3;
     int color = TFT_RED;
     // SAVE STATUS
     if (Editor::getInstance().saved)
@@ -238,8 +245,11 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         color = TFT_GREEN;
     }
 
-    //
-    ptft->fillRect(screen_width - width, 0, width, width, color);
+    // height 100% 80
+    float batteryPercent = app["battery"].as<float>();
+    int height = 80 * batteryPercent / 100.0;
+    if(height < width) height = width;
+    ptft->fillRect(screen_width - width, 0, width, height, color);
 }
 
 //
