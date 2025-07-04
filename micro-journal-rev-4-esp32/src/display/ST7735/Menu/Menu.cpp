@@ -118,6 +118,7 @@ void Menu_keyboard(char key, bool pressed)
 {
     //
     JsonDocument &app = status();
+    _log("Menu_keyboard %d pressed %d\n", key, pressed);
 
     // clear background for every key stroke
     Menu_clear();

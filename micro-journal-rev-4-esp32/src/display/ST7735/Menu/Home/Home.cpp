@@ -8,15 +8,15 @@ int selectedHome = 0;
 
 //
 const char *menu[] = {
-    "Keyboard",         // 0
-    "writerDeck",       // 1
-    "Export File",      // 2
+    "Keyboard",    // 0
+    "writerDeck",  // 1
+    "Export File", // 2
     "Info Text",
-    "Brightness",      // 4
-    "Color BG",        // 5
-    "Color Font",      // 6
-    "FW Update",       // 7
-    "Clear Text",      // 8
+    "Brightness", // 4
+    "Color BG",   // 5
+    "Color Font", // 6
+    "FW Update",  // 7
+    "Clear Text", // 8
     "Exit"};
 
 //
@@ -72,12 +72,12 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 void Home_keyboard(char key, bool pressed)
 {
     // react to only key release
-    if(pressed) return;
+    if (pressed)
+        return;
 
     //
-    _debug("Home_Keyboard %d selectedHome %d\n", key, selectedHome);
+    _log("Home_Keyboard %d selectedHome %d\n", key, selectedHome);
     JsonDocument &app = status();
-   
 
     // UP
     if (key == 21)
@@ -102,88 +102,85 @@ void Home_keyboard(char key, bool pressed)
     // MENU - SELECTED ACTION
     else if (key == 6 || key == '\n')
     {
-        if (!pressed)
+        // 0 - USB Keyboard
+        if (selectedHome == 0)
         {
-            // 0 - USB Keyboard
-            if (selectedHome == 0)
-            {
-                _debug("USB Keyboard Selected\n");
-                app["config"]["UsbKeyboard"] = true;
-                config_save();
+            _debug("USB Keyboard Selected\n");
+            app["config"]["UsbKeyboard"] = true;
+            config_save();
 
-                // load USB Keyboard
+            // load USB Keyboard
+            app["screen"] = KEYBOARDSCREEN;
+        }
+
+        // 1 - writerDeck
+        if (selectedHome == 1)
+        {
+            _debug("writerDeck Selected\n");
+            app["config"]["UsbKeyboard"] = false;
+            config_save();
+
+            // load USB Keyboard
+            app["screen"] = WORDPROCESSOR;
+        }
+
+        // 2 - Export File
+        else if (selectedHome == 2)
+        {
+            _debug("Export File Selected\n");
+            app["menu"]["state"] = MENU_STORAGE;
+        }
+
+        // 4 - Brightness
+        else if (selectedHome == 4)
+        {
+            _debug("Brightness Selected\n");
+            app["menu"]["state"] = MENU_BRIGHTNESS;
+        }
+
+        // 5 - Background Color
+        else if (selectedHome == 5)
+        {
+            _debug("Background Color Selected\n");
+            app["menu"]["state"] = MENU_BACKGROUND;
+        }
+
+        // 6 - Font Color
+        else if (selectedHome == 6)
+        {
+            _debug("Font Color Selected\n");
+            app["menu"]["state"] = MENU_FONTCOLOR;
+        }
+
+        // 7 - Firmware Update
+        else if (selectedHome == 7)
+        {
+            _debug("Firmware Update Selected\n");
+
+            // Reboot RP2040 with Boot Mode
+            rp2040.rebootToBootloader();
+        }
+
+        // 8 - Clear Text
+        else if (selectedHome == 8)
+        {
+            _debug("Clear Text Selected\n");
+
+            // Delete file content
+            app["menu"]["state"] = MENU_CLEAR;
+        }
+
+        // last item is EXIT
+        else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
+        {
+            _debug("Home Keyboard Exit is selected. Moving to Word Processor\n");
+            if (app["config"]["UsbKeyboard"].as<bool>())
+            {
                 app["screen"] = KEYBOARDSCREEN;
             }
-
-            // 1 - writerDeck
-            if (selectedHome == 1)
+            else
             {
-                _debug("writerDeck Selected\n");
-                app["config"]["UsbKeyboard"] = false;
-                config_save();
-
-                // load USB Keyboard
                 app["screen"] = WORDPROCESSOR;
-            }
-
-            // 2 - Export File
-            else if (selectedHome == 2)
-            {
-                _debug("Export File Selected\n");
-                app["menu"]["state"] = MENU_STORAGE;
-            }
-
-            // 4 - Brightness
-            else if (selectedHome == 4)
-            {
-                _debug("Brightness Selected\n");
-                app["menu"]["state"] = MENU_BRIGHTNESS;
-            }
-
-            // 5 - Background Color
-            else if (selectedHome == 5)
-            {
-                _debug("Background Color Selected\n");
-                app["menu"]["state"] = MENU_BACKGROUND;
-            }
-
-            // 6 - Font Color
-            else if (selectedHome == 6)
-            {
-                _debug("Font Color Selected\n");
-                app["menu"]["state"] = MENU_FONTCOLOR;
-            }
-
-            // 7 - Firmware Update
-            else if (selectedHome == 7)
-            {
-                _debug("Firmware Update Selected\n");
-
-                // Reboot RP2040 with Boot Mode
-                rp2040.rebootToBootloader();
-            }
-
-            // 8 - Clear Text
-            else if (selectedHome == 8)
-            {
-                _debug("Clear Text Selected\n");
-
-                // Delete file content
-                app["menu"]["state"] = MENU_CLEAR;
-            }
-
-            // last item is EXIT
-            else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
-            {
-                _debug("Home Keyboard Exit is selected. Moving to Word Processor\n");
-                if (app["config"]["UsbKeyboard"].as<bool>())
-                {
-                    app["screen"] = KEYBOARDSCREEN;
-                }
-                else
-                {
-                    app["screen"] = WORDPROCESSOR;
-                }
             }
         }
     }
