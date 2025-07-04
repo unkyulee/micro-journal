@@ -1,5 +1,5 @@
 #include "ErrorScreen.h"
-#include "../../display_EPD.h"
+#include "../display_EPD.h"
 
 //
 #include "app/app.h"

@@ -119,7 +119,7 @@ void wifi_config_save()
         file.println(jsonOutput);
 
         // debug
-        debug_log("wifi_config_save\n%s\n", jsonOutput.c_str());
+        _debug("wifi_config_save\n%s\n", jsonOutput.c_str());
 
         //
         _log("Wifi config updated successfully.\n");

@@ -1,13 +1,12 @@
 #include "WordProcessor.h"
-#include "../../display_EPD.h"
+#include "../display_EPD.h"
 
 //
 #include "app/app.h"
-#include "editor/editor.h"
+#include "service/Editor/Editor.h"
 #include "keyboard/keyboard.h"
 #include "display/display.h"
-#include "keyboard/hid/nimble/ble.h"
-#include "service/Tools/Tools.h"
+
 
 //
 int last_sleep = millis();
@@ -38,9 +37,8 @@ void WP_setup()
     _log("Word Processor GUI Setup\n");
 
     // editor instantiate
-    Editor &editor = Editor::getInstance();
-    editor.screenBuffer.rows = rows;
-    editor.screenBuffer.cols = cols;
+    // Editor Init - setup screen size
+    Editor::getInstance().init(cols, rows);
 
     // display init
     GFXfont *font = display_EPD_font();
@@ -87,7 +85,7 @@ void WP_render()
         cleared = true;
 
         //
-        debug_log("WP_render::full refresh requested\n");
+        _debug("WP_render::full refresh requested\n");
     }
 
     //
@@ -110,8 +108,8 @@ void WP_render()
 // DRAW LINE OF TEXT
 void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
 {
-    char *line = Editor::getInstance().screenBuffer.line_position[i];
-    int length = Editor::getInstance().screenBuffer.line_length[i];
+    char *line = Editor::getInstance().linePositions[i];
+    int length = Editor::getInstance().lineLengths[i];
 
     //
     display_setline(i - startLine);
@@ -144,11 +142,11 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
             epd_poweroff_all();
 
         //
-        debug_log("WP_render_text_line::i %d x %d y %d [%s]\n", i, cursorX, cursorY, row);
+        _debug("WP_render_text_line::i %d x %d y %d [%s]\n", i, cursorX, cursorY, row);
     }
     else
     {
-        debug_log("WP_render_text_line::line null or empty line position %d\n", i);
+        _debug("WP_render_text_line::line null or empty line position %d\n", i);
     }
 }
 
@@ -181,14 +179,14 @@ void WP_render_text()
     static int cursorLine_prev = 0;
     static int cursorLinePos_prev = 0;
     static int bufferSize_prev = 0;
-    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
-    int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
-    int cursorLinePos = Editor::getInstance().fileBuffer.cursorLinePos;
-    int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    int cursorPos = Editor::getInstance().cursorPos;
+    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int bufferSize = Editor::getInstance().getBufferSize();
 
     //
-    int totalLine = Editor::getInstance().screenBuffer.total_line;
-    int rows = Editor::getInstance().screenBuffer.rows;
+    int totalLine = Editor::getInstance().totalLine;
+    int rows = Editor::getInstance().rows;
 
     // when first turned on
     // start editing from last 2nd Line
@@ -196,7 +194,7 @@ void WP_render_text()
     {
         //
         startLine = max(cursorLine - rows + 1, 0);
-        debug_log("WP_render_text::Start Line Init: %d cursorLine %d\n", startLine, cursorLine);
+        _debug("WP_render_text::Start Line Init: %d cursorLine %d\n", startLine, cursorLine);
     }
 
     //
@@ -214,7 +212,7 @@ void WP_render_text()
 
         //
         startLine = max(cursorLine - 1, 0);
-        debug_log("WP_render_text::New Page cursorLine %d startLine %d rows %d totalLine %d\n",
+        _debug("WP_render_text::New Page cursorLine %d startLine %d rows %d totalLine %d\n",
                   cursorLine,
                   startLine,
                   rows,
@@ -225,7 +223,7 @@ void WP_render_text()
     if (cursorLine < startLine)
     {
         //
-        debug_log("WP_render_text::need to show previous page cursorLine %d prev %d startLine %d totalLine %d\n",
+        _debug("WP_render_text::need to show previous page cursorLine %d prev %d startLine %d totalLine %d\n",
                   cursorLine,
                   cursorLine_prev,
                   startLine,
@@ -235,7 +233,7 @@ void WP_render_text()
         // keep the last line
         startLine = max(startLine - rows - 1, 0);
 
-        debug_log("WP_render_text::startLine updated %d \n",
+        _debug("WP_render_text::startLine updated %d \n",
                   startLine);
 
         // clear background
@@ -252,7 +250,7 @@ void WP_render_text()
     // Only when refresh background is called
     //
     if (cleared)
-    {        
+    {
         // Draw from the first line
         display_setline(0);
 
@@ -262,7 +260,7 @@ void WP_render_text()
             // stop when exceeding row
             if (i - startLine > rows)
             {
-                debug_log("WP_render_text::reached the end of the text startLine %d i %d row %d\n", startLine, i, rows);
+                _debug("WP_render_text::reached the end of the text startLine %d i %d row %d\n", startLine, i, rows);
                 break;
             }
 
@@ -285,7 +283,7 @@ void WP_render_text()
         backspaced = false;
 
         // clear the currentLine and the previousLine
-        debug_log("WP_render_text::Handle Backspace\n");
+        _debug("WP_render_text::Handle Backspace\n");
 
         // delete a line and redraw the line
         WP_clear_row(max(cursorLine - startLine, 0));
@@ -309,7 +307,7 @@ void WP_render_text()
         if (cursorLine > cursorLine_prev)
         {
             // clear the currentLine and the previousLine
-            debug_log("WP_render_text::new line is detected. clear the previous line to complete word wrap.\n");
+            _debug("WP_render_text::new line is detected. clear the previous line to complete word wrap.\n");
 
             WP_clear_row(max(cursorLine_prev - startLine, 0));
 
@@ -331,7 +329,7 @@ void WP_render_text()
             //
             int currentLine = max(0, cursorLine - startLine);
 
-            debug_log("WP_render_text::editing currentLine %d cursorLine %d cursorLineprev %d startLine %d\n", currentLine, cursorLine, cursorLine_prev, startLine);
+            _debug("WP_render_text::editing currentLine %d cursorLine %d cursorLineprev %d startLine %d\n", currentLine, cursorLine, cursorLine_prev, startLine);
 
             // Draw from the currentLine
             display_setline(currentLine);
@@ -354,8 +352,8 @@ void WP_render_text()
             display_setline(cursorLine - startLine);
             int cursorY = display_y();
 
-            char *line = Editor::getInstance().screenBuffer.line_position[cursorLine];
-            int line_length = Editor::getInstance().screenBuffer.line_length[cursorLine];
+            char *line = Editor::getInstance().linePositions[cursorLine];
+            int line_length = Editor::getInstance().lineLengths[cursorLine];
 
             // Copy the line content to row, but not more than 255 characters
             char row[256];
@@ -392,7 +390,7 @@ void WP_render_text()
             clear_request = true;
 
             editing = false;
-            debug_log("WP_render_text::editing line change. %d %d %d %d\n", cursorLine, cursorLine_prev, cursorPos, cursorPos_prev);
+            _debug("WP_render_text::editing line change. %d %d %d %d\n", cursorLine, cursorLine_prev, cursorPos, cursorPos_prev);
         }
 
         // reset prev flag
@@ -419,9 +417,9 @@ void WP_render_cursor()
 
     static int cursorLinePos_prev = 0;
     static int cursorPos_prev = 0;
-    int cursorLinePos = Editor::getInstance().fileBuffer.cursorLinePos;
-    int cursorLine = Editor::getInstance().fileBuffer.cursorLine;
-    int cursorPos = Editor::getInstance().fileBuffer.cursorPos;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorPos = Editor::getInstance().cursorPos;
 
     static Rect_t area;
 
@@ -432,13 +430,13 @@ void WP_render_cursor()
     // reached the line where cursor is
     // distance X is cursorPos - pos
     int cursorX = MARGIN_X;
-    if (Editor::getInstance().fileBuffer.buffer[max(cursorPos - 1, 0)] != '\n' && cursorLinePos != 0)
+    if (Editor::getInstance().buffer[max(cursorPos - 1, 0)] != '\n' && cursorLinePos != 0)
     {
         // where to display the cursor
         cursorX = MARGIN_X + cursorLinePos * display_fontwidth() + 5;
 
         //
-        // debug_log("WP_render_cursor::cursorX %d\n", cursorX);
+        // _debug("WP_render_cursor::cursorX %d\n", cursorX);
     }
 
     // Delete previous cursor line
@@ -447,7 +445,7 @@ void WP_render_cursor()
         if (renderedCursorX > 0)
         {
             //
-            // debug_log("Delete previous cursor line\n");
+            // _debug("Delete previous cursor line\n");
 
             //
             area = display_rect(
@@ -491,7 +489,7 @@ void WP_render_cursor()
         renderedCursorX = cursorX;
 
         //
-        debug_log("WP_render_cursor::pos %d line %d line pos %d\n", cursorPos, cursorLine, cursorLinePos);
+        _debug("WP_render_cursor::pos %d line %d line pos %d\n", cursorPos, cursorLine, cursorLinePos);
     }
 }
 
@@ -500,8 +498,8 @@ void WP_check_saved()
 {
     //
     static unsigned int last = millis();
-    static int lastBufferSize = Editor::getInstance().fileBuffer.getBufferSize();
-    int bufferSize = Editor::getInstance().fileBuffer.getBufferSize();
+    static int lastBufferSize = Editor::getInstance().getBufferSize();
+    int bufferSize = Editor::getInstance().getBufferSize();
 
     //
     // when the file is saved then extend the autosave timer
@@ -559,7 +557,7 @@ void WP_render_status()
     //
     static bool saved_prev = false;
     static size_t filesize_prev = 0;
-    size_t filesize = Editor::getInstance().fileBuffer.seekPos + Editor::getInstance().fileBuffer.getBufferSize();
+    size_t filesize = Editor::getInstance().seekPos + Editor::getInstance().getBufferSize();
 
     // Full Redraw
     // Draw non-refreshing section
@@ -633,7 +631,7 @@ void WP_render_status()
     /////////////////////////////////////
     if (Editor::getInstance().saved != saved_prev || cleared)
     {
-        debug_log("Update Saved Status\n");
+        _debug("Update Saved Status\n");
         int cursorX = 550;
 
         // clear the status area
@@ -666,7 +664,7 @@ void WP_render_status()
 }
 
 //
-void WP_keyboard(char key)
+void WP_keyboard(char key, bool pressed, int index)
 {
     // Every key stroke resets sleep timer
     last_sleep = millis();
@@ -684,7 +682,7 @@ void WP_keyboard(char key)
         app["screen"] = MENUSCREEN;
 
         //
-        debug_log("WP_keyboard::Moving to Menu Screen\n");
+        _debug("WP_keyboard::Moving to Menu Screen\n");
     }
 
     // REFRESH SCREEN F5
@@ -704,10 +702,11 @@ void WP_keyboard(char key)
     else
     {
         // convert tab key to space
-        if( key == '\t') key = ' ';
+        if (key == '\t')
+            key = ' ';
 
         // send the keys to the editor
-        Editor::getInstance().keyboard(key);
+        Editor::getInstance().keyboard(key, pressed);
 
         if (key == '\b')
         {

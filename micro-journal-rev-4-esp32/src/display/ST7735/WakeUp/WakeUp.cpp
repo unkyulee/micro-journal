@@ -13,6 +13,7 @@ void WakeUp_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     _wakeup_gif_loaded = gif_setup(ptft, pu8f, "/wakeup.gif", WORDPROCESSOR, true);
 }
+
 void WakeUp_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     JsonDocument &app = status();

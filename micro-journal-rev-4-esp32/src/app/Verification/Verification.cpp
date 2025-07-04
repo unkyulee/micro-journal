@@ -20,11 +20,12 @@ bool firmware_check()
     {
         // move to firmware update screen
         app["screen"] = UPDATESCREEN;
-
+        _log("New firmware found. Preparing Update.\n");
         return true;
     }
 #endif
 
+    _log("No new firmware found.\n");
     return false;
 }
 
@@ -36,7 +37,7 @@ bool filesystem_check()
 
     // Call File System for the first time to initialize
     gfs();
-    
+
 #ifdef BOARD_ESP32_S3
     // also initialize SPIFFS
     spiffs();

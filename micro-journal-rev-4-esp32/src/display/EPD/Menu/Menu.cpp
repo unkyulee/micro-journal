@@ -2,7 +2,7 @@
 #include "app/app.h"
 #include "config/config.h"
 #include "display/display.h"
-#include "../../display_EPD.h"
+#include "../display_EPD.h"
 
 // Menu Sub Modules
 #include "Home/Home.h"

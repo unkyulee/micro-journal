@@ -440,7 +440,7 @@ void Bluetooth_save()
     file.println(jsonOutput);
 
     // debug
-    debug_log("Bluetooth_save\n%s\n", jsonOutput.c_str());
+    _debug("Bluetooth_save\n%s\n", jsonOutput.c_str());
 
     //
     _log("BLE config updated successfully.\n");

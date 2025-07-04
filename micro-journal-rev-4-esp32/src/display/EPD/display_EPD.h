@@ -13,14 +13,12 @@ void display_EPD_loop();
 void display_EPD_keyboard(char key, bool pressed, int index);
 int display_EPD_core();
 
+//
+GFXfont* display_EPD_font();
 
-/*
 //
 uint8_t *display_EPD_framebuffer();
 void display_draw_buffer();
-
-//
-GFXfont* display_EPD_font();
 
 //
 Rect_t display_rect(int x, int y, int width, int height);
@@ -33,4 +31,3 @@ int display_x();
 int display_y();
 int display_lineheight();
 int display_fontwidth();
-*/

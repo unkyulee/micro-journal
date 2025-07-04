@@ -10,7 +10,7 @@ void WP_setup();
 void WP_render();
 
 // 
-void WP_keyboard(char key);
+void WP_keyboard(char key, bool pressed, int index);
 
 //
 void WP_render_cursor();

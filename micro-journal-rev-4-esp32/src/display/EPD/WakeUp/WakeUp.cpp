@@ -1,13 +1,6 @@
 #include "WakeUp.h"
-#include "../../display_EPD.h"
-
-//
 #include "app/app.h"
 #include "display/display.h"
-#include "keyboard/keyboard.h"
-
-bool wakeup = true;
-bool stop = false;
 
 //
 void WakeUp_setup()

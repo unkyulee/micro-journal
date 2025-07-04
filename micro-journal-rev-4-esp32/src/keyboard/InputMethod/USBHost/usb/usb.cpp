@@ -22,7 +22,7 @@ class MyEspUsbHost : public EspUsbHost
   void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
   {
     //
-    debug_log("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
+    _debug("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
               report.modifier,
               report.reserved,
               report.keycode[0],

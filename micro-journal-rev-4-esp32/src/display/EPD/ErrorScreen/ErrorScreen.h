@@ -1,5 +1,4 @@
-#ifndef ErrorScreen_h
-#define ErrorScreen_h
+#pragma once
 
 //
 void ErrorScreen_setup();
@@ -9,5 +8,3 @@ void ErrorScreen_render();
 
 // 
 void ErrorScreen_keyboard(char key);
-
-#endif

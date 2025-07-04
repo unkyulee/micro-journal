@@ -118,11 +118,11 @@ void display_keyboard(int key, bool pressed, int index)
 int display_core()
 {
 #ifdef ILI9341_DRIVER
-  display_ILI9341_core();
+  return display_ILI9341_core();
 #endif
 
 #ifdef LILYGO_T5_EPD47_S3
-  display_EPD_core();
+  return display_EPD_core();
 #endif
 
 #ifdef ST7735_DRIVER

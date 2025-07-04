@@ -31,9 +31,13 @@ bool app_ready()
 void app_setup()
 {
     // Setup Serial Communication
-    _log("Setting Baud Rate: %d\n", 115200);
     Serial.begin(115200);
-
+    _log("Setting Baud Rate: %d\n", 115200);
+#ifdef LILYGO_T5_EPD47_S3
+    // TX = GPIO16, RX = GPIO15, baud = 115200
+    Serial2.begin(115200, SERIAL_8N1, 16, 15);
+#endif
+    
     // File System Check
     if (filesystem_check() == false)
     {
@@ -63,6 +67,7 @@ void app_setup()
 
     // app ready
     _ready = true;
+    _log("App is ready\n");
 }
 
 // This is a loop where background tasks will be placed

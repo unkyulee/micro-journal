@@ -1,6 +1,6 @@
 #include "Sleep.h"
-#include "../../display_EPD.h"
-#include "editor/editor.h"
+#include "../display_EPD.h"
+#include "service/Editor/Editor.h"
 
 //
 #include "app/app.h"

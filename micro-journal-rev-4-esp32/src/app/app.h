@@ -10,6 +10,7 @@
 #include "Config/Config.h"
 #include "Verification/Verification.h"
 #include "service/Tools/Tools.h"
+#include <HardwareSerial.h>
 
 // 
 void app_setup();
