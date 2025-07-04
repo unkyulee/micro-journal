@@ -31,10 +31,12 @@
 
 #define BATT_PIN   (14)
 
+/* defined in platformop.ini
 #define SD_MISO    (16)
 #define SD_MOSI    (15)
 #define SD_SCLK    (11)
 #define SD_CS      (42)
+*/
 
 #define BOARD_SCL  (17)
 #define BOARD_SDA  (18)

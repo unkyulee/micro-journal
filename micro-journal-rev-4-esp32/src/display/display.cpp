@@ -8,7 +8,7 @@
 
 // EPD DISPLAY
 #ifdef LILYGO_T5_EPD47_S3
-#include "service/DisplayDriver/EPD/display_EPD.h"
+#include "display/EPD/display_EPD.h"
 #endif
 
 // Lilygo 0.96 LCD Display
@@ -107,7 +107,7 @@ void display_keyboard(int key, bool pressed, int index)
 #endif
 
 #ifdef LILYGO_T5_EPD47_S3
-  display_EPD_keyboard(key);
+  display_EPD_keyboard(key, pressed, index);
 #endif
 
 #ifdef ST7735_DRIVER
@@ -117,7 +117,6 @@ void display_keyboard(int key, bool pressed, int index)
 
 int display_core()
 {
-
 #ifdef ILI9341_DRIVER
   display_ILI9341_core();
 #endif

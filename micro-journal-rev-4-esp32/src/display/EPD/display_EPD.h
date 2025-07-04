@@ -10,8 +10,11 @@
 //
 void display_EPD_setup();
 void display_EPD_loop();
-void display_EPD_keyboard(char key);
+void display_EPD_keyboard(char key, bool pressed, int index);
+int display_EPD_core();
 
+
+/*
 //
 uint8_t *display_EPD_framebuffer();
 void display_draw_buffer();
@@ -30,4 +33,4 @@ int display_x();
 int display_y();
 int display_lineheight();
 int display_fontwidth();
-
+*/

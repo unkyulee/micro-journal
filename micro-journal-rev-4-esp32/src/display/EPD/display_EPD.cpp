@@ -23,6 +23,12 @@ uint8_t *display_EPD_framebuffer()
     return framebuffer;
 }
 
+int display_EPD_core()
+{
+  // by default run at the second core separated from keyboard loop
+  return 1;
+}
+
 void display_draw_buffer()
 {
     epd_poweron();
@@ -116,7 +122,7 @@ void display_EPD_loop()
     }
 }
 
-void display_EPD_keyboard(char key)
+void display_EPD_keyboard(char key, bool pressed, int index)
 {
     JsonDocument &app = status();
     int screen = app["screen"].as<int>();
