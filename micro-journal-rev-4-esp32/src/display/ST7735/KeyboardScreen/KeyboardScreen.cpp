@@ -73,6 +73,10 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
                 _debug("KeyboardScreen_keyboard - Received LONG PRESS MENU Key\n");
                 Keyboard.releaseAll();
 
+                // save the default screen to config
+                app["config"]["UsbKeyboard"] = false;
+                config_save();
+
                 if (_keyboard_gif_loaded)
                     gif_stop(WAKEUPSCREEN);
                 else
@@ -88,7 +92,6 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
                     gif_stop(MENUSCREEN);
                 else
                     app["screen"] = MENUSCREEN;
-
             }
         }
 

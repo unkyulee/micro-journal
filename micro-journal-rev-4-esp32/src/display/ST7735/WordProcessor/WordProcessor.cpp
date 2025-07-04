@@ -342,6 +342,10 @@ void WP_keyboard(int key, bool pressed)
                 // move to writerDeck
                 _debug("WP_keyboard - Received LONG PRESS MENU Key\n");
                 app["screen"] = KEYBOARDSCREEN;
+
+                // save the default screen to config
+                app["config"]["UsbKeyboard"] = true;
+                config_save();
             }
             else
             {
