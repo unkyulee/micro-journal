@@ -17,25 +17,34 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
+#ifdef DEBUG
+    // wait until serial monitor can catch up
+    delay(3000);
+#endif
+
     // initialize app
     app_setup();
 
+    /*
     //
     display_setup();
 
     //
     keyboard_setup();
+    */
 }
 
 //
 void loop()
 {
+    /*
     //
     if (display_core() == 0)
         display_loop();
 
     //
     keyboard_loop();
+    */
 
     // try to yield to avoid infinite loop
     yield();
@@ -48,11 +57,14 @@ and slowed and yet has still less impact.
 Such as background tasks.
 ----------------------------------------------*/
 
+
 void setup1()
 {
     // wait until the app is ready
-    while(true) {
-        if(app_ready()) break;
+    while (true)
+    {
+        if (app_ready())
+            break;
         delay(1);
     }
 
@@ -61,13 +73,14 @@ void setup1()
 }
 
 void loop1()
-{    
+{
     // background tasks will be handled
     app_loop();
 
     //
-    if (display_core() == 1)
-        display_loop();
+    //if (display_core() == 1)
+    //    display_loop();
+
 
     // try to yield to avoid infinite loop
     yield();

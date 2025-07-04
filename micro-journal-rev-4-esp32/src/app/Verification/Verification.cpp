@@ -2,6 +2,10 @@
 #include "app/app.h"
 #include "display/display.h"
 
+#ifdef BOARD_ESP32_S3
+#include <SD.h>
+#endif
+
 // check firmware update
 bool firmware_check()
 {
@@ -30,52 +34,23 @@ bool filesystem_check()
     //
     JsonDocument &app = status();
 
+    // Call File System for the first time to initialize
+    gfs();
+    
 #ifdef BOARD_ESP32_S3
-    // CHECK IF SPIFFS is formatted
-    // Mount SPIFFS
-    if (!SPIFFS.begin())
-    {
-        //
-        _log("SPIFFS mount failed!\n");
+    // also initialize SPIFFS
+    spiffs();
 
-        //
-        app["error"] = "SPIFFS NOT FORMATTED";
-        app["screen"] = ERRORSCREEN
-
-            return false;
-    }
-
-    // Initialize SD Card
-#if defined(ENV_EPAPER)
-    //
-    SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-    if (!SD.begin(SD_CS, SPI))
-#else
-    //
-    if (!SD.begin(SD_CS))
-#endif
-    {
-        //
-        _log("Card Mount Failed\n");
-
-        //
-        app["error"] = " SD CARD MISSING ";
-        app["screen"] = ERRORSCREEN;
-
-        return false;
-    }
-
-    // Check for card type
-    _log("SD Device Initialized\n");
+    // Check if SD card is inserted
     uint8_t cardType = SD.cardType();
-
     if (cardType == CARD_NONE)
     {
         //
-        _log("No SD card attached\n");
-        //
-        app["error"] = " SD CARD NOT DETECTED ";
+        app["error"] = "SD CARD NOT INSERTED\n";
         app["screen"] = ERRORSCREEN;
+
+        //
+        _log(app["error"]);
 
         return false;
     }

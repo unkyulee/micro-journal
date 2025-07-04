@@ -1,6 +1,11 @@
 #include "Log.h"
 #include <Arduino.h>
 
+#ifdef BOARD_ESP32_S3
+//#define COREID xPortGetCoreID()
+#define COREID xPortGetCoreID()
+#endif
+
 #ifdef BOARD_PICO
 #define COREID get_core_num()
 #endif
@@ -48,7 +53,7 @@ void _debug(const char *format, ...)
     // End variadic argument processing
     va_end(args);
 
-    // Print to Serial
     Serial.printf("[%d][%d] %s", COREID, millis(), message);
+
 #endif
 }

@@ -1,5 +1,4 @@
-#ifndef Display_EPD_h
-#define Display_EPD_h
+#pragma once
 
 #include <Arduino.h>
 #include "epd_driver.h"
@@ -32,4 +31,3 @@ int display_y();
 int display_lineheight();
 int display_fontwidth();
 
-#endif

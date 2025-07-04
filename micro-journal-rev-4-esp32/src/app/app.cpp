@@ -2,6 +2,11 @@
 #include "app.h"
 #include "display/display.h"
 
+#ifdef BOARD_ESP32_S3
+#include "app/FileSystem/FileSystemSD.h"
+#include "app/FileSystem/FileSystemSPIFFS.h"
+#endif
+
 #ifdef BOARD_PICO
 #include "app/FileSystem/FileSystemRP2040.h"
 #include "service/MassStorage/MassStorage.h"
@@ -79,7 +84,6 @@ void app_loop()
 #ifdef BATTERY
     battery_loop();
 #endif
-
 }
 
 // status storage
@@ -98,25 +102,51 @@ FileSystem *gfs()
 // Initialize the file system here
 #ifdef BOARD_PICO
         fileSystem = new FileSystemRP2040();
+#endif
+
+#ifdef BOARD_ESP32_S3
+        // ESP32 will use SD card as a main file system
+        fileSystem = new FileSystemSD();
+#endif
         if (!fileSystem->begin())
         {
             //
             JsonDocument &app = status();
-            app["error"] = "RP2040 File System Failed\n";
+            app["error"] = "File System Failed\n";
             app["screen"] = ERRORSCREEN; // ERROR SCREEN IS 0
             _log(app["error"]);
-        }        
+        }
         else
         {
-            _log("RP2040 File System Initialized\n");
+            _log("File System Initialized\n");
         }
-
-#endif
-
-#ifdef BOARD_ESP32_S3
-        fileSystem = new SDFS();
-#endif
     }
 
     return fileSystem;
 }
+
+#ifdef BOARD_ESP32_S3
+FileSystem *_spiffs = nullptr;
+// ESP32 has SPIFFS as internal file system
+FileSystem *spiffs()
+{
+    if (_spiffs == nullptr)
+    {
+        _spiffs = new FileSystemSPIFFS();
+        if (!_spiffs->begin())
+        {
+            //
+            JsonDocument &app = status();
+            app["error"] = "Internal File System Failed\n";
+            app["screen"] = ERRORSCREEN; // ERROR SCREEN IS 0
+            _log(app["error"]);
+        }
+        else
+        {
+            _log("Internal File System Initialized\n");
+        }
+    }
+
+    return _spiffs;
+}
+#endif

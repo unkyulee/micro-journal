@@ -26,3 +26,8 @@ JsonDocument &status();
 // This is a pattern to hide the implementation of the file system
 // and provide a common interface to access the file system
 FileSystem *gfs();
+
+#ifdef BOARD_ESP32_S3
+// ESP32 has SPIFFS as internal file system 
+FileSystem *spiffs();
+#endif
