@@ -10,6 +10,9 @@ void battery_setup()
 
 // rp2040 still works around 2.0 v
 const int batteryInterval = 60000;
+const int batteryMinimum = 2.4;
+const int batteryMaximum = 4.0;
+
 void battery_loop()
 {
     static long lastMeasure = -(batteryInterval - 5000);
@@ -23,7 +26,7 @@ void battery_loop()
 
         // app status
         JsonDocument &app = status();
-        float percent = (voltage - 2.0) / (4.2 - 2.0) * 100;
+        float percent = (voltage - batteryMinimum) / (batteryMaximum - batteryMinimum) * 100;
         if (percent > 100.0f)
             percent = 100.0f;
         if (percent < 0.0f)
