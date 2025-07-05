@@ -14,6 +14,10 @@ void Editor::init(int cols, int rows)
     this->cols = cols;
     this->rows = rows;
 
+    //
+    resetBuffer();
+    updateScreen();
+
     // You can add any additional setup logic here
     _log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
 }
@@ -146,8 +150,17 @@ void Editor::loadFile(String fileName)
 }
 
 //
+bool savingInProgress = false;
+
 void Editor::saveFile()
 {
+    if (savingInProgress)
+    {
+        _log("Save already in progress, skipping.\n");
+        return;
+    }
+    savingInProgress = true;
+
     //
     JsonDocument &app = status();
 
@@ -161,6 +174,7 @@ void Editor::saveFile()
         //
         _log(app["error"]);
 
+        savingInProgress = false;
         return;
     }
 
@@ -168,6 +182,7 @@ void Editor::saveFile()
     if (this->saved)
     {
         _log("File already saved. No operation required.\n");
+        savingInProgress = false;
         return;
     }
 
@@ -182,7 +197,7 @@ void Editor::saveFile()
 
         //
         _log(app["error"]);
-
+        savingInProgress = false;
         return;
     }
 
@@ -192,7 +207,7 @@ void Editor::saveFile()
         _log("Failed to seek file pointer\n");
         file.close();
         delay(100);
-
+        savingInProgress = false;
         return;
     }
     _log("Writing file at: %d\n", seekPos);
@@ -227,6 +242,7 @@ void Editor::saveFile()
         _log(app["error"]);
 
         //
+        savingInProgress = false;
         return;
     }
 
@@ -239,6 +255,9 @@ void Editor::saveFile()
 
     // flag to save
     this->saved = true;
+
+    //
+    savingInProgress = false;
 }
 
 // Make the current file empty

@@ -70,7 +70,8 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
     {
       // when precursor keys is registered twice
       // send out the pre registered precursor key
-      display_keyboard(pre_cursor_ascii);
+      display_keyboard(pre_cursor_ascii, true);
+      display_keyboard(pre_cursor_ascii, false);
 
       // then clear the precursor and send out the key stroke
       pre_cursor_ascii = 0;
@@ -106,7 +107,8 @@ uint8_t keyboard_precursor_filter(uint8_t ascii)
       //
       // precursor invalid just send out the key press
       //
-      display_keyboard(pre_cursor_ascii);
+      display_keyboard(pre_cursor_ascii, true);
+      display_keyboard(pre_cursor_ascii, false);
 
       // then clear the precursor and send out the key stroke
       pre_cursor_ascii = 0;

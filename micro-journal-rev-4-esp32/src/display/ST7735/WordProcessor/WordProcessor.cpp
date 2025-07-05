@@ -76,7 +76,7 @@ void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (clear_background)
         clear_background = false;
 
-    //
+    // Editor House Keeping Tasks
     Editor::getInstance().loop();
 }
 

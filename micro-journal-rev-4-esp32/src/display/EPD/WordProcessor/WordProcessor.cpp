@@ -7,7 +7,6 @@
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 
-
 //
 int last_sleep = millis();
 //
@@ -34,6 +33,7 @@ int startLine = -1;
 //
 void WP_setup()
 {
+    _debug("==========================================\n");
     _log("Word Processor GUI Setup\n");
 
     // editor instantiate
@@ -103,6 +103,9 @@ void WP_render()
 
     // clear background flag off
     cleared = false;
+
+    // Editor House Keeping Tasks
+    Editor::getInstance().loop();
 }
 
 // DRAW LINE OF TEXT
@@ -140,9 +143,6 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
         //
         if (framebuffer == NULL)
             epd_poweroff_all();
-
-        //
-        _debug("WP_render_text_line::i %d x %d y %d [%s]\n", i, cursorX, cursorY, row);
     }
     else
     {
@@ -194,7 +194,6 @@ void WP_render_text()
     {
         //
         startLine = max(cursorLine - rows + 1, 0);
-        _debug("WP_render_text::Start Line Init: %d cursorLine %d\n", startLine, cursorLine);
     }
 
     //
@@ -213,10 +212,10 @@ void WP_render_text()
         //
         startLine = max(cursorLine - 1, 0);
         _debug("WP_render_text::New Page cursorLine %d startLine %d rows %d totalLine %d\n",
-                  cursorLine,
-                  startLine,
-                  rows,
-                  totalLine);
+               cursorLine,
+               startLine,
+               rows,
+               totalLine);
     }
 
     // when cursor reaches the top and it's time to show the previous page
@@ -224,17 +223,17 @@ void WP_render_text()
     {
         //
         _debug("WP_render_text::need to show previous page cursorLine %d prev %d startLine %d totalLine %d\n",
-                  cursorLine,
-                  cursorLine_prev,
-                  startLine,
-                  totalLine);
+               cursorLine,
+               cursorLine_prev,
+               startLine,
+               totalLine);
 
         // startLine should go one page before
         // keep the last line
         startLine = max(startLine - rows - 1, 0);
 
         _debug("WP_render_text::startLine updated %d \n",
-                  startLine);
+               startLine);
 
         // clear background
         epd_poweron();
@@ -351,9 +350,12 @@ void WP_render_text()
             int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
             display_setline(cursorLine - startLine);
             int cursorY = display_y();
+            _debug("cursorY: %d cursorLine: %d\n", cursorY, cursorLine);
 
             char *line = Editor::getInstance().linePositions[cursorLine];
             int line_length = Editor::getInstance().lineLengths[cursorLine];
+
+            _debug("cursorLine: %d line: %d line_length: %d\n", cursorLine, line, line_length);
 
             // Copy the line content to row, but not more than 255 characters
             char row[256];
@@ -379,7 +381,7 @@ void WP_render_text()
     // line changed
     if (cursorLine_prev != cursorLine)
     {
-        if (editing == true)
+         if (editing == true)
         {
             // when line changes during the edit do full refresh
 
@@ -487,9 +489,6 @@ void WP_render_cursor()
 
         //
         renderedCursorX = cursorX;
-
-        //
-        _debug("WP_render_cursor::pos %d line %d line pos %d\n", cursorPos, cursorLine, cursorLinePos);
     }
 }
 
@@ -631,7 +630,7 @@ void WP_render_status()
     /////////////////////////////////////
     if (Editor::getInstance().saved != saved_prev || cleared)
     {
-        _debug("Update Saved Status\n");
+        // CHECK HERE FOR CRASH
         int cursorX = 550;
 
         // clear the status area
@@ -673,30 +672,39 @@ void WP_keyboard(char key, bool pressed, int index)
     JsonDocument &app = status();
 
     // Check if menu key is pressed
-    if (key == MENU)
+    if (key == MENU || key == 27) // or ESC key
     {
-        // Save before transitioning to the menu
-        Editor::getInstance().saveFile();
+        if (!pressed)
+        {
+            // Save before transitioning to the menu
+            Editor::getInstance().saveFile();
 
-        //
-        app["screen"] = MENUSCREEN;
+            //
+            app["screen"] = MENUSCREEN;
 
-        //
-        _debug("WP_keyboard::Moving to Menu Screen\n");
+            //
+            _debug("WP_keyboard::Moving to Menu Screen\n");
+        }
     }
 
     // REFRESH SCREEN F5
     else if (key == 5)
     {
-        clear_full = true;
-        Editor::getInstance().saveFile();
+        if (!pressed)
+        {
+            clear_full = true;
+            Editor::getInstance().saveFile();
+        }
     }
 
     // SLEEP BUTTON - PAUSE
     else if (key == 24)
     {
-        // go to sleep mode
-        app["screen"] = SLEEPSCREEN;
+        if (!pressed)
+        {
+            // go to sleep mode
+            app["screen"] = SLEEPSCREEN;
+        }
     }
 
     else
