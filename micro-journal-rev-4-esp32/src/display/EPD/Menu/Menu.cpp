@@ -9,7 +9,6 @@
 #include "Wifi/Wifi.h"
 #include "Layout/Layout.h"
 #include "Sync/Sync.h"
-#include "Firmware/Firmware.h"
 #include "Reset/Reset.h"
 
 // state
@@ -119,15 +118,6 @@ void Menu_render()
         Sync_render();
     }
 
-    // Firmware Update
-    else if (menu_state == MENU_FIRMWARE)
-    {
-        if (menu_state_prev != menu_state)
-            Firmware_setup();
-
-        Firmware_render();
-    }
-
     // Reset
     else if (menu_state == MENU_RESET)
     {
@@ -190,12 +180,6 @@ void Menu_keyboard(char key)
     {
         Sync_keyboard(key);
         return;
-    }
-
-    // Firmware Update
-    else if (menu_state == MENU_FIRMWARE)
-    {
-        Firmware_keyboard(key);
     }
 
     // Reset

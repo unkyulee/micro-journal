@@ -1,5 +1,4 @@
-#include "Firmware.h"
-#include "../Menu.h"
+#include "Update.h"
 #include "app/app.h"
 #include "display/display.h"
 #include <display/EPD/display_EPD.h>
@@ -8,29 +7,36 @@
 #include "service/Updater/Updater.h"
 
 //
-void Firmware_setup()
+void Update_setup()
 {
+    // Clear Screen
+    epd_poweron();
+    epd_clear_quick(epd_full_screen(), 4, 50);
+    epd_poweroff_all();
 }
 
 //
-void Firmware_render()
+void Update_render()
 {
     //
     int cursorX = 10;
     int cursorY = 150;
     writeln(
         (GFXfont *)&systemFont,
-        " Press any key to proceed with the firmware update",
+        "Press any key to proceed with the update",
         &cursorX, &cursorY,
         display_EPD_framebuffer());
+
+    // render frambuffer
+    display_draw_buffer();
 }
 
 //
-void Firmware_keyboard(char key)
+void Update_keyboard(char key)
 {
     JsonDocument &app = status();
 
     //
-    _log("Firmware update begins.\n");
+    _log("Update update begins.\n");
     run_firmare_update(FIRMWARE);
 }

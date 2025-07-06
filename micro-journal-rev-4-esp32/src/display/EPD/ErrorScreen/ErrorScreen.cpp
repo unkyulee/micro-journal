@@ -8,6 +8,10 @@
 void ErrorScreen_setup()
 {
     _log("Error Screen Setup\n");
+    // Clear Screen
+    epd_poweron();
+    epd_clear_quick(epd_full_screen(), 4, 50);
+    epd_poweroff_all();
 }
 
 //

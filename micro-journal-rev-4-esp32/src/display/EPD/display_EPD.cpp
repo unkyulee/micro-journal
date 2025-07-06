@@ -11,6 +11,7 @@
 #include "WordProcessor/WordProcessor.h"
 #include "Sleep/Sleep.h"
 #include "Menu/Menu.h"
+#include "Update/Update.h"
 
 // Display Frame Buffer Setup
 uint8_t *framebuffer = NULL;
@@ -109,6 +110,7 @@ void display_EPD_loop()
                 WP_render();
         }
 
+        // SLEEP SCREEN
         else if (screen == SLEEPSCREEN)
         {
             // setup only once
@@ -128,6 +130,17 @@ void display_EPD_loop()
             else
                 // loop
                 Menu_render();
+        }
+
+        // UPDATE
+        else if (screen == UPDATESCREEN)
+        {
+            // setup only once
+            if (screen != screen_prev)
+                Update_setup();
+            else
+                // loop
+                Update_render();
         }
 
         //
@@ -169,6 +182,12 @@ void display_EPD_keyboard(char key, bool pressed, int index)
     {
         if (!pressed)
             Menu_keyboard(key);
+    }
+
+    else if (screen == UPDATESCREEN)
+    {
+        if (!pressed)
+            Update_keyboard(key);
     }
 }
 
