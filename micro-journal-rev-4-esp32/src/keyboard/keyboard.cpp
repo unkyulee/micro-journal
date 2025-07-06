@@ -11,6 +11,10 @@
 #include "keyboard/USBHost/USBHost.h"
 #endif
 
+#ifdef REV6
+#include "keyboard/Keypad/48/keypad_48.h"
+#endif
+
 #ifdef REV5
 #include "keyboard/USBHost/USBHost.h"
 #include "keyboard/Button/button.h"
@@ -36,6 +40,11 @@ void keyboard_setup()
   // Front Button Setup
   //button_setup();
 #endif
+
+#ifdef REV6
+  keyboard_keypad_48_setup();
+#endif
+
 }
 
 //
@@ -45,9 +54,8 @@ void keyboard_loop()
   USBHost_loop();
 #endif
 
-#ifdef KEYPAD_68
-  keyboard_keypad_68_loop();
-  knob_loop();
+#ifdef REV6
+  keyboard_keypad_48_loop();
 #endif
 
 #ifdef REV5
@@ -55,6 +63,11 @@ void keyboard_loop()
   USBHost_loop();
   // Front Button Setup
   //button_loop();
+#endif
+
+#ifdef KEYPAD_68
+  keyboard_keypad_68_loop();
+  knob_loop();
 #endif
 }
 
