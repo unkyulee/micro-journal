@@ -1,9 +1,7 @@
 #include "Reset.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
 #include <display/EPD/display_EPD.h>
 #include <SPIFFS.h>
 

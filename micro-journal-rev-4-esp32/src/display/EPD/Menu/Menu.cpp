@@ -1,6 +1,5 @@
 #include "Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
 #include "../display_EPD.h"
 
@@ -92,7 +91,7 @@ void Menu_render()
 
         Clear_render();
     }
-
+/*
     // Wifi Setup
     else if (menu_state == MENU_WIFI)
     {
@@ -101,7 +100,7 @@ void Menu_render()
 
         Wifi_render();
     }
-
+*/
     // Keyboard Layout
     else if (menu_state == MENU_LAYOUT)
     {
@@ -110,7 +109,7 @@ void Menu_render()
 
         Layout_render();
     }
-
+/*
     // Sync
     else if (menu_state == MENU_SYNC)
     {
@@ -119,7 +118,7 @@ void Menu_render()
 
         Sync_render();
     }
-
+*/
     // Firmware Update
     else if (menu_state == MENU_FIRMWARE)
     {
@@ -171,28 +170,28 @@ void Menu_keyboard(char key)
         Clear_keyboard(key);
         return;
     }
-
+/*
     // Wifi
     else if (menu_state == MENU_WIFI)
     {
         Wifi_keyboard(key);
         return;
     }
-
+*/
     // Layout
     else if (menu_state == MENU_LAYOUT)
     {
         Layout_keyboard(key);
         return;
     }
-
+/*
     // SYNC
     else if (menu_state == MENU_SYNC)
     {
         Sync_keyboard(key);
         return;
     }
-
+*/
     // Firmware Update
     else if (menu_state == MENU_FIRMWARE)
     {

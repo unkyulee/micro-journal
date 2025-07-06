@@ -1,10 +1,11 @@
 #include "Clear.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
 #include <display/EPD/display_EPD.h>
+
+//
+#include "service/Editor/Editor.h"
 
 //
 void Clear_setup()
@@ -39,7 +40,7 @@ void Clear_render()
     cursorY += 80;
     writeln(
         (GFXfont *)&systemFont,
-        format(" [Y] ARE YOU SURE TO DELETE %s?", Editor::getInstance().fileBuffer.getFileName()).c_str(),
+        format(" [Y] ARE YOU SURE TO DELETE %s?", Editor::getInstance().fileName).c_str(),
         &cursorX, &cursorY,
         display_EPD_framebuffer());
 
@@ -52,6 +53,7 @@ void Clear_render()
 //
 void Clear_keyboard(char key)
 {
+    _debug("Clear_keyboard %c\n", key);
     JsonDocument &app = status();
 
     // delete confirmed

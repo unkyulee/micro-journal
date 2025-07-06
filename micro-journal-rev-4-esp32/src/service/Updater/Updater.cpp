@@ -13,7 +13,7 @@ void run_firmare_update(const char* filename)
     _log("[run_firmare_update] Firmware update: %s\n", filename);
 
     //
-    File firmwareFile = gfs()->open(filename);
+    File firmwareFile = gfs()->open(filename, "r");
     if (!firmwareFile)
     {
         //
@@ -34,7 +34,7 @@ void run_firmare_update(const char* filename)
             if (Update.end())
             {
                 Serial.println("Firmware update successful!");
-                SD.remove(firmware_filename);
+                gfs()->remove(filename);
 
                 // restart
                 ESP.restart();
@@ -71,10 +71,4 @@ void run_firmare_update(const char* filename)
 
     // Close firmware file
     firmwareFile.close();
-}
-
-// go back to word processor
-//
-app["menu"]["state"] = MENU_HOME;
-app["screen"] = WORDPROCESSOR;
 }

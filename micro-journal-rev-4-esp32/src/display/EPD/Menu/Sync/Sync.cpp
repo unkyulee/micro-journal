@@ -1,14 +1,13 @@
 #include "Sync.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
 #include "../Wifi/Wifi.h"
 #include <display/EPD/display_EPD.h>
 
 //
 #include "service/Wifi/WifiService.h"
+#include "service/Editor/Editor.h"
 
 //
 void Sync_setup()
@@ -40,7 +39,7 @@ void Sync_render()
     cursorY += 35;
     writeln(
         (GFXfont *)&systemFont,
-        format(" for %s", Editor::getInstance().fileBuffer.getFileName()).c_str(),
+        format(" for %s", Editor::getInstance().fileName).c_str(),
         &cursorX, &cursorY,
         display_EPD_framebuffer());
 

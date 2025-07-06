@@ -1,16 +1,12 @@
 #include "Home.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
 #include "keyboard/keyboard.h"
 #include <display/EPD/display_EPD.h>
 #include "service/Tools/Tools.h"
 
-//
-#include <SD.h>
-#include <SPIFFS.h>
+#include "service/Editor/Editor.h"
 
 // Conviences function to get File Size with just an index
 size_t FileIndexSize(int index)
@@ -148,7 +144,7 @@ void Home_keyboard(char key)
         // save config
         int file_index = key - 48;
         app["config"]["file_index"] = file_index;
-        app_config_save();
+        config_save();
 
         // load editor
         Editor::getInstance().loadFile(format("/%d.txt", file_index));

@@ -10,6 +10,7 @@
 #include "WakeUp/WakeUp.h"
 #include "WordProcessor/WordProcessor.h"
 #include "Sleep/Sleep.h"
+#include "Menu/Menu.h"
 
 // Display Frame Buffer Setup
 uint8_t *framebuffer = NULL;
@@ -107,27 +108,20 @@ void display_EPD_loop()
                 Sleep_render();
         }
 
+        // MENU SCREEN
+        else if (screen == MENUSCREEN)
+        {
+            // setup only once
+            if (screen != screen_prev)
+                Menu_setup();
+            else
+                // loop
+                Menu_render();
+        }
+
         //
         app["screen_prev"] = screen;
         screen_prev = screen;
-        /*
-
-                // MENU SCREEN
-                else if (screen == MENUSCREEN)
-                {
-                    // setup only once
-                    if (screen != screen_prev)
-                        Menu_setup();
-                    else
-                        // loop
-                        Menu_render();
-                }
-                else
-
-                else
-
-
-        */
     }
 }
 
@@ -138,12 +132,14 @@ void display_EPD_keyboard(char key, bool pressed, int index)
 
     if (screen == ERRORSCREEN)
     {
-        ErrorScreen_keyboard(key);
+        if (!pressed)
+            ErrorScreen_keyboard(key);
     }
 
     else if (screen == WAKEUPSCREEN)
     {
-        WakeUp_keyboard(key);
+        if (!pressed)
+            WakeUp_keyboard(key);
     }
 
     else if (screen == WORDPROCESSOR)
@@ -154,18 +150,15 @@ void display_EPD_keyboard(char key, bool pressed, int index)
 
     else if (screen == SLEEPSCREEN)
     {
-        Sleep_keyboard(key);
+        if (!pressed)
+            Sleep_keyboard(key);
     }
 
-    /*
-
-        else if (screen == MENUSCREEN)
-        {
+    else if (screen == MENUSCREEN)
+    {
+        if (!pressed)
             Menu_keyboard(key);
-        }
-
-
-    */
+    }
 }
 
 GFXfont *display_EPD_font()

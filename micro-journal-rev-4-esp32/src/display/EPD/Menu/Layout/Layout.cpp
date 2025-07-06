@@ -1,9 +1,7 @@
 #include "Layout.h"
 #include "../Menu.h"
 #include "app/app.h"
-#include "config/config.h"
 #include "display/display.h"
-#include "editor/editor.h"
 #include "keyboard/keyboard.h"
 #include <display/EPD/display_EPD.h>
 #include <map> // Include map for key-to-layout mapping
@@ -73,8 +71,11 @@ void Layout_keyboard(char key)
         selectedLayout = it->second;
     }
 
+    //
     app["config"]["keyboard_layout"] = selectedLayout;
-    app_config_save();
+    config_save();
+
+    //
     app["screen"] = WORDPROCESSOR;
     app["menu"]["state"] = MENU_HOME;
 }
