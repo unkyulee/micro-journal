@@ -33,9 +33,6 @@ void Brightness_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Brightness_keyboard(char key, bool pressed)
 {
-    if (pressed)
-        return;
-
     //
     _debug("Brightness_Keyboard %d\n", key);
     JsonDocument &app = status();

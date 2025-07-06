@@ -55,9 +55,6 @@ void FontColor_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void FontColor_keyboard(char key, bool pressed)
 {
-    if (pressed)
-        return;
-
     _debug("FontColor_Keyboard %d\n", key);
     JsonDocument &app = status();
 

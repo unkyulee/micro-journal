@@ -36,17 +36,14 @@ void Clear_keyboard(char key, bool pressed)
     // MENU - SELECTED ACTION
     if (key == 'y')
     {
-        if (!pressed)
-        {
-            // Go back to Home
-            _log("Delete File");
+        // Go back to Home
+        _log("Delete File");
 
-            //
-            Editor::getInstance().clearFile();
+        //
+        Editor::getInstance().clearFile();
 
-            //
-            app["screen"] = WORDPROCESSOR;
-        }
+        //
+        app["screen"] = WORDPROCESSOR;
     }
     else
     {

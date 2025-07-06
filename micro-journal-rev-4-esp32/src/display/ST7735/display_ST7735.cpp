@@ -154,7 +154,7 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
 
   if (screen == ERRORSCREEN)
   {
-    ErrorScreen_keyboard(key);
+    if(!pressed) ErrorScreen_keyboard(key);
   }
   else if (screen == WORDPROCESSOR)
   {
@@ -164,17 +164,17 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
   else if (screen == WAKEUPSCREEN)
   {
     // send the key stroke to wakeup screen
-    WakeUp_keyboard(key, pressed, index);
+    if(!pressed) WakeUp_keyboard(key, pressed, index);
   }
   else if (screen == SLEEPSCREEN)
   {
     // send the key stroke to sleep screen
-    Sleep_keyboard(key, pressed, index);
+    if(!pressed) Sleep_keyboard(key, pressed, index);
   }
   else if (screen == MENUSCREEN)
   {
     // send the key stroke to word processor
-    Menu_keyboard(key, pressed);
+    if(!pressed) Menu_keyboard(key, pressed);
   }
   else if (screen == KEYBOARDSCREEN)
   {

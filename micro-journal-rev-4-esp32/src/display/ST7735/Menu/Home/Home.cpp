@@ -71,10 +71,6 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Home_keyboard(char key, bool pressed)
 {
-    // react to only key release
-    if (pressed)
-        return;
-
     //
     _log("Home_Keyboard %d selectedHome %d\n", key, selectedHome);
     JsonDocument &app = status();

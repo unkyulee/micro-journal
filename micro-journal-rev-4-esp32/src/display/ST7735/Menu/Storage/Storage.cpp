@@ -38,16 +38,13 @@ void Storage_keyboard(char key, bool pressed)
     // MENU - SELECTED ACTION
     if (key == 6 || key == '\n')
     {
-        if (!pressed)
-        {
-            // Go back to Home
-            _log("Exit Mass Storage");
+        // Go back to Home
+        _log("Exit Mass Storage");
 
-            // turn off USB drive
-            app["massStorage"] = false;
+        // turn off USB drive
+        app["massStorage"] = false;
 
-            //
-            app["menu"]["state"] = MENU_HOME;
-        }
+        //
+        app["menu"]["state"] = MENU_HOME;
     }
 }
