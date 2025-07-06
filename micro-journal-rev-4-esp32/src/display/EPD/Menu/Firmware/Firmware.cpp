@@ -5,10 +5,7 @@
 #include <display/EPD/display_EPD.h>
 
 //
-#include <Update.h> // Required for firmware update
-#include <FS.h>
-#include <SD.h>
-#include <SPIFFS.h>
+#include "service/Updater/Updater.h"
 
 //
 void Firmware_setup()
@@ -35,6 +32,5 @@ void Firmware_keyboard(char key)
 
     //
     _log("Firmware update begins.\n");
-
-
+    run_firmare_update(FIRMWARE);
 }

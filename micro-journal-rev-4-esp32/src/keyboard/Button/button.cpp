@@ -37,7 +37,8 @@ void button_loop()
         if (menuKey == 0)
         {
             // open up the menu
-            display_keyboard(MENU);
+            display_keyboard(MENU, true, 69);
+            display_keyboard(MENU, false, 69);
         }
 
         if (backKey == 0)
@@ -48,7 +49,7 @@ void button_loop()
             if (screen == MENUSCREEN)
             {
                 //
-                display_keyboard('b'); // send back button when menu
+                display_keyboard('b', false); // send B when menu
             }
 
             else

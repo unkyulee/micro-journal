@@ -27,21 +27,24 @@ void setup()
     //
     display_setup();
 
-    //
-    keyboard_setup();
+    if (app_ready())
+    {
+        //
+        keyboard_setup();
 
 #ifdef BOARD_ESP32_S3
-    // Start the second core task
-    xTaskCreatePinnedToCore(
-        TaskCore1,   // Function to run
-        "TaskCore1", // Name
-        8192,        // Stack size
-        NULL,        // Parameters
-        1,           // Priority
-        NULL,        // Task handle
-        1            // Core 1
-    );
+        // Start the second core task
+        xTaskCreatePinnedToCore(
+            TaskCore1,   // Function to run
+            "TaskCore1", // Name
+            8192,        // Stack size
+            NULL,        // Parameters
+            1,           // Priority
+            NULL,        // Task handle
+            1            // Core 1
+        );
 #endif
+    }
 }
 
 //
@@ -106,14 +109,6 @@ void loop1()
 //
 void TaskCore1(void *pvParameters)
 {
-    // Wait until the app is ready
-    while (!app_ready())
-    {
-        delay(1);
-    }
-    _log("Core 0 started.\n");
-    delay(1000);
-
     while (1)
     {
         app_loop();

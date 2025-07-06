@@ -1,10 +1,7 @@
-#ifndef Button_h
-#define Button_h
+#pragma once
 
 //
 void button_setup();
 
 ///
 void button_loop();
-
-#endif

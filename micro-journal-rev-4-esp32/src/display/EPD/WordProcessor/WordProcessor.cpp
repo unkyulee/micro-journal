@@ -715,11 +715,6 @@ void WP_keyboard(char key, bool pressed, int index)
 
         // send the keys to the editor
         Editor::getInstance().keyboard(key, pressed);
-
-        if (key == '\b')
-        {
-            backspaced = true;
-        }
     }
 }
 

@@ -24,6 +24,10 @@ int display_EPD_core()
     JsonDocument &app = status();
     int screen = app["screen"].as<int>();
 
+    // if app is not ready then run in the main core
+    if (!app_ready())
+        return 1;
+
     // IN MENU run it in the main core, so that sync process runs independently
     if (screen == MENUSCREEN)
         return 1;

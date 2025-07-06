@@ -96,20 +96,27 @@ void Sync_render()
     {
         //
         cursorX = 30;
-        cursorY += 35;
+        cursorY += 50;
+
         writeln(
             (GFXfont *)&systemFont,
-            "SYNC Completed",
+            "SYNC Completed. Press any key to exit.",
             &cursorX, &cursorY,
             display_EPD_framebuffer());
     }
 
-    else
-    {
-    }
 }
 
 //
 void Sync_keyboard(char key)
 {
+    //
+    JsonDocument &app = status();
+
+    // SYNC STATE
+    int sync_state = app["sync_state"].as<int>();
+    if (sync_state == SYNC_COMPLETED)
+    {
+       app["screen"] = WORDPROCESSOR;
+    }
 }

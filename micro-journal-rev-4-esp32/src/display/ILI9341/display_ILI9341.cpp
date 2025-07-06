@@ -3,10 +3,12 @@
 #include "app/app.h"
 
 // screens
-#include "GUI/WordProcessor/WordProcessor.h"
-#include "GUI/ErrorScreen/ErrorScreen.h"
-#include "GUI/Menu/Menu.h"
-#include "GUI/WakeUp/WakeUp.h"
+#include "ErrorScreen/ErrorScreen.h"
+#include "WakeUp/WakeUp.h"
+#include "WordProcessor/WordProcessor.h"
+#include "Sleep/Sleep.h"
+#include "Menu/Menu.h"
+#include "Update/Update.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
@@ -14,8 +16,26 @@ TFT_eSprite sprite(&tft);
 U8g2_for_TFT_eSPI u8f; // U8g2 font instance
 
 //
-TFT_eSprite& display_ILI9341_sprite() {
+TFT_eSprite &display_ILI9341_sprite()
+{
   return sprite;
+}
+
+int display_ILI9341_core()
+{
+  JsonDocument &app = status();
+  int screen = app["screen"].as<int>();
+
+  // if app is not ready then run in the main core
+  if (!app_ready())
+    return 1;
+
+  // IN MENU run it in the main core, so that sync process runs independently
+  if (screen == MENUSCREEN)
+    return 1;
+
+  // by default run at the second core separated from keyboard loop
+  return 0;
 }
 
 //
@@ -60,6 +80,39 @@ void display_ILI9341_loop()
         ErrorScreen_render(&tft, &u8f);
     }
 
+    // WAKEUP SCREEN
+    else if (screen == WAKEUPSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        WakeUp_setup(&tft, &u8f);
+      else
+        // loop
+        WakeUp_render(&tft, &u8f);
+    }
+
+    // WORD PROCESSOR
+    else if (screen == WORDPROCESSOR)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        WP_setup(&tft, &u8f);
+      else
+        // loop
+        WP_render(&tft, &u8f);
+    }
+
+    // SLEEP SCREEN
+    else if (screen == SLEEPSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        Sleep_setup(&tft, &u8f);
+      else
+        // loop
+        Sleep_render(&tft, &u8f);
+    }
+
     // MENU SCREEN
     else if (screen == MENUSCREEN)
     {
@@ -71,37 +124,15 @@ void display_ILI9341_loop()
         Menu_render(&tft, &u8f);
     }
 
-    // WAKEUP SCREEN
-    else if (screen == WAKEUPSCREEN)
+    // UPDATE SCREEN
+    else if (screen == UPDATESCREEN)
     {
       // setup only once
       if (screen != screen_prev)
-        WakeUp_setup(&tft, &u8f, true);
+        Update_setup(&tft, &u8f);
       else
         // loop
-        WakeUp_render(&tft, &u8f);
-    }
-
-    // SLEEP SCREEN
-    else if (screen == SLEEPSCREEN)
-    {
-      // setup only once
-      if (screen != screen_prev)
-        WakeUp_setup(&tft, &u8f, false);
-      else
-        // loop
-        WakeUp_render(&tft, &u8f);
-    }
-
-    // WORD PROCESSOR
-    else
-    {
-      // setup only once
-      if (screen != screen_prev)
-        WP_setup(&tft, &u8f);
-      else
-        // loop
-        WP_render(&tft, &u8f);
+        Update_render(&tft, &u8f);
     }
 
     //
@@ -110,26 +141,42 @@ void display_ILI9341_loop()
 }
 
 // Redirect the key press to the current GUI
-void display_ILI9341_keyboard(char key)
+void display_ILI9341_keyboard(char key, bool pressed, int index)
 {
   JsonDocument &app = status();
   int screen = app["screen"].as<int>();
 
-  if (screen == WORDPROCESSOR)
+  if (screen == ERRORSCREEN)
+  {
+    if (!pressed)
+      ErrorScreen_keyboard(key);
+  }
+
+  else if (screen == WAKEUPSCREEN)
+  {
+    if (!pressed)
+      WakeUp_keyboard(key, pressed, index);
+  }
+
+  else if (screen == WORDPROCESSOR)
   {
     // send the key stroke to word processor
-    WP_keyboard(key);
+    WP_keyboard(key, pressed, index);
+  }
+
+  else if (screen == SLEEPSCREEN)
+  {
+    if (!pressed)
+      Sleep_keyboard(key, pressed, index);
   }
   else if (screen == MENUSCREEN)
   {
-    Menu_keyboard(key);
+    if (!pressed)
+      Menu_keyboard(key);
   }
-  else if (screen == ERRORSCREEN)
+  else if (screen == UPDATESCREEN)
   {
-    ErrorScreen_keyboard(key);
-  }
-  else if (screen == WAKEUPSCREEN || screen == SLEEPSCREEN)
-  {
-    WakeUp_keyboard(key);
+    if (!pressed)
+      Update_keyboard(key);
   }
 }

@@ -19,13 +19,14 @@ class MyEspUsbHost : public EspUsbHost
     {
         JsonDocument &app = status();
         app["hid_usb"] = false;
+        _log("USB Keyboard disconnected\n");
     }
 
     // USB Keycode is sent when key is pressed or released
     void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
     {
         //
-        _debug("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
+        _log("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
                report.modifier,
                report.reserved,
                report.keycode[0],

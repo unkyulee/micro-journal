@@ -90,7 +90,6 @@ void app_loop()
 #ifdef BOARD_ESP32_S3
     sync_loop();
 #endif
-
 }
 
 // status storage

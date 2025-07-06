@@ -8,8 +8,11 @@
 
 //
 void display_ILI9341_setup();
-TFT_eSprite& display_ILI9341_sprite();
 void display_ILI9341_loop();
-void display_ILI9341_keyboard(char key);
+int display_ILI9341_core();
+void display_ILI9341_keyboard(char key, bool pressed, int index = -1);
+
+//
+TFT_eSprite& display_ILI9341_sprite();
 
 #endif

@@ -49,7 +49,7 @@ bool gif_setup(TFT_eSPI *p, U8g2_for_TFT_eSPI *pu8f, String filename, int screen
 
     // load gif image
     _log("[gif_setup] GIF setup completed and loaded file: %s\n", filename.c_str());
-    return gif_load(filename);    
+    return gif_load(filename);
 }
 
 void gif_unload()
@@ -77,7 +77,9 @@ void gif_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         }
         gif.close();
         ptft->endWrite(); // Release TFT chip select for other SPI devices
-    } else {
+    }
+    else
+    {
         //_debug("[gif_render] gif.open returned false\n");
     }
 
@@ -96,7 +98,7 @@ void gif_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 bool gif_load(String filename)
 {
-    // check if file exists 
+    // check if file exists
     _log("[gif_load] checking if file exists: %s\n", filename.c_str());
     if (gfs()->exists(filename.c_str()))
     {
@@ -138,7 +140,54 @@ bool gif_load(String filename)
 
         // gif loading success
         return true;
-    } else {
+    }
+
+#ifdef BOARD_ESP32_S3
+    else if (spiffs()->exists(filename.c_str()))
+    {
+        _log("[gif_load] Loading %s from the SPIFFS\n", filename.c_str());
+        // load image
+        File file = spiffs()->open(filename.c_str(), "r");
+        if (!file)
+        {
+            _log("[gif_load] Failed to open file for reading\n");
+            return false;
+        }
+
+        // Allocate memory for the image
+        gif_image_size = file.size();
+
+        // limit the gif size to 1MB
+        if (gif_image_size > 1100000)
+        {
+            _log("[gif_load] File size too big %d from SD\n", gif_image_size);
+            return false;
+        }
+
+        //
+        _log("[gif_load] File size: %d\n", gif_image_size);
+        gif_image = (uint8_t *)malloc(gif_image_size);
+        if (gif_image == NULL)
+        {
+            _log("[gif_load] Failed to allocate memory\n");
+            return false;
+        }
+        _log("[gif_load] File alloc success\n");
+
+        // laod gif to the memory
+        size_t bytesRead = file.readBytes((char *)gif_image, gif_image_size);
+        _log("[gif_load] File read: %d\n", bytesRead);
+
+        // Close the file
+        file.close();
+
+        // gif loading success
+        return true;
+    }
+#endif
+
+    else
+    {
         _log("[gif_load] file doesn't not exist: %s\n", filename.c_str());
         return false;
     }
@@ -148,7 +197,8 @@ bool gif_load(String filename)
 void gif_stop(int _screen_next)
 {
     //
-    if(_screen_next != -1) screen_next = _screen_next;
+    if (_screen_next != -1)
+        screen_next = _screen_next;
 
     //
     _log("Stop GIF animation6 to move to next screen %d\n", screen_next);
@@ -156,7 +206,6 @@ void gif_stop(int _screen_next)
     // at the next frame gif will stop
     stop_gif = true;
 }
-
 
 // Draw a line of image directly on the LCD
 void GIFDraw(GIFDRAW *pDraw)

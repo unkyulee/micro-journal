@@ -3,7 +3,7 @@
 
 // ILI9341 DISPLAY
 #ifdef ILI9341_DRIVER
-#include "service/DisplayDriver/ILI9341/display_ILI9341.h"
+#include "display/ILI9341/display_ILI9341.h"
 #endif
 
 // EPD DISPLAY
@@ -103,7 +103,7 @@ void display_keyboard(int key, bool pressed, int index)
   _debug("[display_keyboard] Key: %c [%d] pressed: %d\n", key, key, pressed);
 
 #ifdef ILI9341_DRIVER
-  display_ILI9341_keyboard(key);
+  display_ILI9341_keyboard(key, pressed, index);
 #endif
 
 #ifdef LILYGO_T5_EPD47_S3
