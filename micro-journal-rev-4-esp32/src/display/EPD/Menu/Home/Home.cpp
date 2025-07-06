@@ -20,6 +20,8 @@ size_t FileIndexSize(int index)
 //
 void Home_setup()
 {
+    // every key stroke re-process the menu
+    Menu_clear();
 }
 
 //
@@ -125,7 +127,7 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
-    // wifi setup
+    // keyboardn layout setup
     else if (key == 'k')
     {
         // move to keyboard layout

@@ -5,6 +5,7 @@
 #ifdef BOARD_ESP32_S3
 #include "app/FileSystem/FileSystemSD.h"
 #include "app/FileSystem/FileSystemSPIFFS.h"
+#include "service/Sync/Sync.h"
 #endif
 
 #ifdef BOARD_PICO
@@ -85,6 +86,11 @@ void app_loop()
 #ifdef BATTERY
     battery_loop();
 #endif
+
+#ifdef BOARD_ESP32_S3
+    sync_loop();
+#endif
+
 }
 
 // status storage

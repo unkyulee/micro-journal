@@ -6,17 +6,23 @@
 #include <display/EPD/display_EPD.h>
 
 //
-#include "service/Wifi/WifiService.h"
+#include "service/WifiEntry/WifiEntry.h"
+#include "service/Sync/Sync.h"
 #include "service/Editor/Editor.h"
 
 //
 void Sync_setup()
 {
+    _log("Sync_setup\n");
+
+    //
+    Menu_clear();
+
     // load wifi
     wifi_config_load();
 
     // init sync
-    wifi_sync_init();
+    sync_init();
 }
 
 //
@@ -30,16 +36,7 @@ void Sync_render()
     int cursorY = 120;
     writeln(
         (GFXfont *)&systemFont,
-        " SYNC & BACKUP",
-        &cursorX, &cursorY,
-        display_EPD_framebuffer());
-
-    //
-    cursorX = 20;
-    cursorY += 35;
-    writeln(
-        (GFXfont *)&systemFont,
-        format(" for %s", Editor::getInstance().fileName).c_str(),
+        format("SYNC & BACKUP for %s", Editor::getInstance().fileName).c_str(),
         &cursorX, &cursorY,
         display_EPD_framebuffer());
 
@@ -49,12 +46,21 @@ void Sync_render()
     //
     if (sync_state == SYNC_START)
     {
+        //
+        cursorX = 30;
+        cursorY += 50;
+        writeln(
+            (GFXfont *)&systemFont,
+            "Preparing Sync Process ...",
+            &cursorX, &cursorY,
+            display_EPD_framebuffer());
+
         // Start Sync Process
         // 1) Connect to Wifi
         sync_start_request();
     }
 
-    else if (sync_state == SYNC_PROGRESS)
+    else if (sync_state == SYNC_STARTED || sync_state == SYNC_PROGRESS)
     {
         String message = app["sync_message"].as<String>();
 
@@ -98,32 +104,12 @@ void Sync_render()
             display_EPD_framebuffer());
     }
 
-    // BACK
-    cursorX = 20;
-    cursorY += 50;
-    writeln(
-        (GFXfont *)&systemFont,
-        "[B] Back",
-        &cursorX, &cursorY,
-        display_EPD_framebuffer());
+    else
+    {
+    }
 }
 
 //
 void Sync_keyboard(char key)
 {
-    //
-    JsonDocument &app = status();
-
-    // when pressed B
-    if (key == '\b' || key == 'b' || key == 'B')
-    {
-        // stop network
-        sync_stop();
-
-        //
-        app["sync_state"] = -1;
-
-        //
-        app["menu"]["state"] = MENU_HOME;
-    }
 }

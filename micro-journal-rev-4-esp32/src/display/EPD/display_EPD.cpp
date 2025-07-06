@@ -21,6 +21,13 @@ uint8_t *display_EPD_framebuffer()
 
 int display_EPD_core()
 {
+    JsonDocument &app = status();
+    int screen = app["screen"].as<int>();
+
+    // IN MENU run it in the main core, so that sync process runs independently
+    if (screen == MENUSCREEN)
+        return 1;
+
     // by default run at the second core separated from keyboard loop
     return 0;
 }

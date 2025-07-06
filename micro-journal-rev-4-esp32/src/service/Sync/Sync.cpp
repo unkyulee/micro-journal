@@ -1,140 +1,15 @@
-#include "WifiService.h"
+#include "Sync.h"
 #include "app/app.h"
-#include "config/config.h"
-#include "editor/editor.h"
-
-//
 #include "display/display.h"
-
-//
-#include <SPI.h>
-#include <SPIFFS.h>
-#include <SD.h>
+#include "service/Editor/Editor.h"
 
 //
 #include <HTTPClient.h>
 #include <SD.h>
 #include <base64.h>
 
-void wifi_service_loop()
-{
-    //
-    JsonDocument &app = status();
-    String task = app["task"].as<String>();
-    
-    if (task == "sync_start")
-    {
-        //
-        app["task"] = "";
-
-        //
-        sync_start();
-    }
-}
-
-// For safety concerns saving wifi information sd card can easily expose security information
-// Wifi Configuration is saved internal storage of ESP32
-void wifi_config_load()
-{
-    //
-    JsonDocument &app = status();
-
-    // load config.json
-    _log("Opening wifi.json file from internal storage\n");
-    File file = SPIFFS.open("/wifi.json", "r");
-    if (file)
-    {
-        // read the file
-        _log("Reading wifi.json file\n");
-        String wifiString = file.readString();
-        _log("Closing wifi.json file\n");
-        file.close();
-
-        // check if configString is empty
-        if (wifiString.isEmpty())
-        {
-            // to avoid deserialization failure whem empty
-            wifiString = "{}";
-        }
-
-        // Prepare a JsonDocument for the configuration
-        // The size should be adjusted according to your configuration's needs
-        JsonDocument configDoc;
-
-        // convert to JsonObject
-        DeserializationError error = deserializeJson(configDoc, wifiString);
-        _log("Deserializing wifi.json file\n");
-        if (error)
-        {
-            //
-            _log("wifi.json deserializeJson() failed: %s\n", error.c_str());
-
-            //
-            app["error"] = "Wrong format wifi.json";
-            app["screen"] = ERRORSCREEN;
-
-            // delete wifi.json from SPIFF
-            SPIFFS.remove("/wifi.json");
-
-            return;
-        }
-
-        // Assign the loaded configuration to "config" property of app
-        _log("Loading wifi config\n");
-        app["wifi"] = configDoc.as<JsonObject>();
-
-        // print out the configuration
-        _log("Wifi config loaded successfully!\n");
-    }
-    else
-    {
-        // file doesn't exist
-        _log("wifi.json file doens't exist\n");
-        delay(100);
-
-        return;
-    }
-}
-
-// save current wifi configuration
-void wifi_config_save()
-{
-    // load app status
-    JsonDocument &app = status();
-
-    // save config
-    // Open the file for writing
-    File file = SPIFFS.open("/wifi.json", FILE_WRITE);
-    if (!file)
-    {
-        _log("Failed to open wifi.json file for writing.\n");
-        return;
-    }
-
-    // Serialize the "config" property of the app Document directly to the file
-    if (app["wifi"].is<JsonObject>())
-    {
-        String jsonOutput;
-        serializeJsonPretty(app["wifi"], jsonOutput);
-        file.println(jsonOutput);
-
-        // debug
-        _debug("wifi_config_save\n%s\n", jsonOutput.c_str());
-
-        //
-        _log("Wifi config updated successfully.\n");
-    }
-    else
-    {
-        _log("No 'wifi' property found in app Document.\n");
-    }
-
-    // close config.json
-    file.close();
-}
-
 // Reset all the sync related flags
-void wifi_sync_init()
+void sync_init()
 {
     // reset the sync state
     // update app sync state
@@ -143,10 +18,10 @@ void wifi_sync_init()
     app["sync_error"] = "";
     app["sync_message"] = "";
 
-    _log("wifi_sync_init\n");
+    _log("[sync_init] sync_init\n");
 }
 
-// start WIFI
+// request background service to pick up the request
 void sync_start_request()
 {
     JsonDocument &app = status();
@@ -155,8 +30,33 @@ void sync_start_request()
     if (task != "sync_start")
     {
         app["task"] = "sync_start";
-        app["sync_state"] = SYNC_PROGRESS;
-        _log("Sync Start Requested\n");
+        _log("[sync_start_request] Sync Start Requested\n");
+    }
+}
+
+//
+void sync_loop()
+{
+    static unsigned int last = 0;
+    if (millis() - last > 1000)
+    {
+        last = millis();
+
+        //
+        JsonDocument &app = status();
+        String task = app["task"].as<String>();
+
+        if (task == "sync_start")
+        {
+            //
+            app["task"] = "";
+
+            //
+            _log("[sync_loop] Picked up Sync Start Request\n");
+
+            //
+            sync_start();
+        }
     }
 }
 
@@ -164,12 +64,14 @@ void sync_start_request()
 // Search for WIFI ACCESS POINTS
 void sync_start()
 {
-    _log("Sync Start\n");
-
     //
     JsonDocument &app = status();
 
     //
+    _log("[sync_start] Sync Start\n");
+
+    //
+    app["sync_state"] = SYNC_STARTED;
     app["sync_message"] = "Connecting to WiFi";
     app["clear"] = true;
 
@@ -232,11 +134,11 @@ void sync_start()
                     //
                     app["sync_message"] = format("Connected to: %s\n", savedSsid);
                     app["clear"] = true;
-                    delay(3000);
+                    _log(app["sync_message"]);
+                    delay(1000); // give some delay for the connection to settle
 
                     // Sync File Start
                     sync_send();
-                    _log("Sync Start has completed\n");
 
                     return; // Exit the function if successfully connected
                 }
@@ -317,7 +219,7 @@ bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password
 
 void sync_send()
 {
-    _log("Sync Send\n");
+    _log("[sync_send] Sync Send\n");
 
     //
     JsonDocument &app = status();
@@ -327,12 +229,14 @@ void sync_send()
     app["clear"] = true;
 
     // Get the input file
-    File inputFile = SD.open(Editor::getInstance().fileBuffer.getFileName());
+    File inputFile = gfs()->open(Editor::getInstance().fileName.c_str(), "r");
     if (!inputFile)
     {
-        app["sync_error"] = "Error opening input file!";
+        app["sync_error"] = "Error opening input file!\n";
         app["sync_state"] = SYNC_ERROR;
         app["clear"] = true;
+
+        _log(app["sync_error"]);
 
         sync_stop();
         return;
@@ -341,16 +245,18 @@ void sync_send()
     // Check file size
     if (inputFile.size() == 0)
     {
-        app["sync_error"] = "File is empty. Sync stopped.";
+        app["sync_error"] = "File is empty. Sync stopped.\n";
         app["sync_state"] = SYNC_ERROR;
         app["clear"] = true;
+
+        _log(app["sync_error"]);
 
         sync_stop();
         return;
     }
 
     // convert to BASE64 file
-    String base64Filename = Editor::getInstance().fileBuffer.getFileName() + ".base64";
+    String base64Filename = Editor::getInstance().fileName + ".base64";
     File outputFile = SD.open(base64Filename, FILE_WRITE);
     if (!outputFile)
     {
@@ -361,9 +267,11 @@ void sync_send()
         sync_stop();
 
         //
-        app["sync_error"] = "Error opening input file!";
+        app["sync_error"] = "Error opening input file!\n";
         app["sync_state"] = SYNC_ERROR;
         app["clear"] = true;
+
+        _log(app["sync_error"]);
 
         return;
     }
@@ -439,9 +347,11 @@ void sync_send()
     else
     {
         //
-        app["sync_error"] = "SYNC URL NOT FOUND";
+        app["sync_error"] = "SYNC URL NOT FOUND\n";
         app["sync_state"] = SYNC_ERROR;
         app["clear"] = true;
+
+        _log(app["sync_error"]);
 
         //
         sync_stop();

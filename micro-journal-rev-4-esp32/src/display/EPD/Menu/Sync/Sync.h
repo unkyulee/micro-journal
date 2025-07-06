@@ -1,5 +1,4 @@
-#ifndef Sync_h
-#define Sync_h
+#pragma once
 
 //
 void Sync_setup();
@@ -9,6 +8,3 @@ void Sync_render();
 
 // 
 void Sync_keyboard(char key);
-
-#endif
-
