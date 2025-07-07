@@ -21,7 +21,7 @@ Rev.2. is a small computer. Process of the building rev.2. is very similar to bu
 
 ### A. E-Paper Display with ESP32
 
-This build utilizes [LILYGO T5 e-Paper](https://lilygo.cc/products/t5-4-7-inch-e-paper-v2-3) module. This board contains e-paper display and ESP32 module in a single board. 
+This build utilizes [LILYGO T5 e-Paper](https://lilygo.cc/products/t5-4-7-inch-e-paper-v2-3) module. This board contains e-paper display and ESP32 module in a single board.
 
 ### B. Keyboard Controller - Raspberry Pi Pico RP2040
 
@@ -29,11 +29,11 @@ Keyboard controller is going to provide USB interface to connect to the raspberr
 
 ### C. Keyboard PCB
 
-[Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-7-e-ink/PCB/SMD) can be found here. It is using SMD components. So, it's not going to be too easy to build it by hand for most people. It is possible to order the PCB assembled from the popular PCB assembly services or you can order one from my [tindie store](https://www.tindie.com/stores/unkyulee/).  
+[Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-7-e-ink/PCB/SMD) can be found here. It is using SMD components. So, it's not going to be too easy to build it by hand for most people. It is possible to order the PCB assembled from the popular PCB assembly services or you can order one from my [tindie store](https://www.tindie.com/stores/unkyulee/).
 
 ### D. Knob - EC11
 
-Rev.7 uses two EC11 knobs. They are wired to the keyboard PCB. 
+Rev.7 uses two EC11 knobs. They are wired to the keyboard PCB.
 
 ### E. LIPO Charger and Voltage Boost Controller
 
@@ -68,7 +68,6 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 - A Wire Wrap Hand Tool can be a life saver for a lot of tasks - WSU-30
 - Any typical wires for electronics would do. I use [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
 
-
 # Build Order
 
 1. Enclosure Preparation
@@ -76,7 +75,6 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 3. Power Supply
 4. EC11 Rotary Encoder Preparation
 5. Keyboard PCB Wiring
-
 
 ### Enclosure Preparation
 
@@ -98,65 +96,102 @@ Once the prints are done. Remove the support materials from the print.
 
 <img src="build/005.png" width="600">
 
-
 ### Display Preparation
 
 Use B-7000 glue to apply on the display rim. Then attach to the display body.
 
 <img src="build/010.png" width="600">
 
- Make sure to apply some pressure on the display while glue is dried. Leave some heave book on top of it for an hour before using it for the assembly.
+Make sure to apply some pressure on the display while glue is dried. Leave some heave book on top of it for an hour before using it for the assembly.
 
 ### Power Supply
 
-Cut fours wires in 15 cm (6 inches) length. 
+Cut fours wires in 15 cm (6 inches) length.
 
 Merge battery indicator and battery holder and solder it to the power supply module.
-Solder two wires on the Vout+ and Vout-. Preferrably, use different colored wires or place a label for each polarity. This can be useful to identify the wires to connect with the power switch. 
+Solder two wires on the Vout+ and Vout-. Preferrably, use different colored wires or place a label for each polarity. This can be useful to identify the wires to connect with the power switch.
 
 <img src="build/006.png" width="600">
 
-Prepare the round switch. Attach wires, preferrably same color. Apply some hot glue one the leads if possible. This will prevent any shorts while moving around. 
+Prepare the round switch. Attach wires, preferrably same color. Apply some hot glue one the leads if possible. This will prevent any shorts while moving around.
 
 <img src="build/007.png" width="600">
 
-
 Pick up the middle enclosure. The order of the installation is important. If you place the battery holder first, then you can't push the battery indicator. So, make sure to follow the order
 
-1) Use hot glue on the bottom of the power supply module and stick it in.
-2) Then, push the battery indicator towards outside, and glue it in
-3) Lastly, use a double sided tape or hot glue to place the battery holder
-4) Power switch can be pushed in from the outside. 
+1. Use hot glue on the bottom of the power supply module and stick it in.
+2. Then, push the battery indicator towards outside, and glue it in
+3. Lastly, use a double sided tape or hot glue to place the battery holder
+4. Power switch can be pushed in from the outside.
 
 <img src="build/008.png" width="600">
 
-Take one wire from the switch, and then take Vout+ wire from the power supply module. Merge these two wires. Insulate it with a tape or hot glue. 
+Take one wire from the switch, and then take Vout+ wire from the power supply module. Merge these two wires. Insulate it with a tape or hot glue.
 
 <img src="build/009.png" width="600">
 
-
 ### EC11 Rotary Encoder Preparation
 
-EC11 rotary encode needs to be prep'd. You can use Wire Wrap Hand Tool to make things easier to wrap around the wire to those legs. 
+EC11 rotary encode needs to be prep'd. You can use Wire Wrap Hand Tool to make things easier to wrap around the wire to those legs.
 
-Cut 10x 30 cm wires. Make two with different colors to identify the GND pin if possible. 
+Cut 10x 30 cm wires. Make two with different colors to identify the GND pin if possible.
 
 <img src="build/011.png" width="600">
 
-There are two holes in the tool. Pass through the wire into the hole closer to the surface. Then pass through the leg to the hole in the middle. That roll it. Afer some several roles. Wires are neatly wrapped on to the leg. 
+There are two holes in the tool. Pass through the wire into the hole closer to the surface. Then pass through the leg to the hole in the middle. That roll it. Afer some several roles. Wires are neatly wrapped on to the leg.
 
 <img src="build/012.png" width="600">
 
-Wire up all 5 legs. Making one leg in the middle as a different color can be useful. This is GND point. The wires are pretty well stuck so, no need to do further actions. But, if you want to make sure then apply the solder in order to stick it permanently. 
-
-
-
+Wire up all 5 legs. Making one leg in the middle as a different color can be useful. This is GND point. The wires are pretty well stuck so, no need to do further actions. But, if you want to make sure then apply the solder in order to stick it permanently.
 
 ### Keyboard PCB Wiring
 
-Cut 22x 12 cm wires. 
+Cut 22x 12 cm wires.
 
+<img src="build/013.png" width="600">
 
+Make sure to flip the keyboard PCB to see the sockets. Then from the top is PIN 0, then pin number increments till the end.
+
+First 5 pins are for the knob on the left hand side. Last 5 pins are for the knob on the right hand side. Middle pins are for the keyboard matrix that will be connected to the keyboard controller (raspberry pi pico)
+
+| Keyboard PCB PIN | Connects to           |
+| ---------------- | --------------------- |
+| Pin 0            | Left Knob Out B       |
+| Pin 1            | Left Knob GND         |
+| Pin 2            | Left Knob Out A       |
+| Pin 3            | Left Knob Switch      |
+| Pin 4            | Left Knob Switch GND  |
+|                  |                       |
+| Pin 5            | PICO GPIO 2           |
+| Pin 6            | PICO GPIO 3           |
+| Pin 7            | PICO GPIO 4           |
+| Pin 8            | PICO GPIO 5           |
+| Pin 9            | PICO GPIO 6           |
+| Pin 10           | PICO GPIO 7           |
+| Pin 11           | PICO GPIO 8           |
+| Pin 12           | PICO GPIO 9           |
+| Pin 13           | PICO GPIO 10          |
+| Pin 14           | PICO GPIO 11          |
+| Pin 15           | PICO GPIO 12          |
+| Pin 16           | PICO GPIO 13          |
+| Pin 17           | PICO GPIO 14          |
+| Pin 18           | PICO GPIO 15          |
+| Pin 19           | PICO GPIO 16          |
+| Pin 20           | PICO GPIO 17          |
+| Pin 21           | PICO GPIO 18          |
+| Pin 22           | PICO GPIO 19          |
+| Pin 23           | PICO GPIO 20          |
+| Pin 24           | PICO GPIO 21          |
+| Pin 25           | PICO GPIO 22          |
+| Pin 26           | PICO GND              |
+|                  |                       |
+| Pin 27           | Right Knob Out B      |
+| Pin 28           | Right Knob GND        |
+| Pin 29           | Right Knob Out A      |
+| Pin 30           | Right Knob Switch     |
+| Pin 31           | Right Knob Switch GND |
+
+<img src="build/EC11webp.webp" width="600">
 
 --
-Currently rev.7 build guide work is in progress. 
+Currently rev.7 build guide work is in progress.
