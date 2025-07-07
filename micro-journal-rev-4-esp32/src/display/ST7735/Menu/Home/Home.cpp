@@ -25,7 +25,13 @@ void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     Menu_clear();
 
-    selectedHome = 0;
+    // if UsbKeyboard is selected or not
+    JsonDocument &app = status();
+    bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
+    if (UsbKeyboard)
+        selectedHome = 0;
+    else
+        selectedHome = 1; // if not choose writerDeck
 }
 
 //
@@ -169,8 +175,9 @@ void Home_keyboard(char key, bool pressed)
         // last item is EXIT
         else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
         {
-            _debug("Home Keyboard Exit is selected. Moving to Word Processor\n");
-            if (app["config"]["UsbKeyboard"].as<bool>())
+            bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
+            _log("Exit is selected. UsbKeyboard: %d\n", UsbKeyboard);
+            if (UsbKeyboard)
             {
                 app["screen"] = KEYBOARDSCREEN;
             }

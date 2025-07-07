@@ -5,11 +5,12 @@
 
 bool massStorageStarted = false;
 
-
+//
 void ms_setup()
 {
 }
 
+//
 void ms_loop()
 {
     static unsigned int last = millis();
@@ -27,8 +28,9 @@ void ms_loop()
             if (massStorageStarted == false)
             {
                 FatFSUSB.begin();
-                massStorageStarted = true;
 
+                //
+                massStorageStarted = true;
                 _log("FatFSUSB begin\n");
             }
         }
@@ -36,6 +38,7 @@ void ms_loop()
         {
             if (massStorageStarted == true)
             {
+                FatFSUSB.unplug();
                 FatFSUSB.end();
                 massStorageStarted = false;
 
