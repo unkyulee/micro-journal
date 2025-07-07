@@ -156,11 +156,11 @@ First 5 pins are for the knob on the left hand side. Last 5 pins are for the kno
 
 | Keyboard PCB PIN | Connects to           |
 | ---------------- | --------------------- |
-| Pin 0            | Left Knob Out B       |
-| Pin 1            | Left Knob GND         |
-| Pin 2            | Left Knob Out A       |
-| Pin 3            | Left Knob Switch      |
-| Pin 4            | Left Knob Switch GND  |
+| Pin 0            | Right Knob Out B       |
+| Pin 1            | Right Knob GND         |
+| Pin 2            | Right Knob Out A       |
+| Pin 3            | Right Knob Switch      |
+| Pin 4            | Right Knob Switch GND  |
 |                  |                       |
 | Pin 5            | PICO GPIO 2           |
 | Pin 6            | PICO GPIO 3           |
@@ -185,11 +185,11 @@ First 5 pins are for the knob on the left hand side. Last 5 pins are for the kno
 | Pin 25           | PICO GPIO 22          |
 | Pin 26           | PICO GND              |
 |                  |                       |
-| Pin 27           | Right Knob Out B      |
-| Pin 28           | Right Knob GND        |
-| Pin 29           | Right Knob Out A      |
-| Pin 30           | Right Knob Switch     |
-| Pin 31           | Right Knob Switch GND |
+| Pin 27           | Left Knob Out B      |
+| Pin 28           | Left Knob GND        |
+| Pin 29           | Left Knob Out A      |
+| Pin 30           | Left Knob Switch     |
+| Pin 31           | Left Knob Switch GND |
 
 <img src="build/EC11webp.webp" width="600">
 
