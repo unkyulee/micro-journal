@@ -69,6 +69,17 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
             // then toggle to writerDeck
             if (app["knobLongPressed"].as<bool>())
             {
+                // open menu
+                _debug("KeyboardScreen_keyboard - Received MENU Key\n");
+                Keyboard.releaseAll();
+
+                if (_keyboard_gif_loaded)
+                    gif_stop(MENUSCREEN);
+                else
+                    app["screen"] = MENUSCREEN;
+            }
+            else
+            {
                 // move to writerDeck
                 _debug("KeyboardScreen_keyboard - Received LONG PRESS MENU Key\n");
                 Keyboard.releaseAll();
@@ -81,17 +92,6 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
                     gif_stop(WAKEUPSCREEN);
                 else
                     app["screen"] = WAKEUPSCREEN;
-            }
-            else
-            {
-                // open menu
-                _debug("KeyboardScreen_keyboard - Received MENU Key\n");
-                Keyboard.releaseAll();
-
-                if (_keyboard_gif_loaded)
-                    gif_stop(MENUSCREEN);
-                else
-                    app["screen"] = MENUSCREEN;
             }
         }
 

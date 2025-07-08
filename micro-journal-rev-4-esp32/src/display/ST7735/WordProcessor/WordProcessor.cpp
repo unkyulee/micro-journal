@@ -338,6 +338,12 @@ void WP_keyboard(int key, bool pressed)
             Editor::getInstance().saveFile();
 
             if (app["knobLongPressed"].as<bool>())
+            {                
+                // open menu
+                _debug("WP_keyboard - Received MENU Key\n");
+                app["screen"] = MENUSCREEN;
+            }
+            else
             {
                 // move to writerDeck
                 _debug("WP_keyboard - Received LONG PRESS MENU Key\n");
@@ -346,12 +352,6 @@ void WP_keyboard(int key, bool pressed)
                 // save the default screen to config
                 app["config"]["UsbKeyboard"] = true;
                 config_save();
-            }
-            else
-            {
-                // open menu
-                _debug("WP_keyboard - Received MENU Key\n");
-                app["screen"] = MENUSCREEN;
             }
         }
     }
