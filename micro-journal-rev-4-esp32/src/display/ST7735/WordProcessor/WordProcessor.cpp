@@ -10,6 +10,7 @@
 #include "display/ST7735/display_ST7735.h"
 
 #define FONT u8g2_font_profont17_tf
+#define FONT_SMALL u8g2_font_profont12_tf
 
 //
 int screen_width = 160;
@@ -245,11 +246,18 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         color = TFT_GREEN;
     }
 
+    // file index number
+    const int font_width = 12;
+    int file_index = app["config"]["file_index"].as<int>();
+    pu8f->setFont(FONT_SMALL);
+    pu8f->setCursor(screen_width - font_width/2, font_width*2/3);
+    pu8f->print(String(file_index));
+
     // height 100% 80
     float batteryPercent = app["battery"].as<float>();
     int height = 80 * batteryPercent / 100.0;
     if(height < width) height = width;
-    ptft->fillRect(screen_width - width, 0, width, height, color);
+    ptft->fillRect(screen_width - width, font_width, width, height - font_width, color);    
 }
 
 //
@@ -353,6 +361,26 @@ void WP_keyboard(int key, bool pressed)
                 app["config"]["UsbKeyboard"] = true;
                 config_save();
             }
+        }
+    }
+
+    // Check if File Change request is pressed
+    if (key >= 1000 && key <= 1010)
+    {
+        if (!pressed)
+        {
+            int fileIndex = key - 1000;
+            _log("File Change Requested: %d\n", fileIndex);
+
+            //
+            Editor::getInstance().saveFile();
+
+            // save config
+            app["config"]["file_index"] = fileIndex;
+            config_save();
+
+            // load new file
+            Editor::getInstance().loadFile(format("/%d.txt", fileIndex));
         }
     }
 

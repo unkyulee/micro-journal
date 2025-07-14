@@ -64,14 +64,14 @@ Screen received mini HDMI interface. This display is almost exact the size of th
 - 2x [FPV mini HDMI connector](https://www.aliexpress.com/item/1005004374555360.html)
 - [FFC HDMI Cable](https://www.aliexpress.com/item/1005004374555360.html)
 
-- 16x M3 Heated Inserts OD 4.5mm Length 3mm
 - 8x M3 Hex Screw Length 10mm
 - 2x M3 Hex Screw Length 20mm
 - 6x M3 Hex Screw Length 5mm
-
-- 11x M2 Heated Inserts OD 3.2mm Length 3mm
 - 7x M2 Hex Screw Length 5mm
-- 4x M2 HEx Screw Length 3mm
+- 4x M2 Hex Screw Length 3mm
+
+- 16x M3 Heated Inserts OD 4.5mm Length 3mm
+- 11x M2 Heated Inserts OD 3.2mm Length 3mm
 
 - You will need TORX T10H to handle Hex screws
 
