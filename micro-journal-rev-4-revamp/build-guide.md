@@ -10,7 +10,6 @@
 
 | Keyboard PCB PIN | Connects to     |
 | ---------------- | --------------- |
-
 |                  |                 |
 | Pin 5            | PICO GPIO 0     |
 | Pin 6            | PICO GPIO 1     |
@@ -34,11 +33,14 @@
 |                  |                 |
 | Pin 26           | PICO GND        |
 |                  |                 |
-| Pin 27            | Knob Out B      |
-| Pin 28            | Knob GND        |
-| Pin 29            | Knob Out A      |
-| Pin 30            | Knob Switch     |
-| Pin 31            | Knob Switch GND |
+| Pin 27           | Knob Out B      |
+| Pin 28           | Knob GND        |
+| Pin 29           | Knob Out A      |
+| Pin 30           | Knob Switch     |
+| Pin 31           | Knob Switch GND |
+
+
+Raspberry Pico 27 goes to Battery Voltage Divider
 
 
 ### Battery Level Inidicator

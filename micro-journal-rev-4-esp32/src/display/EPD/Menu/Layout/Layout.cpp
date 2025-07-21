@@ -29,10 +29,11 @@ void Layout_render()
         "[c] Canadian",
         "[d] Dvorak",
         "[f] French",
+        "[n] Finnish",
         "[g] German",
         "[i] Italian",
+        "[w] Norweigian",
         "[k] UK",
-        "[n] Finnish",
         "[u] US"
     };
 
@@ -56,10 +57,11 @@ void Layout_keyboard(char key)
         {'c', "CA"},
         {'d', "DV"},
         {'f', "FR"},
+        {'n', "FN"},
         {'g', "GE"},
         {'i', "IT"},
-        {'k', "UK"},
-        {'n', "FN"},
+        {'w', "NO"},
+        {'k', "UK"},        
         {'u', "US"} // Default US layout
     };
 

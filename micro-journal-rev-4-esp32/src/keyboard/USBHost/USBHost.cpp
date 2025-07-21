@@ -26,7 +26,7 @@ class MyEspUsbHost : public EspUsbHost
     void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
     {
         //
-        _log("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
+        _debug("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
                report.modifier,
                report.reserved,
                report.keycode[0],
@@ -57,6 +57,7 @@ class MyEspUsbHost : public EspUsbHost
                 {
                     // handle key pressed
                     USBHost_keyboard(report.keycode[i], report.modifier, true);
+                    _log("Key Pressed: %d %d\n", report.keycode[i], report.modifier);
                 }
             }
         }
@@ -77,7 +78,8 @@ class MyEspUsbHost : public EspUsbHost
                 }
                 if (key_released)
                 {
-                    USBHost_keyboard(report.keycode[i], report.modifier, false);
+                    USBHost_keyboard(last_report.keycode[i], report.modifier, false);
+                    _log("Key Release: %d %d\n", last_report.keycode[i], report.modifier);
                 }
             }
         }
