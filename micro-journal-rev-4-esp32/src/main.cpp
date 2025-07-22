@@ -27,11 +27,11 @@ void setup()
     //
     display_setup();
 
+    //
+    keyboard_setup();
+
     if (app_ready())
     {
-        //
-        keyboard_setup();
-
 #ifdef BOARD_ESP32_S3
         // Start the second core task
         xTaskCreatePinnedToCore(

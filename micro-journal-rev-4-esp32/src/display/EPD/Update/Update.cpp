@@ -13,11 +13,7 @@ void Update_setup()
     epd_poweron();
     epd_clear_quick(epd_full_screen(), 4, 50);
     epd_poweroff_all();
-}
 
-//
-void Update_render()
-{
     //
     int cursorX = 10;
     int cursorY = 150;
@@ -32,9 +28,31 @@ void Update_render()
 }
 
 //
+void Update_render()
+{
+}
+
+//
 void Update_keyboard(char key)
 {
     JsonDocument &app = status();
+
+    // Clear Screen
+    epd_poweron();
+    epd_clear_quick(epd_full_screen(), 4, 50);
+    epd_poweroff_all();
+
+    //
+    int cursorX = 10;
+    int cursorY = 150;
+    writeln(
+        (GFXfont *)&systemFont,
+        "UPDATING ...",
+        &cursorX, &cursorY,
+        display_EPD_framebuffer());
+
+    // render frambuffer
+    display_draw_buffer();
 
     //
     _log("Update update begins.\n");

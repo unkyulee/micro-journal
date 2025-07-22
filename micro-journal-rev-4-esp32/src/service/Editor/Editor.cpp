@@ -356,7 +356,7 @@ void Editor::keyboard(char key, bool pressed)
         return;
 
     //
-    _debug("Editor::keyboard:: %c pressed: %d \n", key, pressed);
+    _debug("Editor::keyboard:: %c pressed: %d cursorPos: %d\n", key, pressed, cursorPos);
 
     // when any key is pressed track the last key pressed and if they don't release
     // keep issueing press events so that it keeps on typing on the screen
@@ -766,6 +766,9 @@ void Editor::updateScreen()
             break;
         }
     }
+
+    //
+    _debug("Editor::updateScreen cursorPos: %d\n", cursorPos);
 }
 
 void Editor::addChar(char c)
@@ -788,6 +791,10 @@ void Editor::addChar(char c)
 void Editor::removeLastChar()
 {
     int bufferSize = getBufferSize();
+
+    //
+    _debug("FileBuffer::removeLastChar cusorPos: %d bufferSize: %d\n", cursorPos, bufferSize);
+
     if (bufferSize > 0 && cursorPos > 0)
     {
         // Shift the trailing texts left by one position
@@ -796,15 +803,12 @@ void Editor::removeLastChar()
             memmove(buffer + cursorPos - 1, buffer + cursorPos, bufferSize - cursorPos);
         }
 
-        // Decrease buffer size and cursor position
-        --bufferSize;
-        --cursorPos;
-
-        //
-        _debug("FileBuffer::removeLastChar %d\n", cursorPos);
-
         // Null terminate the buffer
-        buffer[bufferSize] = '\0';
+        buffer[bufferSize - 1] = 0;
+        cursorPos -= 1;
+
+        bufferSize = getBufferSize();
+        _debug("FileBuffer::removeLastChar After cusorPos: %d bufferSize: %d\n", cursorPos, bufferSize);
     }
 }
 

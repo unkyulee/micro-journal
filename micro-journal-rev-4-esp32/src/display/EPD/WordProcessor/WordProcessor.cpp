@@ -355,21 +355,34 @@ void WP_render_text()
             char *line = Editor::getInstance().linePositions[cursorLine];
             int line_length = Editor::getInstance().lineLengths[cursorLine];
 
-            _debug("cursorLine: %d line: %d line_length: %d\n", cursorLine, line, line_length);
+            _debug("cursorLine: %d line: %d line_length: %d cursorLinePos_prev: %d\n", cursorLine, line, line_length, cursorLinePos_prev);
 
-            // Copy the line content to row, but not more than 255 characters
-            char row[256];
-            int copyLength = (line_length < 255) ? line_length : 255;
-            strncpy(row, line, copyLength);
-            row[copyLength] = '\0';
+            // new character has been typed
+            if (cursorLinePos_prev < line_length)
+            {
+                // Copy the line content to row, but not more than 255 characters
+                char row[256];
+                int copyLength = (line_length < 255) ? line_length : 255;
+                strncpy(row, line, copyLength);
+                row[copyLength] = '\0';
 
-            char utf8[512];
-            convert_extended_ascii_to_utf8(row + cursorLinePos_prev, utf8, 512);
+                char utf8[512];
+                convert_extended_ascii_to_utf8(row + cursorLinePos_prev, utf8, 512);
 
-            //
-            epd_poweron();
-            writeln(display_EPD_font(), utf8, &cursorX, &cursorY, NULL);
-            epd_poweroff();
+                //
+                epd_poweron();
+                writeln(display_EPD_font(), utf8, &cursorX, &cursorY, NULL);
+                epd_poweroff();
+            }
+
+            // back space case will redraw the line
+            else
+            {
+                // and redraw the line
+                _debug("Backspace detected. Redrawing the line.\n");
+                WP_clear_row(cursorLine);
+                WP_render_text_line(cursorLine, display_y(), NULL);
+            }
         }
     }
 
@@ -381,7 +394,7 @@ void WP_render_text()
     // line changed
     if (cursorLine_prev != cursorLine)
     {
-         if (editing == true)
+        if (editing == true)
         {
             // when line changes during the edit do full refresh
 
@@ -750,4 +763,5 @@ void convert_extended_ascii_to_utf8(const char *input, char *output, size_t outp
 
     // Null-terminate the output.
     output[out_index] = '\0';
+    _debug("[convert_extended_ascii_to_utf8] input %d output index: %d %s\n", input[0], out_index, output);
 }

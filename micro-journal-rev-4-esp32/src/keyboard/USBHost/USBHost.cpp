@@ -88,6 +88,7 @@ class MyEspUsbHost : public EspUsbHost
 
 // Handler for USB Keyboard
 MyEspUsbHost usbHost;
+bool usbHostReady = false;
 
 // this setup will be called at Rev.5 only
 void USBHost_setup()
@@ -98,6 +99,7 @@ void USBHost_setup()
 #ifndef DEBUG
     // usb keyboard setup
     usbHost.begin();
+    usbHostReady = true;
 #endif
 
 #ifdef DEBUG
@@ -110,8 +112,9 @@ void USBHost_loop()
 {
 
 #ifndef DEBUG
-    // usb keyboard loop
-    usbHost.task();
+    if (usbHostReady)
+        // usb keyboard loop
+        usbHost.task();
 #endif
 
 #ifdef DEBUG
@@ -119,7 +122,8 @@ void USBHost_loop()
     if (Serial.available())
     {
         char c = Serial.read();
-        if(c == 13) return; // ignore /r key
+        if (c == 13)
+            return; // ignore /r key
         _debug("Serial keyboard input %c %d\n", c, c);
         // You can choose a key index, e.g., 0 for generic input
         display_keyboard(c, true);  // Key press
@@ -131,7 +135,7 @@ void USBHost_loop()
 //
 void USBHost_keyboard(uint8_t keycode, uint8_t modifier, bool pressed)
 {
-     //////////////////////////////////////////
+    //////////////////////////////////////////
     // CAPSLOCK is pressed
     if (keycode == HID_KEY_CAPS_LOCK && pressed)
     {
