@@ -1,4 +1,3 @@
-DRAFT DRAFT DRAFT THIS BUILD GUIDE IS IN PROGRESS
 
 # Micro Journal Rev.7. Build Guide
 
@@ -195,3 +194,82 @@ First 5 pins are for the knob on the left hand side. Last 5 pins are for the kno
 
 --
 Currently rev.7 build guide work is in progress.
+
+
+<img src="build/014.jpg" width="600">
+
+Before soldering on Raspberry Pi Pico, make sure to cover it with a tape. Without covering the board, there has been many cases that the board fails to work. Since, I have covered it up, it has never failed. I think there is some heat or solder spilling out and could cause some issues. Covering it will prevent some direct heat or solder spills to break the circuit. It's better safe than sorry approach. I do not know if there is any scientific explanations to this measure. 
+
+<img src="build/015.jpg" width="600">
+
+Once the soldering is done. The board will looks like this. Apply some hot glue on the joints, and use some tapes to keeps the wires together. 
+
+
+
+
+### Connect Power Supply to the Keyboard Controller
+
+<img src="build/016.jpg" width="600">
+
+There should be Red wire (+5V) and a Blue wire (GND) from the enclosure. Solder that to the raspberry pi pico VBus and GND respectively. 
+
+
+
+### Upload Keyboard Firmware 
+
+Download the keyboard firmware from the link below
+
+https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-7-e-ink/keyboard
+
+Connect the Raspberry Pi Pico to the PC. It will show up as a USB drive. Copy "unkyulee_68_vial.uf2" to the drive. Once the file is copied over then the drive will auto disconnect and then you will see the keyboard firmare is activated on the pico.
+
+You can download [Vial](https://get.vial.today/) to check if the firmware is correctly loaded
+
+
+
+### Assembly the enclosure
+
+<img src="build/019.jpg" width="600">
+
+You will need this shape of USB cable. It's USB type C male to male. One end is angled in such way as the picture. 
+
+<img src="build/020.png" width="600">
+
+Assemble the display enclosure first. You will need to place the display module aligned with the display port. Do not push it hard. It's quite fragile and too much force can destory the display. 
+
+Attach the USB C cable as the picture above. Then place the back enclosure. Use m3 10mm screws to close up. Do not tighten it too hard. Be very gentle. Tightening it too hard can break the display module because the cable can bend when pressured too hard.
+
+
+<img src="build/017.jpg" width="600">
+
+Make the knob wire go through the hole in the middle enclosure. Tighten them on each side. Make sure to place the back panel before tightening the screws. 
+
+<img src="build/019.png" width="600">
+
+Assemble the left hand side enclosure. First tighten the keyboard PCB with m2 6mm, then use m3 70mm screws, and then m2 20mm. It's important to screw in with following the order. This is the order that I found that aligns the keyboard PCB. 
+
+<img src="build/021.jpg" width="600">
+
+Place the assembled display. Make sure that the USB cable is passing through the internal hole and connect to the keyboard controller. 
+
+<img src="build/021.png" width="600">
+
+While carefullly enclosing the wires. Place the screws in the order presented in the picture. First, keyboard PCB and then work on the enclosure. 
+
+When you reach this point. Try to place a battery and one or two keyboard switches to see if the all the connections are well made. 
+
+
+### Keyboard Stabilizer
+
+Installing keyboard switches and keycaps are going to be rather a standard procedure. One thing that is a bit difficult is how to place the stabilizer. 
+
+<img src="build/022.jpg" width="600">
+
+Make sure to place the stabilzer as the picture above. Important to note that when those components are place it should not have tension and the wire should be moving up and down freely. 
+
+<img src="build/022.png" width="600">
+
+Make sure to place the component in the orientation as the above picture. 
+
+<img src="build/023.png" width="600">
+
