@@ -55,6 +55,9 @@ void WP_setup()
 
     // clear background
     clear_full = true;
+
+    // reset startLine
+    startLine = -1;
 }
 
 //
