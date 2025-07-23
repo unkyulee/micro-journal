@@ -6,15 +6,25 @@
 #include <Keyboard.h>
 
 bool _keyboard_gif_loaded = false;
+unsigned int _keyboard_sleep = 0;
+bool _keyboard_is_sleep = false;
+int _keyboard_awake_brightness = 0;
+const int _keyboard_sleep_timer = 60 * 60 * 1000; // 1 hour
 
 //
 void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    JsonDocument &app = status();
+
     //
     ptft->fillScreen(TFT_BLACK);
 
-    //
+    // load gif
     _keyboard_gif_loaded = gif_setup(ptft, pu8f, "/keyboard.gif", KEYBOARDSCREEN, false);
+
+    // reset keyboard sleep timer
+    _keyboard_sleep = millis();
+    _keyboard_awake_brightness = app["config"]["brightness"].as<int>();
 }
 
 //
@@ -23,6 +33,28 @@ void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // Play GIF
     if (_keyboard_gif_loaded)
         gif_render(ptft, pu8f);
+
+    // Check Sleep Mode
+    KeyboardScreen_sleep();
+}
+
+void KeyboardScreen_sleep()
+{
+    // check screen off mode: 1 hour inactive will turn off the screen
+    if (millis() - _keyboard_sleep > _keyboard_sleep_timer && _keyboard_is_sleep == false)
+    {
+        _keyboard_sleep = millis();
+
+        //
+        JsonDocument &app = status();
+        
+        // go to sleep mode
+        _keyboard_is_sleep = true;
+
+        // turn off the screen
+        app["config"]["brightness"] = 0;
+        _log("Entering Sleep Mode\n");
+    }
 }
 
 /*
@@ -58,6 +90,19 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
 {
     JsonDocument &app = status();
     _debug("KeyboardScreen_keyboard - %d %d %d\n", key, pressed, index);
+
+    // extend the sleep timer
+    _keyboard_sleep = millis();
+
+    // if keyboard is sleep then restore the brightness
+    if (_keyboard_is_sleep)
+    {
+        // awake: restore the brightness
+        app["config"]["brightness"] = _keyboard_awake_brightness;
+    }
+
+    // reset sleep flag
+    _keyboard_is_sleep = false;
 
     //
     if (index == 69)

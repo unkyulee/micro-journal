@@ -66,11 +66,15 @@ void display_ST7735_loop()
   {
     last = millis();
 
+    //
     int screen_prev = app["screen_prev"].as<int>();
     int brightness = app["config"]["brightness"].as<int>();
-    analogWrite(TFT_BL, 255 / (11 - brightness)); // Set brightness (0=off, 255=full)
+    brightness = brightness * 25;
+    brightness = min(brightness, 255);
+    brightness = max(brightness, 1);
 
-    //_log("Display ST7735 loop called, screen: %d, screen_prev: %d\n", screen, screen_prev);
+    //
+    analogWrite(TFT_BL, brightness); // Set brightness (0=off, 255=full)
 
     // ERROR SCREEN
     if (screen == ERRORSCREEN)

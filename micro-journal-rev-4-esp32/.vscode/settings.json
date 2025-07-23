@@ -31,6 +31,7 @@
     "span": "cpp",
     "text_encoding": "cpp",
     "new": "cpp",
-    "memory": "cpp"
+    "memory": "cpp",
+    "chrono": "cpp"
   }
 }
