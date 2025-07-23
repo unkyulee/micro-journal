@@ -122,6 +122,17 @@ void USBHost_loop()
     if (Serial.available())
     {
         char c = Serial.read();
+        /*
+                // simulate up, down, left, right
+                if (c == 'w')
+                    c = 20;
+                if (c == 'a')
+                    c = 18;
+                if (c == 's')
+                    c = 21;
+                if (c == 'd')
+                    c = 19;
+        */
         if (c == 13)
             return; // ignore /r key
         _debug("Serial keyboard input %c %d\n", c, c);

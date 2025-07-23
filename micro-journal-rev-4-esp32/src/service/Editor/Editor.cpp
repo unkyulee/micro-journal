@@ -389,9 +389,14 @@ void Editor::keyboard(char key, bool pressed)
             // buffer has more than 1 character
             if (getBufferSize() > 0)
             {
+                //
                 removeLastChar();
+
                 // set saved flag to false
                 this->saved = false;
+
+                // set flag 
+                this->backSpacePressed = true;
             }
             // buffer emptied
             else
@@ -596,7 +601,7 @@ void Editor::keyboard(char key, bool pressed)
         else
         {
             // add to the edit buffer new character
-            if (getBufferSize() > BUFFER_SIZE)
+            if (getBufferSize() >= BUFFER_SIZE)
             {
                 _log("Text buffer full\n");
 

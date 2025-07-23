@@ -25,7 +25,6 @@ const int statusY = EPD_HEIGHT - status_height - 5;
 bool clear_full = false;
 bool clear_request = true;
 bool cleared = true;
-bool backspaced = false;
 
 //
 int startLine = -1;
@@ -276,10 +275,10 @@ void WP_render_text()
     }
 
     // handle backspace
-    else if (backspaced)
+    else if (Editor::getInstance().backSpacePressed)
     {
         //
-        backspaced = false;
+        Editor::getInstance().backSpacePressed = false;
 
         // clear the currentLine and the previousLine
         _debug("WP_render_text::Handle Backspace\n");
@@ -375,14 +374,7 @@ void WP_render_text()
                 epd_poweroff();
             }
 
-            // back space case will redraw the line
-            else
-            {
-                // and redraw the line
-                _debug("Backspace detected. Redrawing the line.\n");
-                WP_clear_row(cursorLine);
-                WP_render_text_line(cursorLine, display_y(), NULL);
-            }
+            
         }
     }
 
@@ -763,5 +755,4 @@ void convert_extended_ascii_to_utf8(const char *input, char *output, size_t outp
 
     // Null-terminate the output.
     output[out_index] = '\0';
-    _debug("[convert_extended_ascii_to_utf8] input %d output index: %d %s\n", input[0], out_index, output);
 }

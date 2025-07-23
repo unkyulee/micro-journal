@@ -10,7 +10,7 @@ class Editor
 {
 public:
     // Text Buffer
-    char buffer[BUFFER_SIZE+2];
+    char buffer[BUFFER_SIZE+100];
    
     // Saved Status
     bool saved = true;
@@ -62,6 +62,7 @@ public:
     unsigned long lastPressTime = 0;
     unsigned long repeatInterval = 80; // ms between repeats
     unsigned long repeatDelay = 300;   // ms before repeat starts
+    bool backSpacePressed = false;
     
     //
     int getBufferSize() { return strlen(buffer); }
