@@ -46,6 +46,11 @@ void Home_render()
     cursorY += 35;
     writeln((GFXfont *)&systemFont, " [K] Keyboard Layout", &cursorX, &cursorY, display_EPD_framebuffer());
 
+    // Bluetooth Keyboard
+    cursorX = 10;
+    cursorY += 35;
+    writeln((GFXfont *)&systemFont, " [T] Bluetooth Keyboard", &cursorX, &cursorY, display_EPD_framebuffer());
+
     // Reset
     cursorX = 10;
     cursorY += 35;
@@ -132,6 +137,13 @@ void Home_keyboard(char key)
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_LAYOUT;
+    }
+
+    // Bluetooth Keyboard
+    else if (key == 't')
+    {
+        // move to keyboard screen
+        app["screen"] = KEYBOARDSCREEN;
     }
 
     // Reset

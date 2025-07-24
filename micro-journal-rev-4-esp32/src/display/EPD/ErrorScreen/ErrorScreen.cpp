@@ -8,21 +8,14 @@
 void ErrorScreen_setup()
 {
     _log("Error Screen Setup\n");
+
     // Clear Screen
     epd_poweron();
     epd_clear_quick(epd_full_screen(), 4, 50);
-    epd_poweroff_all();
-}
 
-//
-void ErrorScreen_render()
-{
     // Text to be displayed
     JsonDocument &app = status();
     String text = app["error"].as<String>();
-
-    // Turn on the display
-    epd_poweron();
 
     // Draw text
     int32_t x = 18;
@@ -32,6 +25,11 @@ void ErrorScreen_render()
     // Turn off the display
     // epd_poweroff_all();
     epd_poweroff();
+}
+
+//
+void ErrorScreen_render()
+{
 }
 
 //

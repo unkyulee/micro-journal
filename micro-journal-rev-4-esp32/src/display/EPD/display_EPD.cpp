@@ -12,6 +12,7 @@
 #include "Sleep/Sleep.h"
 #include "Menu/Menu.h"
 #include "Update/Update.h"
+#include "KeyboardScreen/KeyboardScreen.h"
 
 // Display Frame Buffer Setup
 uint8_t *framebuffer = NULL;
@@ -143,6 +144,17 @@ void display_EPD_loop()
                 Update_render();
         }
 
+        // BLE KEYBOARD SCREEN
+        else if (screen == KEYBOARDSCREEN)
+        {
+            // setup only once
+            if (screen != screen_prev)
+                KeyboardScreen_setup();
+            else
+                // loop
+                KeyboardScreen_render();
+        }
+
         //
         app["screen_prev"] = screen;
         screen_prev = screen;
@@ -188,6 +200,20 @@ void display_EPD_keyboard(char key, bool pressed, int index)
     {
         if (!pressed)
             Update_keyboard(key);
+    }
+}
+
+// GET USBHOST Keyboard Report
+// Forward it to Bluetooth Screen
+void display_EPD_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes)
+{
+    JsonDocument &app = status();
+    int screen = app["screen"].as<int>();
+
+    if (screen == KEYBOARDSCREEN)
+    {
+        // send the key stroke to word processor
+        KeyboardScreen_keyboard(modifier, reserved, keycodes);
     }
 }
 

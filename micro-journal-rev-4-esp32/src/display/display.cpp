@@ -45,7 +45,8 @@ void display_setup()
     _log("Display Error Screen\n");
     return;
   }
-  else if(screen == UPDATESCREEN) {
+  else if (screen == UPDATESCREEN)
+  {
     // go to firmware update screen
     _log("Firmware Update Screen\n");
     return;
@@ -127,5 +128,12 @@ int display_core()
 
 #ifdef ST7735_DRIVER
   return display_ST7735_core();
+#endif
+}
+
+void display_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes)
+{
+#ifdef LILYGO_T5_EPD47_S3
+  display_EPD_keyboard_report(modifier, reserved, keycodes);
 #endif
 }

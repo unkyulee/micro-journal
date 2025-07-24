@@ -10,8 +10,11 @@
 //
 void display_EPD_setup();
 void display_EPD_loop();
-void display_EPD_keyboard(char key, bool pressed, int index);
 int display_EPD_core();
+
+//
+void display_EPD_keyboard(char key, bool pressed, int index);
+void display_EPD_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes);
 
 //
 GFXfont* display_EPD_font();

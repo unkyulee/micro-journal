@@ -36,6 +36,9 @@ class MyEspUsbHost : public EspUsbHost
                report.keycode[4],
                report.keycode[5]);
 
+        // forward the report
+        USBHost_report(report.modifier, report.reserved, report.keycode);
+
         // Key Pressed
         for (int i = 0; i < 6; i++)
         {
@@ -122,23 +125,39 @@ void USBHost_loop()
     if (Serial.available())
     {
         char c = Serial.read();
-
-        // simulate up, down, left, right
-        if (c == 'w')
-            c = 20;
-        if (c == 'a')
-            c = 18;
-        if (c == 's')
-            c = 21;
-        if (c == 'd')
-            c = 19;
-
+        /*
+                // simulate up, down, left, right
+                if (c == 'w')
+                    c = 20;
+                if (c == 'a')
+                    c = 18;
+                if (c == 's')
+                    c = 21;
+                if (c == 'd')
+                    c = 19;
+        */
         if (c == 13)
             return; // ignore /r key
         _debug("Serial keyboard input %c %d\n", c, c);
+
+        // find the scan code based on the input received
+
         // You can choose a key index, e.g., 0 for generic input
         display_keyboard(c, true);  // Key press
         display_keyboard(c, false); // Key release (optional, for GUI consistency)
+
+        // emulate hid report for alphabet 
+        if (c >= 'a' && c <= 'z')
+        {
+            uint8_t keycodes[6] = {};
+            keycodes[0] = HID_KEY_A + (c - 'a');
+            _debug("Serial keyboard input scancode %d\n", keycodes[0]);
+
+            //
+            USBHost_report(0, 0, keycodes);
+            keycodes[0] = 0;
+            USBHost_report(0, 0, keycodes);
+        }
     }
 #endif
 }
@@ -178,5 +197,11 @@ void USBHost_keyboard(uint8_t keycode, uint8_t modifier, bool pressed)
     uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt);
     if (ascii != 0)
         // send key to GUI
-        display_keyboard(ascii, pressed);
+        display_keyboard(ascii, pressed, keycode);
+}
+
+void USBHost_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
+{
+    // forward the report to GUI
+    display_keyboard_report(modifier, reserved, keycodes);
 }

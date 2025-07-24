@@ -240,3 +240,4 @@ uint8_t keyboard_caplock_filter(uint8_t ascii)
 
   return ascii;
 }
+
