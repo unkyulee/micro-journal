@@ -1,6 +1,7 @@
 #include "KeyboardScreen.h"
 #include "app/app.h"
 #include "display/display.h"
+#include "service/Editor/Editor.h"
 
 //
 #include "../display_EPD.h"
@@ -18,17 +19,14 @@ void KeyboardScreen_setup()
     epd_poweron();
     epd_clear_quick(epd_full_screen(), 4, 50);
 
-    // Text to be displayed
-    JsonDocument &app = status();
-    String text = "Bluetooth Keyboard Mode.";
-
-    // Turn on the display
-    epd_poweron();
-
     // Draw text
     int32_t x = 18;
     int32_t y = 50;
-    write_string((GFXfont *)&systemFont, text.c_str(), &x, &y, NULL);
+    write_string((GFXfont *)&systemFont, "Bluetooth Keyboard Mode", &x, &y, NULL);
+
+    x = 18;
+    y += 50;
+    write_string((GFXfont *)&systemFont, "Press Left Knob to move over the text", &x, &y, NULL);
 
     // Turn off the display
     // epd_poweroff_all();
@@ -51,6 +49,25 @@ void KeyboardScreen_keyboard(uint8_t modifier, uint8_t reserved, uint8_t *keycod
     if (!bleKeyboard.isConnected())
         return;
 
+    // get which key is pressed
+    uint8_t key = 0;
+    for (int i = 0; i < 6; i++)
+    {
+        if (keycodes[i] != 0)
+        {
+            key = keycodes[i];
+            break;
+        }
+    }
+
+    // PAUSE key is LEFT KNOB click
+    if (key == 0x48)
+    {
+        // move over the text
+        KeyboardScreen_copy();
+        return;
+    }
+
     // send out the scan code
     KeyReport reportCopy;
     reportCopy.modifiers = modifier;
@@ -58,6 +75,7 @@ void KeyboardScreen_keyboard(uint8_t modifier, uint8_t reserved, uint8_t *keycod
     for (int i = 0; i < 6; i++)
         reportCopy.keys[i] = keycodes[i];
 
+    //
     bleKeyboard.sendReport(&reportCopy);
     _debug("KeyboardScreen_keyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
            modifier,
@@ -68,4 +86,39 @@ void KeyboardScreen_keyboard(uint8_t modifier, uint8_t reserved, uint8_t *keycod
            keycodes[3],
            keycodes[4],
            keycodes[5]);
+}
+
+void KeyboardScreen_copy()
+{
+    File file = gfs()->open(Editor::getInstance().fileName.c_str(), "r");
+    if (!file || !file.available())
+    {
+        _log("KeyboardScreen_copy: Failed to open file\n");
+        return;
+    }
+
+    _log("Sending file content over BLE keyboard...\n");
+
+    // Read file content in small chunks
+    while (file.available())
+    {
+        char c = file.read();
+
+        // If needed, convert line endings
+        if (c == '\n')
+        {
+            bleKeyboard.write(KEY_RETURN);
+        }
+        else if (isPrintable(c) || c == '\t') // Avoid sending non-printable control characters
+        {
+            bleKeyboard.print(c);
+        }
+
+        // Small delay to prevent buffer overflow
+        delay(5); // You can tweak this as needed
+    }
+
+    file.close();
+
+    _log("KeyboardScreen_copy: File sent.\n");
 }
