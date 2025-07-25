@@ -362,6 +362,9 @@ void WP_keyboard(int key, bool pressed)
                 config_save();
             }
         }
+
+        // menu button is ignored
+        return;
     }
 
     // Check if File Change request is pressed

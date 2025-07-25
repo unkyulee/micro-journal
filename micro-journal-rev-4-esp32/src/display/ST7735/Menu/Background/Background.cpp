@@ -72,7 +72,7 @@ void Background_keyboard(char key, bool pressed)
     }
 
     // UP
-    else if (key == 21)
+    else if (key == 21|| key == 19)
     {
         //
         int selectedBackgroundColorIndex = app["selectedBackgroundColorIndex"].as<int>();
@@ -85,7 +85,7 @@ void Background_keyboard(char key, bool pressed)
     }
 
     // DOWN
-    else if (key == 20)
+    else if (key == 20 || key == 18)
     {
         //
         int selectedBackgroundColorIndex = app["selectedBackgroundColorIndex"].as<int>();

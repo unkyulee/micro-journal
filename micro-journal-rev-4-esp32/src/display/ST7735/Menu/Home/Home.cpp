@@ -8,10 +8,10 @@ int selectedHome = 0;
 
 //
 const char *menu[] = {
-    "Keyboard",    // 0
-    "writerDeck",  // 1
-    "Export File", // 2
-    "Info Text",
+    "Keyboard",   // 0
+    "writerDeck", // 1
+    "Drive Mode", // 2
+    "Send Text",  // 3
     "Brightness", // 4
     "Color BG",   // 5
     "Color Font", // 6

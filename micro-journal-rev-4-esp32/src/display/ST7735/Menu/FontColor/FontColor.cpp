@@ -21,7 +21,7 @@ void FontColor_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextSize(2);
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
 
-    ptft->println("Color BG");
+    ptft->println("Color Font");
 
     int length = sizeof(colors) / sizeof(colors[0]);
     int grid_cols = 6;
@@ -72,7 +72,7 @@ void FontColor_keyboard(char key, bool pressed)
     }
 
     // UP
-    else if (key == 21)
+    else if (key == 21|| key == 19)
     {
         //
         int selectedFontColorColorIndex = app["selectedFontColorColorIndex"].as<int>();
@@ -85,7 +85,7 @@ void FontColor_keyboard(char key, bool pressed)
     }
 
     // DOWN
-    else if (key == 20)
+    else if (key == 20 || key == 18)
     {
         //
         int selectedFontColorColorIndex = app["selectedFontColorColorIndex"].as<int>();
