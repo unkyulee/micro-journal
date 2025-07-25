@@ -115,7 +115,7 @@ void Sync_keyboard(char key)
 
     // SYNC STATE
     int sync_state = app["sync_state"].as<int>();
-    if (sync_state == SYNC_COMPLETED)
+    if (sync_state == SYNC_COMPLETED || sync_state == SYNC_ERROR)
     {
        app["screen"] = WORDPROCESSOR;
     }

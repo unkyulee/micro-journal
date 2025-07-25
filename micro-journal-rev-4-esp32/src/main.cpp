@@ -10,7 +10,7 @@
 #include "keyboard/keyboard.h"
 
 #ifdef BOARD_ESP32_S3
-void TaskCore1(void *pvParameters);
+void SecondaryCore(void *pvParameters);
 #endif
 
 /*----------------------------------------------
@@ -35,8 +35,8 @@ void setup()
 #ifdef BOARD_ESP32_S3
         // Start the second core task
         xTaskCreatePinnedToCore(
-            TaskCore1,   // Function to run
-            "TaskCore1", // Name
+            SecondaryCore,   // Function to run
+            "SecondaryCore", // Name
             8192,        // Stack size
             NULL,        // Parameters
             1,           // Priority
@@ -50,7 +50,7 @@ void setup()
 //
 void loop()
 {
-    //
+    // run display with main core
     if (display_core() == 0)
     {
         display_loop();
@@ -80,7 +80,7 @@ void setup1()
         delay(1);
     }
 
-    _log("Core 1 started.\n");
+    _log("Secondary Core started.\n");
     delay(1000);
 }
 
@@ -89,7 +89,7 @@ void loop1()
     // background tasks will be handled
     app_loop();
 
-    //
+    // run display on the second core
     if (display_core() == 1)
         display_loop();
 
@@ -98,14 +98,24 @@ void loop1()
 }
 #endif
 
-//
-void TaskCore1(void *pvParameters)
+
+#ifdef BOARD_ESP32_S3
+// This is for ESP32 secondary core
+void SecondaryCore(void *pvParameters)
 {
+    _log("Secondary Core started.\n");
+
     while (1)
     {
+        // background tasks
         app_loop();
-        if (display_core() == 0)
+
+        // some conditions display render can run in second core
+        if (display_core() == 1)
             display_loop();
+
+        //
         yield();
     }
 }
+#endif

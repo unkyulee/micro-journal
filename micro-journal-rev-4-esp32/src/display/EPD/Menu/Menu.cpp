@@ -26,6 +26,10 @@ void Menu_setup()
     // clear screen
     menu_clear = true;
 
+    //
+    JsonDocument &app = status();
+    app["menu"]["state"] = MENU_HOME;
+
     _log("Entering Menu Setup\n");
 }
 

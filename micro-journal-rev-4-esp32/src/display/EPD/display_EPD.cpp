@@ -28,7 +28,7 @@ int display_EPD_core()
 
     // if app is not ready then run in the main core
     if (!app_ready())
-        return 1;
+        return 0;
 
     // IN MENU run it in the main core, so that sync process runs independently
     if (screen == MENUSCREEN)
