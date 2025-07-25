@@ -51,18 +51,10 @@ void setup()
 void loop()
 {
     //
-#ifdef BOARD_PICO
-    // in PICO core is 0
     if (display_core() == 0)
-#endif
-
-#ifdef BOARD_ESP32_S3
-        // in ESP32 main core ID is 1
-        if (display_core() == 1)
-#endif
-        {
-            display_loop();
-        }
+    {
+        display_loop();
+    }
 
     //
     keyboard_loop();

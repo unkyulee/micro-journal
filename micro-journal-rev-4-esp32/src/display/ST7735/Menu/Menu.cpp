@@ -9,6 +9,7 @@
 #include "Background/Background.h"
 #include "FontColor/FontColor.h"
 #include "Clear/Clear.h"
+#include "Send/Send.h"
 
 // state
 bool menu_clear = false;
@@ -67,6 +68,14 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             Home_setup(ptft, pu8f);
 
         Home_render(ptft, pu8f);
+    }
+
+    else if (menu_state == MENU_SYNC)
+    {
+        if (menu_state_prev != menu_state)
+            Send_setup(ptft, pu8f);
+
+        Send_render(ptft, pu8f);
     }
 
     else if (menu_state == MENU_STORAGE)
@@ -128,6 +137,13 @@ void Menu_keyboard(char key, bool pressed)
     if (menu_state == MENU_HOME)
     {
         Home_keyboard(key, pressed);
+        return;
+    }
+
+    // sending out text via keyboard
+    else if (menu_state == MENU_SYNC)
+    {
+        Send_keyboard(key, pressed);
         return;
     }
 

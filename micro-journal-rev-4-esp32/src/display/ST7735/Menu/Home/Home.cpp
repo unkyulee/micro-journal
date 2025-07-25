@@ -126,11 +126,18 @@ void Home_keyboard(char key, bool pressed)
             app["screen"] = WORDPROCESSOR;
         }
 
-        // 2 - Export File
+        // 2 - Drive Mode
         else if (selectedHome == 2)
         {
             _debug("Export File Selected\n");
             app["menu"]["state"] = MENU_STORAGE;
+        }
+
+        // 3 - Send Text
+        else if (selectedHome == 3)
+        {
+            _debug("Send Text Selected\n");
+            app["menu"]["state"] = MENU_SYNC;
         }
 
         // 4 - Brightness

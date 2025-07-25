@@ -32,10 +32,10 @@ int display_ILI9341_core()
 
   // IN MENU run it in the main core, so that sync process runs independently
   if (screen == MENUSCREEN)
-    return 1;
+    return 0;
 
   // by default run at the second core separated from keyboard loop
-  return 0;
+  return 1;
 }
 
 //
