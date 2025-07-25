@@ -22,11 +22,15 @@ void KeyboardScreen_setup()
     // Draw text
     int32_t x = 18;
     int32_t y = 50;
-    write_string((GFXfont *)&systemFont, "Bluetooth Keyboard Mode", &x, &y, NULL);
+    write_string(display_EPD_font(), "Bluetooth Keyboard Mode", &x, &y, NULL);
 
     x = 18;
-    y += 50;
-    write_string((GFXfont *)&systemFont, "Press Left Knob to move over the text", &x, &y, NULL);
+    y += 40;
+    write_string((GFXfont *)&systemFont, "Turn off the device to end the writing session", &x, &y, NULL);
+
+    x = 18;
+    y += 35;
+    write_string((GFXfont *)&systemFont, "Pressing Left Knob will send the text", &x, &y, NULL);
 
     // Turn off the display
     // epd_poweroff_all();
