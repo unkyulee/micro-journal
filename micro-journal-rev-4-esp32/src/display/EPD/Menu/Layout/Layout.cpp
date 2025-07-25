@@ -32,7 +32,7 @@ void Layout_render()
         "[n] Finnish",
         "[g] German",
         "[i] Italian",
-        "[w] Norweigian",
+        "[w] Norwegian",
         "[k] UK",
         "[u] US"
     };
