@@ -32,7 +32,11 @@ int display_EPD_core()
 
     // IN MENU run it in the main core, so that sync process runs independently
     if (screen == MENUSCREEN)
-        return 0;
+    {
+        int menu = app["menu"]["state"].as<int>();
+        if (menu == MENU_SYNC)
+            return 0;
+    }
 
     // by default run at the second core separated from keyboard loop
     return 1;
@@ -205,7 +209,7 @@ void display_EPD_keyboard(char key, bool pressed, int index)
 
 // GET USBHOST Keyboard Report
 // Forward it to Bluetooth Screen
-void display_EPD_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes)
+void display_EPD_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
 {
     JsonDocument &app = status();
     int screen = app["screen"].as<int>();

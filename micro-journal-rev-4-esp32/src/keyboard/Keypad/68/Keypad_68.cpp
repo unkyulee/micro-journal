@@ -138,9 +138,6 @@ void keyboard_keypad_68_loop()
         {
             //
             keypadEvent e = customKeypad.read();
-            _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d\n",
-                   e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL);
-
             // Check if knob is long pressed
             if (e.bit.KEY == 69)
             {
@@ -170,8 +167,9 @@ void keyboard_keypad_68_loop()
             int character = keyboard_keypad_68_get_key(e);
 
             // send over the key to the display
-            _debug("[keyboard_keypad_68_get_key] Character: '%c' [%d]\n", character, character);
-            display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
+            _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d Character: [%d] '%c'\n", 
+                e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL,
+                character, character);            display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
         }
     }
 }

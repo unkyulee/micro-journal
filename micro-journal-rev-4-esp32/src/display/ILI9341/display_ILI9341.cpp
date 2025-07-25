@@ -9,6 +9,7 @@
 #include "Sleep/Sleep.h"
 #include "Menu/Menu.h"
 #include "Update/Update.h"
+#include "KeyboardScreen/KeyboardScreen.h"
 
 // Invoke library, pins defined in platformio.ini
 TFT_eSPI tft = TFT_eSPI();
@@ -32,7 +33,11 @@ int display_ILI9341_core()
 
   // IN MENU run it in the main core, so that sync process runs independently
   if (screen == MENUSCREEN)
-    return 0;
+  {
+    int menu = app["menu"]["state"].as<int>();
+    if (menu == MENU_SYNC)
+      return 0;
+  }
 
   // by default run at the second core separated from keyboard loop
   return 1;
@@ -102,6 +107,17 @@ void display_ILI9341_loop()
         WP_render(&tft, &u8f);
     }
 
+    // Keyboard Screen
+    else if (screen == KEYBOARDSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        KeyboardScreen_setup(&tft, &u8f);
+      else
+        // loop
+        KeyboardScreen_render(&tft, &u8f);
+    }
+
     // SLEEP SCREEN
     else if (screen == SLEEPSCREEN)
     {
@@ -164,6 +180,12 @@ void display_ILI9341_keyboard(char key, bool pressed, int index)
     WP_keyboard(key, pressed, index);
   }
 
+  if (screen == KEYBOARDSCREEN)
+  {
+    // send the key stroke to word processor
+    KeyboardScreen_keyboard(key, pressed, index);
+  }
+
   else if (screen == SLEEPSCREEN)
   {
     if (!pressed)
@@ -179,4 +201,12 @@ void display_ILI9341_keyboard(char key, bool pressed, int index)
     if (!pressed)
       Update_keyboard(key);
   }
+}
+
+void display_ILI9341_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
+{
+  JsonDocument &app = status();
+  int screen = app["screen"].as<int>();
+
+  
 }

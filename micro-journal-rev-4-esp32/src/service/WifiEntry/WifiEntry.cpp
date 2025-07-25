@@ -11,6 +11,9 @@ int wifi_config_index = 0;
 
 void WifiEntry_setup()
 {
+    //
+    buffer_clear();
+
     // load wifi configuration from SPIFF
     wifi_config_load();
 
@@ -21,11 +24,18 @@ void WifiEntry_setup()
 //
 void WifiEntry_keyboard(char key)
 {
+    // non printable keys are not going to be going through the buffer
+    if(key == 0) return;
+
+    //
+    _debug("WifiEntry_keyboard key: [%d] %c, wifi_config_status: %d\n", key, key, wifi_config_status);
+
+    //
     JsonDocument &app = status();
 
+    //
     if (wifi_config_status >= WIFI_CONFIG_EDIT_SSID)
     {
-
         // SAVE or NEXT
         if (key == '\n')
         {
@@ -71,6 +81,9 @@ void WifiEntry_keyboard(char key)
         {
             // edit mode
             buffer_add(key);
+
+            //
+            _debug("WifiEntry_keyboard buffer_add: %c, %s\n", key, buffer_get());
         }
     }
     else

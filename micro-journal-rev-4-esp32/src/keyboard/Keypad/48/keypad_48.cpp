@@ -9,8 +9,8 @@
 
 //
 #define LAYERS 4 // layers
-#define ROWS 4 // rows
-#define COLS 12 // columns
+#define ROWS 4   // rows
+#define COLS 12  // columns
 
 // 2 - Home
 // 3 - End
@@ -70,7 +70,7 @@ char keys[ROWS][COLS] = {
     {36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47},
 };
 
-// 
+//
 byte rowPins[ROWS] = {15, 16, 17, 18};
 byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
 
@@ -106,15 +106,17 @@ void keyboard_keypad_48_loop()
         {
             //
             keypadEvent e = customKeypad.read();
-            _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d\n",
-                   e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL);
-            
+
             //
             // check if the key is pressed
             int character = keyboard_keypad_48_get_key(e);
 
             // send over the key to the display
-            _debug("[keyboard_keypad_48_get_key] Character: '%c' [%d]\n", character, character);
+            _debug("[keyboard_keypad_48_get_key] Key: %d, Event: %d, Row: %d, Col: %d Character: [%d] '%c'\n",
+                   e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL,
+                   character, character);
+
+            //
             display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
         }
     }

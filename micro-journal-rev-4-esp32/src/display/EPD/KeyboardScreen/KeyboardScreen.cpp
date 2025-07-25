@@ -30,14 +30,14 @@ void KeyboardScreen_setup()
 
     x = 18;
     y += 35;
-    write_string((GFXfont *)&systemFont, "Pressing Left Knob will send the text", &x, &y, NULL);
+    write_string((GFXfont *)&systemFont, "Press MENU will send the text", &x, &y, NULL);
 
     // Turn off the display
     // epd_poweroff_all();
     epd_poweroff();
 
     // Setup Bluetooth Keyboard
-    bleKeyboard.setName("M.J. Rev.7");
+    bleKeyboard.setName("Micro Journal 7");
     bleKeyboard.begin();
     _log("Bluetooth Keyboard Started\n");
 }

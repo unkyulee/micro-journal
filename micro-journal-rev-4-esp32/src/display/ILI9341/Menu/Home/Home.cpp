@@ -22,6 +22,10 @@ void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     //
     Menu_clear();
+
+    //
+    JsonDocument &app = status();
+    app["menu"]["state"] = MENU_HOME;
 }
 
 //
@@ -54,6 +58,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [M] BLE KEYBOARD");
 #endif
     ptft->println(" [W] WIFI");
+    ptft->println(" [T] BLE KEYBOARD");
     ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
@@ -140,6 +145,12 @@ void Home_keyboard(char key)
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_WIFI;
+    }
+
+    else if (key == 't')
+    {
+        // move to keyboard layout
+        app["screen"] = KEYBOARDSCREEN;
     }
 
     else if (key == 'a')

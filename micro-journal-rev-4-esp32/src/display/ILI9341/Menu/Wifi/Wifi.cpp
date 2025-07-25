@@ -4,14 +4,14 @@
 #include "display/display.h"
 #include "../../WordProcessor/WordProcessor.h"
 
-// services
-#include "service/Buffer/BufferService.h"
+//
 #include "service/WifiEntry/WifiEntry.h"
+#include "service/Buffer/BufferService.h"
 
 //
 void Wifi_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    WifiEntry_setup();    
+    WifiEntry_setup();
 }
 
 //
@@ -43,7 +43,11 @@ void Wifi_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void Wifi_keyboard(char key)
 {
+    //
     WifiEntry_keyboard(key);
+
+    //
+    Menu_clear();
 }
 
 //
