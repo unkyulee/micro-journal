@@ -3,6 +3,7 @@
 I aimed to create a specialized writing device, focusing on the tactile experience of mechanical keyboards. This device would be portable, with a compact form factor, designed to enhance the writing process in a focused environment. The goal was to provide a distraction-free writing experience, allowing users to immerse themselves fully in their creative work.
 
 * [Buy me a coffee](https://buymeacoffee.com/unkyulee)
+* [Latest Releases](https://github.com/unkyulee/micro-journal/releases)
 
 ---
 

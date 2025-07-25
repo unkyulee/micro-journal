@@ -425,6 +425,9 @@ void Editor::keyboard(char key, bool pressed)
 
                 // set saved flag to false
                 this->saved = false;
+
+                // set flag 
+                this->backSpacePressed = true;
             }
             // buffer emptied
             else
