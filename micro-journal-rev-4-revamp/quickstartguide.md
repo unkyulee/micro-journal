@@ -58,6 +58,7 @@ Here's how you can customize your keyboard layout:
     ]
 }
 ```
+[Download other writerDeck keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_template)
 
 - **"main"**: Key pressed without any modifiers (no Shift, no Alt).
 - **"main-shift"**: Key pressed while holding the Shift key.

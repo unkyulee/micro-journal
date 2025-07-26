@@ -22,6 +22,13 @@ TFT_eSprite &display_ST7735_sprite()
   return sprite;
 }
 
+// decide where to run the display routine
+int display_ST7735_core()
+{
+  // by default run at the seperate core
+  return 1;
+}
+
 //
 void display_ST7735_setup()
 {
@@ -188,23 +195,4 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
   {
     KeyboardScreen_keyboard(key, pressed, index);
   }
-}
-
-int display_ST7735_core()
-{
-  // in case of using GIF or blocking task then move it to core 1
-  JsonDocument &app = status();
-  int screen = app["screen"].as<int>();
-
-  // when displaying gif then run in different core
-  if (screen == KEYBOARDSCREEN ||
-      screen == WAKEUPSCREEN ||
-      screen == SLEEPSCREEN ||
-      screen == MENUSCREEN)
-  {
-    return 1;
-  }
-
-  // by default run at the main core
-  return 0;
 }

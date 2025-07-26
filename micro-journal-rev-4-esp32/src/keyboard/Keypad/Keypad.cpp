@@ -48,14 +48,12 @@ void keypad_load_config(String filename, int *layers, int size)
         // overwrite to layers
         // int layers[LAYERS][ROWS * COLS]
         const char *keys[] = {"main", "main-shift", "alt", "alt-shift"};
-        int keymapIndices[] = {0, 1, 2, 3};
 
         // save the current key pos
         int pos = 0;
         for (int i = 0; i < 4; i++)
         {
             const char *key = keys[i];
-            int index = keymapIndices[i];
             JsonArray keyArray = keyboardConfig[key].as<JsonArray>();
 
             int pos = 0;
