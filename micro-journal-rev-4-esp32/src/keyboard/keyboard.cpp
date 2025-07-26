@@ -20,7 +20,12 @@
 #include "keyboard/Button/button.h"
 #endif
 
+#ifdef BOARD_PICO
 #include <Keyboard.h>
+#endif
+#ifdef BOARD_ESP32_S3
+#include <BleKeyboard.h>
+#endif
 
 //
 void keyboard_setup()
@@ -168,6 +173,7 @@ void keyboard_config_load(String filename, int *layers, int size)
 
 int keyboard_convert_HID(String _hid)
 {
+
   // Modifiers
   if (_hid == "LEFT_CTRL")
     return KEY_LEFT_CTRL;
@@ -201,8 +207,6 @@ int keyboard_convert_HID(String _hid)
     return KEY_TAB;
   else if (_hid == "RETURN")
     return KEY_RETURN;
-  else if (_hid == "MENU")
-    return KEY_MENU;
   else if (_hid == "ESC")
     return KEY_ESC;
   else if (_hid == "INSERT")
@@ -219,49 +223,22 @@ int keyboard_convert_HID(String _hid)
     return KEY_END;
   else if (_hid == "CAPS_LOCK")
     return KEY_CAPS_LOCK;
+
+#ifdef BOARD_PICO
   else if (_hid == "PRINT_SCREEN")
     return KEY_PRINT_SCREEN;
   else if (_hid == "SCROLL_LOCK")
     return KEY_SCROLL_LOCK;
   else if (_hid == "PAUSE")
     return KEY_PAUSE;
+#endif
 
-  // Numeric keypad
-  else if (_hid == "NUM_LOCK")
-    return KEY_NUM_LOCK;
-  else if (_hid == "KP_SLASH")
-    return KEY_KP_SLASH;
-  else if (_hid == "KP_ASTERISK")
-    return KEY_KP_ASTERISK;
-  else if (_hid == "KP_MINUS")
-    return KEY_KP_MINUS;
-  else if (_hid == "KP_PLUS")
-    return KEY_KP_PLUS;
-  else if (_hid == "KP_ENTER")
-    return KEY_KP_ENTER;
-  else if (_hid == "KP_1")
-    return KEY_KP_1;
-  else if (_hid == "KP_2")
-    return KEY_KP_2;
-  else if (_hid == "KP_3")
-    return KEY_KP_3;
-  else if (_hid == "KP_4")
-    return KEY_KP_4;
-  else if (_hid == "KP_5")
-    return KEY_KP_5;
-  else if (_hid == "KP_6")
-    return KEY_KP_6;
-  else if (_hid == "KP_7")
-    return KEY_KP_7;
-  else if (_hid == "KP_8")
-    return KEY_KP_8;
-  else if (_hid == "KP_9")
-    return KEY_KP_9;
-  else if (_hid == "KP_0")
-    return KEY_KP_0;
-  else if (_hid == "KP_DOT")
-    return KEY_KP_DOT;
+#ifdef BOARD_ESP32_S3
+  else if (_hid == "PRINT_SCREEN")
+    return KEY_PRTSC;
+#endif
 
+  
   // Function keys
   else if (_hid == "F1")
     return KEY_F1;
