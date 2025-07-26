@@ -101,7 +101,7 @@ void display_loop()
 //
 void display_keyboard(int key, bool pressed, int index)
 {
-  _debug("[display_keyboard] Key: %c [%d] pressed: %d\n", key, key, pressed);
+  _debug("[display_keyboard] Key: [%d] pressed: %d index: %d\n", key, pressed, index);
 
 #ifdef ILI9341_DRIVER
   display_ILI9341_keyboard(key, pressed, index);

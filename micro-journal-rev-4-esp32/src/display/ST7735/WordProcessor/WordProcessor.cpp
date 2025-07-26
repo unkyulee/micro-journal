@@ -333,8 +333,11 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_keyboard(int key, bool pressed)
 {
+    // ignore non pritable keys
+    if(key == 0) return;
+
     JsonDocument &app = status();
-    _debug("WP_keyboard %d\n", key);
+    _debug("WP_keyboard key: %d, pressed: %d\n", key, pressed);
 
     // Check if menu key is pressed
     if (key == MENU)

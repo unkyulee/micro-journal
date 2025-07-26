@@ -22,7 +22,7 @@ void Storage_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
 
     ptft->println(""); // Blank line if out of bounds
-    ptft->println("Export File");
+    ptft->println("Drive Mode");
     ptft->setTextSize(1);
     ptft->println("");
     ptft->println("Connect USB to PC");
@@ -36,7 +36,7 @@ void Storage_keyboard(char key, bool pressed)
     JsonDocument &app = status();
 
     // MENU - SELECTED ACTION
-    if (key == 6 || key == '\n')
+    if (key == 27)
     {
         // Go back to Home
         _log("Exit Mass Storage");

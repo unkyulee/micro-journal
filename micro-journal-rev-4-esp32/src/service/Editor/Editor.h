@@ -57,7 +57,7 @@ public:
     void clearFile();
 
     // Handle Keyboard Inputs
-    void keyboard(char key, bool pressed);
+    void keyboard(int key, bool pressed);
     char lastKey = 0;
     unsigned long lastPressTime = 0;
     unsigned long repeatInterval = 80; // ms between repeats

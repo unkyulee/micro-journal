@@ -2,34 +2,7 @@
 #include "app/app.h"
 #include "display/display.h"
 
-//
-bool load_keymap(JsonArray keyArray, int l, int *layers, int num_cols)
-{
-    if (keyArray.size() == 48)
-    {
-        // only when 48 elements are presented
-        int pos = 0;
-        for (JsonVariant obj : keyArray)
-        {
-            // check if it has extended ascii
-            if (obj.is<int>())
-            {
-                *(layers + l * num_cols + pos++) = obj.as<int>();
-            }
-            else
-            {
-                //
-                String key = obj.as<String>();
-                *(layers + l * num_cols + pos++) = keypad_convert_wp_keys(key);
-            }
-        }
-        return true;
-    }
-
-    return false;
-}
-
-void keypad_load_config(String filename, int *layers, int num_cols)
+void keypad_load_config(String filename, int *layers, int size)
 {
     //
     JsonDocument &app = status();
@@ -37,19 +10,22 @@ void keypad_load_config(String filename, int *layers, int num_cols)
     // check if file exists in SD card
     if (gfs()->exists(filename.c_str()))
     {
-        _log("Loading keyboard.json from file system\n");
+        _log("Loading %s from file system\n", filename.c_str());
         // load image
         File file = gfs()->open(filename.c_str(), "r");
         if (!file)
         {
-            _log("Failed to open file for reading\n");
+            _log("Failed to open %s for reading\n", filename.c_str());
             return;
         }
 
         //
-        String fileString = file.readString();        
+        String fileString = file.readString();
         file.close();
+
+        //
         _debug(fileString.c_str());
+        _debug("\n");
 
         //
         // Prepare a JsonDocument for the keyboard configuration
@@ -60,7 +36,7 @@ void keypad_load_config(String filename, int *layers, int num_cols)
         if (error)
         {
             //
-            app["error"] = format("keyboard.json not in a correct json form: %s\n", error.c_str());
+            app["error"] = format("%s not in a correct json form: %s\n", filename.c_str(), error.c_str());
             app["screen"] = ERRORSCREEN;
 
             //
@@ -74,49 +50,53 @@ void keypad_load_config(String filename, int *layers, int num_cols)
         const char *keys[] = {"main", "main-shift", "alt", "alt-shift"};
         int keymapIndices[] = {0, 1, 2, 3};
 
+        // save the current key pos
+        int pos = 0;
         for (int i = 0; i < 4; i++)
         {
             const char *key = keys[i];
             int index = keymapIndices[i];
+            JsonArray keyArray = keyboardConfig[key].as<JsonArray>();
 
-            if (keyboardConfig[key].is<JsonArray>())
+            int pos = 0;
+            for (JsonVariant obj : keyArray)
             {
-                if (load_keymap(keyboardConfig[key].as<JsonArray>(), index, layers, num_cols))
+                // check if it has extended ascii
+                if (obj.is<int>())
                 {
-                    _log("%s loaded\n", key);
+                    *(layers + i * size + pos++) = obj.as<int>();
                 }
                 else
                 {
                     //
-                    app["error"] = format("%s keyboard layout load failed\n", key);
-                    app["screen"] = ERRORSCREEN;
-
-                    //
-                    _log(app["error"]);
-
-                    return;
+                    String key = obj.as<String>();
+                    *(layers + i * size + pos++) = keypad_convert_wp_keys(key);
                 }
             }
         }
 
         // Close the file
         file.close();
-
-        return;
     }
 }
 
 //
-uint8_t keypad_convert_wp_keys(String key)
+int keypad_convert_wp_keys(String key)
 {
     if (key.length() != 1)
     {
         // If the input is not a single character, return 0 as an error value
-        if (key == "ESC")
+        if (key == "MENU")
+            return MENU;
+
+        else if (key == "ESC")
             return 27;
 
         else if (key == "BACKSPACE")
             return 8;
+
+        else if (key == "DEL")
+            return 127;
 
         else if (key == "SHIFT")
             return 14;
@@ -147,6 +127,36 @@ uint8_t keypad_convert_wp_keys(String key)
 
         else if (key == "END")
             return 3;
+
+        else if (key == "FILE0")
+            return 1000;
+
+        else if (key == "FILE1")
+            return 1001;
+
+        else if (key == "FILE2")
+            return 1002;
+
+        else if (key == "FILE3")
+            return 1003;
+
+        else if (key == "FILE4")
+            return 1004;
+
+        else if (key == "FILE5")
+            return 1005;
+
+        else if (key == "FILE6")
+            return 1006;
+
+        else if (key == "FILE7")
+            return 1007;
+
+        else if (key == "FILE8")
+            return 1008;
+
+        else if (key == "FILE9")
+            return 1009;
 
         return 0;
     }

@@ -349,14 +349,14 @@ void Editor::loop()
 }
 
 // Handle Keyboard Input
-void Editor::keyboard(char key, bool pressed)
+void Editor::keyboard(int key, bool pressed)
 {
-    // ignore 0 character
-    if (key == 0)
+    // ignore non printable character
+    if (key == 0 || key == 27 || key == MENU)
         return;
 
     //
-    _debug("Editor::keyboard:: %c pressed: %d cursorPos: %d\n", key, pressed, cursorPos);
+    _debug("Editor::keyboard:: %c [%d] pressed: %d cursorPos: %d\n", key, key, pressed, cursorPos);
 
     // when any key is pressed track the last key pressed and if they don't release
     // keep issueing press events so that it keeps on typing on the screen

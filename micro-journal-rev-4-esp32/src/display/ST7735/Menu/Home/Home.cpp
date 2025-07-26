@@ -8,15 +8,15 @@ int selectedHome = 0;
 
 //
 const char *menu[] = {
-    "Keyboard",   // 0
-    "writerDeck", // 1
-    "Drive Mode", // 2
-    "Send Text",  // 3
-    "Brightness", // 4
-    "Color BG",   // 5
-    "Color Font", // 6
-    "FW Update",  // 7
-    "Clear Text", // 8
+    "Keyboard",    // 0
+    "writerDeck",  // 1
+    "Drive Mode",  // 2
+    "Send Text",   // 3
+    "Brightness",  // 4
+    "Color BG",    // 5
+    "Color Font",  // 6
+    "FW Update",   // 7
+    "Delete Text", // 8
     "Exit"};
 
 //
@@ -102,8 +102,12 @@ void Home_keyboard(char key, bool pressed)
     }
 
     // MENU - SELECTED ACTION
-    else if (key == 6 || key == '\n')
+    else if (key == 27 || key == '\n' || key == MENU)
     {
+        // when ESC is clicked escape
+        if (key == 27)
+            selectedHome = sizeof(menu) / sizeof(menu[0]) - 1;
+
         // 0 - USB Keyboard
         if (selectedHome == 0)
         {

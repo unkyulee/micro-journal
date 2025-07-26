@@ -25,6 +25,7 @@ void Clear_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println("");
     ptft->println("All text will be deleted");
     ptft->println("Press Y to continue");
+    ptft->println("Any other keys to exit");
 }
 
 //

@@ -15,7 +15,7 @@ void ErrorScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     String text = app["error"].as<String>();
 
     ///
-    ptft->setTextSize(2); // Adjust text size as needed
+    ptft->setTextSize(1); // Adjust text size as needed
     ptft->setTextColor(TFT_WHITE, TFT_RED);
 
     // Draw text in the middle of the screen

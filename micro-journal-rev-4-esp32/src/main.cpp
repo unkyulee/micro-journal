@@ -21,6 +21,10 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
+#ifdef DEBUG
+    delay(1000);
+#endif
+
     // initialize app
     app_setup();
 

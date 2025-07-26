@@ -154,7 +154,7 @@ void display_ST7735_keyboard(int key, bool pressed, int index)
   JsonDocument &app = status();
   int screen = app["screen"].as<int>();
 
-  _debug("[display_ST7735_keyboard] Key: %c [%d][%d] Screen: %d\n", key, key, index, screen);
+  _debug("[display_ST7735_keyboard] Key:[%d] pressed: %d Inex: [%d] Screen: %d\n", key, pressed, index, screen);
 
   if (screen == ERRORSCREEN)
   {

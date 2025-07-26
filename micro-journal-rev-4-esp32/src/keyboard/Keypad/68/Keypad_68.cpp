@@ -12,60 +12,41 @@
 #define COLS 9   // columns
 #define ROWS 8   // rows
 
-// 2 - Home
-// 3 - End
-
-// 14 - SHIFT
-// 17 - LAYER
-
-// 18 - Left
-// 19 - Right
-// 20 - Up
-// 21 - Down
-
-// 22 - Page Up
-// 23 - Page Down
-
-// 26 - CAPSLOCK
-// 27 - ESC
-
-// 127 - DEL
-
 // layers
 // prettier-ignore
 int layers[LAYERS][ROWS * COLS] = {
 
     {// normal layers
-     0x6, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', 127,
-     '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 22,
-     7, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '\\', 23,
+     27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b', 127,
+     ' ', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 22,
+     0, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '\\', 23,
      14, '`', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 14, 20, 3,
      0, 0, 17, ' ', 17, 17, 2, 18, 21, 19,
-     0x6},
+     MENU},
 
     {// when shift is pressed
-     0x6, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '\b', 127,
-     '\t', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', 22,
-     7, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', '|', 23,
+     27, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '\b', 127,
+     ' ', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', 22,
+     0, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', '|', 23,
      14, '~', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 14, 20, 3,
      0, 0, 17, ' ', 17, 17, 2, 18, 21, 19,
-     0x6},
+     MENU},
 
     {// alt layer
-     0x6, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, '-', '=', '\b', 127,
-     '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 22,
-     7, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '\\', 23,
+     27, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, '-', '=', '\b', 127,
+     ' ', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', 22,
+     0, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '\\', 23,
      14, '`', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 14, 20, 3,
      0, 0, 17, ' ', 17, 17, 2, 18, 21, 19,
-     0x6},
+     MENU},
 
     {// alt layer shift
-     0x6, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, '-', '=', '\b', 127,
-     '\t', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', 22,
-     7, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', '|', 23,
+     27, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, '-', '=', '\b', 127,
+     ' ', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', 22,
+     0, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"', '|', 23,
      14, '~', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 14, 20, 3,
      0, 0, 17, ' ', 17, 17, 2, 18, 21, 19,
-     0x6},
+     MENU},
 
 };
 
@@ -92,7 +73,7 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPin
 void keyboard_keypad_68_setup()
 {
     // load keyboard.json if exists
-    keypad_load_config("/writerDeck.json", (int *)layers, COLS);
+    keypad_load_config("/keyboard.json", (int *)layers, ROWS * COLS);
 
     //
     customKeypad.begin();
@@ -118,7 +99,7 @@ void keyboard_keypad_68_loop()
     if (knob_pressed == true && millis() - knob_press_time > 1000 && app["knobLongPressed"].as<bool>() == false)
     {
         // knob is long pressed
-        // mark the flag and send out released event        
+        // mark the flag and send out released event
         app["knobLongPressed"] = true;
 
         _debug("[keyboard_keypad_68_loop] knob long press detected\n");
@@ -139,6 +120,7 @@ void keyboard_keypad_68_loop()
             //
             keypadEvent e = customKeypad.read();
             // Check if knob is long pressed
+            // Detect the knob click by the position of the key index
             if (e.bit.KEY == 69)
             {
                 if (e.bit.EVENT == KEY_JUST_PRESSED)
@@ -167,9 +149,9 @@ void keyboard_keypad_68_loop()
             int character = keyboard_keypad_68_get_key(e);
 
             // send over the key to the display
-            _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d Character: [%d] '%c'\n", 
-                e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL,
-                character, character);            display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
+            _debug("[keyboard_keypad_68_loop] Key: %d, Event: %d, Row: %d, Col: %d Character: [%d]\n",
+                   e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL, character);
+            display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
         }
     }
 }
