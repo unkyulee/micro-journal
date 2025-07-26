@@ -102,11 +102,11 @@ For example:
 
 ### Customizing Key Layout for Keyboard Mode
 
-In the USB keyboard mode. What you type will apear in the screen. Depending on the OS and the language configuration of the computer. What letter appears on the screen varies. For example, when a computer is set with US layout. What you will see in the layout configuration and what you see in the screen will be the same. But, if your computer is set in Italian language configuration. Pressing the key location ";" will type "ò". There is no need to change anything on the keyboard. You just need to change the computer's OS language configuration. 
+When using the Micro Journal Rev.4 in USB keyboard mode, what you type will appear on your computer screen. Exactly what appears depends on your operating system's language and keyboard settings. For example, if your system is set to a US layout, the keys you press will match what you see in the layout configuration. However, switch your system to Italian, and pressing the key where ";" usually lives will type "ò" instead. There's no need to reconfigure the keyboard itself in most of the cases. Just set your OS language, and you're good to go.
 
-There are two layers in this keyboard configuration. You can press the "LAYER" key in order to reach the hidden layers. In the default configuration. Number keys becomes F1 ~ F12 keys respectively. In order to compensate the missing function keys. Also, PAGE_UP key become Print screen. You can implement additional missing keys using the hidden layers. 
+The keyboard also features two configurable layers. By pressing the LAYER key, you can access a hidden layer of functions. In the default setup, this allows the number row to double as F1 - F12 keys, filling in for a standard keyboard's missing function keys. Other useful remaps include turning PAGE UP into Print Screen, and you can easily assign more hidden functions as needed.
 
-Other possibilities would be. If you are looking to implement a DVORAK layout. You can achieve that by rearranging the letters in the corresponding letter location.  
+Thinking of using a layout like DVORAK? That's possible too. Simply remap the letters to their desired positions, and your custom configuration is ready to type.
 
 
 ```json
