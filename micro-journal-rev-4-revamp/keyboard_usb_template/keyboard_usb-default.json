@@ -12,7 +12,7 @@
     "alt": 
     [
      "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F0", "F11", "F12", "\b", "DELETE",
-     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PAGE_UP",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PRINT_SCREEN",
      "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "\\", "PAGE_DOWN",
      "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
      "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",

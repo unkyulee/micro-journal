@@ -97,3 +97,42 @@ For example:
 
 
 ### Customizing Key Layout for Keyboard Mode
+
+In the USB keyboard mode. What you type will apear in the screen. Depending on the OS and the language configuration of the computer. What letter appears on the screen varies. For example, when a computer is set with US layout. What you will see in the layout configuration and what you see in the screen will be the same. But, if your computer is set in Italian language configuration. Pressing the key location ";" will type "ò". There is no need to change anything on the keyboard. You just need to change the computer's OS language configuration. 
+
+There are two layers in this keyboard configuration. You can press the "LAYER" key in order to reach the hidden layers. In the default configuration. Number keys becomes F1 ~ F12 keys respectively. In order to compensate the missing function keys. Also, PAGE_UP key become Print screen. You can implement additional missing keys using the hidden layers. 
+
+Other possibilities would be. If you are looking to implement a DVORAK layout. You can achieve that by rearranging the letters in the corresponding letter location.  
+
+
+```json
+{
+    "main": 
+    [
+     "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b", "DELETE",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PAGE_UP",
+     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
+     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
+     0
+    ],
+
+    "alt": 
+    [
+     "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F0", "F11", "F12", "\b", "DELETE",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PRINT_SCREEN",
+     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "\\", "PAGE_DOWN",
+     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
+     0
+    ]
+}
+```
+
+[Download other USB keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_usb_template)
+
+Keywords used in the template follows the names from the following link
+
+https://github.com/arduino-libraries/Keyboard/blob/master/src/Keyboard.h
+
+ 
