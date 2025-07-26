@@ -16,6 +16,9 @@ void Send_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     //
     Menu_clear();
+
+    //
+    _sending = true;
 }
 
 //
@@ -35,7 +38,7 @@ void Send_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println("Press any key to STOP");
 
     // this is incredible to be able tow write something that really tiny screen. eturn
-    
+
     delay(1000);
 
     // send out text
@@ -51,7 +54,6 @@ void Send_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     _log("Sending file content over keyboard...\n");
 
     // Read file content in small chunks
-    _sending = true;
     while (file.available() && _sending)
     {
         char c = file.read();
@@ -69,7 +71,7 @@ void Send_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // Small delay to prevent buffer overflow
         delay(5); // You can tweak this as needed
     }
-
+    _sending = false;
     file.close();
 
     // end the sending session
