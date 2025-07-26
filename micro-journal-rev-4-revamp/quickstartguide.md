@@ -7,12 +7,7 @@ Meet the Micro Journal Rev.4. Your keyboard's cooler, more focused sibling. At f
 
 In writerDeck mode, the Micro Journal Rev.4 lets you take full control of your keyboard layout. Need special characters? Prefer a few accented Latin letters right at your fingertips? No problem. You can define your own custom layout by creating a simple JSON file. Just name it keyboard.json and save it to the device when it's in drive mode. Whether you're writing in multiple languages or just like things your way, your ideal layout is only a file away.
 
-Here's how you can customize your keyboard layout:
 
-1. **Create a "keyboard.json" file at drive mode.**
-2. **Copy the following content into the "keyboard.json" file.**
-3. **Turn off the Micro Journal and turn it on again.**
-4. **Your customized keyboard layout will now be active.**
 
 
 ```json
@@ -58,6 +53,15 @@ Here's how you can customize your keyboard layout:
     ]
 }
 ```
+
+Here's how you can customize your keyboard layout:
+
+1. **Create a "keyboard.json" file at drive mode.**
+2. **Copy the following content into the "keyboard.json" file.**
+3. **Turn off the Micro Journal and turn it on again.**
+4. **Your customized keyboard layout will now be active.**
+
+
 [Download other writerDeck keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_template)
 
 - **"main"**: Key pressed without any modifiers (no Shift, no Alt).
@@ -128,6 +132,13 @@ Other possibilities would be. If you are looking to implement a DVORAK layout. Y
     ]
 }
 ```
+
+Here's how you can customize your keyboard layout:
+
+1. **Create a "keyboard_usb.json" file at drive mode.**
+2. **Copy the following content into the "keyboard_usb.json" file.**
+3. **Turn off the Micro Journal and turn it on again.**
+4. **Your customized keyboard layout will now be active.**
 
 [Download other USB keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_usb_template)
 
