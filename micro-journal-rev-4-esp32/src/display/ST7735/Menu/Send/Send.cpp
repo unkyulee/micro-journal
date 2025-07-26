@@ -77,6 +77,14 @@ void Send_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // end the sending session
     app["menu"]["state"] = MENU_HOME;
 
+    bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
+    if(UsbKeyboard) {
+        app["screen"] = KEYBOARDSCREEN;
+    } else {
+        app["screen"] = WORDPROCESSOR;
+    }
+    
+
     _log("KeyboardScreen_copy: File sent.\n");
 }
 
