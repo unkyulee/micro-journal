@@ -144,7 +144,10 @@ void keyboard_config_load(String filename, int *layers, int size)
         String key = obj.as<String>();
         int _hid = keyboard_convert_HID(key);
         if (_hid != 0)
+        {
           *(layers + i * size + pos++) = _hid;
+        }
+
         else if (key.length() == 1)
         {
           // Use ASCII value of the single character
@@ -284,6 +287,10 @@ int keyboard_convert_HID(String _hid)
     return KEY_F11;
   else if (_hid == "F12")
     return KEY_F12;
+
+  // LAYER key is assigned to F24
+  else if (_hid == "LAYER")
+    return KEY_F24;
 
   // If no match, return 0
   return 0;
