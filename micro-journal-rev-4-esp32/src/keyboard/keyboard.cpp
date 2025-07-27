@@ -18,6 +18,7 @@
 #ifdef REV5
 #include "keyboard/USBHost/USBHost.h"
 #include "keyboard/Button/button.h"
+#include "keyboard/BLE/ble.h"
 #endif
 
 #ifdef BOARD_PICO
@@ -44,6 +45,9 @@ void keyboard_setup()
   // setup USB Host
   USBHost_setup();
 
+  // setup BLE Keyboard
+  ble_setup("Micro Journal 5");
+
   // Front Button Setup
   // button_setup();
 #endif
@@ -67,6 +71,10 @@ void keyboard_loop()
 #ifdef REV5
   // setup USB Host
   USBHost_loop();
+
+  // setup BLE Keyboard
+  ble_loop();
+
   // Front Button Setup
   // button_loop();
 #endif

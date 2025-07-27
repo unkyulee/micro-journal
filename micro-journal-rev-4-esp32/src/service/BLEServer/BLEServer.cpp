@@ -23,17 +23,16 @@ class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks
             BLEUUID service = advertisedDevice->getServiceUUID(i);
             if (service.equals(hidUUID))
             {
-
                 // Keyboard Device Found
-                const char *address = advertisedDevice->getAddress().toString().c_str();
-                const char *name = advertisedDevice->getName().c_str();
+                std::string address = advertisedDevice->getAddress().toString();
+                std::string name = advertisedDevice->getName();
 
                 // Add to the config
-                app["ble_devices"][i]["address"] = address;
-                app["ble_devices"][i]["name"] = name;
+                app["ble_devices"][i]["address"] = address.c_str();
+                app["ble_devices"][i]["name"] = name.c_str();
 
                 //
-                _log("BLE device found index: %d name: %s address: %s\n", i, name, address);
+                _log("BLE device found index: %d name: %s address: %s\n", i, name.c_str(), address.c_str());
             }
         }
     }
@@ -77,10 +76,9 @@ void BLEServer_loop()
             JsonDocument &app = status();
 
             //
-            app["ble_state"] = BLE_SCAN_STARTED;
             app["ble_error"] = "";
             app["ble_message"] = "Scanning BLE Devices";
-            app["ble_devices"] = app["ble"]["devices"].to<JsonArray>();
+            app["ble_devices"] = app["ble_devices"].to<JsonArray>();
             app["clear"] = true;
 
             // Scan BLE devices
@@ -88,7 +86,6 @@ void BLEServer_loop()
             pBLEScan->clearResults();
             pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
             pBLEScan->start(5, false);
-            delay(5000);
 
             // Check if any keyboard is found
             JsonArray ble_devices = app["ble_devices"].as<JsonArray>();
@@ -106,10 +103,13 @@ void BLEServer_loop()
 }
 
 // Entry Screen Initializing
-void BLEServer_setup()
+void BLEServer_setup(const char *name)
 {
     //
     buffer_clear();
+
+    // init BLE device
+    ble_init(name);
 
     //
     JsonDocument &app = status();

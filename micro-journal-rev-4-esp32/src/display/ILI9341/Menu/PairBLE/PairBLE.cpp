@@ -15,8 +15,19 @@ void PairBLE_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     //
     Menu_clear();
 
-    // Initialize BLEServer
-    BLEServer_setup();
+    //
+    JsonDocument &app = status();
+
+    // Check if already connected device exists
+    if (app["config"]["ble"]["name"].is<const char *>())
+    {
+        // When it is already paired then show UNPAIR
+    }
+    else
+    {
+        // Start Scanning
+        BLEServer_setup("Micro Journal 7");
+    }
 }
 
 //
@@ -34,12 +45,26 @@ void PairBLE_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // RENDER based on the screen index
     //
     JsonDocument &app = status();
-    int ble_status = app["ble_state"].as<int>();
-    _debug("[PairBLE_render] ble_state %d\n", ble_status);
-    if (ble_status == BLE_CONFIG_LIST || ble_status == BLE_CONFIG_NO_DEVICES)
+
+    // UNPAIR
+
+    // Check if already connected device exists
+    if (app["config"]["ble"]["name"].is<const char *>())
     {
-        // display the connected devices
-        PairBLE_render_list(ptft, pu8f);
+        const char *name = app["config"]["ble"]["name"].as<const char *>();
+        ptft->printf("[D] UNPAIR - %s\n", name);
+        ptft->println("");
+    }
+    else
+    {
+        //
+        int ble_status = app["ble_state"].as<int>();
+        _debug("[PairBLE_render] ble_state %d\n", ble_status);
+        if (ble_status == BLE_CONFIG_LIST || ble_status == BLE_CONFIG_NO_DEVICES)
+        {
+            // display the connected devices
+            PairBLE_render_list(ptft, pu8f);
+        }
     }
 
     // BACK
@@ -54,7 +79,7 @@ void PairBLE_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     JsonDocument &app = status();
 
     // retrieve ble keyboard devices
-    JsonArray devices = app["ble"]["devices"].as<JsonArray>();
+    JsonArray devices = app["ble_devices"].as<JsonArray>();
 
     // if BLE_CONFIG_NO_DEVICES
     int ble_state = app["ble_state"].as<int>();
@@ -69,13 +94,17 @@ void PairBLE_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
     else if (devices.size() > 0)
     {
+        // printing devices
+        _log("Rendering device list: %d\n", devices.size());
+        ptft->println("Press number to pair with");
         // Iterate through each available network
         for (int i = 0; i < devices.size(); i++)
         {
             // available wifi network
             const char *name = devices[i]["name"].as<const char *>();
-            ptft->printf(" [%d] %s\n", i + 1, name);
+            ptft->printf("  [%d] %s\n", i + 1, name);
         }
+        ptft->println("");
     }
 }
 
@@ -83,8 +112,56 @@ void PairBLE_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 void PairBLE_keyboard(char key)
 {
     //
+    JsonDocument &app = status();
+
+    //
     BLEServer_keyboard(key);
 
     //
     Menu_clear();
+
+    // UNPAIR
+    if (key == 'd')
+    {
+        //
+        if (app["config"]["ble"].is<JsonObject>())
+        {
+            //
+            app["config"].remove("ble");
+
+            // save config
+            config_save();
+
+            // restart
+            ESP.restart();
+        }
+    }
+
+    //
+    if (key >= '1' && key <= '9')
+    {
+        // device is chosen
+
+        // retrieve ble keyboard devices
+        JsonArray devices = app["ble_devices"].as<JsonArray>();
+
+        int selectedIndex = key - '1';
+        if (devices.size() > selectedIndex)
+        {
+            // save the device id
+            app["config"]["ble"]["address"] = devices[selectedIndex]["address"];
+            app["config"]["ble"]["name"] = devices[selectedIndex]["name"];
+
+            //
+            _log("Saving BLE keyboard: %s %s\n",
+                 app["config"]["ble"]["address"].as<const char *>(),
+                 app["config"]["ble"]["name"].as<const char *>());
+
+            /// save config
+            config_save();
+
+            // restart
+            ESP.restart();
+        }
+    }
 }

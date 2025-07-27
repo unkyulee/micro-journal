@@ -22,7 +22,7 @@ keyboard input and user interactionss
 void setup()
 {
 #ifdef DEBUG
-    delay(5000);
+    //delay(0);
 #endif
 
     // initialize app

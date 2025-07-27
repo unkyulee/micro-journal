@@ -3,19 +3,14 @@
 
 #include "NimBLEDevice.h"
 
-bool keyboard_ble_setup();
-void keyboard_ble_loop();
-bool keyboard_ble_connect();
+// Initialize BLE DEVICE
+void ble_init(const char* name);
+
+// Connect to BLE Keyboard
+bool ble_connect(const char *address);
 
 //
-void connect(NimBLEAdvertisedDevice);
-bool connectToServer(const char* remote, uint8_t type);
-
-//
-BLEUUID keyboard_ble_service_uuid();
-
-//
-bool keyboard_ble_connected();
-void keyboard_ble_connected_set(bool connected);
+void ble_setup(const char* adName);
+void ble_loop();
 
 #endif

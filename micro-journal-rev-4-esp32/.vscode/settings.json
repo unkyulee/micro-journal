@@ -32,6 +32,7 @@
     "text_encoding": "cpp",
     "new": "cpp",
     "memory": "cpp",
-    "chrono": "cpp"
+    "chrono": "cpp",
+    "typeinfo": "cpp"
   }
 }

@@ -333,26 +333,12 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     } while (num > 0);
     ptft->printf("%s characters", formattedNumber);
 
-#ifdef ENV_USBHOST
-    // KEYBOARD LAYOUT
-    String layout = app["config"]["keyboard_layout"].as<String>();
-    if (layout == "null" || layout.isEmpty())
-        layout = "US"; // defaults to US layout
-    // draw status bar
-    ptft->setCursor(260, STATUSBAR_Y, 2);
-    ptft->setTextColor(foreground_color, background_color);
-    ptft->setTextSize(1);
-    ptft->print(layout);
+#ifdef REV5
 
-    // BLUETOOTH STATUS
-    if (keyboard_ble_connected())
-    {
-        ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_BLUE);
-    }
-    else
-    {
-        // for now do not display disconnected status
-        // ptft->fillCircle(290, STATUSBAR_Y + 8, 5, TFT_LIGHTGREY);
+    // CHECK BLE Keyboard Connected
+    if(app["ble_connected"].as<bool>()) {
+        ptft->setCursor(230, STATUSBAR_Y + 6, 1);
+        ptft->print("BLE");
     }
 
 #endif

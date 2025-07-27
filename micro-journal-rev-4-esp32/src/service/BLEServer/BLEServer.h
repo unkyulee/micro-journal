@@ -2,13 +2,12 @@
 
 //
 #define BLE_CONFIG_LIST 0
-
-//
-#define BLE_SCAN_STARTED 1
 #define BLE_CONFIG_NO_DEVICES 2
 
 //
-void BLEServer_setup();
+
+//
+void BLEServer_setup(const char*);
 
 //
 void BLEServer_keyboard(char key);
