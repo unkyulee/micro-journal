@@ -126,3 +126,48 @@ Note that it is written in a number and not in the actual character.
 Remember to replace the placeholder values with your desired key configurations. This process enables you to tailor the keyboard layout to your specific needs.
 
 
+
+# Customizing Key Layout for Bluetooth Keyboard Mode
+
+When using the Micro Journal Rev.6 in Bluetooth keyboard mode, what you type will appear on your computer screen. Exactly what appears depends on your operating system's language and keyboard settings. For example, if your system is set to a US layout, the keys you press will match what you see in the layout configuration. However, switch your system to Italian, and pressing the key where ";" usually lives will type "ò" instead. There's no need to reconfigure the keyboard itself in most of the cases. Just set your OS language, and you're good to go.
+
+
+
+```json
+{
+    "main": 
+    [
+     "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b", "DELETE",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PAGE_UP",
+     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
+     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
+     0
+    ],
+
+    "alt": 
+    [
+     "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F0", "F11", "F12", "\b", "DELETE",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PRINT_SCREEN",
+     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "\\", "PAGE_DOWN",
+     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
+     0
+    ]
+}
+```
+
+Here's how you can customize your keyboard layout:
+
+1. **Create a "keyboard_usb.json" file at drive mode.**
+2. **Copy the following content into the "keyboard_usb.json" file.**
+3. **Turn off the Micro Journal and turn it on again.**
+4. **Your customized keyboard layout will now be active.**
+
+[Download other USB keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_usb_template)
+
+Keywords used in the template follows the names from the following link
+
+https://github.com/arduino-libraries/Keyboard/blob/master/src/Keyboard.h
+
+ 
