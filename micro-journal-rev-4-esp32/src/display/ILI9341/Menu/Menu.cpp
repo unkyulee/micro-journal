@@ -14,6 +14,7 @@
 #include "Foreground/Foreground.h"
 #include "DisableWakeUp/DisableWakeUp.h"
 #include "Reset/Reset.h"
+#include "PairBLE/PairBLE.h"
 
 // properties
 #define MENUBAR_COLOR TFT_RED
@@ -48,7 +49,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         app["clear"] = false;
 
         // clear screen
-        menu_clear = true;        
+        menu_clear = true;
     }
 
     if (!menu_clear)
@@ -57,7 +58,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // skip this rendering cycle
         return;
     }
-    
+
     // clear screen
     {
         //
@@ -78,7 +79,7 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->print(VERSION);
     ptft->print(" ");
 
-    // draw sub module of menu    
+    // draw sub module of menu
     int menu_state = app["menu"]["state"].as<int>();
 
     if (menu_state == MENU_HOME)
@@ -154,6 +155,13 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             FrontPanelButton_setup(ptft, pu8f);
 
         FrontPanelButton_render(ptft, pu8f);
+    }
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        if (menu_state_prev != menu_state)
+            PairBLE_setup(ptft, pu8f);
+
+        PairBLE_render(ptft, pu8f);
     }
 #endif
 
@@ -237,6 +245,13 @@ void Menu_keyboard(char key)
         FrontPanelButton_keyboard(key);
         return;
     }
+    // Pair BLE Keybaord
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        PairBLE_keyboard(key);
+        return;
+    }
+
 #endif
 }
 

@@ -17,6 +17,10 @@
 #include "service/Battery/Battery.h"
 #endif
 
+#ifdef REV5
+#include "service/BLEServer/BLEServer.h"
+#endif
+
 // When app is not ready. Such as file system is not initialized
 // then no more operation should occur.
 // this is a flag to check if the app is ready
@@ -62,6 +66,12 @@ void app_setup()
     battery_setup();
 #endif
 
+
+#ifdef REV5
+    // BLE Server Background Task
+    BLEServer_init();
+#endif
+
     // app ready
     _ready = true;
     _log("App is ready\n");
@@ -90,6 +100,12 @@ void app_loop()
 #ifdef BOARD_ESP32_S3
     sync_loop();
 #endif
+
+#ifdef REV5
+    // BLE Server Background Task
+    BLEServer_loop();
+#endif
+
 }
 
 // status storage

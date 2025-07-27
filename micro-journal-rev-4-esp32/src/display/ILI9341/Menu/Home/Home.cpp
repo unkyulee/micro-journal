@@ -7,11 +7,10 @@
 //
 #include "service/Editor/Editor.h"
 
-
 // Conviences function to get File Size with just an index
-size_t FileIndexSize (int index)
+size_t FileIndexSize(int index)
 {
-    char buffer [6];
+    char buffer[6];
     sprintf(buffer, "/%d.txt", index);
     size_t file_size = fileSize(buffer);
     return file_size;
@@ -149,8 +148,15 @@ void Home_keyboard(char key)
 
     else if (key == 't')
     {
+#ifdef REV6
         // move to keyboard layout
         app["screen"] = KEYBOARDSCREEN;
+#endif
+
+#ifdef REV5
+        // move to BLE keyboard pairing
+        app["menu"]["state"] = MENU_BLUETOOTH;
+#endif
     }
 
     else if (key == 'a')

@@ -1,7 +1,6 @@
 #include "ble.h"
 #include "app/app.h"
 #include "keyboard/keyboard.h"
-#include "keyboard/hid/hid.h"
 
 static BLEClient *pClient = nullptr;
 static BLEUUID charUUID = BLEUUID("2A4D");
@@ -108,7 +107,7 @@ void notifyCallback(
     uint8_t shift = (pData[0] == 0x2 || pData[0] == 0x20);
     uint8_t altgr = (pData[0] == 0x4 || pData[0] == 0x40);
 
-    keyboard_hid_pressed(keycode, pData[0]);
+    ///keyboard_hid_pressed(keycode, pData[0]);
 }
 
 // Custom callback class for BLE client

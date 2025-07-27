@@ -41,16 +41,6 @@ void Wifi_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 //
-void Wifi_keyboard(char key)
-{
-    //
-    WifiEntry_keyboard(key);
-
-    //
-    Menu_clear();
-}
-
-//
 void Wifi_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     ptft->println(" CHOOSE THE ENTRY TO EDIT: ");
@@ -130,4 +120,15 @@ void Wifi_render_edit(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println("");
         ptft->println(" [ENTER] SAVE ");
     }
+}
+
+
+//
+void Wifi_keyboard(char key)
+{
+    //
+    WifiEntry_keyboard(key);
+
+    //
+    Menu_clear();
 }
