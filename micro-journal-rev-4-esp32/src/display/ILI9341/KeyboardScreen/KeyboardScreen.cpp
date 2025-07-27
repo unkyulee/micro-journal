@@ -7,11 +7,15 @@
 #include <BleKeyboard.h>
 
 BleKeyboard bleKeyboard;
-bool keyboardConnectedPrev = false;
+int keyboardConnectedPrev = -1;
 //
 void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    // clear screen
     ptft->fillScreen(TFT_BLACK);
+
+    // reset flags
+    keyboardConnectedPrev = -1;
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal 6");
@@ -40,10 +44,14 @@ void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setCursor(0, 0, 2);
     ptft->println("Bluetooth Keyboard Mode");
     ptft->println();
+    
     //
     if (keyboardConnected)
     {
         ptft->println("Keyboard is connected");
+        ptft->println();
+    } else {
+        ptft->println("Waiting for connection ...");
         ptft->println();
     }
 

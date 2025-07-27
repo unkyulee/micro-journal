@@ -12,9 +12,8 @@ bool _keyboard_is_sleep = false;
 int _keyboard_awake_brightness = 0;
 const int _keyboard_sleep_timer = 60 * 60 * 1000; // 1 hour
 
-
 /*
-Find the keycode from 
+Find the keycode from
 https://github.com/arduino-libraries/Keyboard/blob/master/src/Keyboard.h
 
 LAYER KEY: #define KEY_F24           0xFB
@@ -55,7 +54,13 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     _keyboard_awake_brightness = app["config"]["brightness"].as<int>();
 
     // Load Custom Keybaord Layout
-    keyboard_config_load("/keyboard_usb.json", (int *)_usb_keyboard_layers, 72);
+    const char *keys[] = {"main", "alt"};
+    keyboard_config_load(
+        "/keyboard_usb.json",
+        (int *)_usb_keyboard_layers,
+        72,
+        keys,
+        2);
 }
 
 //
@@ -87,7 +92,6 @@ void KeyboardScreen_sleep()
         _log("Entering Sleep Mode\n");
     }
 }
-
 
 void KeyboardScreen_keyboard(int key, bool pressed, int index)
 {
@@ -154,7 +158,7 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
             layer = 1;
         else
             layer = 0;
-        
+
         // layer key does not count a key press
         // ignore the layer key press
         return;

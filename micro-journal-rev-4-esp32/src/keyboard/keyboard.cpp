@@ -88,7 +88,12 @@ void keyboard_capslock_toggle()
   _capslock = !_capslock;
 }
 
-void keyboard_config_load(String filename, int *layers, int size)
+void keyboard_config_load(
+    String filename,
+    int *layers,
+    int size,
+    const char *keys[],
+    int keyCount)
 {
   //
   JsonDocument &app = status();
@@ -130,10 +135,6 @@ void keyboard_config_load(String filename, int *layers, int size)
 
       return;
     }
-
-    // overwrite to layers
-    // int layers[LAYERS][ROWS * COLS]
-    const char *keys[] = {"main", "alt"};
 
     // save the current key pos
     int pos = 0;
@@ -238,7 +239,6 @@ int keyboard_convert_HID(String _hid)
     return KEY_PRTSC;
 #endif
 
-  
   // Function keys
   else if (_hid == "F1")
     return KEY_F1;
