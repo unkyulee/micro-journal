@@ -269,6 +269,18 @@ int keyboard_convert_HID(String _hid)
   else if (_hid == "LAYER")
     return KEY_F24;
 
+  // LAYER key is assigned to F24
+  else if (_hid == "LOWER")
+    return KEY_F24;
+
+  // LAYER key is assigned to F24
+  else if (_hid == "RAISE")
+    return KEY_F23;
+
+  // LAYER key is assigned to F24
+  else if (_hid == "MENU")
+    return MENU;
+
   // If no match, return 0
   return 0;
 }

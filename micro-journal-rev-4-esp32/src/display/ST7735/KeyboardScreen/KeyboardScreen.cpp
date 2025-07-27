@@ -111,7 +111,7 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
     // reset sleep flag
     _keyboard_is_sleep = false;
 
-    //
+    // KNOB PRESSED
     if (index == 69)
     {
         //
