@@ -16,3 +16,4 @@ void keyboard_config_load(
     const char *keys[],
     int keyCount);
 int keyboard_convert_HID(String _hid);
+void keyboard_HID2Ascii(uint8_t keycode, uint8_t modifier, bool pressed);

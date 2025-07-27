@@ -99,6 +99,7 @@ class clientCallback : public BLEClientCallbacks
 };
 
 static clientCallback clientCB;
+uint8_t dataPrev[8];
 
 // Callback function for notifications
 void notifyCallback(
@@ -108,47 +109,59 @@ void notifyCallback(
     bool isNotify)
 {
     //
-    _debug("[notifyCallback] %d %d %d %d %d %d\n", 
-        pData[0], pData[1], pData[2], pData[3], pData[4], pData[5]);
+    _debug("[notifyCallback] %d %d %d %d %d %d %d %d\n",
+           pData[0], pData[1], pData[2], pData[3], pData[4], pData[5], pData[6], pData[7]);
 
-    // pData[2-7] are active keycodes, diff against previous keys to find
-    // keys that have been pressed to trigger this notification
-    // init to first key
-    uint8_t keycode = pData[2];
-    bool changed = false;
-    for (uint8_t i = 2; i < length; i++)
+    // Key Pressed
+    for (int i = 2; i < 8; i++)
     {
-        if (previousKeys[i] != pData[i])
+        if (pData[i] != 0)
         {
-            keycode = pData[i];
-            changed = true;
+            // check if the same key appear in the previous report
+            bool newkey = true;
+            for (int j = 2; j < 8; j++)
+            {
+                if (dataPrev[j] == pData[i])
+                {
+                    newkey = false;
+                    break;
+                }
+            }
+
+            // otherwise register new key press
+            if (newkey)
+            {
+                // handle key pressed
+                keyboard_HID2Ascii(pData[i], pData[0], true);
+                _log("Key Pressed: %d %d\n", pData[i], pData[0]);
+            }
         }
-        previousKeys[i] = pData[i];
     }
 
-    // this callback can be triggered if the modifier is
-    // released before the alpha - if pData[2-7] haven't
-    // changed then there's nothing to do.
-    if (!changed)
+    // Key Released
+    for (int i = 2; i < 8; i++)
     {
-        return;
-    }
-
-    uint8_t shift = (pData[0] == 0x2 || pData[0] == 0x20);
-    uint8_t altgr = (pData[0] == 0x4 || pData[0] == 0x40);
-
-    JsonDocument &app = status();
-    String locale = app["config"]["keyboard_layout"].as<String>();
-    uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, altgr);
-    if (ascii != 0)
-    {
-        // send key to GUI
-        display_keyboard(ascii, true, keycode);
-        display_keyboard(ascii, false, keycode);
+        if (pData[i] != 0)
+        {
+            bool key_released = true;
+            for (int j = 2; j < 8; j++)
+            {
+                if (dataPrev[i] == pData[j])
+                {
+                    key_released = false;
+                    break;
+                }
+            }
+            if (key_released)
+            {
+                keyboard_HID2Ascii(dataPrev[i], dataPrev[0], false);
+                _log("Key Release: %d %d\n", dataPrev[i], dataPrev[0]);
+            }
+        }
     }
 
     //
-    _log("BLE Keyboard Pressed keycode: %d ascii: %d\n", keycode, ascii);
+    memcpy(dataPrev, pData, length > 8 ? 8 : length);
 }
 
 // Connect to BLE device
@@ -157,41 +170,34 @@ bool ble_connect(const char *address)
     _log("[ble_connect] Connecting Bluetooth Keyboard: %s\n", address);
 
     //
-    BLEAddress *device = new BLEAddress(address, BLE_ADDR_RANDOM);
+    BLEAddress *device = new BLEAddress(address);
 
-    // Connect to the BLE Server that has the name, Service, and Characteristics
-    if (NimBLEDevice::getClientListSize())
+    if (pClient && pClient->isConnected())
     {
-        _log("[ble_connect] client list size: %d\n", NimBLEDevice::getClientListSize());
-        pClient = NimBLEDevice::getClientByPeerAddress(*device);
-        if (pClient)
-        {
-            if (!pClient->connect(device))
-            {
-                _log("[ble_connect] Reconnect failed\n");
-                return false;
-            }
-        }
-    }
-    else
-    {
-        pClient = NimBLEDevice::createClient(NimBLEAddress(device->toString(), BLE_ADDR_RANDOM));
+        _log("[ble_connect] Already connected, disconnecting...\n");
+        pClient->disconnect();
+        NimBLEDevice::deleteClient(pClient);
+        pClient = nullptr;
     }
 
-    pClient->setClientCallbacks(&clientCB, false);
+    pClient = NimBLEDevice::createClient();
+    pClient->setClientCallbacks(&clientCB);
     pClient->setConnectionParams(12, 12, 0, 51);
     pClient->setConnectTimeout(2);
-    if (!pClient->connect(new NimBLEAddress(device->toString(), BLE_ADDR_RANDOM)))
+
+    if (!pClient->connect(device))
     {
-        _log("[ble_connect] could not connect: %s\n", device->toString().c_str());
-        return false;
-    };
-    if (!pClient->isConnected())
-    {
-        _log("[ble_connect] connect returned true but not connected\n");
+        _log("[ble_connect] Failed to connect\n");
         return false;
     }
-    _log("[ble_connect] Connected to server\n");
+
+    if (!pClient->isConnected()) {
+        _log("[ble_connect] Still not connected after connect()\n");
+        return false;
+    }
+
+    //
+    _log("[ble_connect] Connected!\n");
 
     //
     pClient->getServices(true);

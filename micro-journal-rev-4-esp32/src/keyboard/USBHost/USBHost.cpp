@@ -4,8 +4,6 @@
 //
 #include "keyboard/keyboard.h"
 //
-#include "keyboard/Locale/locale.h"
-
 #include <EspUsbHost.h>
 
 class MyEspUsbHost : public EspUsbHost
@@ -26,7 +24,7 @@ class MyEspUsbHost : public EspUsbHost
     void onKeyboard(hid_keyboard_report_t report, hid_keyboard_report_t last_report)
     {
         //
-        _debug("onKeyboard::%02x %02x %02x %02x %02x %02x %02x %02x\n",
+        _debug("onKeyboard %02x %02x %02x %02x %02x %02x %02x %02x\n",
                report.modifier,
                report.reserved,
                report.keycode[0],
@@ -59,7 +57,7 @@ class MyEspUsbHost : public EspUsbHost
                 if (newkey)
                 {
                     // handle key pressed
-                    USBHost_keyboard(report.keycode[i], report.modifier, true);
+                    keyboard_HID2Ascii(report.keycode[i], report.modifier, true);
                     _log("Key Pressed: %d %d\n", report.keycode[i], report.modifier);
                 }
             }
@@ -81,7 +79,7 @@ class MyEspUsbHost : public EspUsbHost
                 }
                 if (key_released)
                 {
-                    USBHost_keyboard(last_report.keycode[i], report.modifier, false);
+                    keyboard_HID2Ascii(last_report.keycode[i], report.modifier, false);
                     _log("Key Release: %d %d\n", last_report.keycode[i], report.modifier);
                 }
             }
@@ -162,43 +160,6 @@ void USBHost_loop()
 #endif
 }
 
-//
-void USBHost_keyboard(uint8_t keycode, uint8_t modifier, bool pressed)
-{
-    //////////////////////////////////////////
-    // CAPSLOCK is pressed
-    if (keycode == HID_KEY_CAPS_LOCK && pressed)
-    {
-        // Mark caps lock status
-        keyboard_capslock_toggle();
-        return;
-    }
-
-    //////////////////////////////////////////
-    // MENU
-    // ESC key is MENU button
-    if (keycode == 0x29)
-    {
-        display_keyboard(MENU, pressed, 69);
-        return;
-    }
-
-    //////////////////////////////////////////
-    // General Key Press
-    // Check SHIFT key pressed
-    bool shift = (modifier & KEYBOARD_MODIFIER_LEFTSHIFT) || (modifier & KEYBOARD_MODIFIER_RIGHTSHIFT);
-
-    // Check ALT key pressed
-    bool alt = (modifier & KEYBOARD_MODIFIER_LEFTALT) || (modifier & KEYBOARD_MODIFIER_RIGHTALT);
-
-    // Translate the Keycode to ASCII
-    JsonDocument &app = status();
-    String locale = app["config"]["keyboard_layout"].as<String>();
-    uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt);
-    if (ascii != 0)
-        // send key to GUI
-        display_keyboard(ascii, pressed, keycode);
-}
 
 void USBHost_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
 {

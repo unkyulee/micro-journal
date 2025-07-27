@@ -2,6 +2,9 @@
 #include "app/app.h"
 #include "display/display.h"
 
+//
+#include "keyboard/Locale/locale.h"
+
 #ifdef KEYPAD_68
 #include "keyboard/Keypad/68/keypad_68.h"
 #include "keyboard/Knob/Knob.h"
@@ -182,7 +185,6 @@ void keyboard_config_load(
 
 int keyboard_convert_HID(String _hid)
 {
-
   // Modifiers
   if (_hid == "LEFT_CTRL")
     return KEY_LEFT_CTRL;
@@ -291,4 +293,52 @@ int keyboard_convert_HID(String _hid)
 
   // If no match, return 0
   return 0;
+}
+
+//
+void keyboard_HID2Ascii(uint8_t keycode, uint8_t modifier, bool pressed)
+{
+  //////////////////////////////////////////
+  // CAPSLOCK is pressed
+  // 0x39 - HID_KEY_CAPS_LOCK
+  if (keycode == 0x39 && pressed)
+  {
+    // Mark caps lock status
+    keyboard_capslock_toggle();
+    return;
+  }
+
+  //////////////////////////////////////////
+  // MENU
+  // ESC key is MENU button
+  if (keycode == 0x29)
+  {
+    display_keyboard(MENU, pressed, 69);
+    return;
+  }
+
+  //////////////////////////////////////////
+  // General Key Press
+  // Check SHIFT key pressed
+  // TU_BIT(1) - (1UL << (1))
+  // KEYBOARD_MODIFIER_LEFTCTRL   = TU_BIT(0), ///< Left Control
+  // KEYBOARD_MODIFIER_LEFTSHIFT  = TU_BIT(1), ///< Left Shift
+  // KEYBOARD_MODIFIER_LEFTALT    = TU_BIT(2), ///< Left Alt
+  // KEYBOARD_MODIFIER_LEFTGUI    = TU_BIT(3), ///< Left Window
+  // KEYBOARD_MODIFIER_RIGHTCTRL  = TU_BIT(4), ///< Right Control
+  // KEYBOARD_MODIFIER_RIGHTSHIFT = TU_BIT(5), ///< Right Shift
+  // KEYBOARD_MODIFIER_RIGHTALT   = TU_BIT(6), ///< Right Alt
+  // KEYBOARD_MODIFIER_RIGHTGUI   = TU_BIT(7)  ///< Right Window
+  bool shift = (modifier & (1UL << (1))) || (modifier & (1UL << (5)));
+
+  // Check ALT key pressed
+  bool alt = (modifier & (1UL << (2))) || (modifier & (1UL << (6)));
+
+  // Translate the Keycode to ASCII
+  JsonDocument &app = status();
+  String locale = app["config"]["keyboard_layout"].as<String>();
+  uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt);
+  if (ascii != 0)
+    // send key to GUI
+    display_keyboard(ascii, pressed, keycode);
 }
