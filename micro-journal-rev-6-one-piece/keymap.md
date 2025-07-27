@@ -127,42 +127,56 @@ Remember to replace the placeholder values with your desired key configurations.
 
 
 
-# Customizing Key Layout for Bluetooth Keyboard Mode
+### Customizing Key Layout for Keyboard Mode
 
-When using the Micro Journal Rev.6 in Bluetooth keyboard mode, what you type will appear on your computer screen. Exactly what appears depends on your operating system's language and keyboard settings. For example, if your system is set to a US layout, the keys you press will match what you see in the layout configuration. However, switch your system to Italian, and pressing the key where ";" usually lives will type "ò" instead. There's no need to reconfigure the keyboard itself in most of the cases. Just set your OS language, and you're good to go.
+When using the Micro Journal Rev.4 in USB keyboard mode, what you type will appear on your computer screen. Exactly what appears depends on your operating system's language and keyboard settings. For example, if your system is set to a US layout, the keys you press will match what you see in the layout configuration. However, switch your system to Italian, and pressing the key where ";" usually lives will type "ò" instead. There's no need to reconfigure the keyboard itself in most of the cases. Just set your OS language, and you're good to go.
 
+The keyboard also features two configurable layers. By pressing the LAYER key, you can access a hidden layer of functions. In the default setup, this allows the number row to double as F1 - F12 keys, filling in for a standard keyboard's missing function keys. Other useful remaps include turning PAGE UP into Print Screen, and you can easily assign more hidden functions as needed.
+
+Thinking of using a layout like DVORAK? That's possible too. Simply remap the letters to their desired positions, and your custom configuration is ready to type.
 
 
 ```json
 {
     "main": 
     [
-     "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b", "DELETE",
-     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PAGE_UP",
-     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
-     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
-     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
-     0
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
+     "ESC", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"",
+     "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
+     0, "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
     ],
 
-    "alt": 
+    "lower": 
     [
-     "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F0", "F11", "F12", "\b", "DELETE",
-     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PRINT_SCREEN",
-     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "\\", "PAGE_DOWN",
-     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
-     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
-     0
+     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DELETE",
+     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+     "LEFT_SHIFT", "_", "+", "{", "}", "|", "n", "m", ",", ".", "/", "\n",
+     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
+    ],
+
+    "raise": 
+    [
+     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "\b",
+     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+     "LEFT_SHIFT", "-", "=", "[", "]", "\\", "n", "m", ",", ".", "/", "\n",
+     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
     ]
 }
 ```
 
 Here's how you can customize your keyboard layout:
 
-1. **Create a "keyboard_usb.json" file at drive mode.**
+1. **Create a "keyboard_usb.json" file at sd card.**
 2. **Copy the following content into the "keyboard_usb.json" file.**
 3. **Turn off the Micro Journal and turn it on again.**
 4. **Your customized keyboard layout will now be active.**
+
+
+There are 3 layers in total.
+- **"main"**: Key pressed without any modifiers (no Shift, no Alt).
+- **"lower"**: Key pressed while holding the LOWER key.
+- **"raise"**: Key pressed while holding the RAISE key.
+
 
 [Download other USB keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_usb_template)
 

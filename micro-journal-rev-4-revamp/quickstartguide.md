@@ -111,43 +111,32 @@ Thinking of using a layout like DVORAK? That's possible too. Simply remap the le
 {
     "main": 
     [
-     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
-     "ESC", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"",
-     "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     0, "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
+     "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b", "DELETE",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PAGE_UP",
+     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
+     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
+     0
     ],
 
-    "lower": 
+    "alt": 
     [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DELETE",
-     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
-     "LEFT_SHIFT", "_", "+", "{", "}", "|", "n", "m", ",", ".", "/", "\n",
-     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
-    ],
-
-    "raise": 
-    [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "\b",
-     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
-     "LEFT_SHIFT", "-", "=", "[", "]", "\\", "n", "m", ",", ".", "/", "\n",
-     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
+     "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F0", "F11", "F12", "\b", "DELETE",
+     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PRINT_SCREEN",
+     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "\\", "PAGE_DOWN",
+     "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
+     0
     ]
 }
 ```
 
 Here's how you can customize your keyboard layout:
 
-1. **Create a "keyboard_usb.json" file at sd card.**
+1. **Create a "keyboard_usb.json" file at drive mode.**
 2. **Copy the following content into the "keyboard_usb.json" file.**
 3. **Turn off the Micro Journal and turn it on again.**
 4. **Your customized keyboard layout will now be active.**
-
-
-There are 3 layers in total.
-- **"main"**: Key pressed without any modifiers (no Shift, no Alt).
-- **"lower"**: Key pressed while holding the LOWER key.
-- **"raise"**: Key pressed while holding the RAISE key.
-
 
 [Download other USB keyboard layout](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/keyboard_usb_template)
 
