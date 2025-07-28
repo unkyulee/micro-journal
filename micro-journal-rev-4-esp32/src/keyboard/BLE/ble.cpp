@@ -4,6 +4,8 @@
 #include "keyboard/Locale/locale.h"
 #include "display/display.h"
 
+#include "service/BLEServer/BLEServer.h"
+
 //
 void ble_setup(const char *adName)
 {
@@ -13,42 +15,38 @@ void ble_setup(const char *adName)
     // When ble.address exists then try to connect to the keyboard
     if (app["config"]["ble"]["address"].is<const char *>())
     {
-        const char *name = app["config"]["ble"]["name"].as<const char *>();
-        const char *address = app["config"]["ble"]["address"].as<const char *>();
-        //
-        _log("found BLE configuration try to connect %s %s\n", name, address);
-
-        //
+        // BLE Initialize
         ble_init(adName);
-        ble_connect(address);
+
+        // Initiate scan
+        app["task"] = "ble_connect";
     }
 }
 
 //
 void ble_loop()
 {
-    // every 30 seconds check reconnect
+    //
+    JsonDocument &app = status();
+
+    // nothing to do when BLE is not paired
+    if (!app["config"]["ble"]["address"].is<const char *>())
+        return;
+
+    // every 10 seconds check reconnect
     static unsigned int last = millis();
     if (millis() - last > 10000)
     {
         last = millis();
 
-        //
-        JsonDocument &app = status();
-
         if (!app["ble_connected"].as<bool>())
         {
-
             // When ble.address exists then try to connect to the keyboard
             if (app["config"]["ble"]["address"].is<const char *>())
             {
-                const char *name = app["config"]["ble"]["name"].as<const char *>();
-                const char *address = app["config"]["ble"]["address"].as<const char *>();
-                //
-                _log("[ble_loop] try to connect %s %s\n", name, address);
-
-                //
-                ble_connect(address);
+                // Initiate scan
+                if (app["task"].as<String>().isEmpty())
+                    app["task"] = "ble_connect";
             }
         }
     }
@@ -72,8 +70,6 @@ void ble_init(const char *name)
 
         // Start the BLEDevice
         BLEDevice::init(name);
-        // Enable bonding
-        BLEDevice::setSecurityAuth(true, false, true);
 
         //
         ble_init_done = true;
@@ -99,7 +95,7 @@ class clientCallback : public BLEClientCallbacks
 };
 
 static clientCallback clientCB;
-uint8_t dataPrev[8];
+uint8_t dataPrev[7];
 
 // Callback function for notifications
 void notifyCallback(
@@ -109,17 +105,19 @@ void notifyCallback(
     bool isNotify)
 {
     //
-    _debug("[notifyCallback] %d %d %d %d %d %d %d %d\n",
-           pData[0], pData[1], pData[2], pData[3], pData[4], pData[5], pData[6], pData[7]);
+    _debug("[notifyCallback] size [%d] %d %d %d %d %d %d %d\n",
+           length, pData[0], pData[1], pData[2], pData[3], pData[4], pData[5], pData[6]);
+    _debug("[notifyCallback] prev [%d] %d %d %d %d %d %d %d\n",
+           length, dataPrev[0], dataPrev[1], dataPrev[2], dataPrev[3], dataPrev[4], dataPrev[5], dataPrev[6]);
 
     // Key Pressed
-    for (int i = 2; i < 8; i++)
+    for (int i = 1; i < length; i++)
     {
         if (pData[i] != 0)
         {
             // check if the same key appear in the previous report
             bool newkey = true;
-            for (int j = 2; j < 8; j++)
+            for (int j = 1; j < length; j++)
             {
                 if (dataPrev[j] == pData[i])
                 {
@@ -139,12 +137,12 @@ void notifyCallback(
     }
 
     // Key Released
-    for (int i = 2; i < 8; i++)
+    for (int i = 1; i < length; i++)
     {
-        if (pData[i] != 0)
+        if (dataPrev[i] != 0)
         {
             bool key_released = true;
-            for (int j = 2; j < 8; j++)
+            for (int j = 1; j < length; j++)
             {
                 if (dataPrev[i] == pData[j])
                 {
@@ -161,37 +159,59 @@ void notifyCallback(
     }
 
     //
-    memcpy(dataPrev, pData, length > 8 ? 8 : length);
+    memcpy(dataPrev, pData, length > 7 ? 7 : length);
 }
 
 // Connect to BLE device
-bool ble_connect(const char *address)
+bool ble_connect(const char *address, int type)
 {
-    _log("[ble_connect] Connecting Bluetooth Keyboard: %s\n", address);
+    _log("[ble_connect] address %s\n", address);
 
-    //
-    BLEAddress *device = new BLEAddress(address);
-
-    if (pClient && pClient->isConnected())
+    // Try to reconnect if the connection has been established already
+    if (NimBLEDevice::getClientListSize())
     {
-        _log("[ble_connect] Already connected, disconnecting...\n");
-        pClient->disconnect();
-        NimBLEDevice::deleteClient(pClient);
-        pClient = nullptr;
+        _log("[ble_connect] client list size: %d\n", NimBLEDevice::getClientListSize());
+        if (pClient)
+        {
+            _log("pClient: %p, ConnID: %d, IsConnected: %d\n",
+                 pClient,
+                 pClient->getConnId(),
+                 pClient->isConnected());
+
+            // remove the client list
+            pClient->disconnect();
+            pClient->setClientCallbacks(nullptr);
+            NimBLEDevice::deleteClient(pClient);
+            pClient = nullptr;
+
+            _log("[ble_connect] removed client\n");
+        }
+    }
+    else
+    {
+        _log("[ble_connect] attempting to connect for the first time\n");
     }
 
-    pClient = NimBLEDevice::createClient();
+    // this is first time connecting after pairing
+    // if previous connection fails or it's new connection
+    BLEAddress device = BLEAddress(std::string(address), type);
+
+    //
+    pClient = NimBLEDevice::createClient(device);
+
+    // setup the connection
     pClient->setClientCallbacks(&clientCB);
     pClient->setConnectionParams(12, 12, 0, 51);
     pClient->setConnectTimeout(2);
 
-    if (!pClient->connect(device))
+    if (!pClient->connect())
     {
         _log("[ble_connect] Failed to connect\n");
         return false;
     }
 
-    if (!pClient->isConnected()) {
+    if (!pClient->isConnected())
+    {
         _log("[ble_connect] Still not connected after connect()\n");
         return false;
     }
@@ -247,5 +267,6 @@ bool ble_connect(const char *address)
             _log("[ble_connect] failed to subscribe");
         }
     }
+
     return true;
 }

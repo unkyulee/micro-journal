@@ -336,9 +336,14 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 #ifdef REV5
 
     // CHECK BLE Keyboard Connected
-    if(app["ble_connected"].as<bool>()) {
-        ptft->setCursor(230, STATUSBAR_Y + 6, 1);
+    ptft->setCursor(230, STATUSBAR_Y + 6, 1);
+    if (app["ble_connected"].as<bool>())
+    {
         ptft->print("BLE");
+    }
+    else
+    {
+        ptft->print("    ");
     }
 
 #endif

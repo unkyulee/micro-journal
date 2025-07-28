@@ -30,9 +30,11 @@ class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks
                 // Add to the config
                 app["ble_devices"][i]["address"] = address.c_str();
                 app["ble_devices"][i]["name"] = name.c_str();
+                app["ble_devices"][i]["type"] = (int)advertisedDevice->getAddressType();
 
                 //
-                _log("BLE device found index: %d name: %s address: %s\n", i, name.c_str(), address.c_str());
+                _log("BLE device found index: %d name: %s address: %s type: %d\n",
+                     i, name.c_str(), address.c_str(), advertisedDevice->getAddressType());
             }
         }
     }
@@ -85,7 +87,7 @@ void BLEServer_loop()
             pBLEScan = BLEDevice::getScan();
             pBLEScan->clearResults();
             pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
-            pBLEScan->start(5, false);
+            pBLEScan->start(5);
 
             // Check if any keyboard is found
             JsonArray ble_devices = app["ble_devices"].as<JsonArray>();
@@ -98,6 +100,38 @@ void BLEServer_loop()
             // refresh the menu screen
             _log("BLE Devices Scan Ended\n");
             app["clear"] = true;
+        }
+
+        else if (task == "ble_connect")
+        {
+            //
+            app["task"] = "";
+
+            //
+            const char *name = app["config"]["ble"]["name"].as<const char *>();
+            _log("[BLEServer_loop] Picked up BLE Device Connect Request: %s\n", name);
+
+            //
+            // Scan BLE devices
+            pBLEScan = BLEDevice::getScan();
+            pBLEScan->clearResults();
+            pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
+            pBLEScan->start(5);
+
+            // Check if any keyboard is found
+            JsonArray devices = app["ble_devices"].as<JsonArray>();
+            for (int i = 0; i < devices.size(); i++)
+            {
+                const char *targetName = devices[i]["name"].as<const char *>();
+                const char *targetAddress = devices[i]["address"].as<const char *>();
+                int targetAddressType = devices[i]["type"].as<int>();
+                if (strcmp(name, targetName) == 0)
+                {
+                    // found the device
+                    _log("[BLEServer_loop] found %s %s %d\n", targetName, targetAddress, targetAddressType);
+                    ble_connect(targetAddress, targetAddressType);
+                }
+            }
         }
     }
 }
@@ -151,237 +185,4 @@ void BLEServer_keyboard(char key)
         app["menu"]["state"] = MENU_HOME;
         return;
     }
-
-    /*
-
-
-
-
-    //
-
-
-    //
-    if (wifi_config_status >= WIFI_CONFIG_EDIT_SSID)
-    {
-        // SAVE or NEXT
-        if (key == '\n')
-        {
-            // NEXT step
-            if (wifi_config_status == WIFI_CONFIG_EDIT_SSID)
-            {
-                // save ssid
-                JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
-                savedAccessPoints[wifi_config_index]["ssid"] = String(buffer_get());
-
-                // clear buffer
-                buffer_clear();
-
-                // move to password enter screen
-                wifi_config_status = WIFI_CONFIG_EDIT_KEY;
-                app["wifi_config_status"] = wifi_config_status;
-            }
-            else if (wifi_config_status == WIFI_CONFIG_EDIT_KEY)
-            {
-                // save ssid
-                JsonArray savedAccessPoints = app["wifi"]["access_points"].as<JsonArray>();
-                savedAccessPoints[wifi_config_index]["password"] = String(buffer_get());
-
-                // save the configuration
-                wifi_config_save();
-
-                //
-                buffer_clear();
-
-                // go back to the configuration list
-                wifi_config_status = WIFI_CONFIG_LIST;
-                app["wifi_config_status"] = wifi_config_status;
-            }
-        }
-        // BACK SPACE
-        else if (key == '\b')
-        {
-            // backspace
-            buffer_remove();
-        }
-        // ADD KEYS
-        else
-        {
-            // edit mode
-            buffer_add(key);
-
-            //
-            _debug("BLEServer_keyboard buffer_add: %c, %s\n", key, buffer_get());
-        }
-    }
-    else
-    {
-        // back to home
-        if (key == 'B' || key == 'b')
-        {
-            //
-            // go back to home menu
-            app["menu"]["state"] = MENU_HOME;
-
-            return;
-        }
-
-        else if (key >= '1' && key <= '5')
-        {
-            //
-            // wifi entry chose to edit
-            //
-
-            // clear buffer
-            buffer_clear();
-
-            // determine the index to edit
-            wifi_config_index = key - '1';
-            _log("Wifi Entry chosen %d\n", wifi_config_index);
-            app["wifi_config_index"] = wifi_config_index;
-
-            // move the screen
-            wifi_config_status = WIFI_CONFIG_EDIT_SSID;
-            app["wifi_config_status"] = wifi_config_status;
-
-            return;
-        }
-    }
-
-
-
-        */
-
-    /*
-JsonDocument &app = status();
-
-if (PairBLE_config_status == PairBLE_CONFIG_POST_SCAN)
-{
-    // choose the device
-    if (key == 'm' || key == 'M' || key == MENU)
-    {
-        // check if it is back
-        if (deviceSelected >= deviceIndex)
-        {
-            // go back
-            PairBLE_config_status = PairBLE_CONFIG_LIST;
-            return;
-        }
-        else
-        {
-            // picked a device
-            _log("Picked %d, %s\n", key, foundDevices[deviceSelected].name.c_str());
-            JsonObject ble = app["config"]["ble"].as<JsonObject>();
-            ble["remote"] = foundDevices[deviceSelected].address;
-            PairBLE_save();
-        }
-    }
-    else if (key == 'B' || key == 'b')
-    {
-        if (deviceIndex == 0)
-        {
-            // back to
-            PairBLE_config_status = PairBLE_CONFIG_LIST;
-        }
-        else
-        {
-            deviceSelected++;
-            if (deviceSelected > deviceIndex)
-                deviceSelected = 0;
-        }
-
-        return;
-    }
-
-    // reset
-    for (int i = 0; i < deviceIndex; i++)
-    {
-        foundDevices[deviceIndex] = device();
-    }
-    deviceIndex = 0;
-    PairBLE_config_status = PairBLE_CONFIG_LIST;
-
-    return;
-}
-else if (PairBLE_config_status == PairBLE_CONFIG_EDIT_ADDR)
-{
-    // BACK SPACE
-    if (key == '\b')
-    {
-        // backspace
-        PairBLE_config_buffer[PairBLE_config_buffer_pos--] = '\0';
-    }
-    else if (key == '\n')
-    {
-        // save address
-        JsonObject ble = app["config"]["ble"].as<JsonObject>();
-        ble["remote"] = String(PairBLE_config_buffer);
-
-        PairBLE_config_buffer[0] = '\0';
-        PairBLE_config_buffer_pos = 0;
-
-        PairBLE_save();
-
-        //
-        PairBLE_config_status = PairBLE_CONFIG_LIST;
-    }
-    else
-    {
-        // edit mode
-        PairBLE_config_buffer[PairBLE_config_buffer_pos++] = key;
-        PairBLE_config_buffer[PairBLE_config_buffer_pos] = '\0';
-    }
-
-    // OVERFLOW CONTROL
-    if (PairBLE_config_buffer_pos > PairBLE_CONFIG_BUFFER)
-    {
-        PairBLE_config_buffer[0] = '\0';
-        PairBLE_config_buffer_pos = 0;
-    }
-}
-else
-{
-    // back to home
-    if (key == 'B' || key == 'b')
-    {
-        //
-        // go back to home menu
-        app["menu"]["state"] = MENU_HOME;
-
-        return;
-    }
-
-    else if (key == 'E' || key == 'e')
-    {
-        // remove the BLE config
-        app["config"]["ble"]["remote"] = "";
-        config_save();
-
-
-        // bluetooth entry chose to edit
-        //PairBLE_config_status = PairBLE_CONFIG_EDIT_ADDR;
-        //PairBLE_config_buffer[0] = '\0';
-        //PairBLE_config_buffer_pos = 0;
-
-
-        //
-        Menu_clear();
-
-        return;
-    }
-    else if (key == 'T' || key == 't')
-    {
-        //
-        // Toggle scan mode
-        app["config"]["ble"]["scan_mode"] = !app["config"]["ble"]["scan_mode"];
-        PairBLE_save();
-        return;
-    }
-    else if ((key == 'M' || key == 'm' || key == MENU) && !keyboard_ble_connected())
-    {
-        PairBLE_config_status = PairBLE_CONFIG_SCANNING;
-
-        return;
-    }
-}
-*/
 }

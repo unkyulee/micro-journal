@@ -4,12 +4,8 @@
 #define BLE_CONFIG_LIST 0
 #define BLE_CONFIG_NO_DEVICES 2
 
-//
-
-//
+// foreground service
 void BLEServer_setup(const char*);
-
-//
 void BLEServer_keyboard(char key);
 
 // background service

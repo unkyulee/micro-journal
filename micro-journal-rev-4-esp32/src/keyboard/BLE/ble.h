@@ -7,7 +7,7 @@
 void ble_init(const char* name);
 
 // Connect to BLE Keyboard
-bool ble_connect(const char *address);
+bool ble_connect(const char *address, int type);
 
 //
 void ble_setup(const char* adName);

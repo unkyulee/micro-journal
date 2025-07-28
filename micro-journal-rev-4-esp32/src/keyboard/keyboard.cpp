@@ -52,7 +52,7 @@ void keyboard_setup()
   ble_setup("Micro Journal 5");
 
   // Front Button Setup
-  // button_setup();
+  button_setup();
 #endif
 
 #ifdef REV6
@@ -79,7 +79,7 @@ void keyboard_loop()
   ble_loop();
 
   // Front Button Setup
-  // button_loop();
+  button_loop();
 #endif
 
 #ifdef KEYPAD_68

@@ -26,7 +26,7 @@ void PairBLE_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     else
     {
         // Start Scanning
-        BLEServer_setup("Micro Journal 7");
+        BLEServer_setup("Micro Journal 5");
     }
 }
 
@@ -52,7 +52,7 @@ void PairBLE_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (app["config"]["ble"]["name"].is<const char *>())
     {
         const char *name = app["config"]["ble"]["name"].as<const char *>();
-        ptft->printf("[D] UNPAIR - %s\n", name);
+        ptft->printf("[D] UNPAIR - %s", name);
         ptft->println("");
     }
     else
@@ -97,10 +97,8 @@ void PairBLE_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         // printing devices
         _log("Rendering device list: %d\n", devices.size());
         ptft->println("Press number to pair with");
-        // Iterate through each available network
         for (int i = 0; i < devices.size(); i++)
         {
-            // available wifi network
             const char *name = devices[i]["name"].as<const char *>();
             ptft->printf("  [%d] %s\n", i + 1, name);
         }
