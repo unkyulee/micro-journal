@@ -167,6 +167,26 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
     //
     int usbKey = _usb_keyboard_layers[layer][index];
 
+    // Check for Macro Keys
+    if (usbKey >= 2000 && usbKey <= 2100)
+    {
+        // run macro when key is released
+        if (!pressed)
+        {
+            int macroIndex = usbKey - 2000;
+            String key = format("MACRO_%d", macroIndex);
+            _log("Macro Key Clicked: %d\n", macroIndex);
+            if (app[key].is<String>())
+            {
+                String macroString = app[key].as<String>();
+                _debug(macroString.c_str());
+                KeyboardScreen_play(macroString);
+            }
+        }
+
+        return;
+    }
+
     // Send out as a USB Keyboard Key Press
     if (pressed)
     {
@@ -175,5 +195,47 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
     else
     {
         Keyboard.release(usbKey); // Release the key
+    }
+}
+
+void KeyboardScreen_play(String macro)
+{
+    int start = 0;
+    while (start < macro.length())
+    {
+        int end = macro.indexOf(',', start);
+        if (end == -1)
+            end = macro.length();
+
+        String token = macro.substring(start, end);
+        token.trim(); // remove spaces
+
+        if (token.startsWith("!PRESS_"))
+        {
+            String keyName = token.substring(7); // after "!PRESS_"
+            int keyCode = keyboard_convert_HID(keyName);
+            if (keyCode != 0)
+                Keyboard.press(keyCode);
+        }
+        else if (token.startsWith("!RELEASE_"))
+        {
+            String keyName = token.substring(9); // after "!RELEASE_"
+            int keyCode = keyboard_convert_HID(keyName);
+            if (keyCode != 0)
+                Keyboard.release(keyCode);
+        }
+        else
+        {
+            int keyCode = keyboard_convert_HID(token);
+            if (keyCode != 0)
+            {
+                Keyboard.press(keyCode);
+                delay(10); // small delay for reliability
+                Keyboard.release(keyCode);
+            }
+        }
+
+        start = end + 1;
+        delay(10); // delay between each token
     }
 }

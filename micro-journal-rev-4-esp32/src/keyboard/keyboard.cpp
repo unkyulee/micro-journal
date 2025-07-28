@@ -177,9 +177,17 @@ void keyboard_config_load(
         }
       }
     }
-
-    // Close the file
-    file.close();
+    
+    // load macro
+    for(int i = 0; i < 10; i++) {
+      String key = format("MACRO_%d", i);
+      if(keyboardConfig[key].is<const char*>()) {
+        // load macro
+        app[key] = keyboardConfig[key].as<const char*>();
+        _debug("Loading Macro %s - %s\n", key.c_str(), app[key].as<const char*>());
+      }
+    }
+  
   }
 }
 
@@ -275,6 +283,42 @@ int keyboard_convert_HID(String _hid)
   else if (_hid == "F12")
     return KEY_F12;
 
+  // Numeric keypad
+  else if (_hid == "NUM_LOCK")
+    return KEY_NUM_LOCK;
+  else if (_hid == "SLASH")
+    return KEY_KP_SLASH;
+  else if (_hid == "ASTERISK")
+    return KEY_KP_ASTERISK;
+  else if (_hid == "MINUS")
+    return KEY_KP_MINUS;
+  else if (_hid == "PLUS")
+    return KEY_KP_PLUS;
+  else if (_hid == "ENTER")
+    return KEY_KP_ENTER;
+  else if (_hid == "KP_1")
+    return KEY_KP_1;
+  else if (_hid == "KP_2")
+    return KEY_KP_2;
+  else if (_hid == "KP_3")
+    return KEY_KP_3;
+  else if (_hid == "KP_4")
+    return KEY_KP_4;
+  else if (_hid == "KP_5")
+    return KEY_KP_5;
+  else if (_hid == "KP_6")
+    return KEY_KP_6;
+  else if (_hid == "KP_7")
+    return KEY_KP_7;
+  else if (_hid == "KP_8")
+    return KEY_KP_8;
+  else if (_hid == "KP_9")
+    return KEY_KP_9;
+  else if (_hid == "KP_0")
+    return KEY_KP_0;
+  else if (_hid == "DOT")
+    return KEY_KP_DOT;
+
   // LAYER key is assigned to F24
   else if (_hid == "LAYER")
     return KEY_F24;
@@ -290,6 +334,19 @@ int keyboard_convert_HID(String _hid)
   // LAYER key is assigned to F24
   else if (_hid == "MENU")
     return MENU;
+
+  // MACRO
+  else if(_hid == "MACRO_0") return 2000;
+  else if(_hid == "MACRO_1") return 2001;
+  else if(_hid == "MACRO_2") return 2002;
+  else if(_hid == "MACRO_3") return 2003;
+  else if(_hid == "MACRO_4") return 2004;
+  else if(_hid == "MACRO_5") return 2005;
+  else if(_hid == "MACRO_6") return 2006;
+  else if(_hid == "MACRO_7") return 2007;
+  else if(_hid == "MACRO_8") return 2008;
+  else if(_hid == "MACRO_9") return 2009;
+  
 
   // If no match, return 0
   return 0;

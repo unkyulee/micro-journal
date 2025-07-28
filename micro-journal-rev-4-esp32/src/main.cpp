@@ -21,8 +21,8 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
-#ifdef DEBUG
-    //delay(0);
+#if defined(DEBUG) && defined(BOARD_PICO)
+    delay(5000);
 #endif
 
     // initialize app
