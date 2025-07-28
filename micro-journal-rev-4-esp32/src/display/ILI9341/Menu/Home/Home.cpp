@@ -7,15 +7,6 @@
 //
 #include "service/Editor/Editor.h"
 
-// Conviences function to get File Size with just an index
-size_t FileIndexSize(int index)
-{
-    char buffer[6];
-    sprintf(buffer, "/%d.txt", index);
-    size_t file_size = fileSize(buffer);
-    return file_size;
-}
-
 //
 void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
@@ -85,8 +76,11 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
             ptft->setTextColor(TFT_WHITE, TFT_BLACK);
         }
 
+        // word count
+        int wordCount = app["config"][format("wordcount_file_%d", i)].as<int>() + app["config"][format("wordcount_buffer_%d", i)].as<int>();
+
         ptft->setCursor(pos_x, 45 + i * 16, 2);
-        ptft->printf(" [%d]: %zu", i, FileIndexSize(i));
+        ptft->printf(" [%d]: %zu", i, wordCount);
     }
     //
     ptft->setCursor(pos_x, 210, 2);

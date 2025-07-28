@@ -39,6 +39,12 @@ int display_ILI9341_core()
       return 0;
   }
 
+  // If BLE is set then let the BLE work on background alone
+  if (app["config"]["ble"]["address"].is<const char *>())
+  {
+    return 0;
+  }
+
   // by default run at the second core separated from keyboard loop
   return 1;
 }
@@ -207,6 +213,4 @@ void display_ILI9341_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t
 {
   JsonDocument &app = status();
   int screen = app["screen"].as<int>();
-
-  
 }

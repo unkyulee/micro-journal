@@ -94,13 +94,11 @@ bool usbHostReady = false;
 // this setup will be called at Rev.5 only
 void USBHost_setup()
 {
-    // also depending on the situation should handle USB and BLE keyboards
-    _log("USB Host Setup\n");
-
 #ifndef DEBUG
     // usb keyboard setup
     usbHost.begin();
     usbHostReady = true;
+    _log("USB Host Setup\n");
 #endif
 
 #ifdef DEBUG

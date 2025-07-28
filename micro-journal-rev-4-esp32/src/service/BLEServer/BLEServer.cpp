@@ -57,7 +57,7 @@ void BLEServer_init()
 void BLEServer_loop()
 {
     static unsigned int last = 0;
-    if (millis() - last > 1000)
+    if (millis() - last > 10000)
     {
         last = millis();
 

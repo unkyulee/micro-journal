@@ -310,28 +310,13 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->setTextColor(background_color, foreground_color);
     ptft->printf(" %d ", app["config"]["file_index"].as<int>());
 
-    // FILE SIZE
+    // WORD COUNT
     ptft->setTextColor(foreground_color, background_color);
-    ptft->setCursor(25, STATUSBAR_Y, 2);
-    size_t num = Editor::getInstance().seekPos + Editor::getInstance().getBufferSize();
-    String formattedNumber = "";
-    int digitCount = 0;
-    if (num < 0)
-    {
-        formattedNumber += "-";
-        num = -num;
-    }
-    do
-    {
-        if (digitCount > 0 && digitCount % 3 == 0)
-        {
-            formattedNumber = "," + formattedNumber;
-        }
-        formattedNumber = String(num % 10) + formattedNumber;
-        num /= 10;
-        digitCount++;
-    } while (num > 0);
-    ptft->printf("%s characters", formattedNumber);
+    ptft->setCursor(30, STATUSBAR_Y, 2);
+
+    int wordCount = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer;
+    String wordCountFormatted = formatNumber(wordCount);
+    ptft->printf("%s words", wordCountFormatted);
 
 #ifdef REV5
 
