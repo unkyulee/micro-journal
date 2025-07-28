@@ -113,7 +113,7 @@ Thinking of using a layout like DVORAK? That's possible too. Simply remap the le
     [
      "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "\b", "DELETE",
      "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PAGE_UP",
-     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
+     "MACRO_0", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
      "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
      "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
      0
@@ -123,11 +123,14 @@ Thinking of using a layout like DVORAK? That's possible too. Simply remap the le
     [
      "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F0", "F11", "F12", "\b", "DELETE",
      "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\n", "PRINT_SCREEN",
-     "CAPS_LOCK", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"", "\\", "PAGE_DOWN",
+     "MACRO_1", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "\\", "PAGE_DOWN",
      "LEFT_SHIFT", "`", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "LEFT_SHIFT", "UP_ARROW", "END",
      "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", " ", "RIGHT_ALT", "LAYER", "HOME", "LEFT_ARROW", "DOWN_ARROW", "RIGHT_ARROW",
      0
-    ]
+    ],
+
+    "MACRO_0": "!PRESS_LEFT_ALT, KP_0, KP_1, KP_5, KP_1, !RELEASE_LEFT_ALT",
+    "MACRO_1": "!PRESS_LEFT_ALT, KP_0, KP_1, KP_3, KP_3, !RELEASE_LEFT_ALT"
 }
 ```
 
@@ -144,4 +147,30 @@ Keywords used in the template follows the names from the following link
 
 https://github.com/arduino-libraries/Keyboard/blob/master/src/Keyboard.h
 
- 
+
+
+##### Using Macro
+
+You can customize your keyboard by assigning special macros. Short sequences of keypresses to any key on your layout.
+
+For example:
+
+Typing an em dash (—) might require pressing:
+Left Alt + Numpad 0151
+
+You can automate that using a macro like:
+
+```json
+"MACRO_0": "!PRESS_LEFT_ALT, KP_0, KP_1, KP_5, KP_1, !RELEASE_LEFT_ALT"
+```
+
+```json
+{
+  "main": [ ... ],      // Main layer of keys
+  "alt": [ ... ],       // Alternate layer (when LAYER key is active)
+  "MACRO_0": "...",     // Custom macro definitions
+  "MACRO_1": "..."
+}
+```
+
+You can define up to MACRO_9. That is total of 10 predefined MACRO.
