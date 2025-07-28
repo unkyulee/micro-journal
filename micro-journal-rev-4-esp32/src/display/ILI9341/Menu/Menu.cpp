@@ -36,6 +36,9 @@ void Menu_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // refresh the background
     menu_clear = true;
+
+    //
+    app["menu"]["state"] = MENU_HOME;
 }
 
 void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
