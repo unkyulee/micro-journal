@@ -39,8 +39,6 @@ void Send_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // this is incredible to be able tow write something that really tiny screen. eturn
 
-    delay(1000);
-
     // send out text
     int file_index = app["config"]["file_index"].as<int>();
     Editor::getInstance().loadFile(format("/%d.txt", file_index));

@@ -12,11 +12,12 @@ const char *menu[] = {
     "writerDeck",  // 1
     "Drive Mode",  // 2
     "Send Text",   // 3
-    "Brightness",  // 4
-    "Color BG",    // 5
-    "Color Font",  // 6
-    "FW Update",   // 7
-    "Delete Text", // 8
+    "Info Text",   // 4
+    "Brightness",  // 5
+    "Color BG",    // 6
+    "Color Font",  // 7
+    "FW Update",   // 8
+    "Delete Text", // 9
     "Exit"};
 
 //
@@ -144,29 +145,36 @@ void Home_keyboard(char key, bool pressed)
             app["menu"]["state"] = MENU_SYNC;
         }
 
-        // 4 - Brightness
+        // 4 - Info Text
         else if (selectedHome == 4)
+        {
+            _debug("Info Text Selected\n");
+            app["menu"]["state"] = MENU_INFO;
+        }
+
+        // 5 - Brightness
+        else if (selectedHome == 5)
         {
             _debug("Brightness Selected\n");
             app["menu"]["state"] = MENU_BRIGHTNESS;
         }
 
-        // 5 - Background Color
-        else if (selectedHome == 5)
+        // 6 - Background Color
+        else if (selectedHome == 6)
         {
             _debug("Background Color Selected\n");
             app["menu"]["state"] = MENU_BACKGROUND;
         }
 
-        // 6 - Font Color
-        else if (selectedHome == 6)
+        // 7 - Font Color
+        else if (selectedHome == 7)
         {
             _debug("Font Color Selected\n");
             app["menu"]["state"] = MENU_FONTCOLOR;
         }
 
-        // 7 - Firmware Update
-        else if (selectedHome == 7)
+        // 8 - Firmware Update
+        else if (selectedHome == 8)
         {
             _debug("Firmware Update Selected\n");
 
@@ -174,8 +182,8 @@ void Home_keyboard(char key, bool pressed)
             rp2040.rebootToBootloader();
         }
 
-        // 8 - Clear Text
-        else if (selectedHome == 8)
+        // 9 - Clear Text
+        else if (selectedHome == 9)
         {
             _debug("Clear Text Selected\n");
 

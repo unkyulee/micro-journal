@@ -3,6 +3,9 @@
 #include "display/display.h"
 
 //
+#include "service/WordCounter/WordCounter.h"
+
+//
 // EDITOR CLASS IMPLEMENTATION
 //
 
@@ -147,6 +150,16 @@ void Editor::loadFile(String fileName)
 
     // Update the Screen Buffer
     updateScreen();
+
+    // Update the word count
+    wordCountFile = wordcounter_file(fileName.c_str());
+    wordCountBuffer = wordcounter_buffer(buffer);
+
+    // update the word count in config
+    int file_index = app["config"]["file_index"].as<int>();
+    app["config"][format("wordcount_file_%d", file_index)] = wordCountFile;
+    app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
+    config_save();
 }
 
 //
@@ -252,6 +265,14 @@ void Editor::saveFile()
     //
     file.close();
     delay(100);
+
+    // update word count
+    int file_index = app["config"]["file_index"].as<int>();
+    app["config"][format("wordcount_file_%d", file_index)] = wordCountFile;
+    app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
+
+    //
+    config_save();
 
     // flag to save
     this->saved = true;
@@ -395,7 +416,7 @@ void Editor::keyboard(int key, bool pressed)
                 // set saved flag to false
                 this->saved = false;
 
-                // set flag 
+                // set flag
                 this->backSpacePressed = true;
             }
             // buffer emptied
@@ -426,7 +447,7 @@ void Editor::keyboard(int key, bool pressed)
                 // set saved flag to false
                 this->saved = false;
 
-                // set flag 
+                // set flag
                 this->backSpacePressed = true;
             }
             // buffer emptied
@@ -624,6 +645,9 @@ void Editor::keyboard(int key, bool pressed)
 
         // update the screen buffer
         updateScreen();
+
+        // update the word count
+        wordCountBuffer = wordcounter_buffer(buffer);
     }
 }
 

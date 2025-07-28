@@ -177,17 +177,18 @@ void keyboard_config_load(
         }
       }
     }
-    
+
     // load macro
-    for(int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
       String key = format("MACRO_%d", i);
-      if(keyboardConfig[key].is<const char*>()) {
+      if (keyboardConfig[key].is<const char *>())
+      {
         // load macro
-        app[key] = keyboardConfig[key].as<const char*>();
-        _debug("Loading Macro %s - %s\n", key.c_str(), app[key].as<const char*>());
+        app[key] = keyboardConfig[key].as<const char *>();
+        _debug("Loading Macro %s - %s\n", key.c_str(), app[key].as<const char *>());
       }
     }
-  
   }
 }
 
@@ -250,39 +251,6 @@ int keyboard_convert_HID(String _hid)
     return KEY_SCROLL_LOCK;
   else if (_hid == "PAUSE")
     return KEY_PAUSE;
-#endif
-
-#ifdef BOARD_ESP32_S3
-  else if (_hid == "PRINT_SCREEN")
-    return KEY_PRTSC;
-#endif
-
-  // Function keys
-  else if (_hid == "F1")
-    return KEY_F1;
-  else if (_hid == "F2")
-    return KEY_F2;
-  else if (_hid == "F3")
-    return KEY_F3;
-  else if (_hid == "F4")
-    return KEY_F4;
-  else if (_hid == "F5")
-    return KEY_F5;
-  else if (_hid == "F6")
-    return KEY_F6;
-  else if (_hid == "F7")
-    return KEY_F7;
-  else if (_hid == "F8")
-    return KEY_F8;
-  else if (_hid == "F9")
-    return KEY_F9;
-  else if (_hid == "F10")
-    return KEY_F10;
-  else if (_hid == "F11")
-    return KEY_F11;
-  else if (_hid == "F12")
-    return KEY_F12;
-
   // Numeric keypad
   else if (_hid == "NUM_LOCK")
     return KEY_NUM_LOCK;
@@ -318,6 +286,38 @@ int keyboard_convert_HID(String _hid)
     return KEY_KP_0;
   else if (_hid == "DOT")
     return KEY_KP_DOT;
+#endif
+
+#ifdef BOARD_ESP32_S3
+  else if (_hid == "PRINT_SCREEN")
+    return KEY_PRTSC;
+#endif
+
+  // Function keys
+  else if (_hid == "F1")
+    return KEY_F1;
+  else if (_hid == "F2")
+    return KEY_F2;
+  else if (_hid == "F3")
+    return KEY_F3;
+  else if (_hid == "F4")
+    return KEY_F4;
+  else if (_hid == "F5")
+    return KEY_F5;
+  else if (_hid == "F6")
+    return KEY_F6;
+  else if (_hid == "F7")
+    return KEY_F7;
+  else if (_hid == "F8")
+    return KEY_F8;
+  else if (_hid == "F9")
+    return KEY_F9;
+  else if (_hid == "F10")
+    return KEY_F10;
+  else if (_hid == "F11")
+    return KEY_F11;
+  else if (_hid == "F12")
+    return KEY_F12;
 
   // LAYER key is assigned to F24
   else if (_hid == "LAYER")
@@ -336,17 +336,26 @@ int keyboard_convert_HID(String _hid)
     return MENU;
 
   // MACRO
-  else if(_hid == "MACRO_0") return 2000;
-  else if(_hid == "MACRO_1") return 2001;
-  else if(_hid == "MACRO_2") return 2002;
-  else if(_hid == "MACRO_3") return 2003;
-  else if(_hid == "MACRO_4") return 2004;
-  else if(_hid == "MACRO_5") return 2005;
-  else if(_hid == "MACRO_6") return 2006;
-  else if(_hid == "MACRO_7") return 2007;
-  else if(_hid == "MACRO_8") return 2008;
-  else if(_hid == "MACRO_9") return 2009;
-  
+  else if (_hid == "MACRO_0")
+    return 2000;
+  else if (_hid == "MACRO_1")
+    return 2001;
+  else if (_hid == "MACRO_2")
+    return 2002;
+  else if (_hid == "MACRO_3")
+    return 2003;
+  else if (_hid == "MACRO_4")
+    return 2004;
+  else if (_hid == "MACRO_5")
+    return 2005;
+  else if (_hid == "MACRO_6")
+    return 2006;
+  else if (_hid == "MACRO_7")
+    return 2007;
+  else if (_hid == "MACRO_8")
+    return 2008;
+  else if (_hid == "MACRO_9")
+    return 2009;
 
   // If no match, return 0
   return 0;

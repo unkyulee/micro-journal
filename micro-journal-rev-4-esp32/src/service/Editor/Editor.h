@@ -47,6 +47,10 @@ public:
     // Cursor position within the line 
     int cursorLinePos = 0;
 
+    // Word Counter File
+    int wordCountFile = 0;
+    int wordCountBuffer = 0;
+
     // Initialize the editor with the number of columns and rows
     void init(int cols, int rows);
     void loop(); // house keeping tasks

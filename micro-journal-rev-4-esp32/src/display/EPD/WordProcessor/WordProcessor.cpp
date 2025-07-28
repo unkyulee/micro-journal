@@ -597,7 +597,7 @@ void WP_render_status()
     // FILE SIZE DRAWS WHEN STOPPED EDITING FOR A WHILE
     static int last = millis();
     static bool debouncing = false;
-    if (filesize != filesize_prev)
+    if (filesize != filesize_prev || cleared)
     {
         // debounce for status_refresh amount
         last = millis();
@@ -627,9 +627,10 @@ void WP_render_status()
         epd_poweron();
         epd_clear_quick(area, 4, 50);
 
-        // redraw the new number
-        String filesizeFormatted = formatNumber(filesize);
-        writeln((GFXfont *)&systemFont, filesizeFormatted.c_str(), &cursorX, &cursorY, NULL);
+        // redraw the word count
+        int wordCount = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer; 
+        String wordCountFormatted = formatNumber(wordCount);
+        writeln((GFXfont *)&systemFont, wordCountFormatted.c_str(), &cursorX, &cursorY, NULL);
         epd_poweroff_all();
     }
 

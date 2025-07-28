@@ -10,6 +10,7 @@
 #include "FontColor/FontColor.h"
 #include "Clear/Clear.h"
 #include "Send/Send.h"
+#include "Info/Info.h"
 
 // state
 bool menu_clear = false;
@@ -118,6 +119,14 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         Clear_render(ptft, pu8f);
     }
 
+    else if (menu_state == MENU_INFO)
+    {
+        if (menu_state_prev != menu_state)
+            Info_setup(ptft, pu8f);
+
+        Info_render(ptft, pu8f);
+    }
+
     // save prev state
     menu_state_prev = menu_state;
 }
@@ -179,6 +188,13 @@ void Menu_keyboard(char key, bool pressed)
     else if (menu_state == MENU_CLEAR)
     {
         Clear_keyboard(key, pressed);
+        return;
+    }
+
+        //
+    else if (menu_state == MENU_INFO)
+    {
+        Info_keyboard(key, pressed);
         return;
     }
 }

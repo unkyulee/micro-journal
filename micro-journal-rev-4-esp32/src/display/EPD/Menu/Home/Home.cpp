@@ -8,15 +8,6 @@
 
 #include "service/Editor/Editor.h"
 
-// Conviences function to get File Size with just an index
-size_t FileIndexSize(int index)
-{
-    char buffer[6];
-    sprintf(buffer, "/%d.txt", index);
-    size_t file_size = fileSize(buffer);
-    return file_size;
-}
-
 //
 void Home_setup()
 {
@@ -73,9 +64,14 @@ void Home_render()
     {
         cursorX = 600;
         cursorY += 30;
+
+        //
+        int wordCount = app["config"][format("wordcount_file_%d", i)].as<int>() + app["config"][format("wordcount_buffer_%d", i)].as<int>();
+
+        //
         writeln(
             (GFXfont *)&systemFont,
-            format(" [%d]: %zu", i, FileIndexSize(i)).c_str(),
+            format(" [%d]: %zu", i, wordCount).c_str(),
             &cursorX, &cursorY,
             display_EPD_framebuffer());
 
