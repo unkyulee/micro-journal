@@ -38,7 +38,7 @@ void Brightness_keyboard(char key, bool pressed)
     JsonDocument &app = status();
 
     // MENU - SELECTED ACTION
-    if (key == 6 || key == '\n')
+    if (key == MENU || key == '\n')
     {
         // Go back to Home
         _log("Exit Brightness");
