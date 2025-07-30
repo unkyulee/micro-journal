@@ -43,11 +43,11 @@ void Brightness_keyboard(char key, bool pressed)
         // Go back to Home
         _log("Exit Brightness");
 
-        // Save Config
-        config_save();
-
         //
         app["menu"]["state"] = MENU_HOME;
+
+        // Save Config
+        config_save();
     }
 
     // UP
