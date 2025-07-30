@@ -190,7 +190,7 @@ void KeyboardScreen_copy()
         }
 
         // Small delay to prevent buffer overflow
-        delay(5); // You can tweak this as needed
+        delay(15); // You can tweak this as needed
     }
 
     file.close();
