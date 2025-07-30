@@ -40,6 +40,8 @@
 | Pin 31           | Knob Switch GND |
 
 
+<img src="build/battery.png" width="600">
+
 Raspberry Pico 27 goes to Battery Voltage Divider
 
 
