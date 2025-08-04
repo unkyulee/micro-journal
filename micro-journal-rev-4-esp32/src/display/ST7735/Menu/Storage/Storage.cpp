@@ -44,6 +44,16 @@ void Storage_keyboard(char key, bool pressed)
         // turn off USB drive
         app["massStorage"] = false;
 
+        // wait until the storage is off
+        while (true)
+        {
+            //
+            delay(1000);
+            //
+            if (app["massStorageStarted"].as<bool>() == false)
+                break;
+        }
+
         //
         app["menu"]["state"] = MENU_HOME;
     }

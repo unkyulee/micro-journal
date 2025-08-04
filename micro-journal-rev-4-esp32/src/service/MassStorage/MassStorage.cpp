@@ -2,9 +2,6 @@
 #include "app/app.h"
 
 #include <FatFSUSB.h>
-
-bool massStorageStarted = false;
-
 //
 void ms_setup()
 {
@@ -25,22 +22,24 @@ void ms_loop()
         bool massStorage = app["massStorage"].as<bool>();
         if (massStorage)
         {
-            if (massStorageStarted == false)
+            if (app["massStorageStarted"].as<bool>() == false)
             {
                 FatFSUSB.begin();
 
                 //
-                massStorageStarted = true;
+                app["massStorageStarted"] = true;
                 _log("FatFSUSB begin\n");
             }
         }
         else
         {
-            if (massStorageStarted == true)
+            if (app["massStorageStarted"].as<bool>() == true)
             {
                 FatFSUSB.unplug();
                 FatFSUSB.end();
-                massStorageStarted = false;
+
+                //
+                app["massStorageStarted"] = false;
 
                 _log("FatFSUSB end\n");
             }
