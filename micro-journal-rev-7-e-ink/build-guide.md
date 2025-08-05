@@ -60,6 +60,7 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 - [2 Pin Round Snap Rocker Switch 0.65 inch](https://www.aliexpress.com/item/1005006005552235.html)
 
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
+- [Spacebar Stabilizer 6.25](https://it.aliexpress.com/item/1005007119644385.html)
 
 - [B-7000 Glue](https://www.aliexpress.com/item/1005005379063116.html)
 
