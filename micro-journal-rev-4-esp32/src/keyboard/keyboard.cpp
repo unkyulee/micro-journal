@@ -139,7 +139,8 @@ void keyboard_config_load(
     {
       //
       app["error"] = format("%s not in a correct json form: %s\n", filename.c_str(), error.c_str());
-      app["screen"] = ERRORSCREEN;
+      //app["screen"] = ERRORSCREEN;
+      //app["screen_next"] = KEYBOARDSCREEN;
 
       //
       _log(app["error"]);
