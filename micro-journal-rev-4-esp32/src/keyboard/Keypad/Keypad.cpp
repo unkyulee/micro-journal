@@ -37,7 +37,7 @@ void keypad_load_config(String filename, int *layers, int size)
         {
             //
             app["error"] = format("%s not in a correct json form: %s\n", filename.c_str(), error.c_str());
-            app["screen"] = ERRORSCREEN;
+            //app["screen"] = ERRORSCREEN;
 
             //
             _log(app["error"]);
