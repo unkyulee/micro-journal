@@ -25,6 +25,12 @@ TFT_eSprite &display_ST7735_sprite()
 // decide where to run the display routine
 int display_ST7735_core()
 {
+  JsonDocument &app = status();
+
+  // if storage mode run at the main core
+  if (app["menu"]["state"] == MENU_STORAGE)
+    return 0;
+
   // by default run at the seperate core
   return 1;
 }

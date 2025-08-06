@@ -39,7 +39,7 @@ void Storage_keyboard(char key, bool pressed)
     if (key == 27)
     {
         // Go back to Home
-        _log("Exit Mass Storage");
+        _log("Exit Mass Storage Started\n");
 
         // turn off USB drive
         app["massStorage"] = false;
@@ -48,13 +48,17 @@ void Storage_keyboard(char key, bool pressed)
         while (true)
         {
             //
-            delay(1000);
+            _log("Checking when the device is ejected\n");
+
             //
             if (app["massStorageStarted"].as<bool>() == false)
                 break;
+
+            //
+            delay(100);
         }
 
-        //
+        // Move to home screen
         app["menu"]["state"] = MENU_HOME;
     }
 }

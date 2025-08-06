@@ -2,9 +2,12 @@
 #include "app/app.h"
 
 #include <FatFSUSB.h>
+
 //
 void ms_setup()
 {
+    // Register callback for host ejection
+    _log("Mass Storage Setup\n");
 }
 
 //
@@ -20,8 +23,11 @@ void ms_loop()
 
         //
         bool massStorage = app["massStorage"].as<bool>();
+
+        // mass storage is on
         if (massStorage)
         {
+            // start the device
             if (app["massStorageStarted"].as<bool>() == false)
             {
                 FatFSUSB.begin();
@@ -40,7 +46,6 @@ void ms_loop()
 
                 //
                 app["massStorageStarted"] = false;
-
                 _log("FatFSUSB end\n");
             }
         }

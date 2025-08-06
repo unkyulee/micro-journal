@@ -62,6 +62,11 @@ void app_setup()
         return;
     }
 
+#ifdef BOARD_PICO
+    // Mass Storage Setup
+    ms_setup();
+#endif
+
 #ifdef BATTERY
     battery_setup();
 #endif
