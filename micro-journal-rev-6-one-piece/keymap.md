@@ -16,34 +16,50 @@ The following json is the default configuration.
 {
     "main": 
     [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ",",
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
-     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", "'", "\n",
-     "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ".", "/", "SHIFT"
+     "\\", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
+     "MENU", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
+     "-", "=", "[", "]", "LOWER", " ", " ", "RAISE", "LEFT", "DOWN", "UP", "RIGHT"
     ],
 
     "main-shift": 
     [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "<",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", 127,
-     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", "\"", "\n",
-     "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", ">", "?", "SHIFT"
+     "|", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "DEL",
+     "MENU", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "_", "+", "{", "}", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
     ],
 
-    "alt": 
+    "lower": 
     [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "[", "]", "\\",
-     "ESC", "q", "w", "e", "r", "t", "PGUP", "u", "UP", "-", "=", 127,
-     "ALT", "a", "s", "d", "f", "g", "PGDN", "LEFT", "DOWN", "RIGHT", ";", "\n",
-     "SHIFT", "z", "x", "c", "v", " ", "b", "HOME", "m", "END", "/", "SHIFT"
+     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DEL",
+     "MENU", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
+     "-", "=", "[", "]", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
     ],
 
-    "alt-shift": 
+    "lower-shift": 
     [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "|",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
-     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\n",
-     "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", "<", "?", "SHIFT"
+     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DEL",
+     "MENU", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "_", "+", "{", "}", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+    ],
+
+    "raise": 
+    [
+     "`", 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, "DEL",
+     "MENU", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
+     "-", "=", "[", "]", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+    ],
+
+    "raise-shift": 
+    [
+     "~", 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, "DEL",
+     "MENU", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
+     "_", "+", "{", "}", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
     ]
 }
 ```
@@ -57,24 +73,25 @@ This configuration allows for a total of 96 keys on the keyboard, and with Shift
 
 Most keys are typed directly into the JSON file between quotes. However, some keys are special and need specific representations. Here is a list of special keys and their corresponding representations:
 
-| Special Key Written AS | Description                      |
-|------------------------|----------------------------------|
-| ESC                    | Functions as entering the MENU screen |
-| SHIFT                  | This is a SHIFT key              |
-| ALT                    | Hidden layer activation key      |
-| BACKSPACE              | Works as a backspace             |
-| 127                    | Deletes a word (DEL)             |
-| \n                     | Enter Key                        |
-| \\\\                   | Backslash                        |
-| \\"                    | Double Quote                     |
-| LEFT                   | Navigate LEFT                    |
-| RIGHT                  | Navigate RIGHT                   |
-| UP                     | Navigate UP                      |
-| DOWN                   | Navigate DOWN                    |
-| PGUP                   | Go to Previous Page              |
-| PGDN                   | Go to Next Page                  |
+| Special Key Written AS | Description                               |
+| ---------------------- | ----------------------------------------- |
+| ESC                    | Functions as entering the MENU screen     |
+| SHIFT                  | This is a SHIFT key                       |
+| ALT                    | Hidden layer activation key               |
+| BACKSPACE              | Works as a backspace                      |
+| 127                    | Deletes a word (DEL)                      |
+| \n                     | Enter Key                                 |
+| \\\\                   | Backslash                                 |
+| \\"                    | Double Quote                              |
+| LEFT                   | Navigate LEFT                             |
+| RIGHT                  | Navigate RIGHT                            |
+| UP                     | Navigate UP                               |
+| DOWN                   | Navigate DOWN                             |
+| PGUP                   | Go to Previous Page                       |
+| PGDN                   | Go to Next Page                           |
 | HOME                   | Move to the beginning of the current line |
-| END                    | Move to the end the current line     |
+| END                    | Move to the end the current line          |
+| 1000 ~ 1009            | Change File                               |
 
 For accented keys, you can't directly write characters like è or ù in the JSON file as they won’t be recognized. Instead, you need to use their DEC values from the ASCII Table, which can be found at [ASCII Code](https://www.ascii-code.com/).
 
@@ -82,43 +99,6 @@ For example:
 - È - 200
 - è - 232
 
-Example "keyboard.json" content with accents:
-
-```json
-{
-    "main": 
-    [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ",",
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", 232, "BACKSPACE",
-     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", "'", "\n",
-     "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ".", "/", "SHIFT"
-    ],
-
-    "main-shift": 
-    [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "<",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", 200, 127,
-     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", "\"", "\n",
-     "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", ">", "?", "SHIFT"
-    ],
-
-    "alt": 
-    [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "[", "]", "\\",
-     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "-", "=", 127,
-     "ALT", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\n",
-     "SHIFT", "z", "x", "c", "v", " ", "b", "n", "m", ",", "/", "SHIFT"
-    ],
-
-    "alt-shift": 
-    [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "{", "}", "|",
-     "ESC", "Q", "W", "E", "R", "T", "Y", "U", "I", "_", "+", 127,
-     "ALT", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\n",
-     "SHIFT", "Z", "X", "C", "V", " ", "B", "N", "M", "<", "?", "SHIFT"
-    ]
-}
-```
 
 In the above example. The key next to the backspace will type è and È respectively. 
 Note that it is written in a number and not in the actual character. 
@@ -140,26 +120,26 @@ Thinking of using a layout like DVORAK? That's possible too. Simply remap the le
 {
     "main": 
     [
-     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
+     "\\", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
      "ESC", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"",
      "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     0, "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
+     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
     ],
 
     "lower": 
     [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DELETE",
-     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+     "`", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "DELETE",
+     "ESC", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
      "LEFT_SHIFT", "_", "+", "{", "}", "|", "n", "m", ",", ".", "/", "\n",
-     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
+     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
     ],
 
     "raise": 
     [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "\b",
-     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DELETE",
+     "ESC", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
      "LEFT_SHIFT", "-", "=", "[", "]", "\\", "n", "m", ",", ".", "/", "\n",
-     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
+     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
     ]
 }
 ```

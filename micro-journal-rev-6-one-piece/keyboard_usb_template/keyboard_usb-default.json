@@ -1,25 +1,25 @@
 {
     "main": 
     [
-     "\t", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
+     "\\", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
      "ESC", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"",
      "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     0, "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
+     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
     ],
 
     "lower": 
     [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DELETE",
-     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+     "`", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "DELETE",
+     "ESC", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
      "LEFT_SHIFT", "_", "+", "{", "}", "|", "n", "m", ",", ".", "/", "\n",
-     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
+     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
     ],
 
     "raise": 
     [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "\b",
-     "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DELETE",
+     "ESC", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
      "LEFT_SHIFT", "-", "=", "[", "]", "\\", "n", "m", ",", ".", "/", "\n",
-     "MENU", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
+     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
     ]
 }
