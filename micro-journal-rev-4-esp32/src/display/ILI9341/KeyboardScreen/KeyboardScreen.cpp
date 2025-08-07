@@ -19,22 +19,22 @@ LAYER KEY: #define KEY_F24           0xFB
 int _usb_keyboard_layers[3][48] = {
 
     {// normal layers
-     '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
+     '\\', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
      KEY_ESC, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     0, KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW},
+     '\t', KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW},
 
     {// lower
-     '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', KEY_DELETE,
-     KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,
-     KEY_LEFT_SHIFT, '_', '+', '{', '}', '|', 'n', 'm', ',', '.', '/', '\n',
-     MENU, KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
+     '`', KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_DELETE,
+     KEY_ESC, KEY_F11, KEY_F12, 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
+     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
+     '\t', KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_PRTSC, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
 
     {// raise
-     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\b',
-     KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,
-     KEY_LEFT_SHIFT, '-', '=', '[', ']', '\\', 'n', 'm', ',', '.', '/', '\n',
-     MENU, KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_PRTSC, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
+     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', KEY_DELETE,
+     KEY_ESC, 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
+     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
+     '\t', KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
 };
 
 //
@@ -58,6 +58,7 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal 6");
+    bleKeyboard.set_product_id(0x820a + 6); // Different product ID
     bleKeyboard.begin();
     _log("Bluetooth Keyboard Started\n");
 }
@@ -97,7 +98,7 @@ void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     ptft->println("Turn off the device to end the writing session");
-    ptft->println("Pressing V + Left Shift (MENU) will send the text");
+    ptft->println("Press top row first and last keys at the same time to SEND");
 }
 
 // keyboard message will come from Rev.6 via this function.
@@ -112,6 +113,32 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
 
     // check if lower or raise is click
     static int layer = 0;
+    static int send = 0;
+
+    // check if first and the last key of the first row is both clicked
+    if (index == 0)
+    {
+        if (pressed)
+            send += 1;
+        else
+            send = 0;
+    }
+    else if (index == 11)
+    {
+        if (pressed)
+            send += 1;
+        else
+            send = 0;
+    }
+
+    // if send is activated
+    if (send == 2)
+    {
+        // move over the text
+        send = 0;
+        KeyboardScreen_copy();
+        return;
+    }
 
     // LOWER is pressed
     if (_usb_keyboard_layers[0][index] == KEY_F24)
@@ -147,15 +174,7 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
     if (key == 0)
         return;
 
-    // MENU button is pressed
-    if (key == MENU)
-    {
-        // move over the text
-        KeyboardScreen_copy();
-        return;
-    }
-
-    //
+        //
     /////////////
     if (pressed)
         bleKeyboard.press(key);

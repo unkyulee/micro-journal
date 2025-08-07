@@ -716,6 +716,26 @@ void WP_keyboard(char key, bool pressed, int index)
         }
     }
 
+    // Check if File Change request is pressed
+    else if (key >= 1000 && key <= 1010)
+    {
+        if (!pressed)
+        {
+            int fileIndex = key - 1000;
+            _log("File Change Requested: %d\n", fileIndex);
+
+            //
+            Editor::getInstance().saveFile();
+
+            // save config
+            app["config"]["file_index"] = fileIndex;
+            config_save();
+
+            // load new file
+            Editor::getInstance().loadFile(format("/%d.txt", fileIndex));
+        }
+    }
+
     else
     {
         // convert tab key to space

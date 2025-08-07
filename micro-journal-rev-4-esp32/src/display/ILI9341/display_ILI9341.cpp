@@ -163,7 +163,7 @@ void display_ILI9341_loop()
 }
 
 // Redirect the key press to the current GUI
-void display_ILI9341_keyboard(char key, bool pressed, int index)
+void display_ILI9341_keyboard(int key, bool pressed, int index)
 {
   JsonDocument &app = status();
   int screen = app["screen"].as<int>();

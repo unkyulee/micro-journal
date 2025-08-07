@@ -8,15 +8,18 @@
 #include "display/display.h"
 
 //
-#define LAYERS 4 // layers
-#define ROWS 4   // rows
-#define COLS 12  // columns
+#define LAYERS 6 // layers
+
+#define ROWS 4  // rows
+#define COLS 12 // columns
 
 // 2 - Home
 // 3 - End
 
 // 14 - SHIFT
-// 17 - LAYER
+
+// 17 - LOWER
+// 24 - RAISE
 
 // 18 - Left
 // 19 - Right
@@ -36,28 +39,40 @@
 int layers[LAYERS][ROWS * COLS] = {
 
     {// normal layers
-     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
-     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 8,
-     17, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', '\'', '\n',
-     14, 'z', 'x', 'c', 'v', ' ', 'b', 'n', 'm', '.', '/', 14},
+     '\\', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
+     MENU, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+     14, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
+     '-', '=', '[', ']', 17, ' ', ' ', 24, 18, 21, 20, 19},
 
     {// when shift is pressed
-     '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '<',
-     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 127,
-     17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '\"', '\n',
-     14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '>', '?', 14},
+     '|', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 127,
+     MENU, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"',
+     14, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', '\n',
+     '_', '+', '{', '}', 17, ' ', ' ', 24, 2, 21, 20, 3},
 
-    {// alt layer
-     '`', '1', '2', '3', '4', '5', '6', '7', '8', '[', ']', '\\',
-     27, 'q', 'w', 'e', 'r', 't', 22, 'u', 20, '-', '=', 127, // 2, 20, 3, 22,
-     17, 'a', 's', 'd', 'f', 'g', 23, 18, 21, 19, ';', '\n',  //  18, 21, 19, 23
-     14, 'z', 'x', 'c', 'v', ' ', 'b', 2, 'm', 3, '/', 14},
+    {// LOWER layer
+     '`', 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, 127,
+     MENU, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '"',
+     14, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
+     '-', '=', '[', ']', 17, ' ', ' ', 17, 2, 21, 20, 3},
 
-    {// alt layer shift
-     '~', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}', '|',
-     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', '_', '+', 127,
-     17, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\n',
-     14, 'Z', 'X', 'C', 'V', ' ', 'B', 'N', 'M', '<', '?', 14},
+    {// LOWER layer shift
+     '~', 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, 127,
+     MENU, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\'',
+     14, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', '\n',
+     '_', '+', '{', '}', 17, ' ', ' ', 24, 2, 21, 20, 3},
+
+     {// RAISE layer
+     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 127,
+     MENU, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+     14, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
+     '-', '=', '[', ']', 17, ' ', ' ', 24, 2, 21, 20, 3},
+
+    {// RAISE layer shift
+     '~', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 127,
+     MENU, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\'',
+     14, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', '\n',
+     '_', '+', '{', '}', 17, ' ', ' ', 24, 2, 21, 20, 3},
 
 };
 
@@ -81,8 +96,8 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPin
 void keyboard_keypad_48_setup()
 {
     // load keyboard.json if exists
-    const char *keys1[] = {"main", "alt"};
-    keypad_load_config("/keyboard.json", (int *)layers, COLS * ROWS);
+    const char *keys[] = {"main", "main-shift", "lower", "lower-shift", "raise", "raise-shift"};
+    keypad_load_config("/keyboard.json", (int *)layers, COLS * ROWS, keys, 6);
 
     //
     customKeypad.begin();
@@ -128,7 +143,9 @@ void keyboard_keypad_48_loop()
 //
 int _layer = 0;
 bool _shift_pressed = false;
-bool _fn_pressed = false;
+bool _lower_pressed = false;
+bool _raise_pressed = false;
+
 //
 int keyboard_keypad_48_get_key(keypadEvent e)
 {
@@ -137,20 +154,33 @@ int keyboard_keypad_48_get_key(keypadEvent e)
 
     //
     int key = layers[_layer][e.bit.KEY];
-    if (key == 17)
+    if (key == 17) // LOWER
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
-            _fn_pressed = true;
+            _lower_pressed = true;
             return 0;
         }
         else
         {
-            _fn_pressed = false;
+            _lower_pressed = false;
             return 0;
         }
     }
-    else if (key == 14)
+    else if (key == 24) // RAISE
+    {
+        if (e.bit.EVENT == KEY_JUST_PRESSED)
+        {
+            _raise_pressed = true;
+            return 0;
+        }
+        else
+        {
+            _raise_pressed = false;
+            return 0;
+        }
+    }
+    else if (key == 14) // SHIFT
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
@@ -166,8 +196,10 @@ int keyboard_keypad_48_get_key(keypadEvent e)
     }
 
     // check if the layer key is pressed
-    if (_fn_pressed)
+    if (_lower_pressed)
         _layer = 2;
+    if(_raise_pressed)
+        _layer = 4;
     // check if the shift key is pressed
     if (_shift_pressed)
         _layer += 1;

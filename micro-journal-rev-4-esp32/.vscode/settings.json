@@ -33,6 +33,8 @@
     "new": "cpp",
     "memory": "cpp",
     "chrono": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "compare": "cpp",
+    "cstdint": "cpp"
   }
 }

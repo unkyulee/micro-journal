@@ -139,8 +139,8 @@ void keyboard_config_load(
     {
       //
       app["error"] = format("%s not in a correct json form: %s\n", filename.c_str(), error.c_str());
-      //app["screen"] = ERRORSCREEN;
-      //app["screen_next"] = KEYBOARDSCREEN;
+      // app["screen"] = ERRORSCREEN;
+      // app["screen_next"] = KEYBOARDSCREEN;
 
       //
       _log(app["error"]);
@@ -292,6 +292,39 @@ int keyboard_convert_HID(String _hid)
 #ifdef BOARD_ESP32_S3
   else if (_hid == "PRINT_SCREEN")
     return KEY_PRTSC;
+  // Numeric keypad
+  else if (_hid == "SLASH")
+    return KEY_NUM_SLASH;
+  else if (_hid == "ASTERISK")
+    return KEY_NUM_ASTERISK;
+  else if (_hid == "MINUS")
+    return KEY_NUM_MINUS;
+  else if (_hid == "PLUS")
+    return KEY_NUM_PLUS;
+  else if (_hid == "ENTER")
+    return KEY_NUM_ENTER;
+  else if (_hid == "KP_1")
+    return KEY_NUM_1;
+  else if (_hid == "KP_2")
+    return KEY_NUM_2;
+  else if (_hid == "KP_3")
+    return KEY_NUM_3;
+  else if (_hid == "KP_4")
+    return KEY_NUM_4;
+  else if (_hid == "KP_5")
+    return KEY_NUM_5;
+  else if (_hid == "KP_6")
+    return KEY_NUM_6;
+  else if (_hid == "KP_7")
+    return KEY_NUM_7;
+  else if (_hid == "KP_8")
+    return KEY_NUM_8;
+  else if (_hid == "KP_9")
+    return KEY_NUM_9;
+  else if (_hid == "KP_0")
+    return KEY_NUM_0;
+  else if (_hid == "DOT")
+    return KEY_NUM_PERIOD;
 #endif
 
   // Function keys

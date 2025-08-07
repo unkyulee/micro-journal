@@ -398,7 +398,7 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 //
-void WP_keyboard(char key, bool pressed, int index)
+void WP_keyboard(int key, bool pressed, int index)
 {
     // Every key stroke resets sleep timer
     last_sleep = millis();
@@ -419,6 +419,26 @@ void WP_keyboard(char key, bool pressed, int index)
 
             //
             _debug("WP_keyboard::Moving to Menu Screen\n");
+        }
+    }
+
+    // Check if File Change request is pressed
+    else if (key >= 1000 && key <= 1010)
+    {
+        if (!pressed)
+        {
+            int fileIndex = key - 1000;
+            _log("File Change Requested: %d\n", fileIndex);
+
+            //
+            Editor::getInstance().saveFile();
+
+            // save config
+            app["config"]["file_index"] = fileIndex;
+            config_save();
+
+            // load new file
+            Editor::getInstance().loadFile(format("/%d.txt", fileIndex));
         }
     }
 

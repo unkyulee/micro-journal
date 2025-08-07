@@ -12,7 +12,7 @@ void display_ILI9341_loop();
 int display_ILI9341_core();
 
 //
-void display_ILI9341_keyboard(char key, bool pressed, int index = -1);
+void display_ILI9341_keyboard(int key, bool pressed, int index = -1);
 
 //
 TFT_eSprite& display_ILI9341_sprite();
