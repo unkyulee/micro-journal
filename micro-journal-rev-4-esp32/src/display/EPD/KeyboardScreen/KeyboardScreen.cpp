@@ -7,6 +7,7 @@
 #include "../display_EPD.h"
 
 //
+#include <NimBLEDevice.h>
 #include <BleKeyboard.h>
 
 BleKeyboard bleKeyboard;
@@ -28,6 +29,9 @@ void KeyboardScreen_setup()
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal 7");
+    NimBLEDevice::setSecurityInitKey(
+        BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID); // include IRK
+    bleKeyboard.setDelay(30);
     bleKeyboard.begin();
     _log("Bluetooth Keyboard Started\n");
 }

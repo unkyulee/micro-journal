@@ -5,6 +5,7 @@
 #include "keyboard/keyboard.h"
 
 //
+#include <NimBLEDevice.h>
 #include <BleKeyboard.h>
 
 BleKeyboard bleKeyboard;
@@ -58,7 +59,9 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal 6");
-    bleKeyboard.set_product_id(0x820a + 6); // Different product ID
+    NimBLEDevice::setSecurityInitKey(
+        BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID); // include IRK
+    bleKeyboard.setDelay(30);
     bleKeyboard.begin();
     _log("Bluetooth Keyboard Started\n");
 }
@@ -68,37 +71,47 @@ void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     bool keyboardConnected = bleKeyboard.isConnected();
 
-    // clear screen if status changed
+    // Only redraw screen when connection status changes
     if (keyboardConnected != keyboardConnectedPrev)
     {
         ptft->fillScreen(TFT_BLACK);
         keyboardConnectedPrev = keyboardConnected;
+
+        // Screen dimensions
+        int screenW = ptft->width();
+        int screenH = ptft->height();
+
+        // Title
+        ptft->setTextSize(2);
+        ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+        ptft->setCursor(20, 10);
+        ptft->println("BLUETOOTH KEYBOARD");
+
+        // Status Box
+        ptft->setTextSize(2);
+        ptft->setCursor(45, 60);
+        if (keyboardConnected)
+        {
+            ptft->setTextColor(TFT_GREEN, TFT_BLACK);
+            ptft->print("Status: Connected");
+        }
+        else
+        {
+            ptft->setTextColor(TFT_YELLOW, TFT_BLACK);
+            ptft->print("Status: Waiting...");
+        }
+
+        // Instruction Box
+        ptft->drawRoundRect(20, 120, screenW - 40, 100, 8, TFT_WHITE);
+        ptft->setTextSize(1);
+        ptft->setTextColor(TFT_CYAN, TFT_BLACK);
+        ptft->setCursor(40, 140);
+        ptft->println("Turn off device to end session.");
+        ptft->setCursor(40, 160);
+        ptft->println("Press top-left and top-right keys");
+        ptft->setCursor(40, 180);
+        ptft->println("simultaneously to SEND.");
     }
-
-    ///
-    ptft->setCursor(0, 0, 2);
-    ptft->setTextSize(1); // Adjust text size as needed
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-
-    // Draw text in the middle of the screen
-    ptft->setCursor(0, 0, 2);
-    ptft->println("Bluetooth Keyboard Mode");
-    ptft->println();
-
-    //
-    if (keyboardConnected)
-    {
-        ptft->println("Keyboard is connected");
-        ptft->println();
-    }
-    else
-    {
-        ptft->println("Waiting for connection ...");
-        ptft->println();
-    }
-
-    ptft->println("Turn off the device to end the writing session");
-    ptft->println("Press top row first and last keys at the same time to SEND");
 }
 
 // keyboard message will come from Rev.6 via this function.
@@ -174,7 +187,7 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
     if (key == 0)
         return;
 
-        //
+    //
     /////////////
     if (pressed)
         bleKeyboard.press(key);

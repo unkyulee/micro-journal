@@ -41,11 +41,11 @@ void setup()
         xTaskCreatePinnedToCore(
             SecondaryCore,   // Function to run
             "SecondaryCore", // Name
-            8192,        // Stack size
-            NULL,        // Parameters
-            1,           // Priority
-            NULL,        // Task handle
-            1            // Core 1
+            8192,            // Stack size
+            NULL,            // Parameters
+            1,               // Priority
+            NULL,            // Task handle
+            1                // Core 1
         );
 #endif
     }
@@ -101,7 +101,6 @@ void loop1()
     yield();
 }
 #endif
-
 
 #ifdef BOARD_ESP32_S3
 // This is for ESP32 secondary core
