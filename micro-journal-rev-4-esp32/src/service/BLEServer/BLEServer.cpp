@@ -53,8 +53,6 @@ void BLEServer_loop()
                 _log("No BLE Devices Found\n");
                 app["ble_state"] = BLE_CONFIG_NO_DEVICES;
             }
-
-            
         }
 
         else if (task == "ble_connect")
@@ -68,27 +66,32 @@ void BLEServer_loop()
             const int type = app["config"]["ble"]["type"].as<int>();
             _log("[BLEServer_loop] Picked up BLE Device Connect Request: %s\n", name);
 
+            // try to connect directly
             //
-            BLEServer_scan();
-
-            // Check if any keyboard is found
-            JsonArray devices = app["ble_devices"].as<JsonArray>();
-
-            // See if any devices matches
-            _log("See if paired device found: %d\n", devices.size());
-
-            //
-            for (int i = 0; i < devices.size(); i++)
+            if (!ble_connect(address, type))
             {
-                const char *targetName = devices[i]["name"].as<const char *>();
-                const char *targetAddress = devices[i]["address"].as<const char *>();
-                int targetAddressType = devices[i]["type"].as<int>();
-                if (strcmp(name, targetName) == 0)
+                //
+                BLEServer_scan();
+
+                // Check if any keyboard is found
+                JsonArray devices = app["ble_devices"].as<JsonArray>();
+
+                // See if any devices matches
+                _log("See if paired device found: %d\n", devices.size());
+
+                //
+                for (int i = 0; i < devices.size(); i++)
                 {
-                    // found the device
-                    _log("[BLEServer_loop] connecting to %s %s %d\n", targetName, targetAddress, targetAddressType);
-                    //
-                    ble_connect(targetAddress, targetAddressType);
+                    const char *targetName = devices[i]["name"].as<const char *>();
+                    const char *targetAddress = devices[i]["address"].as<const char *>();
+                    int targetAddressType = devices[i]["type"].as<int>();
+                    if (strcmp(name, targetName) == 0)
+                    {
+                        // found the device
+                        _log("[BLEServer_loop] connecting to %s %s %d\n", targetName, targetAddress, targetAddressType);
+                        //
+                        ble_connect(targetAddress, targetAddressType);
+                    }
                 }
             }
         }

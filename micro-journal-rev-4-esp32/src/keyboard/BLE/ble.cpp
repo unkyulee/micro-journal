@@ -18,8 +18,16 @@ void ble_setup(const char *adName)
         // BLE Initialize
         ble_init(adName);
 
-        // Initiate scan
-        app["task"] = "ble_connect";
+        // try to connect directly
+        const char *address = app["config"]["ble"]["address"].as<const char *>();
+        const int type = app["config"]["ble"]["type"].as<int>();
+
+        //
+        if (!ble_connect(address, type))
+        {
+            // Initiate scan
+            app["task"] = "ble_connect";
+        }
     }
 }
 
@@ -61,7 +69,7 @@ void ble_init(const char *name)
         _log("[ble_init] Device Init: %s\n", name);
 
         // Start the BLEDevice
-        BLEDevice::init(name);
+        NimBLEDevice::init(name);
 
         //
         ble_init_done = true;
@@ -78,9 +86,16 @@ class clientCallback : public NimBLEClientCallbacks
         app["ble_connected"] = true;
     }
 
-    void onDisconnect(NimBLEClient *pClient)
+    void onConnectFail(NimBLEClient *pClient, int reason)
     {
-        _log("[BLEClientCallbacks] onDisconnect\n");
+        _log("[BLEClientCallbacks] onConnectFail %d\n", reason);
+        JsonDocument &app = status();
+        app["ble_connected"] = false;
+    }
+
+    void onDisconnect(NimBLEClient *pClient, int reason)
+    {
+        _log("[BLEClientCallbacks] onDisconnect %d\n", reason);
         JsonDocument &app = status();
         app["ble_connected"] = false;
     }
@@ -157,13 +172,16 @@ void notifyCallback(
 // Connect to BLE device
 NimBLEUUID serviceUUID = NimBLEUUID("1812");
 NimBLEUUID charUUID = NimBLEUUID("2A4D");
+NimBLEClient *client;
+NimBLERemoteService *service;
+NimBLERemoteCharacteristic *characteristic;
 
 bool ble_connect(const char *address, int addrType)
 {
     _log("[ble_connect] address %s\n", address);
 
     // Client Setup
-    NimBLEClient *client = NimBLEDevice::createClient();
+    client = NimBLEDevice::createClient();
     if (!client)
     {
         _log("[ble_connect] Failed to create client\n");
@@ -171,7 +189,7 @@ bool ble_connect(const char *address, int addrType)
     }
     client->setClientCallbacks(&clientCB, false);
     client->setConnectionParams(12, 12, 0, 51);
-    //client->setConnectTimeout(2); 
+    client->setConnectTimeout(2000);
 
     // Address Setup
     NimBLEAddress bleAddr = NimBLEAddress(std::string(address), addrType);
@@ -182,6 +200,7 @@ bool ble_connect(const char *address, int addrType)
         _log("[ble_connect] Failed to connect\n");
         client->setClientCallbacks(nullptr);
         NimBLEDevice::deleteClient(client);
+        client = nullptr;
         return false;
     }
 
@@ -191,6 +210,7 @@ bool ble_connect(const char *address, int addrType)
         _log("[ble_connect] Still not connected after connect()\n");
         client->setClientCallbacks(nullptr);
         NimBLEDevice::deleteClient(client);
+        client = nullptr;
         return false;
     }
 
@@ -203,29 +223,29 @@ bool ble_connect(const char *address, int addrType)
         client->disconnect();
         client->setClientCallbacks(nullptr);
         NimBLEDevice::deleteClient(client);
-
+        client = nullptr;
         return false;
     }
 
-    NimBLERemoteService *service = client->getService(serviceUUID);
+    service = client->getService(serviceUUID);
     if (service == nullptr)
     {
         _log("[ble_connect] Cannot find service %s\n", serviceUUID.toString().c_str());
         client->disconnect();
         client->setClientCallbacks(nullptr);
         NimBLEDevice::deleteClient(client);
-
+        client = nullptr;
         return false;
     };
 
-    NimBLERemoteCharacteristic *characteristic = service->getCharacteristic(charUUID);
+    characteristic = service->getCharacteristic(charUUID);
     if (characteristic == nullptr)
     {
         _log("[ble_connect] Failed to get characteristic %s\n", charUUID.toString().c_str());
         client->disconnect();
         client->setClientCallbacks(nullptr);
         NimBLEDevice::deleteClient(client);
-
+        client = nullptr;
         return false;
     }
 
@@ -244,7 +264,7 @@ bool ble_connect(const char *address, int addrType)
             client->disconnect();
             client->setClientCallbacks(nullptr);
             NimBLEDevice::deleteClient(client);
-
+            client = nullptr;
             return false;
         }
     }

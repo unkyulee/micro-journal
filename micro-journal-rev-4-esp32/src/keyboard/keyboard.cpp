@@ -48,9 +48,6 @@ void keyboard_setup()
   // setup USB Host
   USBHost_setup();
 
-  // setup BLE Keyboard
-  ble_setup("Micro Journal 5");
-
   // Front Button Setup
   button_setup();
 #endif
