@@ -20,22 +20,24 @@ LAYER KEY: #define KEY_F24           0xFB
 int _usb_keyboard_layers[3][48] = {
 
     {// normal layers
-     '\\', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
-     KEY_ESC, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
-     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, '\t', KEY_F24, ' ', ' ', KEY_F23, KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW},
+     KEY_ESC, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
+     '\t', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_RIGHT_SHIFT,
+     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW, '\n'},
 
-    {// lower
-     '`', KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_DELETE,
-     KEY_ESC, KEY_F11, KEY_F12, KEY_PRTSC, 'f', 'g', 'h', 'j', '-', '=', '[', ']',
-     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, '\t', KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
+     {// lower
+     KEY_ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', KEY_DELETE,
+     '`', 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
+     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_RIGHT_SHIFT,
+     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
 
     {// raise
-     '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', KEY_DELETE,
-     KEY_ESC, 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
-     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, '\t', KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
+     KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,
+     '\\', 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
+     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_RIGHT_SHIFT,
+     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
+
+    
 };
 
 //
@@ -59,9 +61,6 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal 6");
-    NimBLEDevice::setSecurityInitKey(
-        BLE_SM_PAIR_KEY_DIST_ENC | BLE_SM_PAIR_KEY_DIST_ID); // include IRK
-    bleKeyboard.setDelay(30);
     bleKeyboard.begin();
     _log("Bluetooth Keyboard Started\n");
 }
