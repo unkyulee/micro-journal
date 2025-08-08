@@ -16,50 +16,50 @@ The following json is the default configuration.
 {
     "main": 
     [
-     "\\", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
-     "MENU", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
-     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     "-", "=", "[", "]", "LOWER", " ", " ", "RAISE", "LEFT", "DOWN", "UP", "RIGHT"
+     "MENU", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
+     "\\", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "SHIFT",
+     "-", "=", "[", "]", "LOWER", " ", " ", "LEFT", "DOWN", "UP", "RIGHT", "\n"
     ],
 
     "main-shift": 
     [
-     "|", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "DEL",
-     "MENU", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
-     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
-     "_", "+", "{", "}", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+     "MENU", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "DEL",
+     "|", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "SHIFT",
+     "_", "+", "{", "}", "LOWER", " ", " ", "HOME", "PGDN", "PGUP", "END", "\n"
     ],
 
     "lower": 
     [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DEL",
-     "MENU", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
-     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     "-", "=", "[", "]", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+     "MENU", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DEL",
+     "`", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "SHIFT",
+     "-", "=", "[", "]", "LOWER", " ", " ", "HOME", "PGDN", "PGUP", "END", "\n"
     ],
 
     "lower-shift": 
     [
-     "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DEL",
-     "MENU", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
-     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
-     "_", "+", "{", "}", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+     "MENU", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "DEL",
+     "~", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "SHIFT",
+     "_", "+", "{", "}", "LOWER", " ", " ", "HOME", "PGDN", "PGUP", "END", "\n"
     ],
 
     "raise": 
     [
-     "`", 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, "DEL",
-     "MENU", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
-     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     "-", "=", "[", "]", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+     "MENU", 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, "DEL",
+     "`", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'",
+     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "SHIFT",
+     "-", "=", "[", "]", "LOWER", " ", " ", "HOME", "PGDN", "PGUP", "END", "\n"
     ],
 
     "raise-shift": 
     [
-     "~", 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, "DEL",
-     "MENU", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
-     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "\n",
-     "_", "+", "{", "}", "LOWER", " ", " ", "RAISE", "HOME", "PGDN", "PGUP", "END"
+     "MENU", 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1000, "DEL",
+     "~", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"",
+     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "SHIFT",
+     "_", "+", "{", "}", "LOWER", " ", " ", "HOME", "PGDN", "PGUP", "END", "\n"
     ]
 }
 ```
@@ -120,26 +120,26 @@ Thinking of using a layout like DVORAK? That's possible too. Simply remap the le
 {
     "main": 
     [
-     "\\", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
-     "ESC", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"",
-     "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "\n",
-     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW"
+     "ESC", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "\b",
+     "\t", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\"",
+     "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "RIGHT_SHIFT",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", "RAISE", "LOWER", " ", " ", "LEFT_ARROW", "DOWN_ARROW", "UP_ARROW", "RIGHT_ARROW", "\n"
     ],
 
     "lower": 
     [
-     "`", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "DELETE",
-     "ESC", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
-     "LEFT_SHIFT", "_", "+", "{", "}", "|", "n", "m", ",", ".", "/", "\n",
-     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "HOME", "PAGE_DOWN", "PAGE_UP", "END"
+     "ESC", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DELETE",
+     "`", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
+     "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "RIGHT_SHIFT",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", "RAISE", "LOWER", " ", " ", "HOME", "PAGE_DOWN", "PAGE_UP", "END", "\n"
     ],
 
     "raise": 
     [
-     "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "DELETE",
-     "ESC", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
-     "LEFT_SHIFT", "-", "=", "[", "]", "\\", "n", "m", ",", ".", "/", "\n",
-     "\t", "LEFT_CTRL", "LEFT_ALT", "LEFT_GUI", "LOWER", " ", " ", "RAISE", "PRINT_SCREEN", "PAGE_DOWN", "PAGE_UP", "END"
+     "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "DELETE",
+     "\\", "a", "s", "d", "f", "g", "h", "j", "-", "=", "[", "]",
+     "LEFT_SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "PRINT_SCREEN",
+     "LEFT_CTRL", "LEFT_GUI", "LEFT_ALT", "RAISE", "LOWER", " ", " ", "HOME", "PAGE_DOWN", "PAGE_UP", "END", "\n"
     ]
 }
 ```

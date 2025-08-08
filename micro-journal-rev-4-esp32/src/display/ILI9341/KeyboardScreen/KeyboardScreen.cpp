@@ -34,7 +34,7 @@ int _usb_keyboard_layers[3][48] = {
     {// raise
      KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,
      '\\', 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
-     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_RIGHT_SHIFT,
+     KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_PRTSC,
      KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
 
     
