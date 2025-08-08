@@ -6,39 +6,8 @@
 // services
 #include "service/Buffer/BufferService.h"
 
-//
-static BLEScan *pBLEScan = nullptr;
-class advertisedDeviceCallback : public BLEAdvertisedDeviceCallbacks
-{
-    void onResult(BLEAdvertisedDevice *advertisedDevice)
-    {
-        // HID service UUID
-        static BLEUUID hidUUID((uint16_t)0x1812);
-
-        //
-        JsonDocument &app = status();
-        for (int i = 0; i < advertisedDevice->getServiceUUIDCount(); i++)
-        {
-            //
-            BLEUUID service = advertisedDevice->getServiceUUID(i);
-            if (service.equals(hidUUID))
-            {
-                // Keyboard Device Found
-                std::string address = advertisedDevice->getAddress().toString();
-                std::string name = advertisedDevice->getName();
-
-                // Add to the config
-                app["ble_devices"][i]["address"] = address.c_str();
-                app["ble_devices"][i]["name"] = name.c_str();
-                app["ble_devices"][i]["type"] = (int)advertisedDevice->getAddressType();
-
-                //
-                _log("BLE device found index: %d name: %s address: %s type: %d\n",
-                     i, name.c_str(), address.c_str(), advertisedDevice->getAddressType());
-            }
-        }
-    }
-};
+// HID service UUID
+static BLEUUID hidUUID((uint16_t)0x1812);
 
 /////////////////////////////////////////////////////
 // BACKGROUND SERVICE
@@ -75,19 +44,7 @@ void BLEServer_loop()
             _log("[BLEServer_loop] Picked up BLE Device Scan Request\n");
 
             //
-            JsonDocument &app = status();
-
-            //
-            app["ble_error"] = "";
-            app["ble_message"] = "Scanning BLE Devices";
-            app["ble_devices"] = app["ble_devices"].to<JsonArray>();
-            app["clear"] = true;
-
-            // Scan BLE devices
-            pBLEScan = BLEDevice::getScan();
-            pBLEScan->clearResults();
-            pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
-            pBLEScan->start(5);
+            BLEServer_scan();
 
             // Check if any keyboard is found
             JsonArray ble_devices = app["ble_devices"].as<JsonArray>();
@@ -97,9 +54,7 @@ void BLEServer_loop()
                 app["ble_state"] = BLE_CONFIG_NO_DEVICES;
             }
 
-            // refresh the menu screen
-            _log("BLE Devices Scan Ended\n");
-            app["clear"] = true;
+            
         }
 
         else if (task == "ble_connect")
@@ -109,17 +64,20 @@ void BLEServer_loop()
 
             //
             const char *name = app["config"]["ble"]["name"].as<const char *>();
+            const char *address = app["config"]["ble"]["address"].as<const char *>();
+            const int type = app["config"]["ble"]["type"].as<int>();
             _log("[BLEServer_loop] Picked up BLE Device Connect Request: %s\n", name);
 
             //
-            // Scan BLE devices
-            pBLEScan = BLEDevice::getScan();
-            pBLEScan->clearResults();
-            pBLEScan->setAdvertisedDeviceCallbacks(new advertisedDeviceCallback());
-            pBLEScan->start(5);
+            BLEServer_scan();
 
             // Check if any keyboard is found
             JsonArray devices = app["ble_devices"].as<JsonArray>();
+
+            // See if any devices matches
+            _log("See if paired device found: %d\n", devices.size());
+
+            //
             for (int i = 0; i < devices.size(); i++)
             {
                 const char *targetName = devices[i]["name"].as<const char *>();
@@ -128,12 +86,61 @@ void BLEServer_loop()
                 if (strcmp(name, targetName) == 0)
                 {
                     // found the device
-                    _log("[BLEServer_loop] found %s %s %d\n", targetName, targetAddress, targetAddressType);
+                    _log("[BLEServer_loop] connecting to %s %s %d\n", targetName, targetAddress, targetAddressType);
+                    //
                     ble_connect(targetAddress, targetAddressType);
                 }
             }
         }
     }
+}
+
+void BLEServer_scan()
+{
+    _log("BLE Devices Scan Starting\n");
+
+    //
+    JsonDocument &app = status();
+    //
+    app["ble_error"] = "";
+    app["ble_message"] = "Scanning BLE Devices";
+    app["ble_devices"] = app["ble_devices"].to<JsonArray>();
+    app["clear"] = true;
+
+    // Scan BLE devices
+    NimBLEScan *pScan = NimBLEDevice::getScan();
+    NimBLEScanResults results = pScan->getResults(5 * 1000);
+    JsonArray ble_devices = app["ble_devices"].as<JsonArray>();
+    ble_devices.clear();
+
+    int count = 0;
+    for (int i = 0; i < results.getCount(); i++)
+    {
+        const NimBLEAdvertisedDevice *device = results.getDevice(i);
+
+        if (device->isAdvertisingService(hidUUID))
+        {
+            // retrieve information
+            // Add to the config
+            app["ble_devices"][count]["address"] = device->getAddress().toString().c_str();
+            app["ble_devices"][count]["name"] = device->getName().c_str();
+            app["ble_devices"][count]["type"] = (int)device->getAddressType();
+
+            //
+            _log("BLE device found index: %d name: %s address: %s type: %d\n",
+                 i,
+                 app["ble_devices"][count]["name"].as<const char *>(),
+                 app["ble_devices"][count]["address"].as<const char *>(),
+                 app["ble_devices"][count]["type"].as<int>());
+
+            //
+            count++;
+        }
+    }
+
+    // refresh the menu screen
+    _log("BLE Devices Scan Ended\n");
+    app["clear"] = true;
 }
 
 // Entry Screen Initializing

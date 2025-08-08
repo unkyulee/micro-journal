@@ -52,14 +52,6 @@ void ble_loop()
     }
 }
 
-//
-static BLEClient *pClient = NULL;
-BLEUUID serviceUUID = BLEUUID("1812");
-static BLEUUID charUUID = BLEUUID("2A4D");
-uint8_t previousKeys[8] = {};
-static BLERemoteCharacteristic *pRemoteCharacteristic;
-static BLERemoteService *pRemoteService;
-
 // Initialize BLE Device
 bool ble_init_done = false;
 void ble_init(const char *name)
@@ -77,16 +69,16 @@ void ble_init(const char *name)
 }
 
 // Custom callback class for BLE client
-class clientCallback : public BLEClientCallbacks
+class clientCallback : public NimBLEClientCallbacks
 {
-    void onConnect(BLEClient *pClient)
+    void onConnect(NimBLEClient *pClient)
     {
         _log("[BLEClientCallbacks] onConnect\n");
         JsonDocument &app = status();
         app["ble_connected"] = true;
     }
 
-    void onDisconnect(BLEClient *pClient)
+    void onDisconnect(NimBLEClient *pClient)
     {
         _log("[BLEClientCallbacks] onDisconnect\n");
         JsonDocument &app = status();
@@ -163,108 +155,97 @@ void notifyCallback(
 }
 
 // Connect to BLE device
-bool ble_connect(const char *address, int type)
+NimBLEUUID serviceUUID = NimBLEUUID("1812");
+NimBLEUUID charUUID = NimBLEUUID("2A4D");
+
+bool ble_connect(const char *address, int addrType)
 {
     _log("[ble_connect] address %s\n", address);
 
-    // Try to reconnect if the connection has been established already
-    if (NimBLEDevice::getClientListSize())
+    // Client Setup
+    NimBLEClient *client = NimBLEDevice::createClient();
+    if (!client)
     {
-        _log("[ble_connect] client list size: %d\n", NimBLEDevice::getClientListSize());
-        if (pClient)
-        {
-            _log("pClient: %p, ConnID: %d, IsConnected: %d\n",
-                 pClient,
-                 pClient->getConnId(),
-                 pClient->isConnected());
-
-            // remove the client list
-            pClient->disconnect();
-            pClient->setClientCallbacks(nullptr);
-            NimBLEDevice::deleteClient(pClient);
-            pClient = nullptr;
-
-            _log("[ble_connect] removed client\n");
-        }
+        _log("[ble_connect] Failed to create client\n");
+        return false;
     }
-    else
-    {
-        _log("[ble_connect] attempting to connect for the first time\n");
-    }
+    client->setClientCallbacks(&clientCB, false);
+    client->setConnectionParams(12, 12, 0, 51);
+    //client->setConnectTimeout(2); 
 
-    // this is first time connecting after pairing
-    // if previous connection fails or it's new connection
-    BLEAddress device = BLEAddress(std::string(address), type);
+    // Address Setup
+    NimBLEAddress bleAddr = NimBLEAddress(std::string(address), addrType);
 
-    //
-    pClient = NimBLEDevice::createClient(device);
-
-    // setup the connection
-    pClient->setClientCallbacks(&clientCB);
-    pClient->setConnectionParams(12, 12, 0, 51);
-    pClient->setConnectTimeout(2);
-
-    if (!pClient->connect())
+    // try to connect
+    if (!client->connect(bleAddr))
     {
         _log("[ble_connect] Failed to connect\n");
+        client->setClientCallbacks(nullptr);
+        NimBLEDevice::deleteClient(client);
         return false;
     }
 
-    if (!pClient->isConnected())
+    // check if connected
+    if (!client->isConnected())
     {
         _log("[ble_connect] Still not connected after connect()\n");
+        client->setClientCallbacks(nullptr);
+        NimBLEDevice::deleteClient(client);
         return false;
     }
 
-    //
     _log("[ble_connect] Connected!\n");
 
-    //
-    pClient->getServices(true);
-    pRemoteService = pClient->getService(serviceUUID);
-    if (pRemoteService == nullptr)
+    // Try to setup the Keyboard
+    if (!client->discoverAttributes())
     {
-        _log("[ble_connect] cannot connect to device keyboard service ");
-        pClient->disconnect();
-        return false;
-    }
-    auto characteristicsMap = pRemoteService->getCharacteristics(true);
-    if (characteristicsMap->empty())
-    {
-        _log("[ble_connect] Remote Service has no characteristics\n");
-        pClient->disconnect();
+        _log("[ble_connect] Failed to discover attributes\n");
+        client->disconnect();
+        client->setClientCallbacks(nullptr);
+        NimBLEDevice::deleteClient(client);
+
         return false;
     }
 
-    for (auto &characteristic : *characteristicsMap)
+    NimBLERemoteService *service = client->getService(serviceUUID);
+    if (service == nullptr)
     {
-        // if (characteristic->getUUID().toString().c_str() == charUUID.toString().c_str())
-        if (characteristic->getUUID() == charUUID)
-        {
-            charUUID = characteristic->getUUID();
-            break;
-        }
-    }
+        _log("[ble_connect] Cannot find service %s\n", serviceUUID.toString().c_str());
+        client->disconnect();
+        client->setClientCallbacks(nullptr);
+        NimBLEDevice::deleteClient(client);
 
-    pRemoteCharacteristic = pRemoteService->getCharacteristic(charUUID);
-    if (pRemoteCharacteristic == nullptr)
+        return false;
+    };
+
+    NimBLERemoteCharacteristic *characteristic = service->getCharacteristic(charUUID);
+    if (characteristic == nullptr)
     {
-        _log("[ble_connect] Failed to get characteristic from remote service: %s\n", charUUID.toString().c_str());
-        pClient->disconnect();
+        _log("[ble_connect] Failed to get characteristic %s\n", charUUID.toString().c_str());
+        client->disconnect();
+        client->setClientCallbacks(nullptr);
+        NimBLEDevice::deleteClient(client);
+
         return false;
     }
-    // Read the value of the characteristic.
-    if (pRemoteCharacteristic->canRead())
+
+    if (characteristic->canRead())
     {
-        pRemoteCharacteristic->readValue();
+        std::string val = characteristic->readValue();
+        _log("[ble_connect] Read value size: %d\n", (int)val.size());
     }
 
-    if (pRemoteCharacteristic->canNotify())
+    if (characteristic->canNotify())
     {
-        bool notify = pRemoteCharacteristic->subscribe(true, notifyCallback);
+        bool notify = characteristic->subscribe(true, notifyCallback);
         if (!notify)
         {
             _log("[ble_connect] failed to subscribe");
+            client->disconnect();
+            client->setClientCallbacks(nullptr);
+            NimBLEDevice::deleteClient(client);
+
+            return false;
         }
     }
 

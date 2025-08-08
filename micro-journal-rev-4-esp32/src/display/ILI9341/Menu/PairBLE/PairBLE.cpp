@@ -149,11 +149,13 @@ void PairBLE_keyboard(char key)
             // save the device id
             app["config"]["ble"]["address"] = devices[selectedIndex]["address"];
             app["config"]["ble"]["name"] = devices[selectedIndex]["name"];
+            app["config"]["ble"]["type"] = devices[selectedIndex]["type"];
 
             //
-            _log("Saving BLE keyboard: %s %s\n",
+            _log("Saving BLE keyboard: address: %s name: %s type: %d\n",
                  app["config"]["ble"]["address"].as<const char *>(),
-                 app["config"]["ble"]["name"].as<const char *>());
+                 app["config"]["ble"]["name"].as<const char *>(),
+                 app["config"]["ble"]["type"].as<int>());
 
             /// save config
             config_save();

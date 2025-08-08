@@ -319,16 +319,20 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->printf("%s words", wordCountFormatted);
 
 #ifdef REV5
-
-    // CHECK BLE Keyboard Connected
-    ptft->setCursor(230, STATUSBAR_Y + 6, 1);
-    if (app["ble_connected"].as<bool>())
+    if (app["config"]["ble"]["address"].is<const char *>())
     {
-        ptft->print("BLE");
-    }
-    else
-    {
-        ptft->print("    ");
+        // CHECK BLE Keyboard Connected
+        ptft->setCursor(230, STATUSBAR_Y + 6, 1);
+        if (app["ble_connected"].as<bool>())
+        {
+            ptft->setTextColor(TFT_GREEN, background_color);
+            ptft->print("BLE");
+        }
+        else
+        {
+            ptft->setTextColor(TFT_RED, background_color);
+            ptft->print("BLE");
+        }
     }
 
 #endif
