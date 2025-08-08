@@ -388,12 +388,12 @@ void Editor::keyboard(int key, bool pressed)
             // New key or new press: process immediately
             lastKey = key;
             lastPressTime = millis();
-            _log("Auto Repeat %d %d\n", lastKey, lastPressTime);
+            _debug("Auto Repeat %d %d\n", lastKey, lastPressTime);
         }
     }
     else
     {
-        _log("Auto Repeat Release %d\n", lastKey);
+        _debug("Auto Repeat Release %d\n", lastKey);
         // Key released: reset state
         lastKey = 0;
         lastPressTime = 0;

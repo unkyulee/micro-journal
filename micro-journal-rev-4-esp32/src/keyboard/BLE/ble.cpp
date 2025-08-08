@@ -138,7 +138,7 @@ void notifyCallback(
             {
                 // handle key pressed
                 keyboard_HID2Ascii(pData[i], pData[0], true);
-                _log("Key Pressed: %d %d\n", pData[i], pData[0]);
+                _debug("Key Pressed: %d %d\n", pData[i], pData[0]);
             }
         }
     }
@@ -160,7 +160,7 @@ void notifyCallback(
             if (key_released)
             {
                 keyboard_HID2Ascii(dataPrev[i], dataPrev[0], false);
-                _log("Key Release: %d %d\n", dataPrev[i], dataPrev[0]);
+                _debug("Key Release: %d %d\n", dataPrev[i], dataPrev[0]);
             }
         }
     }

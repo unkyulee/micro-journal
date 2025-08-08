@@ -100,6 +100,6 @@ int wordcounter_buffer(const char *buffer)
         }
     }
 
-    _log("Words in buffer:  %d \n", count);
+    _debug("Words in buffer:  %d \n", count);
     return count;
 }
