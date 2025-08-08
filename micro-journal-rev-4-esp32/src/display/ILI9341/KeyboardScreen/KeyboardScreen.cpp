@@ -23,19 +23,19 @@ int _usb_keyboard_layers[3][48] = {
      '\\', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
      KEY_ESC, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     '\t', KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW},
+     KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, '\t', KEY_F24, ' ', ' ', KEY_F23, KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW},
 
     {// lower
      '`', KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_DELETE,
      KEY_ESC, KEY_F11, KEY_F12, KEY_PRTSC, 'f', 'g', 'h', 'j', '-', '=', '[', ']',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     '\t', KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
+     KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, '\t', KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
 
     {// raise
      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', KEY_DELETE,
      KEY_ESC, 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\n',
-     '\t', KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
+     KEY_LEFT_CTRL, KEY_LEFT_ALT, KEY_LEFT_GUI, '\t', KEY_F24, ' ', ' ', KEY_F23, KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END},
 };
 
 //
