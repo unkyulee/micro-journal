@@ -9,6 +9,11 @@
 // keyboard
 #include "keyboard/keyboard.h"
 
+#ifdef REV5
+// BLE keyboard setup
+#include "keyboard/BLE/ble.h"
+#endif
+
 #ifdef BOARD_ESP32_S3
 void SecondaryCore(void *pvParameters);
 #endif
@@ -107,6 +112,11 @@ void loop1()
 void SecondaryCore(void *pvParameters)
 {
     _log("Secondary Core started.\n");
+
+#ifdef REV5
+    // setup BLE Keyboard
+    ble_setup("Micro Journal 5");
+#endif
 
     while (1)
     {

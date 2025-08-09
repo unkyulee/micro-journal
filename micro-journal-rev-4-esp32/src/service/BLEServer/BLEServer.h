@@ -11,3 +11,6 @@ void BLEServer_keyboard(char key);
 // background service
 void BLEServer_init();
 void BLEServer_loop();
+
+// scan devices
+void BLEServer_scan();

@@ -114,10 +114,10 @@ void config_save()
         configFile.println(jsonOutput);
 
         // debug output configuration content
-        _debug("config_save\n%s\n", jsonOutput.c_str());
+        //_debug("config_save\n%s\n", jsonOutput.c_str());
 
         //
-        _log("Config updated successfully.\n");
+        //_log("Config updated successfully.\n");
     }
     else
     {
@@ -130,4 +130,5 @@ void config_save()
 
     // close config.json
     configFile.close();
+    delay(100);
 }
