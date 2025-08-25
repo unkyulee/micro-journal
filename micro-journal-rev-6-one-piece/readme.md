@@ -9,9 +9,6 @@ Enter the Micro Journal Rev.6, now with Cherry MX hot-swappable sockets, letting
 I'm having some feelings that might be akin to love. I'm trying to deny this affection for an object, but I can't ignore the joy and lightness I feel when holding the leather strap.
 
 
-* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
-
-
 ### Documents 
 
 * [Behind Story](./story.md)
