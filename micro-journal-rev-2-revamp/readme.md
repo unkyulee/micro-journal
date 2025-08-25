@@ -15,7 +15,7 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 * [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
-
+* [Micro Journal Linux Image Download](https://github.com/unkyulee/micro-journal-linux/releases)
 
 ### Videos
 
