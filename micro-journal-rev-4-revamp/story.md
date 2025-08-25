@@ -1,72 +1,77 @@
 Currently Drafting...
 
 
-# Micro Journal Rev.4.Revamp Behind Story
+# Micro Journal Rev.4.Revamp — Behind the Story
 
-Writing a book, or publishing an article, involves a lot of typing. More often, in front of a computer. Editing. Fixing typo. Spell checking. Rearranging and refining paragraphs. Also, a bunch of editorial and technical tasks are involved in finishing a workflow. As a result, writing process makes you spend a lot of time in front of a computer. 
+Writing a book, or publishing an article, involves a lot of typing. Usually in front of a computer. There's editing, fixing typos, checking spelling, rearranging and refining paragraphs. On top of that, countless editorial and technical tasks fill the workflow. All of this means the writing process keeps you sitting in front of a screen for hours.
 
-Building a keyboard comes up in my mind as a first thing. 
+So of course, the first thing that came to my mind was: *build a keyboard.*
 
-While writing. Screen is showing almost complete paragraph. Sentences are added. Words are typed on the screen. Meanwhile, in my head. A lot of pieces of words flies by. Most of the should be consistent with the current context. Some of words comes out of no where. With smooth vibe. Can't stop pursuing with that golden piece of sentence just thought of. I can't fit it in just now. But for sure, sounds like a great sentence to use it somewhere. Let me see where is my note, where is my pen. Let me write that down. I can use that in other times. It's for right now. But, I would like to keep it for later. Oh crap! What was it? Nevermind, let me go back to what I was writting.  
+While writing, the screen shows nearly finished paragraphs. Sentences grow, words appear. But in my head, fragments of other thoughts are flying by. Some belong to the context, some come from nowhere with a smooth vibe. I can't stop chasing that golden sentence I just thought of. It doesn't fit right now, but it feels too good to lose. *Where's my notebook? Where's my pen?* Let me write this down for later.
 
-Life goes on. But, sounds about right, if those thoughts were captured. It could be nothing. It could be worth noting. You never know. 
+Oh crap... what was it? Gone. Back to the draft.
 
+Life goes on. But it always feels like those fleeting thoughts are worth capturing. Maybe they're nothing. Maybe they're worth noting. You never know.
 
-## Trigger Moment.
+---
 
-My wife. We have decided to add some office space at home. Two desks. Two monitors, computers, ... and keyboards. She asks. Do we have any extra keyboards? 
+## The Trigger Moment
 
-For more than a year, I have been building a device to write with a keyboard. I didn't have any keyboard that would actually work on a PC. Should I tell her. Just order two keyboards from Amazon. I couldn't say it. It hurts my ego to say it. Searhcing in the deepest corner of the garage. Found an old keyboard. Tossed it to her and ask her to use that. We won't be spending much time at home working anyways. I said it as if it wasn't a big deal.
+My wife and I decided to set up office space at home: two desks, two monitors, two computers... and keyboards. She asked, "Do we have any extra keyboards?"
 
-I could see here thinking but not saying outloud. No keyboard for me? Seriously?
+For over a year, I'd been building devices for writing. Not a single keyboard that could just plug into a PC. Should I tell her to order two from Amazon? I couldn't bring myself to say it. My pride wouldn't allow it. Instead, I dug through the garage, found an old keyboard, tossed it to her, and said, "Use this. We won't be working from home that much anyway."
 
-So, the journey begins for rev.4.revamp. Where the computer keyboard comes first than the micro journal. 
+I could see her thinking, without saying it out loud: *No keyboard for me? Seriously?*
 
+That moment sparked **Rev.4.Revamp** where the idea of a proper computer keyboard finally came before the Micro Journal.
 
-## Design Motives.
+---
 
-It's going to be a keyboard that has staggered layout. I can't risk my marriage trying to teach her how to use ortholinear keyboard. She will ask every time, where is the F5 key? Every time. 
+## Design Motives
 
-It is going to have a display as well. Is the display going to be big? Is the display going to be wide? Is there any dimension that would naturally fit in? 
+This one had to be a staggered layout. I wasn't about to risk my marriage trying to explain ortholinear. She'd ask every time: *“Where's the F5 key?”*
 
-I want it to make it look like a keyboard. Keyboard is the main character of this story. If the display is outstanding. Keyboard feels like a support character. But if the display is too small. Would it at all be useful for any type of writing activities? 
+It also needed a display. But how big? How wide? What proportions would feel natural?
 
-I am going to create a device that I will find it useful for writing. At least it could be justifiable. I am thinking. Am I trying to catch two birds with one stone? Probably, going to lose both. Doubts were growing. 
+The keyboard had to remain the star of the show. If the display stood out too much, the keyboard would become just a supporting character. Too small, and the display would be useless for writing.
 
-<img src="./images/003.png" />
+I wanted something I would personally find useful for writing. Enough to justify the effort. Still, doubts crept in. Was I trying to catch two birds with one stone, and risk losing both?
 
-Decided to sit down and draw a dimensions of the keys, and display on the Fusion 360. Usually, keyboards don't have much space for other elements. It's just keys and enclosures. I could make a cute keyboard design. But, adding more elements like display and also batteries and charging modules. Needed more space. 
+<img src="./images/003.png" />  
 
-More spaces drawn for the extra elements. Less it looked like a keyboard. 
+I sat down in Fusion 360, sketching key dimensions and testing how a display might fit. Normally keyboards are just keys and enclosure. Adding extra elements, a display, batteries, charging modules, required more space.
 
-<img src="./images/004.png" width="300" />
+But the more space I added, the less it looked like a keyboard.
 
-What about a writing machine without a screen. Like a keylogger. Maybe some led indicator to indicate the registering activity. Nothing to show the text. No way to see what is written. 
+<img src="./images/004.png" width="300" />  
 
-Huh?
+At one point I thought: what if it had *no screen at all*? A writing machine, like a keylogger? Maybe just an LED to confirm input, with no way to see the text. Crazy, right? But someone online had actually asked for that. Makes me wonder. What is the essence of that desire?
 
-Sounded crazy. Although, there has been a post asking for this. Who wants to register their writing with no screens. Slept on this idea for several days. Maybe just showing the indication of the texts are written down. Is good enough? Doens't need to be display too much information. Just show that something is getting written down. 
+I slept on the idea. Maybe just a minimal indicator is enough. You don't *need* to see every word. In fact, it might encourage better writing. No chance to endlessly reread and edit. Just keep writing.
 
-This could be a good reason to just keep on writing. As you can't see what has been written behind. Effort to be consistent with the context is eliminated. This sounds like a good direction. 
+That thought stuck with me.
 
+---
 
-## Design Philosophy.
+## Design Philosophy
 
-So. Hmm.... Writing is difficult. Mostly because there is a fear that maybe what I write isn't right. So, you tend to check the flow of the context and try to find a word that fits. Read back what has been written. Again, and again. Keep refining the words, sentence, paragraphs. To keep it consistent. To make it better.
+Writing is hard, mostly because of fear. Fear that what you're writing isn't good enough. Fear that the first word will set the wrong tone. So you reread, refine, rearrange. Again and again. Until "Chapter 1" sits blank for months.
 
-Eventually, to tell a story. To convey a message. Texts needs to be correct and consistent. This is of course, a necessary steps to writing. Although, it's could end up in a blank chapter 1. for months. Because, it's so scary to take that first step. Plenty of ideas are there. Waiting to be expressed. But just that first word is going to decide everything. So, it has to be the right one. A better one. A lot of pressure.
+But Micro Journal is about capturing flowing ideas. Not perfect texts. It's about lowering the resistance to just *write*. Thoughts don't need to be correct. They don't need to make sense. Just capture them. Like a journal only you will ever read.
 
-What I am focusing in the micro journal is to capture the flowing ideas. Minimizing the resistent to correct. Just write down your thoughts. It doesn't need to be correct. It doesn't have to make sense. Focus on capturing your thoughts and words. Right now just tell me what you think. Tell me what you feel. Write like a journal. Only you would be reading it. No one else. Do you still need to worry about being correct? 
+If no one else will see it, do you still need to be correct?
 
-Just like you would take a number two. Do you look back at them? You only want to them to be out. Aren't you?
+It's a bit like going to the bathroom. You don't look back. You just want it out. Writing can be the same.
 
+---
 
-## How Want It to Look.
+## How I Want It to Look
 
-<img src="./images/005.jpg" width="600" />
+<img src="./images/005.jpg" width="600" />  
 
-Somewhere in a doom scrolling session. I have remembered to see this Sony MSX image. I am not sure if this is a real product or a concept art. 
+Somewhere in a doomscrolling session I stumbled across this Sony MSX image. I'm not sure if it was ever a real product or just concept art.
 
-It struck me so hard. I want to be able to bring out the vibe, that works in a real life. 
+But it struck me hard. That's the vibe I want to bring into reality.
+
 
 (I am going to continue writing this story... for now going to sleep.)
