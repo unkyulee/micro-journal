@@ -1,3 +1,26 @@
+
+# Third iteration: Immeidate power on and writing
+
+Transitioning from the previous iteration using an old phone, I sought a solution that would provide an instant writing experience similar to commercial WriterDecks, utilizing an ESP32 microcontroller.
+
+This version represents the most challenging DIY build among my iterations. Handwiring the keyboard directly to the ESP32 and connecting the display to the board required a hardcore DIY approach, as resources and guides for this specific setup were scarce. It demanded some prior knowledge and experimentation to get it up and running.
+
+Despite the challenges, this version comes closest to my ideal writing device. It powers on almost instantaneously (within 1 second) and prompts you to start writing immediately. Additionally, it offers Google Drive sync functionality, allowing seamless file synchronization with your cloud storage.
+
+With these features in place, this build proves to be highly practical. It's perfect for capturing sudden bursts of inspiration or quickly jotting down important tasks or ideas. It's a device that can be kept on your bedside table, ready to record your dreams at a moment's notice. All you need to do is find the power switch before immortalizing your weirdest dream ever in writing.
+
+* [Typing Test Video](https://www.youtube.com/watch?v=S1f8ps_NdyE)
+
+
+### Press
+
+* [KBD NEWS: A series of writerdecks: Micro Journal for distraction-free writing – designed by Un Kyu Lee.](https://kbd.news/Micro-Journal-2332.html)
+
+* [Hackaday: ESP32 PROVIDES DISTRACTION-FREE WRITING EXPERIENCE](https://hackaday.com/2024/04/05/esp32-provides-distraction-free-writing-experience/)
+
+
+
+
 # WriterDeck with Samsung S8
 
 ![001](./images/001.jpg)

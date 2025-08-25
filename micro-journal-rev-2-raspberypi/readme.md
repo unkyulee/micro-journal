@@ -1,3 +1,43 @@
+
+## First iteration: Using Raspberry Pi and 30 Keys mechanical keyboards. 
+
+I experimented with various iterations to explore different options for creating a distraction-free writing device. The initial version involved using a Raspberry Pi 2W, a small Linux computer, paired with a 30-key mechanical keyboard.
+
+<img src="./micro-journal-rev-2-raspberypi/images/rev2_6.png" width="400">
+
+A crucial aspect of achieving distraction-free writing is to eliminate all possible distractions. The Raspberry Pi 2W excelled in this regard due to its Linux terminal-based interface, devoid of any graphical user interface. This meant there were no avenues for distractions like YouTube or other similar distractions.
+
+Upon powering on the device, I utilized the midnight commander to navigate to the desired folder and used the "micro" editor (similar to nano or vi) to begin writing. The screen transformed into a simple black-and-white display, solely focused on the text being written. This immersive environment facilitated quick entry into the flow state, resulting in remarkable productivity and quality of writing. When the brain is compelled to focus solely on one task, the results can be truly impressive.
+
+This is the write up for the build guide of ths raspberry pi build.
+
+### Documents
+
+* [Micro Journal Rev.2 Build Guide](/micro-journal-rev-2-raspberypi/readme.md) 
+
+* [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1b6ff16/micro_journal_rev_2/)
+
+
+## Second iteration: Using an old phone to make a writerDeck
+
+In the next iteration, I explored building a writing device using easily accessible components, such as an old phone. Old phones still possess sufficient power to serve as effective writing tools when coupled with a keyboard.
+
+<img src="./micro-journal-rev-3-samsung-galaxy-s8/images/001.jpg" width="400">
+
+The primary focus of this build was to provide a platform for my daughter to write journals without the complexities associated with Linux commands. Since she was accustomed to tablet environments, this solution aligned well with her needs. She could simply pick up the device and begin writing.
+
+This particular build involved 3D prints and hand-wired keyboards, making it slightly more complex. However, the core idea of combining an old phone with a keyboard can be easily replicated for similar purposes.
+
+It's important to note that achieving a distraction-free environment was challenging with this build. Phones are inherently versatile devices, offering access to various forms of entertainment like YouTube and music streaming services. Consequently, maintaining focus on writing proved difficult. Despite this limitation, the device still served its purpose well by assisting my daughter in continuing her journal writing.
+
+### Documents
+
+* [Micro Journal Rev.3 Build Guide](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)
+
+* [Reddit Post](https://new.reddit.com/r/writerDeck/comments/1bfhnfz/writerdeck_with_samsung_s8_using_an_old_mobile/)
+
+
+
 # Micro Journal - Rev. 2
 
 ![First Revision](./images/rev2_5.png)
