@@ -5,7 +5,24 @@
 With Micro Journal, I'm exploring how to build such a device from the ground up—experimenting with hardware, design, and features across different revisions. Each iteration aims to refine the experience, from adding battery power and portability to improving usability and syncing. Every revision comes with documentation and build guides, so that anyone who wishes can create their own. And if you'd prefer to have one made for you, there's also an [online shop](https://www.tindie.com/stores/unkyulee/) where you can request a custom build.
 
 
-## Project Revisions
+
+## Timeline
+
+| Date       | Revision                                                      | Preview                                                                        |
+| ---------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 2025-07-26 | **[Rev.4.Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/001.png" width="200">            |
+| 2025-01-30 | **[Rev.7](/micro-journal-rev-2-revamp/readme.md)**            | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
+| 2024-09-17 | **[Rev.2.Revamp](/micro-journal-rev-2-revamp/readme.md)**     | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
+| 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**         | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
+| 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**     | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">     |
+| 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**             | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">               |
+| 2024-03-15 | **[Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)** | <img src="./micro-journal-rev-3-samsung-galaxy-s8/images/009.jpg" width="200"> |
+| 2024-03-04 | **[Rev.2](/micro-journal-rev-2-raspberypi/readme.md)**        | <img src="./micro-journal-rev-2-raspberypi/images/rev1.jpg" width="200">       |
+
+
+
+
+## Type of Revisions
 
 * Rev.1 – *a place holder for future projects*
 
@@ -20,21 +37,6 @@ With Micro Journal, I'm exploring how to build such a device from the ground up�
 * **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)** – An ESP32-based all-in-one unit combining both screen and keyboard. Portable and self-contained, this version brought the writerDeck concept closer to a dedicated, ready-to-use device with a clean design.
 
 * **[Rev.7](/micro-journal-rev-2-revamp/readme.md)** – An ESP32-based an e-ink writing device with a built-in keyboard. Optimized for comfort, it offers an easy-on-the-eyes experience and works beautifully in bright environments thanks to its paper-like e-ink display.
-
-
-
-## Revision Timeline
-
-| Date       | Revision                                                      | Preview                                                                        |
-| ---------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 2025-07-26 | **[Rev.4.Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/001.png" width="200">            |
-| 2025-01-30 | **[Rev.7](/micro-journal-rev-2-revamp/readme.md)**            | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
-| 2024-09-17 | **[Rev.2.Revamp](/micro-journal-rev-2-revamp/readme.md)**     | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
-| 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**         | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
-| 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**     | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">     |
-| 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**             | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">               |
-| 2024-03-15 | **[Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)** | <img src="./micro-journal-rev-3-samsung-galaxy-s8/images/009.jpg" width="200"> |
-| 2024-03-04 | **[Rev.2](/micro-journal-rev-2-raspberypi/readme.md)**        | <img src="./micro-journal-rev-2-raspberypi/images/rev1.jpg" width="200">       |
 
 
 
