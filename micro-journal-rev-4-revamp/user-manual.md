@@ -52,7 +52,7 @@ Coming back to the small screen - we think you'll be surprised. It really helps 
 When you have finished your writing session, you could immediately return to your computer with a quick tap of the knob, as in scenario 1. But there are also a number of things you can do if you invoke the menu. To get to the menu hold (don't tap) the dial until the menu appears. Then release the dial.
 
 
-## Scenario 3: Using the writerDeck away from the computer in stand alone mode
+### Scenario 3: Using the writerDeck away from the computer in stand alone mode
 
 This is where the batteries come in. For both of the above scenarios the batteries aren't involved because the keyboard is getting its power from the USB connection to your computer. However, this keyboard has a compact footprint and could be easily taken with you somewhere and you could use it for drafting or journaling away from your computer.
 
