@@ -1,4 +1,15 @@
-## Micro Journal Rev.4.Revamp: 
+
+## Micro Journal Rev.4.Revamp
+
+What makes a good keyboard for a writer? Micro Journal Rev.4 is a computer keyboard, but it's designed with writers in mind. People who craft words carefully, arrange them professionally, and need a tool that adapts to their workflow. Here's what I focused on to make this keyboard truly unique and indispensable.
+
+**Specialized keys for writers.** Sometimes the smallest details matter. Em dashes, accented letters like é, copyright symbols ©, open and close smart quotes, ellipses … All these tiny characters make a big difference in polished writing. Rev.4 gives you easy access to them without breaking your flow.
+
+**Customizable key behavior.** Every writer works differently. Caps Lock might be useless for one person but essential for another. In Rev.4, you get full control over what each key does. Swap functions, assign macros, or replace rarely used keys with your favorite shortcuts. It's your keyboard, your rules.
+
+**Capture instant thoughts.** Inspiration doesn't wait. The moment an idea sparks, you want to jot it down immediately. With Rev.4, switching from normal keyboard to writerDeck is fast and intuitive. That fleeting sentence or sudden insight is never lost—you can capture it right in front of your screen.
+
+**Typing should feel good.** Writing is physical as well as mental. The feel of each keystroke matters. Rev.4 uses mechanical switches and carefully considered ergonomics so that typing is not just functional, but pleasurable. Long writing sessions become less fatiguing and more immersive.
 
 Rev.4 was designed as a bridge between everyday work and spontaneous writing. At its core, it functions as a regular mechanical keyboard for your computer, but with a flick of a switch, it instantly transforms into a standalone writerDeck. This makes it perfect for those moments when inspiration strikes while you're at your desk. Instead of reaching for a notebook or hunting for another device, you can capture thoughts and ideas right away, without breaking your flow.
 

@@ -1,5 +1,7 @@
 # Micro Journal Rev.4.Revamp — Behind the Story
 
+Micro Journal Rev.4.Revamp is a hybrid mechanical keyboard designed for writers. A regular computer keyboard that transforms into a standalone writerDeck for capturing fleeting thoughts.
+
 Writing a book, or publishing an article, involves a lot of typing. Usually in front of a computer. There's editing, fixing typos, checking spelling, rearranging and refining paragraphs. On top of that, countless editorial and technical tasks fill the workflow. All of this means the writing process keeps you sitting in front of a screen for hours.
 
 So of course, the first thing that came to my mind was: *build a keyboard.*
@@ -14,13 +16,16 @@ Life goes on. But it always feels like those fleeting thoughts are worth capturi
 
 ## The Trigger Moment
 
-My wife and I decided to set up office space at home: two desks, two monitors, two computers... and keyboards. She asked, "Do we have any extra keyboards?"
+My wife and I decided to set up office space at home: two desks, two monitors, two computers… and keyboards. She asked, *"Do we have any extra keyboards?"*
 
-For over a year, I'd been building devices for writing. Not a single keyboard that could just plug into a PC. Should I tell her to order two from Amazon? I couldn't bring myself to say it. My pride wouldn't allow it. Instead, I dug through the garage, found an old keyboard, tossed it to her, and said, "Use this. We won't be working from home that much anyway."
+For over a year, I'd been building devices for writing. Not a single one could just plug into a PC. Should I tell her to order two from Amazon? Pride wouldn't allow it. Instead, I dug through the garage, found an old keyboard, tossed it to her, and said, *"Use this. We won't be working from home that much anyway."*
 
 I could see her thinking, without saying it out loud: *No keyboard for me? Seriously?*
 
-That moment sparked **Rev.4.Revamp** where the idea of a proper computer keyboard finally came before the Micro Journal.
+That small moment sparked **Rev.4.Revamp**—the idea that a proper computer keyboard could come first, before the Micro Journal.
+
+Through testing and feedback from writers, Rev.4.Revamp grew into something far beyond a simple keyboard. What began as my wife's offhand complaint became a tool that any writer would actually love. A keyboard designed to catch fleeting ideas, keep your flow, and make writing a pleasure.
+
 
 ---
 
@@ -48,24 +53,30 @@ I slept on the idea. Maybe just a minimal indicator is enough. You don't *need* 
 
 That thought stuck with me.
 
----
-
-## Design Philosophy
-
 Writing is hard, mostly because of fear. Fear that what you're writing isn't good enough. Fear that the first word will set the wrong tone. So you reread, refine, rearrange. Again and again. Until "Chapter 1" sits blank for months.
 
 But Micro Journal is about capturing flowing ideas. Not perfect texts. It's about lowering the resistance to just *write*. Thoughts don't need to be correct. They don't need to make sense. Just capture them. Like a journal only you will ever read.
 
 If no one else will see it, do you still need to be correct?
 
-It's a bit like going to the bathroom. You don't look back. You just want it out. Writing can be the same.
-Got it 👍 You want me to keep the same **voice** you already have—casual, exploratory, a bit fragmented at times (like notes), but with enough polish that it reads smoothly without losing that "maker's diary" feel. I'll rewrite your text sections in that tone, keeping your personality intact.
 
-Here's the **revised draft** with the same vibe:
+---
+
+## Evolution of the Idea
+
+During the development of several Micro Journal revisions, I exchanged ideas with a number of writers. Their requests often centered on accessing specific characters—like `·` (middot) or `—` (em dash). Symbols I had never used myself. Yet, for professional writing, they felt essential. Word count also emerged as a crucial metric for them.
+
+I love writing, but I'm not a professional writer. These little details were new to me, and I didn't fully grasp how much weight each request carried. Then Hook entered the picture. We talked a lot. He loves micro journals, and I love that he loves them. When he asked for something, I took it seriously and tried to bring it into the real world as best I could.
+
+Hook specifically wanted an em dash on his keyboard also. He even described exactly how he typed it: a combination of Alt keys and the numpad to generate the single character. Implementing that wasn't a big deal technically. A macro could handle it. So, I added a custom macro feature to the key mapping system.
+
+Through these exchanges, Micro Journal Rev.4 gradually found its purpose. It was shaping up to be an excellent keyboard for writers, designed with the small but meaningful details that make professional writing smoother.
 
 ---
 
 ## How I Want It to Look
+
+With the core needs of writers clear, it was time to turn those ideas into something tangible.
 
 <img src="./images/005.jpg" width="400" />  
 
@@ -101,7 +112,7 @@ Main role: computer keyboard. But then, how do you switch into writerDeck mode? 
 
 The problem was power. This thing can run standalone, so it needs batteries. But when plugged in via USB, it also gets power from the PC. On top of that, the same switch would need to signal writerDeck mode vs keyboard mode. Then add charging logic on top. That matrix of cases got messy real quick.
 
-In the end, the power switch just handles battery connection. ON = battery connected, powering standalong or charging. OFF = battery isolated. Simple.
+In the end, the power switch just handles battery connection. ON = battery connected, powering standalone or charging. OFF = battery isolated. Simple.
 
 <img src="./images/011.png" width="400" />  
 
@@ -117,7 +128,7 @@ I gave myself a simple challenge: just build it, try it, see how it feels. My go
 
 <img src="./images/012.jpg" width="400" />  
 
-And honestly? It surprised me. The display is barely an inch, but it's sharp, high resolution, and very readable. Small enough that you get pulled into it. I could see what I was typing, fix typos, and trust that everything was being captured. I ended up writing way more text than I expected. Seeing my micro journal software running on that tiny screen was incredibly satisfying.
+And honestly? It surprised me. The display is barely an inch, but it's sharp, high resolution, and very readable. Small enough that you get pulled into it. I could see what I was typing, fix typos, and trust that everything was being captured. I ended up writing way more text than I expected. Seeing my micro journal software running on that really tiny screen was incredibly satisfying.
 
 Not claiming this is the "best" screen size for writing. It's definitely a constraint. But I wanted to explore what kind of feeling emerges when you push the limits this far. Here's a review from Hook—someone else willing to give it a fair try:
 
@@ -148,11 +159,11 @@ I even started using it for email replies. I'll leave the email draft open, swit
 
 ## Closing Thoughts
 
-Building Rev.4.Revamp wasn't just about solving a keyboard problem. It was about the satisfaction of shaping an idea with my own hands, watching it move from sketch to CAD to 3d printed results and circuits, then finally hearing the click of the keys under my fingers. There's a kind of quiet joy in holding something that exists only because you decided to make it real.
+Building Rev.4.Revamp wasn't just about solving a keyboard problem. It was about bringing an idea to life with my own hands. From sketches on Fusion 360 to 3D-printed parts, circuits, and finally the satisfying click of the keys under my fingers, every step felt alive with possibility. There's a quiet joy in holding something that exists only because you decided to make it real.
 
-That's what I love most about projects like this. They're not perfect, they're not polished products off a shelf. They're alive with the small decisions, compromises, and experiments that happen along the way. Every revision tells a story, not just of the device, but of the process of making.
+Projects like this aren't perfect products off a shelf. They're full of small decisions, compromises, and experiments that tell a story not just of the device, but of the process itself. Every revision carries a bit of that curiosity and playfulness, a trace of the person who built it.
 
-I hope some of that passion comes through here. And more than that, I hope it sparks something in you too. If the idea of capturing your thoughts on a little machine you built yourself sounds exciting, dive in. All the build guides and documentation are there to help. You might just surprise yourself with what you can create. The joy that comes with it.
+I hope some of that joy comes through here. More than that, I hope it sparks something in you. If the idea of capturing your thoughts on a tiny machine you built yourself excites you, dive in. Follow the guides, tinker with the design, customize it, and see what you can create. The best part of making isn't just the finished object. It's discovering that you were capable of it all along.
 
 
 Un Kyu Lee

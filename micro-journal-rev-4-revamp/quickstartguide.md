@@ -76,7 +76,9 @@ Micro Journal is made from readily available components. If something stops work
 * For software issues or bug reports, please use GitHub Issues:
   - [https://github.com/unkyulee/micro-journal/issues](https://github.com/unkyulee/micro-journal/issues)
 
+```
+Have fun and Enjoy your writing session with a new keyboard!
 
-### Have fun and Enjoy your writing session with a new keyboard!
+- Un Kyu Lee
+```
 
-Un Kyu Lee

@@ -30,7 +30,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up�
 
 * Rev.3 – *a place holder for future projects*
 
-* **[Rev.4](/micro-journal-rev-4-revamp/readme.md)** – A hybrid mechanical keyboard that doubles as a regular computer keyboard, but can instantly transition into a writing device with a built-in display. Designed for seamless use at the desk, this version emphasized quick access to writing without switching setups.
+* **[Rev.4](/micro-journal-rev-4-revamp/readme.md)** – A writer-focused mechanical keyboard that blends seamless everyday typing with instant transformation into a standalone writing device, offering specialized keys, customizable functions, and a tactile, inspiring typing experience to capture ideas the moment they strike.
 
 * **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)** – An ESP32-powered screen-only device where you can plug in your own keyboard. This revision focused on flexibility, letting users pair the device with their favorite mechanical keyboards while keeping the writing deck lightweight and minimal.
 
