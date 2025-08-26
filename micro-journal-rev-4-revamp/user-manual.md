@@ -65,7 +65,8 @@ So now, with batteries, you can take this keyboard with you anywhere, turn it on
 In general, you can focus on writing and take care of everything else when you return to your computer. If the batteries are charged, you should get many hours of anxiety-free typing (at least 10-15 hours).
 
 ```
-Since your work is constantly being saved, you will not lose writing if the batteries fully discharge, which is unlikely anyway.
+Since your work is constantly being saved, 
+you will not lose writing if the batteries fully discharge.
 ```
 
 
