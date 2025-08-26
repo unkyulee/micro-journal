@@ -62,25 +62,29 @@ void gif_unload()
     }
 }
 
+
 //
 void gif_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    //
-    // Put your main code here, to run repeatedly:
+    int delayMs = 0;
+
     if (gif.open((uint8_t *)gif_image, gif_image_size, GIFDraw))
     {
-        // Serial.printf("Successfully opened GIF; Canvas size = %d x %d\n", gif.getCanvasWidth(), gif.getCanvasHeight());
-        ptft->startWrite(); // The TFT chip select is locked low
-        while (gif.playFrame(true, NULL) && stop_gif == false)
+        ptft->startWrite();
+
+        while (!stop_gif && gif.playFrame(false, &delayMs, NULL))
         {
-            yield();
+            unsigned long start = millis();
+
+            // loop until this frame’s delay expires, but bail early if stop requested
+            while (!stop_gif && (millis() - start < (unsigned long)delayMs))
+            {
+                yield();  // let ESP32 handle WiFi, etc.
+            }
         }
+
         gif.close();
-        ptft->endWrite(); // Release TFT chip select for other SPI devices
-    }
-    else
-    {
-        //_debug("[gif_render] gif.open returned false\n");
+        ptft->endWrite();
     }
 
     // just play once
@@ -210,6 +214,9 @@ void gif_stop(int _screen_next)
 // Draw a line of image directly on the LCD
 void GIFDraw(GIFDRAW *pDraw)
 {
+    if (stop_gif) return; // abort drawing this frame
+
+    //
     uint8_t *s;
     uint16_t *d, *usPalette;
     int x, y, iWidth, iCount;

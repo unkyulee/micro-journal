@@ -1,5 +1,4 @@
-#ifndef WifiService_h
-#define WifiService_h
+#pragma once
 
 #include <ArduinoJson.h>
 
@@ -22,10 +21,7 @@ void sync_loop();
 
 
 // SYNC PROCESS
-
 void sync_start();
 bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password);
 void sync_stop();
 void sync_send();
-
-#endif

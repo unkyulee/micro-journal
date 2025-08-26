@@ -73,7 +73,8 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPin
 void keyboard_keypad_68_setup()
 {
     // load keyboard.json if exists
-    keypad_load_config("/keyboard.json", (int *)layers, ROWS * COLS);
+    const char *keys[] = {"main", "main-shift", "alt", "alt-shift"};
+    keypad_load_config("/keyboard.json", (int *)layers, ROWS * COLS, keys, 4);
 
     //
     customKeypad.begin();

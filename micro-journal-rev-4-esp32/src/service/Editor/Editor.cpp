@@ -159,6 +159,8 @@ void Editor::loadFile(String fileName)
     int file_index = app["config"]["file_index"].as<int>();
     app["config"][format("wordcount_file_%d", file_index)] = wordCountFile;
     app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
+
+    //
     config_save();
 }
 

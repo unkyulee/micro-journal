@@ -58,21 +58,32 @@ void FontColor_keyboard(char key, bool pressed)
     _debug("FontColor_Keyboard %d\n", key);
     JsonDocument &app = status();
 
-    // MENU - SELECTED ACTION
-    if (key == 6 || key == '\n')
+    // ESC exit
+    if (key == 27)
     {
         // Go back to Home
-        _log("Exit FontColor");
-
-        // Save Config
-        config_save();
+        _log("Exit FontColor without saving");
 
         //
         app["menu"]["state"] = MENU_HOME;
     }
 
+    // MENU - SELECTED ACTION
+    else if (key == 6 || key == '\n')
+    {
+        // Go back to Home
+        _log("Exit FontColor");
+
+        //
+        app["menu"]["state"] = MENU_HOME;
+
+        // Save Config
+        app["config"]["foreground_color"] = colors[app["selectedFontColorColorIndex"].as<int>()];
+        config_save();
+    }
+
     // UP
-    else if (key == 21|| key == 19)
+    else if (key == 21 || key == 19)
     {
         //
         int selectedFontColorColorIndex = app["selectedFontColorColorIndex"].as<int>();
@@ -81,7 +92,6 @@ void FontColor_keyboard(char key, bool pressed)
             selectedFontColorColorIndex = 0;
 
         app["selectedFontColorColorIndex"] = selectedFontColorColorIndex;
-        app["config"]["foreground_color"] = colors[selectedFontColorColorIndex];
     }
 
     // DOWN
@@ -94,6 +104,5 @@ void FontColor_keyboard(char key, bool pressed)
             selectedFontColorColorIndex = sizeof(colors) / sizeof(colors[0]) - 1;
 
         app["selectedFontColorColorIndex"] = selectedFontColorColorIndex;
-        app["config"]["foreground_color"] = colors[selectedFontColorColorIndex];
     }
 }

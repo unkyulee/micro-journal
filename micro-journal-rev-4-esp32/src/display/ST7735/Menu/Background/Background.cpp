@@ -58,30 +58,40 @@ void Background_keyboard(char key, bool pressed)
     _debug("Background_Keyboard %d\n", key);
     JsonDocument &app = status();
 
-    // MENU - SELECTED ACTION
-    if (key == 6 || key == '\n')
+    // ESC exit
+    if (key == 27)
     {
         // Go back to Home
-        _log("Exit Background");
-
-        // Save Config
-        config_save();
+        _log("Exit FontColor without saving");
 
         //
         app["menu"]["state"] = MENU_HOME;
     }
 
+    // MENU - SELECTED ACTION
+    else if (key == 6 || key == '\n')
+    {
+        // Go back to Home
+        _log("Exit Background");
+
+        //
+        app["menu"]["state"] = MENU_HOME;
+
+        // Save Config
+        app["config"]["background_color"] = colors[app["selectedBackgroundColorIndex"].as<int>()];
+        config_save();
+    }
+
     // UP
-    else if (key == 21|| key == 19)
+    else if (key == 21 || key == 19)
     {
         //
         int selectedBackgroundColorIndex = app["selectedBackgroundColorIndex"].as<int>();
         selectedBackgroundColorIndex++;
         if (selectedBackgroundColorIndex > sizeof(colors) / sizeof(colors[0]))
-            selectedBackgroundColorIndex = 0;
+            selectedBackgroundColorIndex = 0;    
 
         app["selectedBackgroundColorIndex"] = selectedBackgroundColorIndex;
-        app["config"]["background_color"] = colors[selectedBackgroundColorIndex];
     }
 
     // DOWN
@@ -94,6 +104,5 @@ void Background_keyboard(char key, bool pressed)
             selectedBackgroundColorIndex = sizeof(colors) / sizeof(colors[0]) - 1;
 
         app["selectedBackgroundColorIndex"] = selectedBackgroundColorIndex;
-        app["config"]["background_color"] = colors[selectedBackgroundColorIndex];
     }
 }

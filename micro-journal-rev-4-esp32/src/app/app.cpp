@@ -11,6 +11,7 @@
 #ifdef BOARD_PICO
 #include "app/FileSystem/FileSystemRP2040.h"
 #include "service/MassStorage/MassStorage.h"
+#include "service/Send/Send.h"
 #endif
 
 #ifdef BATTERY
@@ -96,6 +97,9 @@ void app_loop()
 #ifdef BOARD_PICO
     // Mass Storage Control Loop
     ms_loop();
+
+    // SEND background task loop
+    send_loop();
 #endif
 
 #ifdef BATTERY

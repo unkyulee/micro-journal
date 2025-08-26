@@ -4,7 +4,7 @@
 #include "display/display.h"
 
 //
-int selectedHome = 0;
+int selectedHome = -1;
 
 //
 const char *menu[] = {
@@ -27,12 +27,15 @@ void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     Menu_clear();
 
     // if UsbKeyboard is selected or not
-    JsonDocument &app = status();
-    bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
-    if (UsbKeyboard)
-        selectedHome = 0;
-    else
-        selectedHome = 1; // if not choose writerDeck
+    if (selectedHome == -1)
+    {
+        JsonDocument &app = status();
+        bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
+        if (UsbKeyboard)
+            selectedHome = 0;
+        else
+            selectedHome = 1; // if not choose writerDeck
+    }
 }
 
 //
@@ -106,11 +109,21 @@ void Home_keyboard(char key, bool pressed)
     else if (key == 27 || key == '\n' || key == MENU)
     {
         // when ESC is clicked escape
-        if (key == 27)
-            selectedHome = sizeof(menu) / sizeof(menu[0]) - 1;
-
+        if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1 || key == 27)
+        {
+            bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
+            _log("Exit is selected. UsbKeyboard: %d\n", UsbKeyboard);
+            if (UsbKeyboard)
+            {
+                app["screen"] = KEYBOARDSCREEN;
+            }
+            else
+            {
+                app["screen"] = WORDPROCESSOR;
+            }
+        }
         // 0 - USB Keyboard
-        if (selectedHome == 0)
+        else if (selectedHome == 0)
         {
             _debug("USB Keyboard Selected\n");
             app["config"]["UsbKeyboard"] = true;
@@ -121,7 +134,7 @@ void Home_keyboard(char key, bool pressed)
         }
 
         // 1 - writerDeck
-        if (selectedHome == 1)
+        else if (selectedHome == 1)
         {
             _debug("writerDeck Selected\n");
             app["config"]["UsbKeyboard"] = false;
@@ -191,19 +204,6 @@ void Home_keyboard(char key, bool pressed)
             app["menu"]["state"] = MENU_CLEAR;
         }
 
-        // last item is EXIT
-        else if (selectedHome == sizeof(menu) / sizeof(menu[0]) - 1)
-        {
-            bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
-            _log("Exit is selected. UsbKeyboard: %d\n", UsbKeyboard);
-            if (UsbKeyboard)
-            {
-                app["screen"] = KEYBOARDSCREEN;
-            }
-            else
-            {
-                app["screen"] = WORDPROCESSOR;
-            }
-        }
+        
     }
 }

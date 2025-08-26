@@ -250,14 +250,15 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     const int font_width = 12;
     int file_index = app["config"]["file_index"].as<int>();
     pu8f->setFont(FONT_SMALL);
-    pu8f->setCursor(screen_width - font_width/2, font_width*2/3);
+    pu8f->setCursor(screen_width - font_width / 2, font_width * 2 / 3);
     pu8f->print(String(file_index));
 
     // height 100% 80
     float batteryPercent = app["battery"].as<float>();
     int height = 80 * batteryPercent / 100.0;
-    if(height < width) height = width;
-    ptft->fillRect(screen_width - width, font_width, width, height - font_width, color);    
+    if (height < width)
+        height = width;
+    ptft->fillRect(screen_width - width, font_width, width, height - font_width, color);
 }
 
 //
@@ -334,12 +335,13 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 void WP_keyboard(int key, bool pressed)
 {
     // ignore non pritable keys
-    if(key == 0) return;
+    if (key == 0)
+        return;
 
     JsonDocument &app = status();
     _debug("WP_keyboard key: %d, pressed: %d\n", key, pressed);
 
-    // Check if menu key is pressed
+    // Check if menu key or ESC is pressed
     if (key == MENU)
     {
         if (!pressed)
@@ -349,7 +351,7 @@ void WP_keyboard(int key, bool pressed)
             Editor::getInstance().saveFile();
 
             if (app["knobLongPressed"].as<bool>())
-            {                
+            {
                 // open menu
                 _debug("WP_keyboard - Received MENU Key\n");
                 app["screen"] = MENUSCREEN;
@@ -367,6 +369,22 @@ void WP_keyboard(int key, bool pressed)
         }
 
         // menu button is ignored
+        return;
+    }
+
+    if (key == 27)
+    {
+        if (!pressed)
+        {
+            // Save before transitioning to the menu
+            Editor::getInstance().saveFile();
+
+            // open menu
+            _debug("WP_keyboard - Received ESC Key\n");
+            app["screen"] = MENUSCREEN;
+        }
+
+        // ESC button is ignored
         return;
     }
 

@@ -20,14 +20,6 @@ void Info_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     Editor::getInstance().loadFile(format("/%d.txt", file_index));
 
     //
-    int wordCountFile = wordcounter_file(Editor::getInstance().fileName.c_str());
-    int wordCountBuffer = wordcounter_buffer(Editor::getInstance().buffer);
-
-    // svae the word count
-    app["config"][format("wordcount_file_%d", file_index)] = wordCountFile;
-    app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
-
-    //
     config_save();
 }
 
@@ -39,6 +31,10 @@ void Info_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     int file_index = app["config"]["file_index"].as<int>();
 
     //
+    int wordCountFile = app["config"][format("wordcount_file_%d", file_index)].as<int>();
+    int wordCountBuffer = app["config"][format("wordcount_buffer_%d", file_index)].as<int>();
+
+    //
     ptft->setCursor(0, 0);
     ptft->setTextColor(TFT_WHITE, TFT_BLACK);
 
@@ -47,8 +43,7 @@ void Info_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(format("Word Count %d.txt\n", file_index));
 
     ptft->setTextSize(3);
-    String key = format("wordcount_%d", file_index);
-    ptft->println(format("%d", app["config"][key].as<int>()));
+    ptft->println(format("%d", wordCountFile + wordCountBuffer));
 
     ptft->setTextSize(1);
     ptft->println(format("\n%d Bytes", Editor::getInstance().fileSize));

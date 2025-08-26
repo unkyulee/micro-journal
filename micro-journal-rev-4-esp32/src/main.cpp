@@ -26,10 +26,6 @@ keyboard input and user interactionss
 ----------------------------------------------*/
 void setup()
 {
-#if defined(DEBUG) && defined(BOARD_PICO)
-    delay(5000);
-#endif
-
     // initialize app
     app_setup();
 
