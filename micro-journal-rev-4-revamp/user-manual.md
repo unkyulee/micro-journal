@@ -99,7 +99,8 @@ Exits the menu and puts you in writerDeck mode viewing the filespace you were la
 This option makes the Rev 4's internal storage appear to your computer as an external USB drive (it will pop up a window on your computer with the contents of the Rev 4's storage). 
 
 ```
-Windows may complain about something not being right and you should scan it. Perform the scan. It will fix some technical errors on the file system. 
+Windows may complain about something not being right and you should scan it. 
+Perform the scan. It will fix some technical errors on the file system. 
 ```
 
 Just wait another moment and a File Explorer window will open showing the files on your Rev 4's internal storage. You can now perform any operation that requires only a mouse.
@@ -460,3 +461,50 @@ The purpose here was to not tell you how you should set up your Key Maps, but to
 You can always ask questions here:
 
 https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/
+
+
+
+## Personalizing GIF Animations
+
+Micro Journal Rev.4 comes with **three GIF animations**. Here’s when they appear and how you can swap them out for your own custom animations.
+
+---
+
+### WriterDeck Start-Up Animation
+
+**Filename:** `wakeup.gif`
+
+When you launch writerDeck mode, the device shows **wakeup.gif**. It signals that writerDeck is starting. Pressing **any key** will skip the animation and jump straight into writing.
+
+---
+
+### WriterDeck Sleep Mode
+
+**Filename:** `sleep.gif`
+
+If writerDeck is left idle for **more than 10 minutes**, the screen will display **sleep.gif**. This hides your text during long breaks. Press **any key** to resume writing.
+
+---
+
+### Computer Keyboard Mode Active Animation
+
+**Filename:** `keyboard.gif`
+
+While in **Keyboard mode**, the screen shows **keyboard.gif**, letting you know you are in standard computer keyboard mode.
+
+---
+
+### How to Create Your Own GIF
+
+Changing the animations is simple: just replace the corresponding GIF file in **Drive Mode**.
+
+You can create GIFs online, for example at [ezgif.com](https://ezgif.com/).
+
+**Requirements:**
+
+* Width: **160px**
+* Height: **80px**
+* File size: **≤100 KB**
+
+Once replaced, your new GIF will appear at the right moment automatically.
+
