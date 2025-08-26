@@ -24,7 +24,7 @@ In writerDeck mode, the Micro Journal Rev.4 lets you take full control of your k
     [
      "ESC", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "BACKSPACE", "DEL",
      " ", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "\n", "PGUP",
-     0, "A", "S", "D", "F", "G", "hH", "J", "K", "L", ":", "'", "|", "PGDN",
+     0, "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "'", "|", "PGDN",
      "SHIFT", "~", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", "SHIFT", "UP", "END",
      "ALT", "ALT", "ALT", " ", "ALT", "ALT", "HOME", "LEFT", "DOWN", "RIGHT",
      "MENU"
