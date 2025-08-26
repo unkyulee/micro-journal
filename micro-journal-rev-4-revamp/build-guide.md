@@ -1,4 +1,4 @@
-This is draft 
+This is draft. Complete build guide should come later as the design and hardware setup may change during the early phases of release. Once the stable build is found. Build guide should be completed.
 
 # Materials
 
