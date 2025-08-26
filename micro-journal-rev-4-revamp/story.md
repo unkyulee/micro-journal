@@ -123,6 +123,12 @@ Not claiming this is the "best" screen size for writing. It's definitely a const
 
 [Hook's first impression on Micro Journal Rev.4](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
 
+```
+Coming back to the small screen - we think you'll be surprised. It really helps you focus. There is nothing else you can do. The font is clear and readable, the mechanical keyboard is excellent. It pulls you in. The analogy is to watching a movie on your 6 inch cell phone. If the screen quality is good, it doesn't matter that it is a "small" screen compared to watching it on a large 4K TV. Once you get pulled in, your attention immerses you in the movie.
+
+- From Hook's User Manual
+```
+
 ---
 
 ## SEND, the text!

@@ -226,7 +226,7 @@ Micro Journal is built with components that you can buy common market places. If
 
 Here is the build guide where it explains the wiring and the steps to build one your own. This document should give you good enough information to identify the hardware troubles that you may encounter.
 
-* [Build Guide] TBD
+* [Build Guide](../build-guide.md)
 
 Please, use github issues for reporting the bugs
 

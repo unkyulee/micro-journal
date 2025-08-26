@@ -10,13 +10,13 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [Behind Story](./story.md)
 * Feature and Use Case of Rev.4.ReVamp (TBD)
 * [Quick Start Guide](./quickstartguide.md)
-* Build Guide (TBD)
-* Hook's User Manual for the Micro Journal (TBD)
+* [Build Guide](./build-guide.md)
+* [User Manual for the Micro Journal written by Hook](./user-manual.md)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 
 ### Videos
 
-* [YouTube Playlist of Micro Journal Rev.4]()
+* [YouTube Playlist of Micro Journal Rev.4](https://www.youtube.com/playlist?list=PLrUXYLEnAaNRAbBpNLji7nE78z-edy8Na)
 
 
 ### Community
