@@ -16,6 +16,7 @@ There are some stories detailing the exploration of USB HOST features in ESP32 a
 * [Behind Story](/story.md)
 * [Build Guide](./build-guide.md)
 * [Quick Start Guide](/quickstart/readme.md)
+* [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 
 ### Videos
 

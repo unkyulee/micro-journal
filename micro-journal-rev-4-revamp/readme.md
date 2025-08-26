@@ -12,7 +12,7 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [Quick Start Guide](./quickstartguide.md)
 * Build Guide (TBD)
 * Hook's User Manual for the Micro Journal (TBD)
-
+* [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 
 ### Videos
 

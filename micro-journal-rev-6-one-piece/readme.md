@@ -16,6 +16,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+* [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 
 
 ### Tips and Tricks
