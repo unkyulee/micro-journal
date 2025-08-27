@@ -19,7 +19,7 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 ### Documents 
 
 * [Story behind the Rev.4](./story.md)
-* Feature and Use Case of Rev.4.ReVamp (TBD)
+* [Feature and Use Case of Rev.4.ReVamp](https://youtu.be/C-KRcLu5P9o)
 * [Quick Start Guide](./quickstartguide.md)
 * [Build Guide](./build-guide.md)
 * [User Manual for the Micro Journal written by Hook](./user-manual.md)

@@ -62,9 +62,9 @@ void Send_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // monitor if the send has finished
     if (app["send_finished"].as<bool>())
     {
+        _log("Send is completed. Moving back to the previous screen.\n");
+        
         // end the sending session
-        app["menu"]["state"] = MENU_HOME;
-
         bool UsbKeyboard = app["config"]["UsbKeyboard"].as<bool>();
         if (UsbKeyboard)
         {
