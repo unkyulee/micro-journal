@@ -2,7 +2,7 @@
 
 **Micro Journal** is an open-source DIY project that reimagines the joy of focused writing through a personal **writerDeck**. A writerDeck is a modern take on the typewriter: a simple, distraction-free device made for writing, without the noise of notifications, apps, or endless browser tabs. It brings back the purity of just you and your words, while quietly adding the convenience of digital storage and portability.
 
-With Micro Journal, I'm exploring how to build such a device from the ground up—experimenting with hardware, design, and features across different revisions. Each iteration aims to refine the experience, from adding battery power and portability to improving usability and syncing. Every revision comes with documentation and build guides, so that anyone who wishes can create their own. And if you'd prefer to have one made for you, there's also an [online shop](https://www.tindie.com/stores/unkyulee/) where you can request a custom build.
+With Micro Journal, I'm exploring how to build such a device from the ground up. Experimenting with hardware, design, and features across different revisions. Each iteration aims to refine the experience, from adding battery power and portability to improving usability and syncing. Every revision comes with documentation and build guides, so that anyone who wishes can create their own. And if you'd prefer to have one made for you, there's also an [online shop](https://www.tindie.com/stores/unkyulee/) where you can request a custom build.
 
 
 
