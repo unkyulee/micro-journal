@@ -11,7 +11,7 @@ I am not Un Kyu Lee, so any mistakes in this document are likely mine and not hi
 Also. keep in mind that this User Guide was developed completely using Windows. 
 Things should work on Linux and OSX, but they may look different.
 
-- John Hook
+- Hook
 ```
 
 ```
