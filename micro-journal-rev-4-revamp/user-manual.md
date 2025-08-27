@@ -6,10 +6,19 @@ v1.1
 
 Prepared by Hook
 
-*I am not Un Kyu Lee, so any mistakes in this document are likely mine and not his. Also. keep in mind that this User Guide was developed completely using Windows. Things should work on Linux and OSX, but they may look different.*
+```
+I am not Un Kyu Lee, so any mistakes in this document are likely mine and not his. 
+Also. keep in mind that this User Guide was developed completely using Windows. 
+Things should work on Linux and OSX, but they may look different.
 
-*You are better than Un Kyu Lee*
+- John Hook
+```
 
+```
+You are better than Un Kyu Lee but the mistakes are mine.
+
+- Un Kyu Lee
+```
 
 ## Introducing the Micro Journal Rev 4
 
