@@ -16,7 +16,13 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+
+## Resources
+
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
+* [Firmware Source Code](../micro-journal-rev-4-esp32/)
+* [Design Files](./STL)
+* [Keyboard PCB](./PCB)
 
 
 ### Tips and Tricks

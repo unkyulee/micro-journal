@@ -12,8 +12,14 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [Quick Start Guide](./quickstart/readme.md)
 * [Build Guide](./build-guide.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
-* [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
+* 
+## Resources
 
+* [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
+* [Firmware Source Code](../micro-journal-rev-4-esp32/)
+* [Design Files](./STL)
+* [Keyboard PCB](./PCB)
+* [Rev.7 QMK-Vial Source Code](./keyboard/)
 
 ### Videos
 

@@ -15,7 +15,16 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 * [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+
+
+## Resources
+
 * [Micro Journal Linux Image Download](https://github.com/unkyulee/micro-journal-linux/releases)
+* [Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
+* [Design Files](./STL)
+* [Keyboard PCB](../micro-journal-rev-6-one-piece/PCB)
+* [Rev.2 QMK-Vial Source Code](./keyboard/)
+
 
 ### Videos
 
