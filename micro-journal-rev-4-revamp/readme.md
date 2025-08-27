@@ -1,5 +1,4 @@
-
-## Micro Journal Rev.4.Revamp
+## Micro Journal Rev.4.Revamp: Captain Hook
 
 What makes a good keyboard for a writer? Micro Journal Rev.4 is a computer keyboard, but it's designed with writers in mind. People who craft words carefully, arrange them professionally, and need a tool that adapts to their workflow. Here's what I focused on to make this keyboard truly unique and indispensable.
 
