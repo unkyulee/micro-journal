@@ -7,7 +7,7 @@ What makes a good keyboard for a writer? Micro Journal Rev.4 is a computer keybo
 
 **Customizable key behavior.** Every writer works differently. Caps Lock might be useless for one person but essential for another. In Rev.4, you get full control over what each key does. Swap functions, assign macros, or replace rarely used keys with your favorite shortcuts. It's your keyboard, your rules.
 
-**Capture instant thoughts.** Inspiration doesn't wait. The moment an idea sparks, you want to jot it down immediately. With Rev.4, switching from normal keyboard to writerDeck is fast and intuitive. That fleeting sentence or sudden insight is never lost—you can capture it right in front of your screen.
+**Capture instant thoughts.** Inspiration doesn't wait. The moment an idea sparks, you want to jot it down immediately. With Rev.4, switching from normal keyboard to writerDeck is fast and intuitive. That fleeting sentence or sudden insight is never lost. You can capture it right in front of your screen.
 
 **Typing should feel good.** Writing is physical as well as mental. The feel of each keystroke matters. Rev.4 uses mechanical switches and carefully considered ergonomics so that typing is not just functional, but pleasurable. Long writing sessions become less fatiguing and more immersive.
 

@@ -159,7 +159,7 @@ I even started using it for email replies. I'll leave the email draft open, swit
 
 ## Closing Thoughts
 
-Building Rev.4.Revamp wasn't just about solving a keyboard problem. It was about bringing an idea to life with my own hands. From sketches on Fusion 360 to 3D-printed parts, circuits, and finally the satisfying click of the keys under my fingers, every step felt alive with possibility. There's a quiet joy in holding something that exists only because you decided to make it real.
+Building the Micro Journal Rev.4.Revamp wasn't just about solving a keyboard problem. It was about bringing an idea to life with my own hands. From sketches on Fusion 360 to 3D printed parts, circuits, and finally the satisfying click of the keys under my fingers, every step felt alive with possibility. There's a quiet joy in holding something that exists only because you decided to make it real.
 
 Projects like this aren't perfect products off a shelf. They're full of small decisions, compromises, and experiments that tell a story not just of the device, but of the process itself. Every revision carries a bit of that curiosity and playfulness, a trace of the person who built it.
 
