@@ -43,9 +43,13 @@ With Micro Journal, I'm exploring how to build such a device from the ground up�
 
 ## Support
 
-Micro Journal is an open-source project built and sustained with care, curiosity, and a bit of love for writing itself. If you've enjoyed exploring or building your own writerDeck and would like to show appreciation, you can support me with a small gesture. Every contribution helps me continue improving the project and sharing it with the community.
+Micro Journal is an open-source project, built and nurtured with curiosity, care, and a genuine love for writing. If you've enjoyed exploring the project or building your own writerDeck, and you'd like to show some support, even a small gesture goes a long way. Every contribution helps me continue improving Micro Journal and sharing it with the community.  
 
-* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)
+* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)  
+
+Micro Journal is a DIY project, complete with build guides so you can source the components and assemble it yourself. You can also purchase a DIY kit from my shop, or have me assemble a complete device for you. Supporting the project this way helps it grow and ensures it keeps reaching more writers and makers like you.  
+
+* [Tindie – Online Shop](https://www.tindie.com/stores/unkyulee/)
 
 
 
@@ -53,4 +57,3 @@ Micro Journal is an open-source project built and sustained with care, curiosity
 
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Background\_Ad\_1810](https://www.reddit.com/user/Background_Ad_1810/)
-* [Tindie – Online Shop](https://www.tindie.com/stores/unkyulee/)
