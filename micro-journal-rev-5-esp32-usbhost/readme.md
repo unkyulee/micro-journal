@@ -1,14 +1,14 @@
-
-
 ## Micro Journal Rev.5: A Personal Journey
 
-In this iteration, I delved into exploring the potential of utilizing the USB port to enable connectivity with a wide range of mechanical keyboards. This enhancement offers the flexibility for users to employ their preferred keyboard for writing purposes, thereby enhancing the personalized experience and comfort level during usage.
+With Rev.5, I wanted to take a step back from building the keyboard itself and instead focus on something more flexible: letting writers use the keyboard they already love. The idea was simple — instead of being tied to a built-in keyboard, why not make the device work with *any* mechanical keyboard?
+
+That's where the USB port comes in. By tapping into the ESP32-S3's native USB host features, I was able to design an enclosure that sits neatly next to your keyboard and connects directly. After updating the code and refining the hardware, Rev.5 came to life.
+
+This version is less about dictating how you write and more about giving you the freedom to choose your own tools. Whether it's a beloved mechanical board or a minimalist setup, Rev.5 turns it into a writerDeck.  
+
+If you're curious about the technical journey — including the exploration of USB host support on the ESP32 and ESP32-S3 — you can dive into the build guides and full story in the link above.
 
 <img src="./images/001.jpg" width="400">
-
-So, I proceeded to design an enclosure to sit next to the keyboard, utilizing the ESP32-S3, which boasts native USB host features. I then updated the code, and voilà! The new version was born.
-
-There are some stories detailing the exploration of USB HOST features in ESP32 and ESP32-S3. Check out the link above for the full narrative and build guides.
 
 
 ### Documents 
@@ -16,7 +16,13 @@ There are some stories detailing the exploration of USB HOST features in ESP32 a
 * [Behind Story](./story.md)
 * [Build Guide](./build-guide.md)
 * [Quick Start Guide](./quickstart/readme.md)
+
+## Resources
+
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
+* [Firmware Source Code](../micro-journal-rev-4-esp32/)
+* [Design Files](./STL)
+
 
 ### Videos
 

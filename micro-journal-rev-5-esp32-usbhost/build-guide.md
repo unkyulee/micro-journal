@@ -1,98 +1,6 @@
 
 
-# Distraction-Free writing device: WriterDeck using any USB mechanical keyboard
-
-<img src="./images/001.jpg" width=400>
-
-Introducing a distraction-free writing device powered by ESP32-S3 and featuring a 3-inch display. Simply connect any USB keyboard, and you're ready to start writing. The device comes in a simple enclosure designed to sit neatly next to your keyboard, and it's easily portable for on-the-go use.
-
-<img src="./images/smile.png" width=400>
-
-
-
-* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
-
-
-# Typing Video
-
-* https://youtu.be/zcHL68JWXqc
-
-
----
-
-# Why new version?
-
-Introducing the fourth iteration of writerDeck. In the previous version, I have introduced the ESP32, enabling instant power-on and seamless access to a minimalist writing environment. Personally, I found enjoyment in using this device. On numerous occasions, I simply picked it up and began writing, resulting in rather satisfying texts.
-
-<img src="../micro-journal-rev-4-esp32/doc/001.webp" width=400>
-
-However, it's worth noting that the device features a fixed 30-key keyboard, meticulously tailored to my personal preferences. While the concept was solid and the ESP32 proved to be a fitting solution, the hyper-personalized keyboard layout posed a barrier for others to adopt and use the device.
-
-<img src="./images/002.jpg" width=400>
-
-I envisioned the writerDeck as a tool that could benefit a wider audience. However, the fixed keyboard layout posed a significant obstacle to this goal. What if this keyboard component could be separated and offer a USB interface?
-
-<img src="./images/pink.png" width=400>
-
-Now, any mechanical keyboard with a USB interface can connect to it, opening up possibilities for a broader range of users. Additionally, by utilizing a 2.4 GHz dongle, typing remotely without cables becomes a fascinating option. Inspired by this potential, I began working on implementing these features.
-
-# USB HOST
-
-To receive signals from a USB keyboard, the connecting device must function as a host. A host device is responsible for supplying voltage and current to connected devices, as well as managing the hierarchy of connections, especially when connected via hubs and multiple series of devices.
-
-<img src="./images/006.jpg" width=400>
-
-While most PCs and smartphones possess USB host functionality natively, allowing keyboards to be plugged in and work seamlessly, the ESP32 operates differently. Unlike PCs and smartphones, the ESP32, particularly the ESP32 Wroom modules, does not inherently support these features. As a result, even if you were to connect a USB keyboard to an ESP32, it would not recognize key presses.
-
-## ESP32 and Soft USB HOST
-
-Initially, I didn't have an ESP32-S3 board on hand. However, during my research, I stumbled upon a repository showcasing a software implementation of USB host functionality for the ESP32. This discovery felt like a breakthrough – problem solved, or so I thought.
-
-The repository, found at https://github.com/tobozo/ESP32-USB-Soft-Host, provided the necessary library for implementing USB host functionality on the ESP32. Excitedly, I integrated the library into my project, wired up a USB female port on the board, and conducted initial tests. To my delight, it worked.
-
-Looking back, I realize I should have conducted more thorough testing at this stage, as I soon encountered unforeseen challenges.
-
-### This keyboard worked with USB SOFT HOST
-
-<img src="./images/007.jpg" width=400>
-
-
-### But this keyboard did not work. It crashed esp32 continuously when connected.
-
-<img src="./images/008.jpg" width=400>
-
-Unfortunately, I only noticed this error after I had already printed the enclosure and finalized the assembly. Excited to put the device to the test, I plugged in my main keyboard into the writerDeck, only to discover that it didn't work at all. It was a devastating realization.
-
-## Software version of USB HOST ONLY works with USB Low Speed
-
-According to the documentation on the ESP32-USB-Soft-Host GitHub repository, the Soft USB Host implementation only supports USB Low Speed, which corresponds to USB 1.0 devices. This limitation became apparent when I discovered that the keyboard that initially worked with the ESP32 Soft USB Host was an older USB 1.0 model. In contrast, the keyboard that didn't work was a USB 2.0 device.
-
-Initially, I misunderstood "USB Low Speed" to simply mean slower devices, rather than being specific to USB 1.0. This led to the realization that the ESP32 Soft USB Host cannot be used with USB 2.0 devices, which are more prevalent nowadays.
-
-Upon realizing this limitation, I decided to purchase an ESP32-S3 devkit board. This required redesigning the enclosure and rewiring the pins to accommodate the new board. Eventually, after these adjustments, it worked.
-
-## ESP32-S3 and Hardware USB HOST
-
-Although the ESP32-S3 boasts native USB host implementation on its hardware base, I encountered challenges when attempting to connect a USB keyboard directly. Initially, I wired GPIO 20 to D+ and GPIO 19 to D- of the USB female port, along with connecting VIN and GND to the board as specified.
-
-<img src="./images/010.jpg" width=400>
-
-Despite the correct wiring and initialization of USB-related code, the keyboard remained unresponsive. Puzzled by this, I used a voltage measuring tool and discovered that there was no voltage present on the USB connector's VIN and GND pins.
-
-<img src="./images/009.jpg" width=400>
-
-Further investigation revealed that the devkit doesn't supply voltage to the VIN pin; it only receives voltage. This is due to a diode blocking voltage flow. Although it may seem intuitive to connect jumpers to supply voltage, it's crucial not to do so.
-
-**DO NOT connect those jumpers!**
-
-The reason for the default lack of voltage supply is to protect the board from potential damage caused by USB nodes with power requirements exceeding the board's capacity. If a USB device connected to the keyboard, such as LEDs or other power-intensive components, demands excessive power, it could potentially damage the board. Thus, it's advisable to supply power to the USB connector from alternative sources, such as a battery, rather than through the ESP32-S3 board.
-
-Once I supplied power to the USB female connector from an external source, everything started working flawlessly. Keyboard strokes were successfully registered by the ESP32, and all features functioned as expected.
-
-- https://github.com/tanakamasayuki/EspUsbHost
-- Credit goes to the respository owner tanakamasayuki and also, **Vince_Gill** who help me to point to the repository. Thanks!
-
-# Build Guide
+# DIY Build Guide for Micro Journal Rev.5 
 
 This document serves as a build guide to assist anyone in constructing this device on their own. I'll provide the steps necessary to achieve this goal. If you find any key information missing, please don't hesitate to reach out to me.
 
@@ -159,6 +67,8 @@ Expose the following display pins as 10 cm wires from the board, which will late
 
 Once done the board should like the picture above.
 
+
+
 ## Step 2. Power Supply
 
 The power supply wiring revolves around the LiPo charger module.
@@ -169,7 +79,10 @@ Connect the IN port to a USB-C female connector. This allows you to use USB-C ca
 
 Connect the BATT port to any battery case. In my build, I used an 18650 battery, but you can use any LiPo battery.
 
-<img src="./images/015.jpg" width=400>
+<img src="./images/019.png" width=800>
+
+Above image from DessyTab who sufferred (ing) immensely at figuring out the wiring for the power supply. It's not the most accurate images. But should give enough clue to find the wiring done. Becareful with the Positive (+) wired to the positives, and Negatives (-) wired to the GND. 
+
 
 ## Step 3. Preparing USB-A female connector
 
@@ -274,13 +187,3 @@ Once all the components are assembled and the SD card is prepared, place a file 
 ```
 
 Update the contents of the file with your WiFi connection information. This configuration will be saved on the SD card and utilized when sync is activated.
-
-# Conclusion
-
-My wife and daughter, who've consistently shown indifference to my creations, surprisingly showed a glimmer of interest this time. Perhaps it was the shiny yellow printed parts, or maybe they found the color scheme oddly familiar (Ironman, anyone?). I confessed my feelings to my wife, and since then, she's been trying, albeit hard, to be supportive. But understanding the intricacies of mechanical keyboards and all that jazz seems to be a challenge for her. She's convinced that there might be only three people on Earth who care about keyboards in this way: me, my friend and You.
-
-
-<img src="./images/004.jpg" width=400>
-
-When life feels utterly meaningless, I'll reminisce about this moment—reflecting on the countless hours and energy poured into those iterations. Here I am, at the fifth version, with four physical devices that do nothing but type. I'm left wondering if my future will be any more meaningful than now. Nevertheless, I take solace in seeing the improvements with each iteration and reminding myself that I can (still) solve problems. Or perhaps, did I just create a problem for myself?
-
