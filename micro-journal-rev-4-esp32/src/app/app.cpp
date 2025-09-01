@@ -63,6 +63,12 @@ void app_setup()
         return;
     }
 
+#ifdef BOARD_ESP32_S3
+    // allocate memory is PSRAM
+    heap_caps_malloc_extmem_enable(64);
+
+#endif
+
 #ifdef BOARD_PICO
     // Mass Storage Setup
     ms_setup();
@@ -71,7 +77,6 @@ void app_setup()
 #ifdef BATTERY
     battery_setup();
 #endif
-
 
 #ifdef REV5
     // BLE Server Background Task
@@ -114,7 +119,6 @@ void app_loop()
     // BLE Server Background Task
     BLEServer_loop();
 #endif
-
 }
 
 // status storage

@@ -129,7 +129,7 @@ void PairBLE_keyboard(char key)
     // UNPAIR
     if (app["config"]["ble"]["name"].is<const char *>())
     {
-        if (key == 'd' || key == MENU)
+        if (key == 'm' || key == MENU)
         {
             //
             if (app["config"]["ble"].is<JsonObject>())
