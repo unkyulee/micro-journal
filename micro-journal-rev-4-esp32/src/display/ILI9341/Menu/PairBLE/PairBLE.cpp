@@ -52,7 +52,7 @@ void PairBLE_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     if (app["config"]["ble"]["name"].is<const char *>())
     {
         const char *name = app["config"]["ble"]["name"].as<const char *>();
-        ptft->printf("[D] UNPAIR - %s", name);
+        ptft->printf("[MENU, M] UNPAIR - %s", name);
         ptft->println("");
     }
     else
@@ -99,8 +99,16 @@ void PairBLE_render_list(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println("Press number to pair with");
         for (int i = 0; i < devices.size(); i++)
         {
-            const char *name = devices[i]["name"].as<const char *>();
-            ptft->printf("  [%d] %s\n", i + 1, name);
+            if (i == 0)
+            {
+                const char *name = devices[i]["name"].as<const char *>();
+                ptft->printf("  [MENU, %d] %s\n", i + 1, name);
+            }
+            else
+            {
+                const char *name = devices[i]["name"].as<const char *>();
+                ptft->printf("  [%d] %s\n", i + 1, name);
+            }
         }
         ptft->println("");
     }
@@ -119,25 +127,32 @@ void PairBLE_keyboard(char key)
     Menu_clear();
 
     // UNPAIR
-    if (key == 'd')
+    if (app["config"]["ble"]["name"].is<const char *>())
     {
-        //
-        if (app["config"]["ble"].is<JsonObject>())
+        if (key == 'd' || key == MENU)
         {
             //
-            app["config"].remove("ble");
+            if (app["config"]["ble"].is<JsonObject>())
+            {
+                //
+                app["config"].remove("ble");
 
-            // save config
-            config_save();
+                // save config
+                config_save();
 
-            // restart
-            ESP.restart();
+                // restart
+                ESP.restart();
+            }
         }
     }
 
     //
-    if (key >= '1' && key <= '9')
+    if ((key >= '1' && key <= '9') || key == MENU)
     {
+        // when menu is pressed then chose the first keyboard
+        if (key == MENU)
+            key = '1';
+
         // device is chosen
 
         // retrieve ble keyboard devices

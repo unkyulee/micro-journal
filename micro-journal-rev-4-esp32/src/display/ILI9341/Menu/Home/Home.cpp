@@ -42,13 +42,17 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println(" [S] SYNC ");
     }
 
-#ifdef ENV_USBHOST
+#ifdef REV5
     ptft->println(" [K] KEY LAYOUT - " + keyboard_layout);
     ptft->println(" [F] DEVICE BUTTON");
-    ptft->println(" [M] BLE KEYBOARD");
+    ptft->println(" [M, MENU] BLE KEYBOARD");
 #endif
     ptft->println(" [W] WIFI");
+
+#ifdef REV6
     ptft->println(" [T] BLE KEYBOARD");
+#endif
+
     ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
     ptft->println(" [C] FOREGROUND COLOR");
@@ -115,7 +119,7 @@ void Home_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
-#ifdef ENV_USBHOST
+#ifdef REV5
     else if (key == 'k')
     {
         // move to keyboard layout
@@ -140,18 +144,13 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
+#ifdef REV6
     else if (key == 't')
     {
-#ifdef REV6
         // move to keyboard layout
         app["screen"] = KEYBOARDSCREEN;
-#endif
-
-#ifdef REV5
-        // move to BLE keyboard pairing
-        app["menu"]["state"] = MENU_BLUETOOTH;
-#endif
     }
+#endif
 
     else if (key == 'a')
     {
