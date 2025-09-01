@@ -53,7 +53,6 @@ size_t fileSize(String fileName)
         }
         //
         file.close();
-        delay(10);
     }
     return file_size;
 }

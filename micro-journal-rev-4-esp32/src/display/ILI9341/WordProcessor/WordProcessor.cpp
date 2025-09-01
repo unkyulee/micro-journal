@@ -436,13 +436,11 @@ void WP_keyboard(int key, bool pressed, int index)
 
             //
             Editor::getInstance().saveFile();
-            delay(100);
-
+            
             // save config
             app["config"]["file_index"] = fileIndex;
             config_save();
-            delay(100);
-
+            
             // load new file
             Editor::getInstance().loadFile(format("/%d.txt", fileIndex));
         }

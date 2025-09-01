@@ -36,6 +36,6 @@ void ErrorScreen_render()
 void ErrorScreen_keyboard(char key)
 {
     // Any key press reset ESP32
+    _log("Restartinhg ESP32\n");
     ESP.restart(); // Reset the ESP32
-    delay(1000);
 }

@@ -6,6 +6,18 @@
 
 #include "service/BLEServer/BLEServer.h"
 
+// notify callback shouldn't be blocked
+// any file operation triggers will crash the system
+// so copy the message from the callback and process it in the main process
+// Define the HID report structure
+typedef struct
+{
+    uint8_t report[7];
+} HidReport_t;
+
+// Queue to store HID reports
+static QueueHandle_t hidQueue = nullptr;
+
 //
 void ble_setup(const char *adName)
 {
@@ -29,6 +41,10 @@ void ble_setup(const char *adName)
             app["task"] = "ble_connect";
         }
     }
+
+    // Create HID report queue (10 elements of HidReport_t)
+    hidQueue = xQueueCreate(10, sizeof(HidReport_t));
+    assert(hidQueue != NULL);
 }
 
 //
@@ -38,8 +54,8 @@ void ble_loop()
     JsonDocument &app = status();
 
     // nothing to do when BLE is not paired
-    if (!app["config"]["ble"]["address"].is<const char *>())
-        return;
+    // if (!app["config"]["ble"]["address"].is<const char *>())
+    //    return;
 
     // every 10 seconds check reconnect
     static unsigned int last = millis();
@@ -47,16 +63,72 @@ void ble_loop()
     {
         last = millis();
 
-        if (!app["ble_connected"].as<bool>())
+        bool ble_connected = app["ble_connected"].as<bool>();
+        _log("BLE Keyboard Connection: %d\n", ble_connected);
+        if (ble_connected == false)
         {
             // When ble.address exists then try to connect to the keyboard
             if (app["config"]["ble"]["address"].is<const char *>())
             {
+                //
+                _log("BLE configuration found: %s\n", app["config"]["ble"]["address"].as<const char *>());
+
                 // Initiate scan
                 if (app["task"].as<String>().isEmpty())
                     app["task"] = "ble_connect";
             }
         }
+    }
+
+    // Process HID queue safely
+    HidReport_t report;
+    while (hidQueue != nullptr && xQueueReceive(hidQueue, &report, 0) == pdTRUE)
+    {
+        static uint8_t prev[7] = {0};
+
+        // Key Pressed
+        for (int i = 1; i < 7; i++)
+        {
+            if (report.report[i] != 0)
+            {
+                bool newKey = true;
+                for (int j = 1; j < 7; j++)
+                {
+                    if (prev[j] == report.report[i])
+                    {
+                        newKey = false;
+                        break;
+                    }
+                }
+                if (newKey)
+                {
+                    keyboard_HID2Ascii(report.report[i], report.report[0], true);
+                }
+            }
+        }
+
+        // Key Released
+        for (int i = 1; i < 7; i++)
+        {
+            if (prev[i] != 0)
+            {
+                bool released = true;
+                for (int j = 1; j < 7; j++)
+                {
+                    if (prev[i] == report.report[j])
+                    {
+                        released = false;
+                        break;
+                    }
+                }
+                if (released)
+                {
+                    keyboard_HID2Ascii(prev[i], prev[0], false);
+                }
+            }
+        }
+
+        memcpy(prev, report.report, 7);
     }
 }
 
@@ -72,6 +144,11 @@ void ble_init(const char *name)
         NimBLEDevice::init(name);
 
         //
+        NimBLEDevice::setSecurityAuth(true, true, true); // bonding + MITM + SC
+        // NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_YESNO); // or NO_INPUT_OUTPUT if headless
+        // NimBLEDevice::setSecurityPasskey(123456);                // optional, only if your keyboard needs it
+
+        //
         ble_init_done = true;
     }
 }
@@ -82,6 +159,16 @@ class clientCallback : public NimBLEClientCallbacks
     void onConnect(NimBLEClient *pClient)
     {
         _log("[BLEClientCallbacks] onConnect\n");
+
+        NimBLEConnInfo connInfo = pClient->getConnInfo();
+
+        //
+        _log("  Peer Address: %s\n", pClient->getPeerAddress().toString().c_str());
+        _log("  Conn Handle: %d\n", connInfo.getConnHandle());
+        _log("  MTU: %u\n", pClient->getMTU());
+        _log("  Encrypted: %s\n", connInfo.isEncrypted() ? "Yes" : "No");
+        _log("  Bonded: %s\n", connInfo.isBonded() ? "Yes" : "No");
+
         JsonDocument &app = status();
         app["ble_connected"] = true;
     }
@@ -106,16 +193,28 @@ class clientCallback : public NimBLEClientCallbacks
      * @param [in] params A pointer to the struct containing the connection parameters requested.
      * @return True to accept the parameters.
      */
-    bool onConnParamsUpdateRequest(NimBLEClient* pClient, const ble_gap_upd_params* params) {
+    bool onConnParamsUpdateRequest(NimBLEClient *pClient, const ble_gap_upd_params *params)
+    {
         _log("[BLEClientCallbacks] onConnParamsUpdateRequest\n");
+        _log("  Interval Min: %u (%.2f ms)\n", params->itvl_min, params->itvl_min * 1.25);
+        _log("  Interval Max: %u (%.2f ms)\n", params->itvl_max, params->itvl_max * 1.25);
+        _log("  Latency: %u events\n", params->latency);
+        _log("  Supervision Timeout: %u (%.1f ms)\n",
+             params->supervision_timeout,
+             params->supervision_timeout * 10.0);
+
+        return true; // Accept the parameters
     }
 
     /**
      * @brief Called when server requests a passkey for pairing.
      * @param [in] connInfo A reference to a NimBLEConnInfo instance containing the peer info.
      */
-    virtual void onPassKeyEntry(NimBLEConnInfo& connInfo) {
-        _log("[BLEClientCallbacks] onPassKeyEntry %s\n");
+    void onPassKeyEntry(NimBLEConnInfo &connInfo)
+    {
+        Serial.println("Keyboard requesting passkey...");
+        // Inject the same passkey you configured earlier
+        NimBLEDevice::injectPassKey(connInfo, 123456);
     }
 
     /**
@@ -123,8 +222,21 @@ class clientCallback : public NimBLEClientCallbacks
      * @param [in] connInfo A reference to a NimBLEConnInfo instance containing the peer info.\n
      * This can be used to check the status of the connection encryption/pairing.
      */
-    void onAuthenticationComplete(NimBLEConnInfo& connInfo) {
-        _log("[BLEClientCallbacks] onAuthenticationComplete\n");
+    void onAuthenticationComplete(NimBLEConnInfo &connInfo)
+    {
+        _log("[onAuthenticationComplete]\n");
+        _log("  Peer Address: %s\n", connInfo.getAddress().toString().c_str());
+        _log("  Encrypted: %s\n", connInfo.isEncrypted() ? "Yes" : "No");
+        _log("  Bonded: %s\n", connInfo.isBonded() ? "Yes" : "No");
+        _log("  Authenticated (MITM): %s\n", connInfo.isAuthenticated() ? "Yes" : "No");
+        //_log("  Security Level: %d\n", connInfo.getSecurityLevel());
+        //_log("  Key Size: %d\n", connInfo.getKeySize());
+        //_log("  Role: %s\n", connInfo.getRole() == BLE_HS_CONN_ROLE_MASTER ? "Central" : "Peripheral");
+
+        // save the address
+        JsonDocument &app = status();
+        app["config"]["ble"]["address"] = connInfo.getAddress().toString().c_str();
+        config_save();
     }
 
     /**
@@ -132,15 +244,20 @@ class clientCallback : public NimBLEClientCallbacks
      * @param [in] connInfo A reference to a NimBLEConnInfo instance containing the peer info.
      * @param [in] pin The pin to compare with the server.
      */
-    virtual void onConfirmPasskey(NimBLEConnInfo& connInfo, uint32_t pin) {
+    void onConfirmPasskey(NimBLEConnInfo &connInfo, uint32_t pin)
+    {
         _log("[BLEClientCallbacks] onConfirmPasskey\n");
+        Serial.printf("Confirm passkey: %06u\n", pin);
+        // Accept automatically
+        NimBLEDevice::injectConfirmPasskey(connInfo, true);
     }
 
     /**
      * @brief Called when the peer identity address is resolved.
      * @param [in] connInfo A reference to a NimBLEConnInfo instance with information
      */
-    virtual void onIdentity(NimBLEConnInfo& connInfo) {
+    void onIdentity(NimBLEConnInfo &connInfo)
+    {
         _log("[BLEClientCallbacks] onIdentity\n");
     }
 
@@ -150,8 +267,11 @@ class clientCallback : public NimBLEClientCallbacks
      * @param [in] MTU The new MTU value.
      * about the peer connection parameters.
      */
-    virtual void onMTUChange(NimBLEClient* pClient, uint16_t MTU) {
+    void onMTUChange(NimBLEClient *pClient, uint16_t MTU)
+    {
         _log("[BLEClientCallbacks] onMTUChange\n");
+        _log("  Peer: %s\n", pClient->getPeerAddress().toString().c_str());
+        _log("  New MTU: %u bytes\n", MTU);
     }
 
     /**
@@ -165,13 +285,13 @@ class clientCallback : public NimBLEClientCallbacks
      * * BLE_GAP_LE_PHY_2M
      * * BLE_GAP_LE_PHY_CODED
      */
-    virtual void onPhyUpdate(NimBLEClient* pClient, uint8_t txPhy, uint8_t rxPhy) {
+    void onPhyUpdate(NimBLEClient *pClient, uint8_t txPhy, uint8_t rxPhy)
+    {
         _log("[BLEClientCallbacks] onPhyUpdate\n");
     }
 };
 
 static clientCallback clientCB;
-uint8_t dataPrev[7];
 
 // Callback function for notifications
 void notifyCallback(
@@ -180,62 +300,11 @@ void notifyCallback(
     size_t length,
     bool isNotify)
 {
-    //
-    _debug("[notifyCallback] size [%d] %d %d %d %d %d %d %d\n",
-           length, pData[0], pData[1], pData[2], pData[3], pData[4], pData[5], pData[6]);
-    _debug("[notifyCallback] prev [%d] %d %d %d %d %d %d %d\n",
-           length, dataPrev[0], dataPrev[1], dataPrev[2], dataPrev[3], dataPrev[4], dataPrev[5], dataPrev[6]);
-
-    // Key Pressed
-    for (int i = 1; i < length; i++)
-    {
-        if (pData[i] != 0)
-        {
-            // check if the same key appear in the previous report
-            bool newkey = true;
-            for (int j = 1; j < length; j++)
-            {
-                if (dataPrev[j] == pData[i])
-                {
-                    newkey = false;
-                    break;
-                }
-            }
-
-            // otherwise register new key press
-            if (newkey)
-            {
-                // handle key pressed
-                keyboard_HID2Ascii(pData[i], pData[0], true);
-                _debug("Key Pressed: %d %d\n", pData[i], pData[0]);
-            }
-        }
-    }
-
-    // Key Released
-    for (int i = 1; i < length; i++)
-    {
-        if (dataPrev[i] != 0)
-        {
-            bool key_released = true;
-            for (int j = 1; j < length; j++)
-            {
-                if (dataPrev[i] == pData[j])
-                {
-                    key_released = false;
-                    break;
-                }
-            }
-            if (key_released)
-            {
-                keyboard_HID2Ascii(dataPrev[i], dataPrev[0], false);
-                _debug("Key Release: %d %d\n", dataPrev[i], dataPrev[0]);
-            }
-        }
-    }
-
-    //
-    memcpy(dataPrev, pData, length > 7 ? 7 : length);
+    // when key press message comes from the BLE keyboard
+    // send it to the main process Q
+    HidReport_t report;
+    memcpy(report.report, pData, length > 7 ? 7 : length);
+    xQueueSendFromISR(hidQueue, &report, nullptr);
 }
 
 // Connect to BLE device

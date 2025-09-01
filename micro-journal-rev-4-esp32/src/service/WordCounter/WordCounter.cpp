@@ -15,7 +15,7 @@ int wordcounter_file(const char *filename)
 
     //
     JsonDocument &app = status();
-    _log("Editor loading file %s\n", filename);
+    _debug("Editor loading file %s\n", filename);
 
     // Open File
     File file = gfs()->open(filename, "r");
@@ -26,7 +26,7 @@ int wordcounter_file(const char *filename)
         app["screen"] = ERRORSCREEN;
 
         //
-        _log(app["error"]);
+        _debug(app["error"]);
 
         return 0;
     }
@@ -45,7 +45,7 @@ int wordcounter_file(const char *filename)
     char buffer[CHUNK_SIZE];
     uint32_t bytesRead = 0;
 
-    _log("read limit:  %d \n", readLimit);
+    _debug("read limit:  %d \n", readLimit);
     // Count the words until the part of the file that will go into the buffer
     while (file.available() && bytesRead < readLimit)
     {
@@ -71,7 +71,7 @@ int wordcounter_file(const char *filename)
         }
     }
 
-    _log("Words in file:  %d \n", wordCount);
+    _debug("Words in file:  %d \n", wordCount);
     return wordCount;
 }
 

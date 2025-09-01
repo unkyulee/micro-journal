@@ -179,7 +179,6 @@ void wifi_config_load()
     {
         // file doesn't exist
         _log("wifi.json file doens't exist\n");
-        delay(100);
 
         return;
     }

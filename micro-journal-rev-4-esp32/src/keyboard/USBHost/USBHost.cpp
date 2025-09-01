@@ -6,6 +6,15 @@
 //
 #include <EspUsbHost.h>
 
+struct UsbHidReport
+{
+    uint8_t modifier;
+    uint8_t reserved;
+    uint8_t keycode[6];
+};
+
+static QueueHandle_t usbHidQueue;
+
 class MyEspUsbHost : public EspUsbHost
 {
     void onReceive(const usb_transfer_t *transfer)
@@ -34,56 +43,16 @@ class MyEspUsbHost : public EspUsbHost
                report.keycode[4],
                report.keycode[5]);
 
-        // forward the report
-        USBHost_report(report.modifier, report.reserved, report.keycode);
+        // Copy the report into a local struct
+        UsbHidReport r;
+        r.modifier = report.modifier;
+        r.reserved = report.reserved;
+        memcpy(r.keycode, report.keycode, 6);
 
-        // Key Pressed
-        for (int i = 0; i < 6; i++)
-        {
-            if (report.keycode[i] != 0)
-            {
-                // check if the same key appear in the previous report
-                bool newkey = true;
-                for (int j = 0; j < 6; j++)
-                {
-                    if (last_report.keycode[j] == report.keycode[i])
-                    {
-                        newkey = false;
-                        break;
-                    }
-                }
-
-                // otherwise register new key press
-                if (newkey)
-                {
-                    // handle key pressed
-                    keyboard_HID2Ascii(report.keycode[i], report.modifier, true);
-                    _log("Key Pressed: %d %d\n", report.keycode[i], report.modifier);
-                }
-            }
-        }
-
-        // Key Released
-        for (int i = 0; i < 6; i++)
-        {
-            if (last_report.keycode[i] != 0)
-            {
-                bool key_released = true;
-                for (int j = 0; j < 6; j++)
-                {
-                    if (last_report.keycode[i] == report.keycode[j])
-                    {
-                        key_released = false;
-                        break;
-                    }
-                }
-                if (key_released)
-                {
-                    keyboard_HID2Ascii(last_report.keycode[i], report.modifier, false);
-                    _log("Key Release: %d %d\n", last_report.keycode[i], report.modifier);
-                }
-            }
-        }
+        // Send to queue from ISR-safe context
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        xQueueSendFromISR(usbHidQueue, &r, &xHigherPriorityTaskWoken);
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     }
 };
 
@@ -95,6 +64,10 @@ bool usbHostReady = false;
 void USBHost_setup()
 {
 #ifndef DEBUG
+    //
+    usbHidQueue = xQueueCreate(10, sizeof(UsbHidReport));
+    assert(usbHidQueue != nullptr);
+
     // usb keyboard setup
     usbHost.begin();
     usbHostReady = true;
@@ -112,8 +85,48 @@ void USBHost_loop()
 
 #ifndef DEBUG
     if (usbHostReady)
-        // usb keyboard loop
         usbHost.task();
+
+    if (usbHidQueue != nullptr)
+    {
+        UsbHidReport report;
+        static UsbHidReport prev = {0};
+
+        // Non-blocking receive
+        while (xQueueReceive(usbHidQueue, &report, 0) == pdTRUE)
+        {
+            // Key Pressed
+            for (int i = 0; i < 6; i++)
+            {
+                if (report.keycode[i] != 0)
+                {
+                    bool newKey = true;
+                    for (int j = 0; j < 6; j++)
+                        if (prev.keycode[j] == report.keycode[i])
+                            newKey = false;
+                    if (newKey)
+                        keyboard_HID2Ascii(report.keycode[i], report.modifier, true);
+                }
+            }
+
+            // Key Released
+            for (int i = 0; i < 6; i++)
+            {
+                if (prev.keycode[i] != 0)
+                {
+                    bool released = true;
+                    for (int j = 0; j < 6; j++)
+                        if (prev.keycode[i] == report.keycode[j])
+                            released = false;
+                    if (released)
+                        keyboard_HID2Ascii(prev.keycode[i], report.modifier, false);
+                }
+            }
+
+            memcpy(&prev, &report, sizeof(UsbHidReport));
+        }
+    }
+
 #endif
 
 #ifdef DEBUG
@@ -142,7 +155,7 @@ void USBHost_loop()
         display_keyboard(c, true);  // Key press
         display_keyboard(c, false); // Key release (optional, for GUI consistency)
 
-        // emulate hid report for alphabet 
+        // emulate hid report for alphabet
         if (c >= 'a' && c <= 'z')
         {
             uint8_t keycodes[6] = {};
@@ -157,7 +170,6 @@ void USBHost_loop()
     }
 #endif
 }
-
 
 void USBHost_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
 {

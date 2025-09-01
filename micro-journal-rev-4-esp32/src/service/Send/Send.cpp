@@ -74,7 +74,6 @@ void send_start()
     }
     //
     file.close();
-    delay(100);
 
     //
     app["send_finished"] = true;

@@ -35,7 +35,7 @@ bool config_load()
         // read the file
         String configString = configFile.readString();
         configFile.close();
-        delay(100); // safe to wait for a few seconds after closing a file
+        //delay(100); // safe to wait for a few seconds after closing a file
 
         // check if configString is empty
         if (configString.length() == 0)
@@ -130,5 +130,5 @@ void config_save()
 
     // close config.json
     configFile.close();
-    delay(100);
+    //delay(100);
 }

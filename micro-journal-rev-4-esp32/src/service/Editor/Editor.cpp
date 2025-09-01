@@ -40,18 +40,18 @@ void Editor::loadFile(String fileName)
         app["screen"] = ERRORSCREEN;
 
         //
-        _log(app["error"]);
+        _debug(app["error"]);
 
         return;
     }
 
     //
-    _log("Editor loading file %s\n", fileName.c_str());
+    _debug("Editor loading file %s\n", fileName.c_str());
 
     // Step 1. Create file if necessary
     if (!gfs()->exists(fileName.c_str()))
     {
-        _log("Creating an empty file since it's new\n");
+        _debug("Creating an empty file since it's new\n");
         File file = gfs()->open(fileName.c_str(), "w");
         if (!file)
         {
@@ -60,17 +60,16 @@ void Editor::loadFile(String fileName)
             app["screen"] = ERRORSCREEN;
 
             //
-            _log(app["error"].as<const char *>());
+            _debug(app["error"].as<const char *>());
 
             return;
         }
 
         //
         file.close();
-        delay(100);
 
         //
-        _log("File created. %s\n", fileName.c_str());
+        _debug("File created. %s\n", fileName.c_str());
     }
 
     // Save filen name
@@ -85,14 +84,14 @@ void Editor::loadFile(String fileName)
         app["screen"] = ERRORSCREEN;
 
         //
-        _log(app["error"]);
+        _debug(app["error"]);
 
         return;
     }
 
     // Determine file size and set buffer accordingly
     fileSize = file.size();
-    _log("File: %s of size: %d\n", fileName.c_str(), fileSize);
+    _debug("File: %s of size: %d\n", fileName.c_str(), fileSize);
 
     // calcualte the file offset
     seekPos = 0;
@@ -119,12 +118,11 @@ void Editor::loadFile(String fileName)
     {
         //
         file.close();
-        delay(100);
 
         //
         app["error"] = format("Failed to seek file pointer. fileSize: %d seekPos: %d\n", fileSize, seekPos);
         app["screen"] = ERRORSCREEN;
-        _log(app["error"].as<const char *>());
+        _debug(app["error"].as<const char *>());
 
         return;
     }
@@ -142,7 +140,6 @@ void Editor::loadFile(String fileName)
 
     //
     file.close();
-    delay(100);
 
     // log
     _debug("Editor::loadFile size: %d, seek: %d, buffer: %d, cursor: %d\n",
@@ -162,6 +159,7 @@ void Editor::loadFile(String fileName)
 
     //
     config_save();
+
 }
 
 //
@@ -221,7 +219,6 @@ void Editor::saveFile()
     {
         _log("Failed to seek file pointer\n");
         file.close();
-        delay(100);
         savingInProgress = false;
         return;
     }
@@ -242,7 +239,6 @@ void Editor::saveFile()
 
     //
     file.close();
-    delay(100);
 
     // recalculate the file size
     // calculate the file size
@@ -266,7 +262,6 @@ void Editor::saveFile()
 
     //
     file.close();
-    delay(100);
 
     // update word count
     int file_index = app["config"]["file_index"].as<int>();
@@ -315,7 +310,7 @@ void Editor::clearFile()
     // Step 2. Rename the current file to the backup.txt
     if (gfs()->rename(fileName.c_str(), backupFileName.c_str()))
     {
-        _log("File renamed successfully: %s -> %s.\n", fileName.c_str(), backupFileName.c_str());
+        _debug("File renamed successfully: %s -> %s.\n", fileName.c_str(), backupFileName.c_str());
     }
     else
     {
@@ -345,7 +340,6 @@ void Editor::clearFile()
 
     // clean up file
     file.close();
-    delay(100);
 
     // Go through the loading process of the empty file
     loadFile(fileName);
