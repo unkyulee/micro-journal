@@ -99,6 +99,75 @@ class clientCallback : public NimBLEClientCallbacks
         JsonDocument &app = status();
         app["ble_connected"] = false;
     }
+
+    /**
+     * @brief Called when server requests to update the connection parameters.
+     * @param [in] pClient A pointer to the calling client object.
+     * @param [in] params A pointer to the struct containing the connection parameters requested.
+     * @return True to accept the parameters.
+     */
+    bool onConnParamsUpdateRequest(NimBLEClient* pClient, const ble_gap_upd_params* params) {
+        _log("[BLEClientCallbacks] onConnParamsUpdateRequest\n");
+    }
+
+    /**
+     * @brief Called when server requests a passkey for pairing.
+     * @param [in] connInfo A reference to a NimBLEConnInfo instance containing the peer info.
+     */
+    virtual void onPassKeyEntry(NimBLEConnInfo& connInfo) {
+        _log("[BLEClientCallbacks] onPassKeyEntry %s\n");
+    }
+
+    /**
+     * @brief Called when the pairing procedure is complete.
+     * @param [in] connInfo A reference to a NimBLEConnInfo instance containing the peer info.\n
+     * This can be used to check the status of the connection encryption/pairing.
+     */
+    void onAuthenticationComplete(NimBLEConnInfo& connInfo) {
+        _log("[BLEClientCallbacks] onAuthenticationComplete\n");
+    }
+
+    /**
+     * @brief Called when using numeric comparision for pairing.
+     * @param [in] connInfo A reference to a NimBLEConnInfo instance containing the peer info.
+     * @param [in] pin The pin to compare with the server.
+     */
+    virtual void onConfirmPasskey(NimBLEConnInfo& connInfo, uint32_t pin) {
+        _log("[BLEClientCallbacks] onConfirmPasskey\n");
+    }
+
+    /**
+     * @brief Called when the peer identity address is resolved.
+     * @param [in] connInfo A reference to a NimBLEConnInfo instance with information
+     */
+    virtual void onIdentity(NimBLEConnInfo& connInfo) {
+        _log("[BLEClientCallbacks] onIdentity\n");
+    }
+
+    /**
+     * @brief Called when the connection MTU changes.
+     * @param [in] pClient A pointer to the client that the MTU change is associated with.
+     * @param [in] MTU The new MTU value.
+     * about the peer connection parameters.
+     */
+    virtual void onMTUChange(NimBLEClient* pClient, uint16_t MTU) {
+        _log("[BLEClientCallbacks] onMTUChange\n");
+    }
+
+    /**
+     * @brief Called when the PHY update procedure is complete.
+     * @param [in] pClient A pointer to the client whose PHY was updated.
+     * about the peer connection parameters.
+     * @param [in] txPhy The transmit PHY.
+     * @param [in] rxPhy The receive PHY.
+     * Possible values:
+     * * BLE_GAP_LE_PHY_1M
+     * * BLE_GAP_LE_PHY_2M
+     * * BLE_GAP_LE_PHY_CODED
+     */
+    virtual void onPhyUpdate(NimBLEClient* pClient, uint8_t txPhy, uint8_t rxPhy) {
+        _log("[BLEClientCallbacks] onPhyUpdate\n");
+    }
 };
 
 static clientCallback clientCB;
