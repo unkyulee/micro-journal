@@ -98,8 +98,11 @@ int keypad_convert_wp_keys(String key)
         else if (key == "SHIFT")
             return 14;
 
-        else if (key == "ALT")
+        else if (key == "LOWER")
             return 17;
+        
+        else if (key == "RAISE")
+            return 24;
 
         else if (key == "LEFT")
             return 18;

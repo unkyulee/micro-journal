@@ -66,8 +66,10 @@ The following json is the default configuration.
 
 - **"main"**: Key pressed without any modifiers (no Shift, no Alt).
 - **"main-shift"**: Key pressed while holding the Shift key.
-- **"alt"**: Key pressed while holding the Alt key.
-- **"alt-shift"**: Key pressed while holding both the Alt and Shift keys.
+- **"lower"**: Key pressed while holding the LOWER key.
+- **"lower-shift"**: Key pressed while holding both the LOWER and Shift keys.
+- **"raise"**: Key pressed while holding the RAISE key.
+- **"raise-shift"**: Key pressed while holding both the RAISE and Shift keys.
 
 This configuration allows for a total of 96 keys on the keyboard, and with Shift key combinations, it can extend to around 192 key layouts.
 
@@ -77,7 +79,8 @@ Most keys are typed directly into the JSON file between quotes. However, some ke
 | ---------------------- | ----------------------------------------- |
 | ESC                    | Functions as entering the MENU screen     |
 | SHIFT                  | This is a SHIFT key                       |
-| ALT                    | Hidden layer activation key               |
+| LOWER                  | Hidden layer activation key               |
+| RAISE                  | Hidden layer activation key               |
 | BACKSPACE              | Works as a backspace                      |
 | 127                    | Deletes a word (DEL)                      |
 | \n                     | Enter Key                                 |
