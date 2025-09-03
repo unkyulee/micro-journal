@@ -56,5 +56,11 @@ If you're curious about the technical journey — including the exploration of U
 ### Online Shop
 
 * [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [DIY Kit - Micro Journal Rev.5](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev5/)
 
 
+## Support
+
+Micro Journal is an open-source project, built and nurtured with curiosity, care, and a genuine love for writing. If you've enjoyed exploring the project or building your own writerDeck, and you'd like to show some support, even a small gesture goes a long way. Every contribution helps me continue improving Micro Journal and sharing it with the community.  
+
+* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)  
