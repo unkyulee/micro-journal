@@ -128,10 +128,12 @@ void keyboard_keypad_48_loop()
             int character = keyboard_keypad_48_get_key(e);
 
             // send over the key to the display
+            /*
             _debug("[keyboard_keypad_48_get_key] Key: %d, Event: %d, Row: %d, Col: %d Character: [%d] '%c'\n",
                    e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL,
                    character, character);
-
+            */
+           
             //
             display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
         }

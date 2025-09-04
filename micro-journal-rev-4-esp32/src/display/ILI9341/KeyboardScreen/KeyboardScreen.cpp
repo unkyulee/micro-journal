@@ -87,7 +87,7 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         (int *)_usb_keyboard_layers,
         48,
         keys,
-        2);
+        3);
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal 6");
@@ -144,7 +144,7 @@ void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 // keyboard message will come from Rev.6 via this function.
-void KeyboardScreen_keyboard(char key, bool pressed, int index)
+void KeyboardScreen_keyboard(int key, bool pressed, int index)
 {
     // no need any action when bluetooth keyboard is not connected
     if (!bleKeyboard.isConnected())
