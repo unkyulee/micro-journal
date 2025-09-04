@@ -6,6 +6,7 @@
 #include "app/FileSystem/FileSystemSD.h"
 #include "app/FileSystem/FileSystemSPIFFS.h"
 #include "service/Sync/Sync.h"
+#include "service/Send/Send.h"
 #endif
 
 #ifdef BOARD_PICO
@@ -113,6 +114,9 @@ void app_loop()
 
 #ifdef BOARD_ESP32_S3
     sync_loop();
+
+    // SEND background task loop
+    send_loop();
 #endif
 
 #ifdef REV5

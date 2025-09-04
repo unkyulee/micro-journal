@@ -144,11 +144,6 @@ void ble_init(const char *name)
         NimBLEDevice::init(name);
 
         //
-        NimBLEDevice::setSecurityAuth(true, true, true); // bonding + MITM + SC
-        // NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_YESNO); // or NO_INPUT_OUTPUT if headless
-        // NimBLEDevice::setSecurityPasskey(123456);                // optional, only if your keyboard needs it
-
-        //
         ble_init_done = true;
     }
 }

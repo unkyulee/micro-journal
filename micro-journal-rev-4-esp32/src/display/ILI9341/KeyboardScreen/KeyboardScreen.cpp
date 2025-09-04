@@ -5,6 +5,10 @@
 #include "keyboard/keyboard.h"
 
 //
+#include "service/Editor/Editor.h"
+#include "service/Send/Send.h"
+
+//
 #include <NimBLEDevice.h>
 #include <BleKeyboard.h>
 
@@ -23,28 +27,54 @@ int _usb_keyboard_layers[3][48] = {
      KEY_ESC, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
      '\t', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_RIGHT_SHIFT,
-     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW, '\n'},
+     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ', KEY_LEFT_ARROW, KEY_DOWN_ARROW, KEY_UP_ARROW, KEY_RIGHT_ARROW, '\n'},
 
-     {// lower
+    {// lower
      KEY_ESC, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', KEY_DELETE,
      '`', 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_RIGHT_SHIFT,
-     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
+     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ', KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
 
     {// raise
      KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12,
      '\\', 'a', 's', 'd', 'f', 'g', 'h', 'j', '-', '=', '[', ']',
      KEY_LEFT_SHIFT, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', KEY_PRTSC,
-     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ',  KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
+     KEY_LEFT_CTRL, KEY_LEFT_GUI, KEY_LEFT_ALT, KEY_F23, KEY_F24, ' ', ' ', KEY_HOME, KEY_PAGE_DOWN, KEY_PAGE_UP, KEY_END, '\n'},
 
-    
 };
+
+// function reference used for SEND
+void _send_key(int key)
+{
+    _debug("_send_key: %d\n", key);
+
+    // If needed, convert line endings
+    char c = (char)key;
+    if (c == '\n')
+    {
+        bleKeyboard.press('\n');
+        delay(5);
+        bleKeyboard.release('\n');
+    }
+    else if (isPrintable(c) || c == '\t') // Avoid sending non-printable control characters
+    {        
+        bleKeyboard.press(c);
+        delay(5);
+        bleKeyboard.release(c);
+    }
+
+    // BLE requires delay per key press to be stable
+    delay(10);
+}
 
 //
 void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     // clear screen
     ptft->fillScreen(TFT_BLACK);
+
+    // register send function
+    send_register(_send_key);
 
     // reset flags
     keyboardConnectedPrev = -1;
@@ -120,6 +150,10 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
     if (!bleKeyboard.isConnected())
         return;
 
+    // any key pressed is going to stop sending text
+    JsonDocument &app = status();
+    app["send_stop"] = true;
+
     // take the index and find the mapping key
     key = _usb_keyboard_layers[0][index];
 
@@ -146,9 +180,11 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
     // if send is activated
     if (send == 2)
     {
-        // move over the text
-        send = 0;
-        KeyboardScreen_copy();
+        // request SEND to background task
+        app["task"] = "send_start";
+        app["send_stop"] = false;
+        app["send_finished"] = false;
+
         return;
     }
 
@@ -186,6 +222,26 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
     if (key == 0)
         return;
 
+    // Check for Macro Keys
+    if (key >= 2000 && key <= 2100)
+    {
+        // run macro when key is released
+        if (!pressed)
+        {
+            int macroIndex = key - 2000;
+            String key = format("MACRO_%d", macroIndex);
+            _log("Macro Key Clicked: %d\n", macroIndex);
+            if (app[key].is<String>())
+            {
+                String macroString = app[key].as<String>();
+                _debug(macroString.c_str());
+                KeyboardScreen_play(macroString);
+            }
+        }
+
+        return;
+    }
+
     //
     /////////////
     if (pressed)
@@ -194,37 +250,44 @@ void KeyboardScreen_keyboard(char key, bool pressed, int index)
         bleKeyboard.release(key);
 }
 
-void KeyboardScreen_copy()
+void KeyboardScreen_play(String macro)
 {
-    File file = gfs()->open(Editor::getInstance().fileName.c_str(), "r");
-    if (!file || !file.available())
+    int start = 0;
+    while (start < macro.length())
     {
-        _log("KeyboardScreen_copy: Failed to open file\n");
-        return;
-    }
+        int end = macro.indexOf(',', start);
+        if (end == -1)
+            end = macro.length();
 
-    _log("Sending file content over BLE keyboard...\n");
+        String token = macro.substring(start, end);
+        token.trim(); // remove spaces
 
-    // Read file content in small chunks
-    while (file.available())
-    {
-        char c = file.read();
-
-        // If needed, convert line endings
-        if (c == '\n')
+        if (token.startsWith("!PRESS_"))
         {
-            bleKeyboard.write(KEY_RETURN);
+            String keyName = token.substring(7); // after "!PRESS_"
+            int keyCode = keyboard_convert_HID(keyName);
+            if (keyCode != 0)
+                bleKeyboard.press(keyCode);
         }
-        else if (isPrintable(c) || c == '\t') // Avoid sending non-printable control characters
+        else if (token.startsWith("!RELEASE_"))
         {
-            bleKeyboard.print(c);
+            String keyName = token.substring(9); // after "!RELEASE_"
+            int keyCode = keyboard_convert_HID(keyName);
+            if (keyCode != 0)
+                bleKeyboard.release(keyCode);
+        }
+        else
+        {
+            int keyCode = keyboard_convert_HID(token);
+            if (keyCode != 0)
+            {
+                bleKeyboard.press(keyCode);
+                delay(30); // small delay for reliability
+                bleKeyboard.release(keyCode);
+            }
         }
 
-        // Small delay to prevent buffer overflow
-        delay(15); // You can tweak this as needed
+        start = end + 1;
+        delay(30); // delay between each token
     }
-
-    file.close();
-
-    _log("KeyboardScreen_copy: File sent.\n");
 }

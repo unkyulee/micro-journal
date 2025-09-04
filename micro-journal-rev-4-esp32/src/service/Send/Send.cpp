@@ -63,7 +63,7 @@ void send_start()
     while (file.available() && app["send_stop"].as<bool>() == false)
     {
         //
-        char c = file.read();
+        int c = file.read();
 
         // use the send function pointer to send
         if (send_func != nullptr)
