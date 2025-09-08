@@ -8,6 +8,16 @@ You will need 3D prints, in order to complete the build. There should be many 3d
 
 [Buy a DIY Kit](https://www.tindie.com/products/36190/)
 
+---
+
+## Video Guide
+
+* [Build Video](https://youtu.be/6zRsx2ufwUU)
+
+The full build process has been recorded. If you get stuck, the video may help clarify the trickier steps.
+
+---
+
 # Required Tools
 
 - You will need TORX T10H to handle Hex screws 

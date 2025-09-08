@@ -15,6 +15,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Features and Introduction of Micro Journal Rev.6](https://youtu.be/1ZP9wwYMaMY)
 * [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
+* [Build Video](https://youtu.be/6zRsx2ufwUU)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 ## Resources
