@@ -4,6 +4,9 @@
 #include "display/display.h"
 
 //
+#include "hardware/watchdog.h"
+
+//
 void Storage_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     //
@@ -53,6 +56,9 @@ void Storage_keyboard(char key, bool pressed)
             //
             if (app["massStorageStarted"].as<bool>() == false)
                 break;
+
+            // RESTART
+            watchdog_reboot(0, 0, 0);
 
             //
             delay(100);
