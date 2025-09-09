@@ -142,6 +142,7 @@ void ble_init(const char *name)
 
         // Start the BLEDevice
         NimBLEDevice::init(name);
+        NimBLEDevice::setSecurityAuth(true, true, true); // bonding + MITM + SC
 
         //
         ble_init_done = true;

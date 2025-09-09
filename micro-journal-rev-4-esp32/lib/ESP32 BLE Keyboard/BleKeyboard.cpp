@@ -109,8 +109,6 @@ void BleKeyboard::begin(void)
 	hid->setHidInfo(0x00, 0x01);
 
 	NimBLEDevice::setSecurityAuth(true, true, true);
-	NimBLEDevice::setSecurityPasskey(123456);				 // 6-digit passkey
-	NimBLEDevice::setSecurityIOCap(BLE_HS_IO_DISPLAY_YESNO); // ESP32 can display & confirm
 
 	hid->setReportMap((uint8_t *)_hidReportDescriptor, sizeof(_hidReportDescriptor));
 	hid->startServices();
@@ -120,6 +118,9 @@ void BleKeyboard::begin(void)
 	advertising = pServer->getAdvertising();
 	advertising->setAppearance(HID_KEYBOARD);
 	advertising->addServiceUUID(hid->getHidService()->getUUID());
+
+	advertising->setName(deviceName);
+
 	// advertising->setScanResponseData(false);
 	advertising->start();
 	hid->setBatteryLevel(batteryLevel);
