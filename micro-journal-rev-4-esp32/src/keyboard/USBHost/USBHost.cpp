@@ -43,6 +43,9 @@ class MyEspUsbHost : public EspUsbHost
                report.keycode[4],
                report.keycode[5]);
 
+        // forward the report
+        USBHost_report(report.modifier, report.reserved, report.keycode);
+
         // Copy the report into a local struct
         UsbHidReport r;
         r.modifier = report.modifier;

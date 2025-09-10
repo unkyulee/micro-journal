@@ -32,6 +32,10 @@ void _log(const char *format, ...)
 
     // Print to Serial
     Serial.printf("[%d][%d] %s", COREID, millis(), message);
+
+#if defined(REV7)
+    Serial1.printf("[%d][%d] %s", COREID, millis(), message);
+#endif
 }
 
 //
@@ -39,7 +43,7 @@ void _log(const char *format, ...)
 //
 void _debug(const char *format, ...)
 {
-#ifdef DEBUG
+#if defined(DEBUG)
     // Buffer to hold the formatted message
     // Adjust the size according to your needs
     char message[1024];

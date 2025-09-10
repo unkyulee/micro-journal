@@ -39,6 +39,11 @@ void app_setup()
 {
     // Setup Serial Communication
     Serial.begin(115200);
+#if defined(REV7)
+    const int RX_PIN = 45;
+    const int TX_PIN = 48;
+    Serial1.begin(115200, SERIAL_8N1, RX_PIN, TX_PIN);
+#endif
     _log("Setting Baud Rate: %d\n", 115200);
 
     // File System Check
