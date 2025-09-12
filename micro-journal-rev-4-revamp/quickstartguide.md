@@ -7,6 +7,8 @@ The device works right away with a USB-C cable, but you can also install three A
 If you don't want to read everything, here's the one (or two) thing to remember:
 * **Click the knob once to switch between Keyboard mode and writerDeck mode.**
 * **Press and hold (1 second) to open the Menu.**
+* You should be able to get into any of the filespaces by holding Alt and pressing the number keys 1-0 in writerDeck mode.
+
 
 ---
 
