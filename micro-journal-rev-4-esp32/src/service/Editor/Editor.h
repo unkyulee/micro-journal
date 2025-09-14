@@ -10,8 +10,8 @@ class Editor
 {
 public:
     // Text Buffer
-    char buffer[BUFFER_SIZE+100];
-   
+    char buffer[BUFFER_SIZE + 100];
+
     // Saved Status
     bool saved = true;
 
@@ -32,7 +32,7 @@ public:
     // Each line starting point is saved in this array
     char *linePositions[BUFFER_SIZE + 2];
 
-    // Length of each line 
+    // Length of each line
     int lineLengths[BUFFER_SIZE + 2];
 
     // Total number of lines in the buffer
@@ -44,7 +44,7 @@ public:
     // Which line the cursor is placed
     int cursorLine = 0;
 
-    // Cursor position within the line 
+    // Cursor position within the line
     int cursorLinePos = 0;
 
     // Word Counter File
@@ -60,6 +60,9 @@ public:
     void saveFile();
     void clearFile();
 
+    //
+    bool savingInProgress = false;
+
     // Handle Keyboard Inputs
     void keyboard(int key, bool pressed);
     char lastKey = 0;
@@ -67,7 +70,7 @@ public:
     unsigned long repeatInterval = 80; // ms between repeats
     unsigned long repeatDelay = 300;   // ms before repeat starts
     bool backSpacePressed = false;
-    
+
     //
     int getBufferSize() { return strlen(buffer); }
     void resetBuffer() { memset(buffer, '\0', sizeof(buffer)); }
@@ -77,10 +80,9 @@ public:
     void removeLastChar();
     void removeCharAtCursor();
     void removeLastWord();
-    
-    // 
-    void updateScreen();
 
+    //
+    void updateScreen();
 
     //////////////////////////////////
     // SINGLETON PATTERN

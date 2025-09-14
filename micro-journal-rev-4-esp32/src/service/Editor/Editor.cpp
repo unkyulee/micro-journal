@@ -21,6 +21,9 @@ void Editor::init(int cols, int rows)
     resetBuffer();
     updateScreen();
 
+    //
+    savingInProgress = false;
+
     // You can add any additional setup logic here
     _log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
 }
@@ -29,6 +32,12 @@ void Editor::init(int cols, int rows)
 // initialize FileBuffer and ScreenBuffer
 void Editor::loadFile(String fileName)
 {
+    if (savingInProgress)
+    {
+        _log("Save is is progress. Load file skipped\n");
+        return;
+    }
+
     // app status
     JsonDocument &app = status();
 
@@ -159,11 +168,9 @@ void Editor::loadFile(String fileName)
 
     //
     config_save();
-
 }
 
-//
-bool savingInProgress = false;
+
 
 void Editor::saveFile()
 {
@@ -200,7 +207,7 @@ void Editor::saveFile()
     }
 
     //
-    _log("Saving file %s\n", fileName);
+    _log("Saving file %s\n", fileName.c_str());
     File file = gfs()->open(fileName.c_str(), "w");
     if (!file)
     {
@@ -281,6 +288,12 @@ void Editor::saveFile()
 // Make the current file empty
 void Editor::clearFile()
 {
+    if (savingInProgress)
+    {
+        _log("Save is is progress. Clear file skipped\n");
+        return;
+    }
+
     //
     JsonDocument &app = status();
 
