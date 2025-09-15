@@ -37,7 +37,7 @@ void keypad_load_config(String filename, int *layers, int size, const char **key
         {
             //
             app["error"] = format("%s not in a correct json form: %s\n", filename.c_str(), error.c_str());
-            //app["screen"] = ERRORSCREEN;
+            // app["screen"] = ERRORSCREEN;
 
             //
             _log(app["error"]);
@@ -98,9 +98,12 @@ int keypad_convert_wp_keys(String key)
         else if (key == "SHIFT")
             return 14;
 
+        else if (key == "ALT")
+            return 17;
+
         else if (key == "LOWER")
             return 17;
-        
+
         else if (key == "RAISE")
             return 24;
 
