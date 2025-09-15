@@ -826,7 +826,7 @@ void Editor::updateScreen()
     _debug("Editor::updateScreen cursorPos: %d\n", cursorPos);
 }
 
-void Editor::addChar(char c)
+void Editor::addChar(int c)
 {
     int bufferSize = getBufferSize();
     if (bufferSize < BUFFER_SIZE)
@@ -839,7 +839,7 @@ void Editor::addChar(char c)
         buffer[cursorPos++] = c;
         buffer[++bufferSize] = '\0';
 
-        _debug("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
+        _log("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
     }
 }
 

@@ -82,7 +82,7 @@ public:
     void resetBuffer() { memset(buffer, '\0', sizeof(buffer)); }
 
     //
-    void addChar(char c);
+    void addChar(int c);
     void removeLastChar();
     void removeCharAtCursor();
     void removeLastWord();

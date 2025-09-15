@@ -71,6 +71,7 @@ void send_start()
 
         // Small delay to prevent buffer overflow
         delay(5); // You can tweak this as needed
+        yield();
     }
     //
     file.close();

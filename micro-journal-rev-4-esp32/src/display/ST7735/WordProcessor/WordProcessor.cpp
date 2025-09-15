@@ -253,6 +253,23 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     pu8f->setCursor(screen_width - font_width / 2, font_width * 2 / 3);
     pu8f->print(String(file_index));
 
+#ifdef DEBUG
+    int small_font_width = 10;
+    int bufferSize = Editor::getInstance().getBufferSize();
+    String bufferStr = String(bufferSize);
+    // Calculate x position so it's right-aligned
+    int textWidth = bufferStr.length() * small_font_width;
+    int x = screen_width - textWidth - 2;     // 2px padding
+    int y = screen_height; // near bottom of the screen
+
+    // Clear background where buffer size will be drawn
+    ptft->fillRect(x - 2, y - 2, textWidth + 4, small_font_width + 4, app["config"]["background_color"].as<uint16_t>());
+
+    // Draw buffer size
+    pu8f->setCursor(x, y);
+    pu8f->print(bufferStr);
+#endif
+
     // height 100% 80
     float batteryPercent = app["battery"].as<float>();
     int height = 80 * batteryPercent / 100.0;
