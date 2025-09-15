@@ -22,6 +22,7 @@ void keypad_load_config(String filename, int *layers, int size, const char **key
         //
         String fileString = file.readString();
         file.close();
+        delay(100);
 
         //
         _debug(fileString.c_str());
@@ -74,6 +75,7 @@ void keypad_load_config(String filename, int *layers, int size, const char **key
 
         // Close the file
         file.close();
+        delay(100);
     }
 }
 

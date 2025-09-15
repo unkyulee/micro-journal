@@ -141,6 +141,7 @@ bool gif_load(String filename)
 
         // Close the file
         file.close();
+        delay(100);
 
         // gif loading success
         return true;
@@ -184,6 +185,7 @@ bool gif_load(String filename)
 
         // Close the file
         file.close();
+        delay(100);
 
         // gif loading success
         return true;

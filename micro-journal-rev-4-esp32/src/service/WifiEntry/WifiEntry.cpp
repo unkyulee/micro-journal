@@ -138,6 +138,7 @@ void wifi_config_load()
         String wifiString = file.readString();
         _log("Closing wifi.json file\n");
         file.close();
+        delay(100);
 
         // check if configString is empty
         if (wifiString.isEmpty())
@@ -219,4 +220,5 @@ void wifi_config_save()
 
     // close config.json
     file.close();
+    delay(100);
 }

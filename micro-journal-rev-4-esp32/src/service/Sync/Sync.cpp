@@ -262,6 +262,7 @@ void sync_send()
     {
         //
         inputFile.close();
+        delay(100);
 
         //
         sync_stop();
@@ -291,7 +292,9 @@ void sync_send()
     }
     //
     inputFile.close();
+    delay(100);
     outputFile.close();
+    delay(100);
 
     //
     app["sync_message"] = "Sending file to drive ... ";
@@ -335,6 +338,7 @@ void sync_send()
 
         // Close file
         file.close();
+        delay(100);
 
         //
         sync_stop();

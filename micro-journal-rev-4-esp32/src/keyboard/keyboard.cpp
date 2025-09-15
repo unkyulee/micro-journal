@@ -121,6 +121,7 @@ void keyboard_config_load(
     //
     String fileString = file.readString();
     file.close();
+    delay(100);
 
     //
     _debug(fileString.c_str());

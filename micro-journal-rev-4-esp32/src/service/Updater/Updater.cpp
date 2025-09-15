@@ -71,4 +71,5 @@ void run_firmare_update(const char* filename)
 
     // Close firmware file
     firmwareFile.close();
+    delay(100);
 }

@@ -76,6 +76,7 @@ void Editor::loadFile(String fileName)
 
         //
         file.close();
+        delay(100);
 
         //
         _debug("File created. %s\n", fileName.c_str());
@@ -122,11 +123,14 @@ void Editor::loadFile(String fileName)
             seekPos = 0;
     }
 
+    _log("File seekPos: %d\n", seekPos);
+
     // move the file position to offset
     if (!file.seek(seekPos))
     {
         //
         file.close();
+        delay(100);
 
         //
         app["error"] = format("Failed to seek file pointer. fileSize: %d seekPos: %d\n", fileSize, seekPos);
@@ -149,6 +153,7 @@ void Editor::loadFile(String fileName)
 
     //
     file.close();
+    delay(100);
 
     // log
     _debug("Editor::loadFile size: %d, seek: %d, buffer: %d, cursor: %d\n",
@@ -226,6 +231,8 @@ void Editor::saveFile()
     {
         _log("Failed to seek file pointer\n");
         file.close();
+        delay(100);
+
         savingInProgress = false;
         return;
     }
@@ -246,6 +253,7 @@ void Editor::saveFile()
 
     //
     file.close();
+    delay(100);
 
     // recalculate the file size
     // calculate the file size
@@ -269,6 +277,7 @@ void Editor::saveFile()
 
     //
     file.close();
+    delay(100);
 
     // update word count
     int file_index = app["config"]["file_index"].as<int>();
@@ -353,6 +362,7 @@ void Editor::clearFile()
 
     // clean up file
     file.close();
+    delay(100);
 
     // Go through the loading process of the empty file
     loadFile(fileName);
@@ -387,6 +397,10 @@ void Editor::keyboard(int key, bool pressed)
 
     //
     _debug("Editor::keyboard:: %c [%d] pressed: %d cursorPos: %d\n", key, key, pressed, cursorPos);
+
+#ifdef DEBUG
+    _debug("Buffer: %d\n", getBufferSize());
+#endif
 
     // when any key is pressed track the last key pressed and if they don't release
     // keep issueing press events so that it keeps on typing on the screen
