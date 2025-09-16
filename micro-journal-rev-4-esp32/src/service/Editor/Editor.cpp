@@ -175,8 +175,6 @@ void Editor::loadFile(String fileName)
     config_save();
 }
 
-
-
 void Editor::saveFile()
 {
     if (savingInProgress)
@@ -213,7 +211,13 @@ void Editor::saveFile()
 
     //
     _log("Saving file %s\n", fileName.c_str());
-    File file = gfs()->open(fileName.c_str(), "w");
+    File file = gfs()->open(fileName.c_str(), "r+"); // read/write, no truncate
+    if (!file)
+    {
+        // If file doesn't exist, create it
+        file = gfs()->open(fileName.c_str(), "w+"); // create + read/write
+    }
+    
     if (!file)
     {
         //
