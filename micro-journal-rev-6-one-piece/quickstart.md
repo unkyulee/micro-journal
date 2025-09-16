@@ -6,7 +6,7 @@
 
 When you receive the Micro Journal Rev.6, you need to first install a battery. Please, follow the steps below to complete the setup.
 
-If you want to test the device without a battery, plug into the ESP32 UART port (Left-hand side) and the device will run without battery installation. Do not plug the charging cable on the right-hand side without a battery. Can be ok for some time (less than 10 minutes) but not too long without a battery. 
+If you want to test the device without a battery, plug into the ESP32 USB port (Left-hand side, further from the keyboard) and the device will run without battery installation. Do not plug the charging cable on the right-hand side without a battery. Can be ok for some time (less than 10 minutes) but not too long without a battery. 
 
 You will also need TORX T10H hex screw driver in order to open up the display lid in order to place the battery
 
