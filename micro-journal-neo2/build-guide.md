@@ -9,7 +9,7 @@ Fortunately, you won't need advanced skills to complete the build. **No solderin
 I offer a kit with all screws and heat inserts pre-installed to simplify assembly.
 Buying from my shop supports this project and allows me to continue this project. However, it is an open source project and all the design files are free and open for anyone to print for themselves.
 
-[Tindie Shop Link goes here.]
+[Buy the KIT from my Tindie Store](https://www.tindie.com/products/unkyulee/alphasmart-neo2-desktop-typewriter-transform-kit/)
 
 ---
 
