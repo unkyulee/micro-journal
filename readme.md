@@ -10,9 +10,10 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 | Date       | Revision                                                      | Preview                                                                        |
 | ---------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 2025-07-26 | **[Rev.4.Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/001.png" width="200">            |
+| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)**     | <img src="./micro-journal-neo2/images/001.jpg" width="200">            |
+| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/001.png" width="200">            |
 | 2025-01-30 | **[Rev.7](/micro-journal-rev-2-revamp/readme.md)**            | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
-| 2024-09-17 | **[Rev.2.Revamp](/micro-journal-rev-2-revamp/readme.md)**     | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
+| 2024-09-17 | **[Rev.2 Revamp](/micro-journal-rev-2-revamp/readme.md)**     | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
 | 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**         | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
 | 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**     | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">     |
 | 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**             | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">               |
@@ -38,6 +39,11 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 * **[Rev.7](/micro-journal-rev-2-revamp/readme.md)** – An ESP32-based an e-ink writing device with a built-in keyboard. Optimized for comfort, it offers an easy-on-the-eyes experience and works beautifully in bright environments thanks to its paper-like e-ink display.
 
+
+## Extra Projects
+
+
+* **[AlphaSmart Neo2 Desktop TypeWriter Conversion Kit](/micro-journal-neo2/readme.md)** – Transform your AlphaSmart Neo2 into a beautiful desktop typewriter with this custom-designed enclosure.  
 
 
 

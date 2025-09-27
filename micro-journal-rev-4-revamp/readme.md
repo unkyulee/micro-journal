@@ -24,7 +24,7 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [User Manual for the Micro Journal written by Hook](./user-manual.md)
 
 
-## Resources
+### Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 * [Firmware Source Code](../micro-journal-rev-4-esp32/)
@@ -41,8 +41,6 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
 * [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
-
-### Press
 
 
 
