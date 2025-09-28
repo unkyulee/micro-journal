@@ -14,7 +14,7 @@ If you don't want to read everything, here's the one (or two) thing to remember:
 
 ## Things to Prepare
 
-* **One USB-C cable** – required to connect the device to a computer.
+* **One USB-C cable** – required to connect the device to a computer. Make sure that it is a data cable, not just a charging cable.
 * **Three AAA NiMH rechargeable batteries** – optional, but recommended for portable use.
   ⚠️ *Only use rechargeable NiMH batteries. Do not use regular disposable batteries.*
 
