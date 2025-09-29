@@ -44,21 +44,22 @@ Disassemble your Neo2 using precision screwdrivers with star-shaped (TORX) bits.
 
 ### Display Module
 
-[Image of display module with screws goes here]
+<img src="./images/008.png" width="600px" />
 
 * Slide the display module into the printed enclosure.  
 * **Do not overtighten screws!** Leave a small gap so the display bracket floats freely. Tightening too much can bend or damage the display.
 
 ### Keyboard Module
 
-[Image of keyboard module goes here]
+<img src="./images/007.png" width="600px" />
 
 * No modifications needed for the keyboard PCB.  
 * Optional: reinforce angled film cables with tape to reduce stress and prevent damage.
 
 ### PCB & Battery
 
-[Image of PCB module goes here]
+<img src="./images/006.png" width="600px" />
+
 
 * Replace the original battery clips with a AAA battery holder.  
 * Extend the black wire and connect the wires (black to black, red to red), then insulate with tape.  
@@ -80,12 +81,32 @@ Disassemble your Neo2 using precision screwdrivers with star-shaped (TORX) bits.
 Watch [video instructions](https://youtu.be/ckPTIjm1Qb4?si=EI0IFE9el5tizdBq&t=224) for step order.
 
 1. Thread the keyboard film cable through the right-side compartment.  
+
+<img src="./images/009.png" width="600px" />
+
 2. Apply double-sided tape to the middle-bottom of the keyboard only (avoid left/right edges for disassembly).  
+
+<img src="./images/011.png" width="600px" />
+
 3. Place the PCB with smooth surface facing front. Expose USB and power ports at the top. Use 4x 5mm M3 screws to secure.  
+
+<img src="./images/010.png" width="600px" />
+
 4. Install side panels and display module. Ensure cables are at the bottom. Lock all three panels in place with correctly sized M3 screws.
+
+<img src="./images/012.png" width="600px" />
+
 5. Flip the case and attach keyboard and display cables to PCB connectors.  
+
+<img src="./images/013.png" width="600px" />
+
 6. Test power-on and key registration.  
+   
+<img src="./images/014.png" width="600px" />
+
 7. Close PCB cover and secure with 10mm M3 screws.
+
+<img src="./images/015.png" width="600px" />
 
 ---
 
