@@ -60,6 +60,7 @@ Disassemble your Neo2 using precision screwdrivers with star-shaped (TORX) bits.
 
 <img src="./images/006.png" width="600px" />
 
+**Important:** The coin battery is what prevents you form losing data when you change batteries. It may also preserve settings. The battery needs to be changed out every 5 to 7 years. Consider replacing the coin cell battery before installing the PCB to the new enclosure.
 
 * Replace the original battery clips with a AAA battery holder.  
 * Extend the black wire and connect the wires (black to black, red to red), then insulate with tape.  
