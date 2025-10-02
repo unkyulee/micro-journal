@@ -87,6 +87,8 @@ To connect to a WiFi network, follow these steps:
 4. Enter the **SSID** (name) of your WiFi network.
 5. Enter the **password** for your WiFi network.
 
+Make sure that the wifi system is in 2.4 Ghz. 
+Also, try to seting the WiFi country. 5 Localisation Options -> L4 WLAN Country
 
 ---
 
