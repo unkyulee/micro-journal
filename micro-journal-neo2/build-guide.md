@@ -42,6 +42,10 @@ Print orientation is important for quality. Front-facing surfaces should be smoo
 
 Disassemble your Neo2 using precision screwdrivers with star-shaped (TORX) bits.  
 
+Here is a video where you can follow to disassemble your AlphaSmart Neo2
+
+https://www.youtube.com/watch?v=RzWr7zDEymY
+
 ### Display Module
 
 <img src="./images/008.png" width="600px" />
