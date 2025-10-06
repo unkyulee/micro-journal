@@ -832,7 +832,7 @@ void Editor::addChar(int c)
         buffer[cursorPos++] = c;
         buffer[++bufferSize] = '\0';
 
-        _log("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
+        _debug("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
     }
 }
 
