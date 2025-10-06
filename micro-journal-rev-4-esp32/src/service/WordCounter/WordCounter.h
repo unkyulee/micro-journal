@@ -1,5 +1,8 @@
 #pragma once
 
+//
+void wordcounter_service();
+
 // counts word count until the last buffer
 int wordcounter_file(const char* filename);
 

@@ -283,14 +283,6 @@ void Editor::saveFile()
     file.close();
     delay(100);
 
-    // update word count
-    int file_index = app["config"]["file_index"].as<int>();
-    app["config"][format("wordcount_file_%d", file_index)] = wordCountFile;
-    app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
-
-    //
-    config_save();
-
     // flag to save
     this->saved = true;
 
@@ -672,9 +664,6 @@ void Editor::keyboard(int key, bool pressed)
 
         // update the screen buffer
         updateScreen();
-
-        // update the word count
-        wordCountBuffer = wordcounter_buffer(buffer);
     }
 }
 

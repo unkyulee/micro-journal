@@ -1,7 +1,43 @@
 #include "WordCounter.h"
 #include "app/app.h"
 #include "display/display.h"
+
+//
 #include "service/Editor/Editor.h"
+
+void wordcounter_service()
+{
+    static unsigned int last = 0;
+    static unsigned int buffer_count_prev = 0;
+    if (millis() > 10000 + last)
+    {
+        last = millis();
+
+        // check if the file is not saved then run the word count logic
+        JsonDocument &app = status();
+
+        //
+        unsigned int buffer_count = Editor::getInstance().getBufferSize();
+        if (buffer_count_prev != buffer_count)
+        {
+            //
+            buffer_count_prev = buffer_count;
+
+            //
+            _log("[wordcounter_service] word count buffer\n");
+
+            // update the word count
+            Editor::getInstance().wordCountBuffer = wordcounter_buffer(Editor::getInstance().buffer);
+
+            // update the word count in config
+            int file_index = app["config"]["file_index"].as<int>();
+            app["config"][format("wordcount_buffer_%d", file_index)] = Editor::getInstance().wordCountBuffer;
+
+            //
+            config_save();
+        }
+    }
+}
 
 // 28.7.2025
 // Credit to one of the forks from "frankfurtsky"

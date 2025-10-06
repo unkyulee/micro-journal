@@ -2,6 +2,9 @@
 #include "app.h"
 #include "display/display.h"
 
+//
+#include "service/WordCounter/WordCounter.h"
+
 #ifdef BOARD_ESP32_S3
 #include "app/FileSystem/FileSystemSD.h"
 #include "app/FileSystem/FileSystemSPIFFS.h"
@@ -104,6 +107,8 @@ void app_loop()
         delay(100);
         return;
     }
+
+    wordcounter_service();
 
 #ifdef BOARD_PICO
     // Mass Storage Control Loop
