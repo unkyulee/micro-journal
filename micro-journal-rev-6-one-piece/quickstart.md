@@ -33,6 +33,8 @@ Please, note that when buying the battery, try to buy from a well known brand. O
 
 [Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
 
+* [This Battery Works, Flat-top (US)](https://www.amazon.com/gp/aw/d/B0CPBGDP1H)
+
 
 # Battery Indicator User Mod
 
