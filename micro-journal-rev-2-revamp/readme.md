@@ -30,7 +30,7 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 * [Features and Introduction of Rev.2.ReVamp](https://youtu.be/IFmGwKtGXtQ)
 * [YouTube Playlist of Micro Journal Rev.2](https://www.youtube.com/playlist?list=PLrUXYLEnAaNT0CIosMtjWOvH9Gst3Qet7)
-
+* [Build Video](https://youtu.be/9_q-0jBzJVo)
 
 
 ### Community

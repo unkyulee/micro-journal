@@ -34,7 +34,7 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 ### Videos
 
 * [YouTube Playlist of Micro Journal Rev.4](https://www.youtube.com/playlist?list=PLrUXYLEnAaNRAbBpNLji7nE78z-edy8Na)
-
+* [Build Video](https://youtu.be/6Jh86PdquAY)
 
 ### Community
 

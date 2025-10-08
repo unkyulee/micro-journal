@@ -9,8 +9,7 @@ You'll also need access to 3D-printed parts to complete the build. Many 3D print
 
 - Build Time: 4 ~ 6 hours
 - Basic level of soldering is required to complete the build
-
-[Buy a DIY Kit](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-all-components/)
+- [Buy a DIY Kit](https://www.tindie.com/stores/unkyulee/)
 
 # System Architecture
 
@@ -42,7 +41,7 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 
 - [LILYGO T5 e-Paper](https://lilygo.cc/products/t5-4-7-inch-e-paper-v2-3)
 - Raspberry Pi Pico (rp2040)
-- [69 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
+- [69 Keyboard PCB](https://www.tindie.com/products/unkyulee/diy-kit-keyboard-pcb/)
 - Micro SD card minimum 8 GB
 
 - 12x M3 Heated Inserts OD 4.5mm Length 3mm
