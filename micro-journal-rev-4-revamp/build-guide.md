@@ -202,3 +202,21 @@ Once assembly is complete, it’s time to flash the firmware.
 - Open the folder “micro-journal-rev-4-esp32” in VS Code.
 - Connect your device to the PC via USB.
 - Upload the Rev.4 firmware.
+
+
+
+
+### Keyboard Stabilizer
+
+Installing keyboard switches and keycaps are going to be rather a standard procedure. One thing that is a bit difficult is how to place the stabilizer. 
+
+<img src="build/022.jpg" width="600">
+
+Make sure to place the stabilzer as the picture above. Important to note that when those components are place it should not have tension and the wire should be moving up and down freely. 
+
+<img src="build/022.png" width="600">
+
+Make sure to place the component in the orientation as the above picture. 
+
+<img src="build/023.png" width="600">
+
