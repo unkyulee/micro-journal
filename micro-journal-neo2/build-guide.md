@@ -13,6 +13,15 @@ Buying from my shop supports this project and allows me to continue this project
 
 ---
 
+## Video Guide Step by Step
+
+- Step 1. [3D Prints Assembly](https://youtu.be/myslRnqBZu8)
+- Step 2. [AlphaSmart Neo2 Disassembly (Not Mine)](https://www.youtube.com/watch?v=RzWr7zDEymY)
+- Step 3. [Transform AlphaSmart Neo2](https://youtu.be/ckPTIjm1Qb4?si=wbaUMtP5fM4lTc7Y&t=224)
+
+
+---
+
 ## Bill of Materials
 
 * 3D printed parts (STL/3MF files in the GitHub repository)  
@@ -36,6 +45,9 @@ The design files can be found in the [STL folder](./STL) in the GitHub repositor
 
 Print orientation is important for quality. Front-facing surfaces should be smooth, while less visible parts can tolerate minor imperfections. The full build takes around **40 hours** and a significant amount of filament. Consider printing one part at a time to reduce risk of failed prints.
 
+Here is a video where it shows how to assemble the 3D printed enclosure
+- https://youtu.be/myslRnqBZu8
+
 ---
 
 ## Preparing the AlphaSmart Neo2
@@ -43,8 +55,7 @@ Print orientation is important for quality. Front-facing surfaces should be smoo
 Disassemble your Neo2 using precision screwdrivers with star-shaped (TORX) bits.  
 
 Here is a video where you can follow to disassemble your AlphaSmart Neo2
-
-https://www.youtube.com/watch?v=RzWr7zDEymY
+- https://www.youtube.com/watch?v=RzWr7zDEymY
 
 ### Display Module
 
