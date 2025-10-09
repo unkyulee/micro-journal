@@ -49,8 +49,7 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 * [The MagPi: Raspberry Pi Zero 2 W Micro Journal](https://www.raspberrypi.com/news/raspberry-pi-zero-2-w-micro-journal/)
 
 
-
-
 ### Online Shop
 
-* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [Buy Assembled Micro Journal Rev.2](https://www.tindie.com/products/unkyulee/micro-journal-rev2-mother-of-twins/)
+* [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev2/)

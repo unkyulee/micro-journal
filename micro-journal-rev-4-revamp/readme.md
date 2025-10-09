@@ -42,10 +42,8 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 
-
-
 ### Online Shop
 
-* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
-
+* [Buy Assembled Micro Journal Rev.4](https://www.tindie.com/products/unkyulee/micro-journal-rev4-captain-hook/)
+* [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev4/)
 

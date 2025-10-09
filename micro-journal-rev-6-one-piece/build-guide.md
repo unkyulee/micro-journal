@@ -6,7 +6,7 @@ You need to know how to solder in order to complete this guide. It doesn't requi
 
 You will need 3D prints, in order to complete the build. There should be many 3d printing services available. In case, you want to build you own, but having difficulty supplying the components, then contact me and I will try to find a way to send you a type of DIY-kit.
 
-- [Buy a DIY Kit](https://www.tindie.com/stores/unkyulee/)
+- [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev6/)
 
 ---
 
