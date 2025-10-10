@@ -53,11 +53,8 @@ Screen received mini HDMI interface. This display is almost exact the size of th
 - [48 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
 - [O-ring 10x5.2x2.4](https://www.aliexpress.com/item/1005002753756030.html)
 - [USB-C Female Port](https://it.aliexpress.com/item/1005007348932368.html)
-- [Micro USB Male Connector](https://it.aliexpress.com/item/33060931097.html)
 - 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html)
-- 1x [Micro USB cable - 4 pin Micro Male](https://www.aliexpress.com/item/1005004982855996.html)
-- [5mm SS12F15 Mini Size Black SPDT Slide Switch](https://www.aliexpress.com/item/1005007077815408.html)
-
+- 1x Micro USB male to USB type C cable
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
 - 50x Diode IN4148
 - 48x Kailih Hot-Swappable PCB socket Cherry MX Switches (CPG151101S11)
