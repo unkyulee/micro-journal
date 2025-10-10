@@ -51,5 +51,4 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 ### Online Shop
 
-* [Buy Assembled Micro Journal Rev.2](https://www.tindie.com/products/unkyulee/micro-journal-rev2-mother-of-twins/)
-* [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev2/)
+* [Buy Micro Journal Rev.2](https://www.tindie.com/products/unkyulee/micro-journal-rev2-mother-of-twins/)

@@ -18,7 +18,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Build Video](https://youtu.be/6zRsx2ufwUU)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
-## Resources
+### Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 * [Firmware Source Code](../micro-journal-rev-4-esp32/)

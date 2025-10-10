@@ -45,8 +45,6 @@ https://github.com/unkyulee/micro-journal/issues/21
 
 # SD CARD
 
-**SD card is included in this Micro Journal Rev. 6. You don't need to buy. Refer to this step only when you need to buy a new one**
-
 ![SD](./images/sd.jpg)
 
 Micro Journal Rev.6 takes a SD card. Try to buy lower capacity as possible. If the size is bigger than 32 GB... you need to setup a special partition to make it recognized in the Micro Journal Rev.6. I believe 1 GB should be more than enough. It will takee 8 years of typing to fill it up.
