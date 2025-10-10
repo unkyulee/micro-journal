@@ -110,7 +110,7 @@ Designed for on-the-go use without losing the mechanical keyboard sensation, the
 
 ### Usage Video 
 
-Please, watch the use case video in order to understand the features and most importantly, limitation of the device. This version of micro journal is focused on drafting. Also, the e-ink display presents delays and can be limiting for certain groups of people. Please, check the video to get the idea of the features.
+Please, watch the use case video in order to understand the features and most importantly, limitation of the device. This version of micro journal is focused on drafting. 
 
 * [Micro Journal Rev.6: Features and Use Cases](https://youtu.be/1ZP9wwYMaMY?si=DhKdnYWJZgzzs8p-)
 

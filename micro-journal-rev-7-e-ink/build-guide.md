@@ -54,11 +54,17 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 - 2x M2 HEx Screw Length 3mm
 
 - [LiPo Charger and Step Up Controller](https://www.aliexpress.com/item/1005006366996657.html)
-- [Battery Inidicator 1SLithium 4.2V](https://www.aliexpress.com/item/1005006350742151.html)
+
+- [Battery Inidicator 1S Lithium 4.2V](https://www.aliexpress.com/item/1005006350742151.html)
+
 - [18650 Battery Holder](https://www.aliexpress.com/item/1005005084346241.html)
+
+- [Type C to USB-C Slim 90 Angled Adapter straight- side bend](https://it.aliexpress.com/item/1005007531893239.html)
+
 - [2 Pin Round Snap Rocker Switch 0.65 inch](https://www.aliexpress.com/item/1005006005552235.html)
 
-- 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
+- 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) 
+  
 - [Spacebar Stabilizer 6.25](https://it.aliexpress.com/item/1005007119644385.html)
 
 - [B-7000 Glue](https://www.aliexpress.com/item/1005005379063116.html)

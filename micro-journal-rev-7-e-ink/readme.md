@@ -1,6 +1,6 @@
 ## Micro Journal Rev.7: Kindred Gift
 
-This is a distraction-free writing device with a paper-like display and a keyboard in a familiar, conventional form factor. Many have asked for a more traditional keyboard layout, and this version delivers. Powered by the ESP32-S3, it turns on instantly. Getting you into the writing flow in just a flicker of a second.
+This is a distraction-free writing device with a paper-like display and a keyboard in a typewriter form factor. Many have asked for a more traditional keyboard layout, and this version delivers. Powered by the ESP32-S3, it turns on instantly. Getting you into the writing flow in just a flicker of a second.
 
 <img src="./images/home.jpg" width="400">
 
@@ -12,7 +12,8 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [Quick Start Guide](./quickstart/readme.md)
 * [Build Guide](./build-guide.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
-* 
+
+
 ## Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
