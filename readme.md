@@ -11,7 +11,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 | Date       | Revision                                                      | Preview                                                                        |
 | ---------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)**     | <img src="./micro-journal-neo2/images/001.jpg" width="200">            |
-| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/001.png" width="200">            |
+| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
 | 2025-01-30 | **[Rev.7](/micro-journal-rev-7-e-ink/readme.md)**            | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
 | 2024-09-17 | **[Rev.2 Revamp](/micro-journal-rev-2-revamp/readme.md)**     | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
 | 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**         | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
