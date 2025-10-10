@@ -44,6 +44,5 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 
 ### Online Shop
 
-* [Buy Assembled Micro Journal Rev.4](https://www.tindie.com/products/unkyulee/micro-journal-rev4-captain-hook/)
-* [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev4/)
+* [Buy Micro Journal Rev.4](https://www.tindie.com/products/unkyulee/micro-journal-rev4-captain-hook/)
 

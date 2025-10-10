@@ -10,7 +10,7 @@ You'll also need access to 3D-printed parts to complete the build. Many 3D print
 
 - Build Time: 2 ~ 4 hours
 - Basic level of soldering is required to complete the build
-- [Buy a DIY Kit](https://www.tindie.com/stores/unkyulee/)
+* [Buy Micro Journal Rev.4 DIY Kit](https://www.tindie.com/products/unkyulee/micro-journal-rev4-captain-hook/)
 
 
 
