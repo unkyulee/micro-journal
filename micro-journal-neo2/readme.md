@@ -46,4 +46,4 @@ It's easy to assemble, satisfying to use. Most importantly, brings the AlphaSmar
 
 ### Online Shop
 
-* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/stores/unkyulee/)
+* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/products/unkyulee/alphasmart-neo2-desktop-typewriter-transform-kit/)
