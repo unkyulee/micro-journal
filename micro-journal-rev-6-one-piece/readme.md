@@ -56,5 +56,5 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 ### Online Shop
 
-* [Buy Assembled Micro Journal Rev.6](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
-* [Buy a DIY Kit](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev6/)
+* [Buy Micro Journal from UnKyu's Tindie Store](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
+

@@ -19,6 +19,7 @@ Buying from my shop supports this project and allows me to continue this project
 - Step 2. [AlphaSmart Neo2 Disassembly (Not Mine)](https://www.youtube.com/watch?v=RzWr7zDEymY)
 - Step 3. [Transform AlphaSmart Neo2](https://youtu.be/ckPTIjm1Qb4?si=wbaUMtP5fM4lTc7Y&t=224)
 
+- [Tips & Tricks](https://www.reddit.com/r/writerDeck/comments/1o5yeii/microjournal_neo2/) 
 
 ---
 

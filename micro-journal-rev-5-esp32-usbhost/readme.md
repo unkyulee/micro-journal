@@ -55,6 +55,5 @@ If you're curious about the technical journey — including the exploration of U
 
 ### Online Shop
 
-* [Order from Un Kyu's Tindie Shop](https://www.tindie.com/products/unkyulee/micro-journal-rev5-a-personal-journey/)
-* [DIY Kit - Micro Journal Rev.5](https://www.tindie.com/products/unkyulee/diy-kit-micro-journal-rev5/)
+* [Buy Micro Journal from UnKyu's Tindie Store](https://www.tindie.com/products/unkyulee/micro-journal-rev5-a-personal-journey/)
 
