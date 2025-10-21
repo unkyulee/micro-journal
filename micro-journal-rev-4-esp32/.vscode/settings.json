@@ -36,5 +36,6 @@
     "typeinfo": "cpp",
     "compare": "cpp",
     "cstdint": "cpp"
-  }
+  },
+  "cmake.ignoreCMakeListsMissing": true
 }
