@@ -21,7 +21,6 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [Feature and Use Case of Rev.4.ReVamp](https://youtu.be/C-KRcLu5P9o)
 * [Quick Start Guide](./quickstartguide.md)
 * [Build Guide](./build-guide.md)
-* [User Manual for the Micro Journal written by Hook](./user-manual.md)
 
 
 ### Resources
@@ -30,6 +29,12 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 * [Firmware Source Code](../micro-journal-rev-4-esp32/)
 * [Design Files](./STL)
 * [Keyboard PCB](../micro-journal-rev-7-e-ink/PCB/)  
+
+
+### Hook's Review
+
+* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+
 
 ### Videos
 

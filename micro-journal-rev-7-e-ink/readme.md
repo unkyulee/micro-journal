@@ -11,7 +11,6 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [Feature and Use Case of Rev.7](https://www.youtube.com/watch?v=lNPzFL1a6mI)
 * [Quick Start Guide](./quickstart/readme.md)
 * [Build Guide](./build-guide.md)
-* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 
 ## Resources
@@ -21,6 +20,11 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [Design Files](./STL)
 * [Keyboard PCB](./PCB)
 * [Rev.7 QMK-Vial Source Code](./keyboard/)
+* 
+### Hook's Review
+
+* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+
 
 ### Videos
 

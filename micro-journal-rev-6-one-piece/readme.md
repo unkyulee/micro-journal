@@ -16,7 +16,6 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
 * [Build Video](https://youtu.be/6zRsx2ufwUU)
-* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 ### Resources
 
@@ -25,6 +24,9 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Design Files](./STL)
 * [Keyboard PCB](./PCB)
 
+### Hook's Review
+
+* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 ### Tips and Tricks
 
