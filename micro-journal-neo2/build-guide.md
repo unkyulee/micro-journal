@@ -32,6 +32,7 @@ Buying from my shop supports this project and allows me to continue this project
 * 4x 40mm M3 Hex Screws  
 * 2x 60mm M3 Hex Screws  
 * 4x 70mm M3 Hex Screws  
+* As many M3 heat insert as the screws.
 * TORX T10H Screwdriver  
 * Precision Screwdriver Set (for Neo2 disassembly)  
 * Small piece of double-sided tape  
