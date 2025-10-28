@@ -136,7 +136,7 @@ uint8_t keyboard_keycode_ascii_fr(int keycode, bool shift, bool alt, bool presse
         return ascii;
 
     // go through precursor
-    if (!pressed)
+    if (pressed)
         ascii = keyboard_precursor_filter(ascii);
 
     // go through capslock filter

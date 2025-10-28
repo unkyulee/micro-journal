@@ -12,7 +12,7 @@ uint8_t hid_keycode_to_ascii_be[][4] = {
     {'c', 'C', 169, 162},  /* 0x06 */
     {'d', 'D', 0, 0},      /* 0x07 */
     {'e', 'E', 234, 202},  /* 0x08 */
-    {'f', 'F', 0, 183},      /* 0x09 */
+    {'f', 'F', 0, 183},    /* 0x09 */
     {'g', 'G', 0, 0},      /* 0x0a */
     {'h', 'H', 204, 206},  /* 0x0b */
     {'i', 'I', 238, 239},  /* 0x0c */
@@ -44,10 +44,10 @@ uint8_t hid_keycode_to_ascii_be[][4] = {
     {231, '9', 231, 225},  /* 0x26 */
     {224, '0', 248, 216},  /* 0x27 */
     {'\n', '\n', 0, 0},    /* 0x28 */
-    {27, 27, 27, 27},        /* 0x29 ESC */
+    {27, 27, 27, 27},      /* 0x29 ESC */
     {'\b', '\b', 0, 0},    /* 0x2a */
     {'\t', '\t', 0, 0},    /* 0x2b */
-    {' ', ' ', 160, 160},      /* 0x2c */
+    {' ', ' ', 160, 160},  /* 0x2c */
     {')', 176, '}', ']'},  /* 0x2d */
     {'-', '_', 151, 150},  /* 0x2e */
     {'^', 168, 244, 212},  /* 0x2f */
@@ -76,7 +76,7 @@ uint8_t hid_keycode_to_ascii_be[][4] = {
     {0, 0, 0, 0},       /* 0x45 */
     {0, 0, 0, 0},       /* 0x46 */
     {0, 0, 0, 0},       /* 0x47 */
-    {24, 24, 24, 24},       /* 0x48 PAUSE */
+    {24, 24, 24, 24},   /* 0x48 PAUSE */
     {0, 0, 0, 0},       /* 0x49 */
     {2, 0, 0, 0},       /* 0x4a */
     {22, 0, 0, 0},      /* 0x4b */
@@ -133,10 +133,11 @@ uint8_t keyboard_keycode_ascii_be(int keycode, bool shift, bool alt, bool presse
         return ascii;
 
     // go through precursor
-    ascii = keyboard_precursor_filter(ascii);
+    if (pressed)
+        ascii = keyboard_precursor_filter(ascii);
 
     // go through capslock filter
     ascii = keyboard_caplock_filter(ascii);
 
     return ascii;
-} 
+}

@@ -41,7 +41,7 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
       {"INT", [](uint8_t keycode, bool shift, bool alt, bool pressed)
        {
          int ascii = keyboard_keycode_ascii_us(keycode, shift);
-         if (!pressed)
+         if (pressed)
            ascii = keyboard_precursor_filter(ascii);
          return ascii;
        }},

@@ -42,11 +42,6 @@ void Home_render()
     cursorY += 35;
     writeln((GFXfont *)&systemFont, " [T] Bluetooth Keyboard", &cursorX, &cursorY, display_EPD_framebuffer());
 
-    // Reset
-    cursorX = 10;
-    cursorY += 35;
-    writeln((GFXfont *)&systemFont, " [R] Reset", &cursorX, &cursorY, display_EPD_framebuffer());
-
     // BACK
     cursorX = 10;
     cursorY += 50;
@@ -140,12 +135,6 @@ void Home_keyboard(char key)
     {
         // move to keyboard screen
         app["screen"] = KEYBOARDSCREEN;
-    }
-
-    // Reset
-    else if (key == 'r')
-    {
-        app["menu"]["state"] = MENU_RESET;
     }
 
     // chose file
