@@ -113,7 +113,7 @@ uint8_t hid_keycode_to_ascii_norweigian[][4] = {
 };
 
 // Function to get the ASCII value from HID keycode and modifier
-uint8_t keyboard_keycode_ascii_norweigian(int keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii_norweigian(int keycode, bool shift, bool alt, bool pressed)
 {
     if (keycode >= sizeof(hid_keycode_to_ascii_norweigian) / sizeof(hid_keycode_to_ascii_norweigian[0]))
     {

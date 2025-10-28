@@ -113,7 +113,7 @@ uint8_t hid_keycode_to_ascii_uk[][3] = {
 
 };
 
-uint8_t keyboard_keycode_ascii_uk(int keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii_uk(int keycode, bool shift, bool alt, bool pressed)
 {
     if (keycode >= sizeof(hid_keycode_to_ascii_uk) / sizeof(hid_keycode_to_ascii_uk[0]))
     {

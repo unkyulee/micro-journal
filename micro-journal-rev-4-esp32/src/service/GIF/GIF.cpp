@@ -147,51 +147,6 @@ bool gif_load(String filename)
         return true;
     }
 
-#ifdef BOARD_ESP32_S3
-    else if (spiffs()->exists(filename.c_str()))
-    {
-        _log("[gif_load] Loading %s from the SPIFFS\n", filename.c_str());
-        // load image
-        File file = spiffs()->open(filename.c_str(), "r");
-        if (!file)
-        {
-            _log("[gif_load] Failed to open file for reading\n");
-            return false;
-        }
-
-        // Allocate memory for the image
-        gif_image_size = file.size();
-
-        // limit the gif size to 1MB
-        if (gif_image_size > 1100000)
-        {
-            _log("[gif_load] File size too big %d from SD\n", gif_image_size);
-            return false;
-        }
-
-        //
-        _log("[gif_load] File size: %d\n", gif_image_size);
-        gif_image = (uint8_t *)malloc(gif_image_size);
-        if (gif_image == NULL)
-        {
-            _log("[gif_load] Failed to allocate memory\n");
-            return false;
-        }
-        _log("[gif_load] File alloc success\n");
-
-        // laod gif to the memory
-        size_t bytesRead = file.readBytes((char *)gif_image, gif_image_size);
-        _log("[gif_load] File read: %d\n", bytesRead);
-
-        // Close the file
-        file.close();
-        delay(100);
-
-        // gif loading success
-        return true;
-    }
-#endif
-
     else
     {
         _log("[gif_load] file doesn't not exist: %s\n", filename.c_str());

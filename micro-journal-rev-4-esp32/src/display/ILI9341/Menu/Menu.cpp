@@ -12,8 +12,6 @@
 #include "FrontPanelButton/FrontPanelButton.h"
 #include "Background/Background.h"
 #include "Foreground/Foreground.h"
-#include "DisableWakeUp/DisableWakeUp.h"
-#include "Reset/Reset.h"
 #include "PairBLE/PairBLE.h"
 
 // properties
@@ -113,22 +111,6 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         Wifi_render(ptft, pu8f);
     }
-    //
-    else if (menu_state == MENU_STARTUP)
-    {
-        if (menu_state_prev != menu_state)
-            DisableWakeUp_setup(ptft, pu8f);
-
-        DisableWakeUp_render(ptft, pu8f);
-    }
-
-    else if (menu_state == MENU_RESET)
-    {
-        if (menu_state_prev != menu_state)
-            Reset_setup(ptft, pu8f);
-
-        Reset_render(ptft, pu8f);
-    }
     else if (menu_state == MENU_BACKGROUND)
     {
         if (menu_state_prev != menu_state)
@@ -211,13 +193,6 @@ void Menu_keyboard(char key)
     }
 
     //
-    else if (menu_state == MENU_STARTUP)
-    {
-        DisableWakeUp_keyboard(key);
-        return;
-    }
-
-    //
     else if (menu_state == MENU_BACKGROUND)
     {
         Background_keyboard(key);
@@ -229,11 +204,6 @@ void Menu_keyboard(char key)
         Foreground_keyboard(key);
     }
 
-    //
-    else if (menu_state == MENU_RESET)
-    {
-        Reset_keyboard(key);
-    }
 
 #ifdef REV5
     // Keyboard Layout

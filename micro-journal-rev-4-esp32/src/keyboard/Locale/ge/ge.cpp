@@ -111,7 +111,7 @@ uint8_t hid_keycode_to_ascii_ge[][3] = {
 
 };
 
-uint8_t keyboard_keycode_ascii_ge(int keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii_ge(int keycode, bool shift, bool alt, bool pressed)
 {
     if (keycode >= sizeof(hid_keycode_to_ascii_ge) / sizeof(hid_keycode_to_ascii_ge[0]))
     {

@@ -111,7 +111,7 @@ uint8_t hid_keycode_to_ascii_be[][4] = {
     {'=', '=', 0, 0},     /* 0x67 */
 };
 
-uint8_t keyboard_keycode_ascii_be(int keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii_be(int keycode, bool shift, bool alt, bool pressed)
 {
     if (keycode >= sizeof(hid_keycode_to_ascii_be) / sizeof(hid_keycode_to_ascii_be[0]))
     {

@@ -116,6 +116,7 @@ void sync_start()
     {
         // available wifi network
         String availableSsid = availableNetwork.as<String>();
+        _log("Trying: %s\n", availableSsid.c_str());
 
         // see if there are any wifi network allowed
         for (JsonVariant savedAccessPoint : savedAccessPoints)
@@ -123,13 +124,16 @@ void sync_start()
             const char *savedSsid = savedAccessPoint["ssid"];
             const char *savedPassword = savedAccessPoint["password"];
 
+            _log("Trying to connect to :%s\n", savedSsid);
+
             // Check if the SSID and password match
             if (strcmp(availableSsid.c_str(), savedSsid) == 0)
             {
+
                 // Try to connect to the matching access point
                 if (sync_connect_wifi(app, savedSsid, savedPassword))
                 {
-                    Serial.println("Connected to a matching WiFi network!");
+                    _log("Connected to a matching WiFi network!\n");
 
                     //
                     app["sync_message"] = format("Connected to: %s\n", savedSsid);
@@ -171,6 +175,7 @@ bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password
     String message = format("trying to connect to %s ", ssid);
     app["sync_message"] = message;
     app["clear"] = true;
+    _log(message.c_str());
 
     //
     WiFi.begin(ssid, password);

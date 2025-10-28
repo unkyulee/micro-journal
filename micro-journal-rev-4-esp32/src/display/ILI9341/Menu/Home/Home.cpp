@@ -53,11 +53,9 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     ptft->println(" [T] BLE KEYBOARD");
 #endif
 
-    ptft->println(" [A] STARTUP ANIMATION");
     ptft->println(" [G] BACKGROUND COLOR");
-    ptft->println(" [C] FOREGROUND COLOR");
+    ptft->println(" [C] FONT COLOR");
 
-    ptft->println(" [R] RESET DEVICE");
     ptft->println();
     ptft->println(" [B] BACK ");
     ptft->println();
@@ -152,12 +150,6 @@ void Home_keyboard(char key)
     }
 #endif
 
-    else if (key == 'a')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_STARTUP;
-    }
-
     else if (key == 'g')
     {
         // move to keyboard layout
@@ -168,12 +160,6 @@ void Home_keyboard(char key)
     {
         // move to keyboard layout
         app["menu"]["state"] = MENU_FONTCOLOR;
-    }
-
-    else if (key == 'r')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_RESET;
     }
 
     // chose file

@@ -110,7 +110,7 @@ uint8_t hid_keycode_to_ascii_ca[][5] = {
     {'=', '=', 0, 0, 0},        /* 0x67 */
 };
 
-uint8_t keyboard_keycode_ascii_ca(int keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii_ca(int keycode, bool shift, bool alt, bool pressed)
 {
     //
     if (keycode >= sizeof(hid_keycode_to_ascii_ca) / sizeof(hid_keycode_to_ascii_ca[0]))

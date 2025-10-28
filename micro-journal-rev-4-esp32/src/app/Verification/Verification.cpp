@@ -39,9 +39,6 @@ bool filesystem_check()
     gfs();
 
 #ifdef BOARD_ESP32_S3
-    // also initialize SPIFFS
-    spiffs();
-
     // Check if SD card is inserted
     uint8_t cardType = SD.cardType();
     if (cardType == CARD_NONE)

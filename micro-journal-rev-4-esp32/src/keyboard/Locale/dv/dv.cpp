@@ -119,7 +119,7 @@ uint8_t hid_keycode_to_ascii_dv[][4] = {
 };
 
 // Function to get the ASCII value from HID keycode and modifier
-uint8_t keyboard_keycode_ascii_dv(int keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii_dv(int keycode, bool shift, bool alt, bool pressed)
 {
     if (keycode >= sizeof(hid_keycode_to_ascii_dv) / sizeof(hid_keycode_to_ascii_dv[0]))
     {

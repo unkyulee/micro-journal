@@ -7,7 +7,6 @@
 
 #ifdef BOARD_ESP32_S3
 #include "app/FileSystem/FileSystemSD.h"
-#include "app/FileSystem/FileSystemSPIFFS.h"
 #include "service/Sync/Sync.h"
 #include "service/Send/Send.h"
 #endif
@@ -73,6 +72,18 @@ void app_setup()
     }
 
 #ifdef BOARD_ESP32_S3
+    // Check if PSRAM is detected and enabled
+    if (psramFound())
+    {
+        Serial.println("PSRAM is detected and enabled!");
+        Serial.printf("Total heap: %d bytes\n", ESP.getHeapSize());
+        Serial.printf("Total PSRAM: %d bytes\n", ESP.getPsramSize());
+    }
+    else
+    {
+        Serial.println("PSRAM not found or not initialized!");
+    }
+
     // allocate memory is PSRAM
     heap_caps_malloc_extmem_enable(64);
 
@@ -174,28 +185,3 @@ FileSystem *gfs()
     return fileSystem;
 }
 
-#ifdef BOARD_ESP32_S3
-FileSystem *_spiffs = nullptr;
-// ESP32 has SPIFFS as internal file system
-FileSystem *spiffs()
-{
-    if (_spiffs == nullptr)
-    {
-        _spiffs = new FileSystemSPIFFS();
-        if (!_spiffs->begin())
-        {
-            //
-            JsonDocument &app = status();
-            app["error"] = "Internal File System Failed\n";
-            app["screen"] = ERRORSCREEN; // ERROR SCREEN IS 0
-            _log(app["error"]);
-        }
-        else
-        {
-            _log("Internal File System Initialized\n");
-        }
-    }
-
-    return _spiffs;
-}
-#endif

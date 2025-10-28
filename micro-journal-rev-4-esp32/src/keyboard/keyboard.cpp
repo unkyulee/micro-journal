@@ -435,7 +435,7 @@ void keyboard_HID2Ascii(uint8_t keycode, uint8_t modifier, bool pressed)
   // Translate the Keycode to ASCII
   JsonDocument &app = status();
   String locale = app["config"]["keyboard_layout"].as<String>();
-  uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt);
+  uint8_t ascii = keyboard_keycode_ascii(locale, keycode, shift, alt, pressed);
   if (ascii != 0)
     // send key to GUI
     display_keyboard(ascii, pressed, keycode);

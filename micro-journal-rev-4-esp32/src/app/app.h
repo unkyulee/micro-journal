@@ -1,7 +1,7 @@
 #pragma once
 
 // app version
-#define VERSION "1.0.19.1006"
+#define VERSION "1.0.19.1028"
 
 // default utility headers
 #include <ArduinoJson.h>
@@ -28,7 +28,3 @@ JsonDocument &status();
 // and provide a common interface to access the file system
 FileSystem *gfs();
 
-#ifdef BOARD_ESP32_S3
-// ESP32 has SPIFFS as internal file system 
-FileSystem *spiffs();
-#endif

@@ -32,14 +32,19 @@ struct StringHash
 };
 
 // Define a type for the function pointers
-using KeycodeFunction = std::function<uint8_t(uint8_t, bool, bool)>;
+using KeycodeFunction = std::function<uint8_t(uint8_t, bool, bool, bool)>;
 
-uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt)
+uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt, bool pressed)
 {
   // Use the custom hash function for String
   static const std::unordered_map<String, KeycodeFunction, StringHash> locale_map = {
-      {"INT", [](uint8_t keycode, bool shift, bool alt)
-       { return keyboard_precursor_filter(keyboard_keycode_ascii_us(keycode, shift)); }},
+      {"INT", [](uint8_t keycode, bool shift, bool alt, bool pressed)
+       {
+         int ascii = keyboard_keycode_ascii_us(keycode, shift);
+         if (!pressed)
+           ascii = keyboard_precursor_filter(ascii);
+         return ascii;
+       }},
       {"BE", keyboard_keycode_ascii_be},
       {"CA", keyboard_keycode_ascii_ca},
       {"DV", keyboard_keycode_ascii_dv},
@@ -56,7 +61,7 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
   auto it = locale_map.find(locale);
   if (it != locale_map.end())
   {
-    return it->second(keycode, shift, alt);
+    return it->second(keycode, shift, alt, pressed);
   }
 
   // Default to US layout
@@ -240,4 +245,3 @@ uint8_t keyboard_caplock_filter(uint8_t ascii)
 
   return ascii;
 }
-

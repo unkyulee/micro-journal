@@ -130,7 +130,7 @@ void wifi_config_load()
 
     // load config.json
     _log("Opening wifi.json file from internal storage\n");
-    File file = spiffs()->open("/wifi.json", "r");
+    File file = gfs()->open("/wifi.json", "r");
     if (file)
     {
         // read the file
@@ -164,7 +164,7 @@ void wifi_config_load()
             app["screen"] = ERRORSCREEN;
 
             // delete wifi.json from SPIFF
-            spiffs()->remove("/wifi.json");
+            gfs()->remove("/wifi.json");
 
             return;
         }
@@ -193,7 +193,7 @@ void wifi_config_save()
 
     // save config
     // Open the file for writing
-    File file = spiffs()->open("/wifi.json", FILE_WRITE);
+    File file = gfs()->open("/wifi.json", FILE_WRITE);
     if (!file)
     {
         _log("Failed to open wifi.json file for writing.\n");
