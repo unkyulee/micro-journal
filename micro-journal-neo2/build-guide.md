@@ -83,6 +83,7 @@ Here is a video where you can follow to disassemble your AlphaSmart Neo2
 * Replace the original battery clips with a AAA battery holder.  
 * Extend the black wire and connect the wires (black to black, red to red), then insulate with tape.  
 * No soldering required. Just twist and tape.
+* Battery holder should be placed in the left compartment. Do not use the space under the PCB to install the battery holder. 
 
 ---
 
