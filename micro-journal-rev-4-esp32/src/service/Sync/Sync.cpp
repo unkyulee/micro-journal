@@ -273,7 +273,7 @@ void sync_send()
         sync_stop();
 
         //
-        app["sync_error"] = "Error opening input file!\n";
+        app["sync_error"] = "Error opening base64 file!\n";
         app["sync_state"] = SYNC_ERROR;
         app["clear"] = true;
 
@@ -283,7 +283,7 @@ void sync_send()
     }
 
     // Convert to BASE64
-    const int bufferSize = 3000; // base64 encoding is done per 3 bytes
+    const int bufferSize = 900; // base64 encoding is done per 3 bytes
     uint8_t buffer[bufferSize];
     while (inputFile.available())
     {

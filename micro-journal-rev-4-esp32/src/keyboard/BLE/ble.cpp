@@ -64,7 +64,7 @@ void ble_loop()
         last = millis();
 
         bool ble_connected = app["ble_connected"].as<bool>();
-        _log("BLE Keyboard Connection: %d\n", ble_connected);
+        _debug("BLE Keyboard Connection: %d\n", ble_connected);
         if (ble_connected == false)
         {
             // When ble.address exists then try to connect to the keyboard
