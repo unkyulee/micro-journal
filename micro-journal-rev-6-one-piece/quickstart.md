@@ -302,67 +302,9 @@ https://ezgif.com/
 
 # Keyboard Layout Customization
 
-Keyboard layout can be customized to fit your needs. Please, refer to [Key Map Customization](./keymap.md).  
+Keyboard layout can be customized to fit your needs.
 
-
-
-
-## DRAFTY - by Hook
-
-Written by Hook: 
-
-First, I wanted a longer space bar.  The trouble was, none of the longer space bars I found had the proper spacing for the sockets to fit to multiple individual switches. Ten I got the idea to just pull the switches on either side of the space key and plug the space bar key cap into only the middle switch.  I was afraid the result would be like a teeter-totter is hit in the wrong place, but, in fact, it's solid.
-
-Next I wanted explicit arrow keys. There's no good reason for this.  It.s not like I couldn't remember where I assigned the arrow key functions. But I did want the directional navigation to work on the main level without the Alt key.  So, yeah, I wanted the keys properly labeled. 
-
-So now I had eliminated 6 keys from a 48 key keyboard, and I still wanted all my punctuation.  How?
-
-The solution turned out to be simple.  I took away all the number keys and moved the 3 letter rows up.  At the drafting phase, as a fiction writer, I really don't use numbers much.  In fiction, you mostly spell out numbers,  I moved the 1, 9, and 0 keys to the bottom because they are primary punctuation keys.  Then I set the top row of the Alt-level to be the numbers and the shift-Alt top row to be the symbols (1, 9, and 0 are redundantly included).  Turns out, that's very easy to remember without the prints.
-
-And now I have everything I want, with 95% of what I need for drafting fiction on the main and shift-main layers. 
-
-```json
-{
-    "main": 
-    [
-     "-", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "BACKSPACE",
-     "ESC", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\n",
-     "SHIFT", "z", "x", "c", "v", "b", "n", "m", ",", ".", "UP", "'",
-     "ALT", "1", "9", "0", "", " ", "", "=", "/", "LEFT", "DOWN", "RIGHT"
-    ],
-
-    "main-shift": 
-    [
-      151, "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", 127,
-     "ESC", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\n",
-     "SHIFT", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "UP", "\"",
-     "ALT", "!", "(", ")", "", " ", "", "+", "?", "LEFT", "DOWN", "RIGHT"
-    ],
-
-    "alt": 
-    [
-     "_", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "BACKSPACE",
-     "ESC", "", "", "", "", "", "", "", "", "", "", "\n",
-     "SHIFT", "", "", 169, "", "", "", "", "", "", "PGUP", "",
-     "ALT", "", "[", "]", "", " ", "", "", "\\", "HOME", "PGDN", "END"
-    ],
-
-    "alt-shift": 
-    [
-     "_", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", 127,
-     "ESC", "", "", "", "", "", "", "", "", "", "", "\n",
-     "SHIFT", "", "", "", "", "", "", "", "", "", "PGUP", "",
-   "ALT", "", "{", "}", "", " ", "", "", "|", "HOME", "PGDN", "END"
-    ]
-}
-```
-
-## Other templates
-
-https://github.com/unkyulee/micro-journal/tree/1.0.16/micro-journal-rev-6-one-piece/keyboard_template
-
-
-You can find the pre-defined key maps from the link above. If you want your key map to be registered in the repository. Please, let me know. 
+* [Key Map Customization](./keymap.md)
 
 
 
@@ -378,10 +320,4 @@ Here is the build guide where it explains the wiring and the steps to build one 
 
 # User Manual by Hook
 
-Written By Hook:
-
-
-http://www.thewritekeys.com:8080/
-
-This is a site dedicated to providing help links, reviews, documentation and even downloads to support writers using the various Writer Decks I own and have actual hands on experience with. I started out with an Alphasmart Neo 2 in 2007, when I bought it new shortly after it's release by Renaissance Learning. It revolutionized my writing experience, giving me a great deal of focus. It allowed me to draft 5 novels and a large collection of short stories. It was, and still is, a remarkable Writer Deck more than 10 years since it was discontinued.
-
+* [User Manual written by Hook](./user-manual.md)

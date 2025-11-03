@@ -11,9 +11,11 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 ### Documents 
 
+* [Quick Start Guide](./quickstart.md)
+* [User Manual written by Hook](./user-manual.md)
+
 * [Behind Story](./story.md)
 * [Features and Introduction of Micro Journal Rev.6](https://youtu.be/1ZP9wwYMaMY)
-* [Quick Start Guide](./quickstart.md)
 * [Build Guide](./build-guide.md)
 * [Build Video](https://youtu.be/6zRsx2ufwUU)
 
@@ -26,7 +28,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 ### Hook's Review
 
-* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+* [Hook's Review of the Micro Journal](http://www.thewritekeys.com:8080/)
 
 ### Tips and Tricks
 
