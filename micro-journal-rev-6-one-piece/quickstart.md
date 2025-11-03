@@ -27,7 +27,7 @@ Edited by Un Kyu Lee
    - USB Keyboard Mode Layout
    - Example Custom Layouts (Hook’s Keymaps)
 6. Troubleshooting & Maintenance
-7. Appendix & Resources
+
 
 ---
 
@@ -39,7 +39,7 @@ The Rev 6 is one of a line of Micro Journal Writer Decks aimed at (my words) *wr
 
 The software is simple, but capable, and the Rev 6's unibody, light weight design with mechanical keyboard and small screen makes it perfect for carrying out with you in a bag. It even has a strap you can use to carry it without a bag. In addition, it has the "Send" capability if you don't want to sync to Google's cloud. However, thanks to Bluetooth (BT) built in, which the Neo 2 never had, it doesn't need a usb cord to use "send" (it can also act as a BT keyboard for your computer. We will get to all that in this guide).
 
-The one real difference is that it uses an ortholinear keyboard, meaning it has fewer keys (48) and the keys are arranged in a matrix pattern rather than the mmore common stagggered pattern. If you have never used this kind of key arrangement, it will take a short while to get used to it. However, it doesn't take long. What is necessary is having layers so you can end up with all the keys you want (using the layers, you can, in theory, have 196 different key assignments. But you won't want to use anywhere near that many).
+The one real difference is that it uses an ortholinear keyboard, meaning it has fewer keys (48) and the keys are arranged in a matrix pattern rather than the more common stagggered pattern. If you have never used this kind of key arrangement, it will take a short while to get used to it. However, it doesn't take long. What is necessary is having layers so you can end up with all the keys you want (using the layers, you can, in theory, have 196 different key assignments. But you won't want to use anywhere near that many).
 
 ---
 
@@ -62,9 +62,15 @@ The one real difference is that it uses an ortholinear keyboard, meaning it has 
 
 
 ### SD Card Preparation
+
+![SD](./images/sd.jpg)
 - (not included) Use ≤32 GB SD card, formatted **FAT32**.  
 - Insert carefully into the deep slot to avoid dropping inside enclosure.  
 - Larger cards require partitioning.  
+  
+⚠️ Important Note on SD Cards
+
+The **Micro Journal Rev.6 requires a full-size SD card**, not a microSD card. If you only have a microSD card, make sure it comes with a proper **SD card adapter** so it can fit into the device. 
 
 
 ### Firmware Update
