@@ -253,9 +253,9 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     pu8f->setCursor(screen_width - font_width / 2, font_width * 2 / 3);
     pu8f->print(String(file_index));
 
-#ifdef DEBUG
+    // Word count print
     int small_font_width = 10;
-    int bufferSize = Editor::getInstance().getBufferSize();
+    int bufferSize = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer; ;
     String bufferStr = String(bufferSize);
     // Calculate x position so it's right-aligned
     int textWidth = bufferStr.length() * small_font_width;
@@ -268,7 +268,6 @@ void WP_render_status(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     // Draw buffer size
     pu8f->setCursor(x, y);
     pu8f->print(bufferStr);
-#endif
 
     // height 100% 80
     float batteryPercent = app["battery"].as<float>();

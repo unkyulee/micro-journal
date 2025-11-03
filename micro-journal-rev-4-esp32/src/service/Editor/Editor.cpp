@@ -217,7 +217,7 @@ void Editor::saveFile()
         // If file doesn't exist, create it
         file = gfs()->open(fileName.c_str(), "w+"); // create + read/write
     }
-    
+
     if (!file)
     {
         //
@@ -288,6 +288,10 @@ void Editor::saveFile()
 
     //
     savingInProgress = false;
+
+#if defined(DEBUG) && defined(BOARD_PICO)
+    printMemoryUsage();
+#endif
 }
 
 // Make the current file empty

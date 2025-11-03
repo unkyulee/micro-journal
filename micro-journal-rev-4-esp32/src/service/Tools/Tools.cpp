@@ -32,7 +32,6 @@ String formatNumber(int num)
     return formattedNumber;
 }
 
-
 // Get the size of a file in bytes
 size_t fileSize(String fileName)
 {
@@ -41,14 +40,14 @@ size_t fileSize(String fileName)
     {
         File file = SD.open(fileName, FILE_READ);
         if (!file)
-        {   //something bad happened
-            char buffer [32];
+        { // something bad happened
+            char buffer[32];
             sprintf(buffer, "Failed to open a file. %s\n", fileName);
             _log(buffer);
             file_size = -1;
         }
-        else 
-        {   //file exists
+        else
+        { // file exists
             file_size = file.size();
         }
         //
@@ -57,7 +56,6 @@ size_t fileSize(String fileName)
     }
     return file_size;
 }
-
 
 // Create an array of String objects
 // Many of these ascii codes can be tracked back to:
@@ -195,14 +193,12 @@ static const String extended_ascii[128] = {
 
 String asciiToUnicode(uint8_t value)
 {
-  if (value < 128)
-    return "";
+    if (value < 128)
+        return "";
 
-  uint8_t code = value - 128;
-  return extended_ascii[code];
+    uint8_t code = value - 128;
+    return extended_ascii[code];
 }
-
-
 
 String format(const char *format, ...)
 {
@@ -213,3 +209,15 @@ String format(const char *format, ...)
     va_end(args);
     return String(buffer);
 }
+
+#if defined(DEBUG) && defined(BOARD_PICO)
+extern "C" char* sbrk(int incr);
+
+
+void printMemoryUsage()
+{
+    char top;
+    ptrdiff_t free_memory = &top - reinterpret_cast<char*>(sbrk(0));
+    Serial.printf("Stack Free: %td bytes\n", abs(free_memory));
+}
+#endif
