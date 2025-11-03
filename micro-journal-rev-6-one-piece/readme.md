@@ -12,7 +12,6 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 ### Documents 
 
 * [Quick Start Guide](./quickstart.md)
-* [User Manual written by Hook](./user-manual.md)
 
 * [Behind Story](./story.md)
 * [Features and Introduction of Micro Journal Rev.6](https://youtu.be/1ZP9wwYMaMY)
@@ -32,7 +31,6 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 ### Tips and Tricks
 
-* [How to Customize Keyboard Layout](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/keymap.md)
 * [Using Micro Journal Rev.6 as a Bluetooth Keyboard](https://youtu.be/IW5ninGiN7k)
 
 
