@@ -538,6 +538,7 @@ Do you explicetly select the user configuration?
 click [YES]
 
 - Third screen:
+
 Select: (*) fcitx activate Flexible Input Method Framework (fcitx) @
 click [OK]
 
@@ -552,4 +553,65 @@ Now it should be possible to select the input method
 
 The input method now can be toggled between English and Japanese using
 the key combination 'ctrl-space'...
+
+
+
+# USB disk mounts then appear in ~/microjournal/DISK
+
+nano ~/microjournal/connect_usb_disk.sh
+
+```bash
+#!/bin/bash
+MOUNTPOINT="$HOME/microjournal/DISK"
+
+DEVICE=$(lsblk -rpo "name,type,mountpoint" | awk '$2=="part" && $3=="" {print $1; exit}')
+
+if [ -n "$DEVICE" ]; then
+    mkdir -p "$MOUNTPOINT"
+    sudo mount "$DEVICE" "$MOUNTPOINT"
+    echo "Device $DEVICE mounted to $MOUNTPOINT."
+fi
+
+# Prompt user to press any key
+read -n 1 -s -r -p "Press any key to continue..."
+echo
+```
+
+chmod +x ~/microjournal/connect_usb_disk.sh
+
+nano ~/microjournal/safe_remove_usb.sh
+
+```bash
+#!/bin/bash
+
+# The mount point you want to safely remove
+MOUNTPOINT="$HOME/microjournal/DISK"
+
+# Check if it exists and is mounted
+if mountpoint -q "$MOUNTPOINT"; then
+    echo "Flushing filesystem buffers..."
+    sync
+
+    echo "Unmounting $MOUNTPOINT..."
+    umount "$MOUNTPOINT"
+
+    if [ $? -eq 0 ]; then
+        echo "USB disk safely removed."
+        # Optionally remove the folder
+        rmdir "$MOUNTPOINT" 2>/dev/null
+    else
+        echo "Error: Could not unmount $MOUNTPOINT"
+        # Prompt user to press any key
+        read -n 1 -s -r -p "Press any key to continue..."
+        echo
+    fi
+else
+    echo "No USB disk mounted at $MOUNTPOINT."
+fi
+
+# Prompt user to press any key
+read -n 1 -s -r -p "Press any key to continue..."
+echo
+```
+chmod +x ~/microjournal/safe_remove_usb.sh
 
