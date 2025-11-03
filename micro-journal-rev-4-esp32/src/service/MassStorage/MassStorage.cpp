@@ -1,7 +1,6 @@
 #include "MassStorage.h"
 #include "app/app.h"
-
-#include <FatFSUSB.h>
+#include "FatFSUSB.h"
 
 //
 void ms_setup()
@@ -21,11 +20,12 @@ void ms_loop()
         // check if the flag is on
         JsonDocument &app = status();
 
-        //
-        bool massStorage = app["massStorage"].as<bool>();
+        // check if it is requested to turn off
+        bool massStorageRequest = app["massStorage"].as<bool>();
+        // false means it is requested to turn off
 
         // mass storage is on
-        if (massStorage)
+        if (massStorageRequest)
         {
             // start the device
             if (app["massStorageStarted"].as<bool>() == false)
@@ -36,7 +36,21 @@ void ms_loop()
                 app["massStorageStarted"] = true;
                 _log("FatFSUSB begin\n");
             }
+
+            // Check if is Ejected
+            if (FatFSUSB.isConnected() == 0)
+            {
+                //
+                _log("Mass Storage Ejected\n");
+                FatFSUSB.end();
+                //
+                app["massStorageStarted"] = false;
+                app["massStorage"] = false;
+
+                _log("FatFSUSB ejected\n");
+            }
         }
+
         else
         {
             if (app["massStorageStarted"].as<bool>() == true)

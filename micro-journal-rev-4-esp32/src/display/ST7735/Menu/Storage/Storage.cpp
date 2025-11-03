@@ -55,13 +55,20 @@ void Storage_keyboard(char key, bool pressed)
 
             //
             if (app["massStorageStarted"].as<bool>() == false)
+            {
+                _log("Detected device is ejected. Rebooting\n");
+
+                // RESTART
+                watchdog_reboot(0, 0, 3000);
+
+                //
+                delay(3000);
+
+                //
                 break;
+            }
 
-            // RESTART
-            watchdog_reboot(0, 0, 0);
-
-            //
-            delay(100);
+            delay(1000);
         }
 
         // Move to home screen
