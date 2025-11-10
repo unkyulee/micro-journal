@@ -48,6 +48,29 @@ void app_setup()
 #endif
     _log("Setting Baud Rate: %d\n", 115200);
 
+#ifdef BOARD_ESP32_S3
+    // Check if PSRAM is detected and enabled
+    if (psramFound())
+    {
+        Serial.println("PSRAM is detected and enabled!");
+        Serial.printf("Total heap: %d bytes\n", ESP.getHeapSize());
+        Serial.printf("Total PSRAM: %d bytes\n", ESP.getPsramSize());
+    }
+    else
+    {
+        Serial.println("PSRAM not found or not initialized!");
+    }
+
+    // allocate memory is PSRAM
+    heap_caps_malloc_extmem_enable(64);
+
+    //
+    Serial.println("Flash Chip Information:");
+    Serial.printf("  Size: %u bytes (%.2f MB)\n", ESP.getFlashChipSize(), ESP.getFlashChipSize() / 1024.0 / 1024.0);
+    Serial.printf("  Speed: %u Hz\n", ESP.getFlashChipSpeed());
+    Serial.printf("  Mode: %u\n", ESP.getFlashChipMode());
+#endif
+
     // File System Check
     if (filesystem_check() == false)
     {
@@ -70,24 +93,6 @@ void app_setup()
         _log("Configuration load failed. Exiting setup.\n");
         return;
     }
-
-#ifdef BOARD_ESP32_S3
-    // Check if PSRAM is detected and enabled
-    if (psramFound())
-    {
-        Serial.println("PSRAM is detected and enabled!");
-        Serial.printf("Total heap: %d bytes\n", ESP.getHeapSize());
-        Serial.printf("Total PSRAM: %d bytes\n", ESP.getPsramSize());
-    }
-    else
-    {
-        Serial.println("PSRAM not found or not initialized!");
-    }
-
-    // allocate memory is PSRAM
-    heap_caps_malloc_extmem_enable(64);
-
-#endif
 
 #ifdef BOARD_PICO
     // Mass Storage Setup
@@ -184,4 +189,3 @@ FileSystem *gfs()
 
     return fileSystem;
 }
-
