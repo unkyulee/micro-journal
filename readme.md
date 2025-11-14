@@ -8,17 +8,18 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 ## Timeline
 
-| Date       | Revision                                                      | Preview                                                                        |
-| ---------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)**     | <img src="./micro-journal-neo2/images/001.jpg" width="200">            |
-| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**     | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
-| 2025-01-30 | **[Rev.7](/micro-journal-rev-7-e-ink/readme.md)**            | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
-| 2024-09-17 | **[Rev.2 Revamp](/micro-journal-rev-2-revamp/readme.md)**     | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
-| 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**         | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
-| 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**     | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">     |
-| 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**             | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">               |
-| 2024-03-15 | **[Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)** | <img src="./micro-journal-rev-3-samsung-galaxy-s8/images/009.jpg" width="200"> |
-| 2024-03-04 | **[Rev.2](/micro-journal-rev-2-raspberypi/readme.md)**        | <img src="./micro-journal-rev-2-raspberypi/images/rev1.jpg" width="200">       |
+| Date       | Revision                                                                | Preview                                                                        |
+| ---------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                         | <img src="./micro-journal-rev-2.1/images/001.png" width="200">                 |
+| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)** | <img src="./micro-journal-neo2/images/001.jpg" width="200">                    |
+| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**               | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
+| 2025-01-30 | **[Rev.7](/micro-journal-rev-7-e-ink/readme.md)**                       | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
+| 2024-09-17 | **[Rev.2 Revamp](/micro-journal-rev-2-revamp/readme.md)**               | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
+| 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**                   | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
+| 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**               | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">     |
+| 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**                       | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">               |
+| 2024-03-15 | **[Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)**           | <img src="./micro-journal-rev-3-samsung-galaxy-s8/images/009.jpg" width="200"> |
+| 2024-03-04 | **[Rev.2](/micro-journal-rev-2-raspberypi/readme.md)**                  | <img src="./micro-journal-rev-2-raspberypi/images/rev1.jpg" width="200">       |
 
 
 
@@ -28,6 +29,8 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 * Rev.1 – *a place holder for future projects*
 
 * **[Rev.2](/micro-journal-rev-2-revamp/readme.md)** – A Raspberry Pi–based setup with a wide display and mechanical keyboard. This version aimed to combine a focused writing experience with the editing power of a full computer, offering both simplicity and flexibility.
+
+* **[Rev.2.1](/micro-journal-rev-2-revamp/readme.md)** – Bigger keyboard version of Rev.2
 
 * Rev.3 – *a place holder for future projects*
 

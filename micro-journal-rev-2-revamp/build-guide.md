@@ -52,9 +52,10 @@ Screen received mini HDMI interface. This display is almost exact the size of th
 - Raspberry Pi Pico (rp2040)
 - [48 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
 - [O-ring 10x5.2x2.4](https://www.aliexpress.com/item/1005002753756030.html)
-- [USB-C Female Port](https://it.aliexpress.com/item/1005007348932368.html)
-- 2x [Micro USB cable - 2 pin USB male](https://www.aliexpress.com/item/1005004982855996.html)
+
+- [MICRO USB Type-C Female To 2 X Mini USB USB-B Type-c Male General Splitter Y Extension](https://it.aliexpress.com/item/1005008089222432.html)
 - 1x Micro USB male to USB type C cable
+
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) for the knobs
 - 50x Diode IN4148
 - 48x Kailih Hot-Swappable PCB socket Cherry MX Switches (CPG151101S11)
