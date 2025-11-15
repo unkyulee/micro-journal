@@ -10,7 +10,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 | Date       | Revision                                                                | Preview                                                                        |
 | ---------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                         | <img src="./micro-journal-rev-2.1/images/001.png" width="200">                 |
+| 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                         | <img src="./micro-journal-rev-2.1/images/002.jpg" width="200">                 |
 | 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)** | <img src="./micro-journal-neo2/images/001.jpg" width="200">                    |
 | 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**               | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
 | 2025-01-30 | **[Rev.7](/micro-journal-rev-7-e-ink/readme.md)**                       | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
@@ -28,9 +28,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 * Rev.1 – *a place holder for future projects*
 
-* **[Rev.2](/micro-journal-rev-2-revamp/readme.md)** – A Raspberry Pi–based setup with a wide display and mechanical keyboard. This version aimed to combine a focused writing experience with the editing power of a full computer, offering both simplicity and flexibility.
-
-* **[Rev.2.1](/micro-journal-rev-2-revamp/readme.md)** – Bigger keyboard version of Rev.2
+* **[Rev.2](/micro-journal-rev-2-revamp/readme.md)** – A Raspberry Pi–based setup with a wide display and mechanical keyboard. This version aimed to combine a focused writing experience with the editing power of a full computer, offering both simplicity and flexibility. A variant with bigger keyboard is called [Rev.2.1: CyberDeck](/micro-journal-rev-2-revamp/readme.md).
 
 * Rev.3 – *a place holder for future projects*
 

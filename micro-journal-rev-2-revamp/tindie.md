@@ -137,7 +137,7 @@ Please, watch the use case video in order to understand the features and most im
 
 * [Micro Journal Linux Image Download](https://github.com/unkyulee/micro-journal-linux/releases)
 * [Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
-* [Design Files](./STL)
+* [Design Files]([./STL](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2.1/STL))
 * [Keyboard PCB](../micro-journal-rev-6-one-piece/PCB)
 * [Rev.2 QMK-Vial Source Code](./keyboard/)
 
