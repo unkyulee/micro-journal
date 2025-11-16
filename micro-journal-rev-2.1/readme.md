@@ -6,12 +6,11 @@ A typewriter reborn for the digital age.
 
 Micro Journal Rev.2.1: cyberDeck blends the tactile joy of mechanical typing with the power and flexibility of a tiny computer. It's a portable writing deck built around a wide, clear display and a Raspberry Pi Zero 2 W, paired with a satisfying mechanical keyboard that makes every keystroke feel like heaven. Whether you draft essays, capture sudden insights, or keep a slow, deliberate journal, the cyberDeck turns typing into a ritual again.
 
-<img src="./images/002.jpg" width="400">
-
 
 
 ### Documents 
 
+* [Behind Story](./story.md)
 * [Introduction Video](https://youtu.be/-P8MK0iT04k)
 * [Build Guide] TBD
 * [Quick Start Guide] TBD
