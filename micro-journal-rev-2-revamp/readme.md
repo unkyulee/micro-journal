@@ -19,7 +19,7 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 ## Resources
 
 * [Micro Journal Linux Image Download](https://github.com/unkyulee/micro-journal-linux/releases)
-* [Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
+* [Raspberry Pi SD Card Setup How-To](https://github.com/unkyulee/micro-journal-linux)
 * [Design Files](./STL)
 * [Keyboard PCB](../micro-journal-rev-6-one-piece/PCB)
 * [Rev.2 QMK-Vial Source Code](./keyboard/)

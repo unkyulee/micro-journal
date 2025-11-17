@@ -195,9 +195,9 @@ You can check the latest firmware from the following link.
 
 * https://github.com/unkyulee/micro-journal/releases
 
-#### Download the "firmware_rev_6.bin"
+#### Download the "firmware_rev_7.bin"
 
-Download the file from Assets "firmware_rev_6.bin"
+Download the file from Assets "firmware_rev_7.bin"
 
 * Turn off the Micro Journal
 * Pull out the SD card from the Micro Journal 
