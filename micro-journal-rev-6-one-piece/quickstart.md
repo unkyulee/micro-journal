@@ -496,9 +496,7 @@ Notice, again, that the only changes made to the lower and raise layers are to a
 
 If you are more or less happy with the default settings for your key maps, you are set. You don't have to do anything. However, if you would like to make personal tweaks, copy the two Key Map Json arrays as shown above and paste them into two files. The Key Map for the Rev 6 editor should be copied ito a text file called *keyboard.json* and the Key Map for the BLE Keyboard should be copied to a text file called *keyboard_usb.json* The files must have those names.
 
-Make the changes you want to each file in a plain text editor.  It may help to review the instructions at https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/keymap.md
-
-When you are done, save the files. Remove the sd card from your Rev 6 and copy these files onto that card. Put the card back in the Rev 6. If all is well, when you start up the Rev 6, the keyboard should reflect your changes. Remember, if things mess up, you can always delete these two json files from the Rev 6 which will return you to the defaults while you trouble shoot what went wrong.
+Make the changes you want to each file in a plain text editor.  When you are done, save the files. Remove the sd card from your Rev 6 and copy these files onto that card. Put the card back in the Rev 6. If all is well, when you start up the Rev 6, the keyboard should reflect your changes. Remember, if things mess up, you can always delete these two json files from the Rev 6 which will return you to the defaults while you trouble shoot what went wrong.
 
 I (Hook) will illustrate below the changes I made for my Rev 6 to try to illustrate what kinds of considerations might lead you to want to change the default layouts and to give you examples of changes.
 
