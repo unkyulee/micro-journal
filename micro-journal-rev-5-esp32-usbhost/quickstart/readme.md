@@ -50,7 +50,6 @@ The place with the spring on the holder is the negative (-) side.
 
 Check that the positive (+) end of battery is making contact with the positive terminal in the battery panel. Battery can fit snugly, preventing contact. Suggest turning on power switch to confirm connectivity before putting screws back.
 
-
 ![SD](./images/battery_install.jpg)
 
 **PLEASE BE EXTRA CAREFUL TO + and - POLARITY OF THE BATTERY**
@@ -66,6 +65,10 @@ When the battery is low, the screen may turn white or flicker—these are common
 **Be extra careful with the battery. It can cause fire**
 
 When closing the enclosure back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the enclosure to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
+
+⚠️ Important: Use Only Non-PD USB Chargers
+
+The Micro Journal does not support USB Power Delivery (PD). This means that PD chargers and USB-C to USB-C cables will not work and may prevent the device from powering on or charging. To ensure proper operation, please use a standard 5V USB-A charger (such as an older phone charger) together with a USB-A to USB-C cable. Using the correct charger type is essential for reliable power and safe operation of the device.
 
 
 # Step 2. Prepare SD card

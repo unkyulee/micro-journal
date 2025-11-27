@@ -90,6 +90,10 @@ The **Micro Journal Rev.6 requires a full-size SD card**, not a microSD card. If
 
 ![Diagram](./images/diagram.png)
 
+⚠️ Important: Use Only Non-PD USB Chargers
+
+The Micro Journal does not support USB Power Delivery (PD). This means that PD chargers and USB-C to USB-C cables will not work and may prevent the device from powering on or charging. To ensure proper operation, please use a standard 5V USB-A charger (such as an older phone charger) together with a USB-A to USB-C cable. Using the correct charger type is essential for reliable power and safe operation of the device.
+
 
 ### Google Sync Setup
 
