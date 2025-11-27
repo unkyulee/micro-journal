@@ -18,7 +18,7 @@ The Micro Journal Rev.2 uses a Micro SD card for its Raspberry Pi Zero 2W comput
 
 While your Micro Journal Rev.2 ships with the Micro SD card already installed and configured, you may need to set up a new card in the future. For detailed instructions on how to do this, refer to the following guide:
 
-[Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
+[Raspberry Pi SD Card Setup How-To](https://github.com/unkyulee/micro-journal-linux/)
 
 Default configuration is designed to be user-friendly, allowing you to quickly get into writing mode without needing to learn complex Linux terminal commands.
 
@@ -49,7 +49,7 @@ There is a USB port at the back of the device. You can connect to a phone charge
 
 **When not booting** Power off, reinsert the SD card, and try again. If the issue persists, you may need to replace or reconfigure the SD card. 99% of the issues is related to SD card. Please, refer to this document when you need to setup the SD card.
 
-[Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
+[Raspberry Pi SD Card Setup How-To](https://github.com/unkyulee/micro-journal-linux/)
 
 
 ---
