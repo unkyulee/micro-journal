@@ -13,7 +13,7 @@ Micro Journal Rev.2.1: cyberDeck blends the tactile joy of mechanical typing wit
 
 * [Behind Story](./story.md)
 * [Introduction Video](https://youtu.be/-P8MK0iT04k)
-* [Quick Start Guide] TBD
+* [Quick Start Guide](./guide.md)
 * [Build Guide] TBD
 
 ### Resources
