@@ -16,6 +16,11 @@
 #include "display/ST7735/display_ST7735.h"
 #endif
 
+// Cardputer
+#ifdef CARDPUTER
+#include "display/CARDPUTER/display_CARDPUTER.h"
+#endif
+
 //
 void display_setup()
 {
@@ -29,6 +34,11 @@ void display_setup()
 
 #ifdef ST7735_DRIVER
   display_ST7735_setup();
+#endif
+
+// Cardputer
+#ifdef CARDPUTER
+  display_CARDPUTER_setup();
 #endif
 
   // Identifying which screen to show
@@ -96,6 +106,11 @@ void display_loop()
 #ifdef ST7735_DRIVER
   display_ST7735_loop();
 #endif
+
+// Cardputer
+#ifdef CARDPUTER
+  display_CARDPUTER_loop();
+#endif
 }
 
 //
@@ -114,6 +129,11 @@ void display_keyboard(int key, bool pressed, int index)
 #ifdef ST7735_DRIVER
   display_ST7735_keyboard(key, pressed, index);
 #endif
+
+// Cardputer
+#ifdef CARDPUTER
+  display_CARDPUTER_keyboard(key, pressed, index);
+#endif
 }
 
 int display_core()
@@ -129,9 +149,17 @@ int display_core()
 #ifdef ST7735_DRIVER
   return display_ST7735_core();
 #endif
+
+// Cardputer
+#ifdef CARDPUTER
+  display_CARDPUTER_core();
+#endif
+
+  // default
+  return 0;
 }
 
-void display_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes)
+void display_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
 {
 #ifdef LILYGO_T5_EPD47_S3
   display_EPD_keyboard_report(modifier, reserved, keycodes);

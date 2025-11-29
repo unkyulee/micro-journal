@@ -27,7 +27,8 @@
 #ifdef BOARD_PICO
 #include <Keyboard.h>
 #endif
-#ifdef BOARD_ESP32_S3
+
+#if defined(BOARD_ESP32_S3)
 #include <BleKeyboard.h>
 #endif
 
@@ -287,7 +288,7 @@ int keyboard_convert_HID(String _hid)
     return KEY_KP_DOT;
 #endif
 
-#ifdef BOARD_ESP32_S3
+#if defined(BOARD_ESP32_S3)
   else if (_hid == "PRINT_SCREEN")
     return KEY_PRTSC;
   // Numeric keypad

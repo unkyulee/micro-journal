@@ -48,7 +48,7 @@ void app_setup()
 #endif
     _log("Setting Baud Rate: %d\n", 115200);
 
-#ifdef BOARD_ESP32_S3
+#if defined(BOARD_HAS_PSRAM)
     // Check if PSRAM is detected and enabled
     if (psramFound())
     {

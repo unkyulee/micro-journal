@@ -1,5 +1,4 @@
-#ifndef Display_ILI9341_h
-#define Display_ILI9341_h
+#pragma once
 
 // TFT_eSPI setup
 #include <SPI.h>
@@ -16,5 +15,3 @@ void display_ILI9341_keyboard(int key, bool pressed, int index = -1);
 
 //
 TFT_eSprite& display_ILI9341_sprite();
-
-#endif

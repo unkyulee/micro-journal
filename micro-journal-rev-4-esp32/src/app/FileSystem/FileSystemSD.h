@@ -11,7 +11,7 @@ class FileSystemSD : public FileSystem
 public:
     bool begin() override
     {
-#if defined(LILYGO_T5_EPD47_S3)
+#if defined(SD_MOSI)
         // Lilygo T5 has SD card configuration
         SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
         return SD.begin(SD_CS, SPI);

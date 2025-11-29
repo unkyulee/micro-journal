@@ -36,6 +36,16 @@ void _log(const char *format, ...)
 #if defined(REV7)
     Serial1.printf("[%d][%d] %s", COREID, millis(), message);
 #endif
+
+#if defined(DEBUG)
+    // Append to file
+    File f = gfs()->open("/debug.log", FILE_APPEND);
+    if (f)
+    {
+        f.printf("[%d][%d] %s", COREID, millis(), message);
+        f.close();
+    }
+#endif
 }
 
 //
