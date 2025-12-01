@@ -25,6 +25,11 @@
 #include "service/BLEServer/BLEServer.h"
 #endif
 
+#ifdef CARDPUTER
+#include "M5Cardputer.h"
+#endif
+//
+
 // When app is not ready. Such as file system is not initialized
 // then no more operation should occur.
 // this is a flag to check if the app is ready
@@ -41,6 +46,15 @@ void app_setup()
 {
     // Setup Serial Communication
     Serial.begin(115200);
+#ifdef DEBUG
+    delay(5000);
+#endif
+
+#ifdef CARDPUTER
+    auto cfg = M5.config();
+    M5Cardputer.begin(cfg, true); // enableKeyboard
+#endif
+
 #if defined(REV7)
     const int RX_PIN = 45;
     const int TX_PIN = 48;

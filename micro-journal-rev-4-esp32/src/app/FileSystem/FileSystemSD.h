@@ -13,8 +13,10 @@ public:
     {
 #if defined(SD_MOSI)
         // Lilygo T5 has SD card configuration
-        SPI.begin(SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
-        return SD.begin(SD_CS, SPI);
+        _log("SD Card Init: SCLK %d MISO %d MOSI %d CS %d\n",
+             SD_SCLK, SD_MISO, SD_MOSI, SD_CS);
+        SPI.begin(SD_SCLK, SD_MISO, SD_MOSI);
+        return SD.begin(SD_CS, SPI, SPI_FREQUENCY);
 #else
         return SD.begin(SD_CS);
 #endif

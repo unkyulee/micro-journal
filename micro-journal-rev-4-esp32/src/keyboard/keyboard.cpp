@@ -18,6 +18,10 @@
 #include "keyboard/Keypad/48/keypad_48.h"
 #endif
 
+#ifdef CARDPUTER
+#include "keyboard/CardPuter/keypad_CardPuter.h"
+#endif
+
 #ifdef REV5
 #include "keyboard/USBHost/USBHost.h"
 #include "keyboard/Button/button.h"
@@ -56,6 +60,10 @@ void keyboard_setup()
 #ifdef REV6
   keyboard_keypad_48_setup();
 #endif
+
+#ifdef CARDPUTER
+  keypad_cardputer_setup();
+#endif
 }
 
 //
@@ -67,6 +75,10 @@ void keyboard_loop()
 
 #ifdef REV6
   keyboard_keypad_48_loop();
+#endif
+
+#ifdef CARDPUTER
+  keypad_cardputer_loop();
 #endif
 
 #ifdef REV5

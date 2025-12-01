@@ -48,6 +48,9 @@ bool config_load()
             return true;
         }
 
+        //
+        _debug(configString.c_str());
+
         // Prepare a JsonDocument for the configuration
         // The size should be adjusted according to your configuration's needs
         JsonDocument configDoc;
@@ -69,9 +72,7 @@ bool config_load()
 
         // Assign the loaded configuration to "config" property of app
         _log("Loading app status config\n");
-        app["config"] = configDoc.as<JsonObject>();
-
-        // print out the configuration
+        app["config"] = configDoc.as<JsonObject>();        
         _log("Config loaded successfully!\n");
     }
     else

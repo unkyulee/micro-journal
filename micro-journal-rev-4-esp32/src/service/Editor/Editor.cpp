@@ -55,7 +55,7 @@ void Editor::loadFile(String fileName)
     }
 
     //
-    _debug("Editor loading file %s\n", fileName.c_str());
+    _log("Editor loading file [%s]\n", fileName.c_str());
 
     // Step 1. Create file if necessary
     if (!gfs()->exists(fileName.c_str()))
@@ -69,7 +69,7 @@ void Editor::loadFile(String fileName)
             app["screen"] = ERRORSCREEN;
 
             //
-            _debug(app["error"].as<const char *>());
+            _log(app["error"].as<const char *>());
 
             return;
         }

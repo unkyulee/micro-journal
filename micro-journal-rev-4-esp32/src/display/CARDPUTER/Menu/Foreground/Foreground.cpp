@@ -1,35 +1,41 @@
-#include "FontColor.h"
+#include "Foreground.h"
 #include "../Menu.h"
 #include "app/app.h"
 #include "display/display.h"
-#include "display/ST7735/display_ST7735.h"
+#include "../../WordProcessor/WordProcessor.h"
 
 //
-void FontColor_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+#include "display/CARDPUTER/display_CARDPUTER.h"
+
+
+//
+void Foreground_setup()
 {
-    //
+    // when entering the screen
+    // clear the screen
     Menu_clear();
 }
 
 //
-void FontColor_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void Foreground_render()
 {
     JsonDocument &app = status();
 
-    ptft->setCursor(0, 0);
-    ptft->setTextSize(2);
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
+    //
+    M5Cardputer.Display.setTextSize(0.5);
+    M5Cardputer.Display.setFont(&fonts::Orbitron_Light_24);
 
-    ptft->println("Color Font");
+    M5Cardputer.Display.drawString("FONT COLOR ", 0, 0);
 
     int length = sizeof(colors) / sizeof(colors[0]);
     int grid_cols = 6;
     int grid_rows = 4;
-    int cell_w = 160 / grid_cols; // ≈26
-    int cell_h = 60 / grid_rows;  // =15
 
     int start_x = 0;  // or center if you want: (ptft->width() - 160)/2
-    int start_y = 20; // adjust as needed for your layout
+    int start_y = 14; // adjust as needed for your layout
+
+    int cell_w = M5Cardputer.Display.width() / grid_cols;              // ≈26
+    int cell_h = (M5Cardputer.Display.height() - start_y) / grid_rows; // =15
 
     int selectedFontColorColorIndex = app["selectedFontColorColorIndex"].as<int>();
 
@@ -39,23 +45,22 @@ void FontColor_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         int row = i / grid_cols;
         int x = start_x + col * cell_w;
         int y = start_y + row * cell_h;
-        ptft->fillRect(x, y, cell_w, cell_h, colors[i]);
+        M5Cardputer.Display.fillRect(x, y, cell_w, cell_h, colors[i]);
 
         // if
         if (selectedFontColorColorIndex == i)
         {
             // draw a border
-            ptft->drawRect(x, y, cell_w, cell_h, TFT_WHITE);
-            ptft->drawRect(x + 1, y + 1, cell_w - 2, cell_h - 2, TFT_BLACK);
+            M5Cardputer.Display.drawRect(x, y, cell_w, cell_h, TFT_WHITE);
+            M5Cardputer.Display.drawRect(x + 1, y + 1, cell_w - 2, cell_h - 2, TFT_BLACK);
         }
     }
 }
 
 //
-void FontColor_keyboard(char key, bool pressed)
+void Foreground_keyboard(char key)
 {
-    _debug("FontColor_Keyboard %d\n", key);
-    JsonDocument &app = status();
+     JsonDocument &app = status();
 
     // ESC exit
     if (key == 27)
@@ -67,11 +72,11 @@ void FontColor_keyboard(char key, bool pressed)
         app["menu"]["state"] = MENU_HOME;
     }
 
-    // MENU - SELECTED ACTION
-    else if (key == 6 || key == '\n')
+    // Enter - SELECTED ACTION
+    else if (key == '\n')
     {
         // Go back to Home
-        _log("Exit FontColor");
+        _log("Exit Background");
 
         //
         app["menu"]["state"] = MENU_HOME;
@@ -82,7 +87,7 @@ void FontColor_keyboard(char key, bool pressed)
     }
 
     // UP
-    else if (key == 21 || key == 19)
+    else if (key == 21 || key == 19 || key == '.' || key == '/')
     {
         //
         int selectedFontColorColorIndex = app["selectedFontColorColorIndex"].as<int>();
@@ -94,7 +99,7 @@ void FontColor_keyboard(char key, bool pressed)
     }
 
     // DOWN
-    else if (key == 20 || key == 18)
+    else if (key == 20 || key == 18 || key == ';' || key == ',')
     {
         //
         int selectedFontColorColorIndex = app["selectedFontColorColorIndex"].as<int>();

@@ -152,7 +152,7 @@ int display_core()
 
 // Cardputer
 #ifdef CARDPUTER
-  display_CARDPUTER_core();
+  return display_CARDPUTER_core();
 #endif
 
   // default

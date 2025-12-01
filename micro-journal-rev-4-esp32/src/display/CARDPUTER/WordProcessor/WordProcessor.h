@@ -10,7 +10,6 @@ void WP_render();
 
 //
 void WP_check_saved();
-void WP_check_sleep();
 
 //
 void WP_render_clear();
@@ -20,13 +19,13 @@ void WP_render_status();
 
 //
 void WP_render_text();
-void WP_render_line();
+void WP_render_line(int line_num, int y);
 
 //
 void WP_render_cursor();
 
 // 
-void WP_keyboard(int key, bool pressed);
+void WP_keyboard(int key, bool pressed, int index);
 
 //
 String formatNumberWithCommas(long num);

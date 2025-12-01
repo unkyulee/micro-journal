@@ -14,13 +14,13 @@ int screen_width = 240;
 int screen_height = 135;
 
 //
-const int font_width = 9;
-const int font_height = 14;
+const int font_width = 14;
+const int font_height = 20;
 
 // Lines will be rendered at the bottom on the screen
 // need to calculate the Y position considering the status bar height
-const int editY = 72;
-const int cursorY = 75;
+const int editY = 100;
+const int cursorY = editY + font_height - 2;
 const int cursorHeight = 2;
 
 // Some flags
@@ -31,14 +31,22 @@ unsigned int last_sleep = millis();
 void WP_setup()
 {
     // Editor Init - setup screen size
-    Editor::getInstance().init(17, 4);
+    Editor::getInstance().init(17, 5);
 
     // setup default color
     JsonDocument &app = status();
 
     // load file from the editor
     int file_index = app["config"]["file_index"].as<int>();
-    Editor::getInstance().loadFile(format("/%d.txt", file_index));
+    String filename = format("/%d.txt", file_index);
+    _log("[WP_setup] load file [%s]\n", filename.c_str());
+    Editor::getInstance().loadFile(filename);
+
+    //
+    if (!app["config"]["foreground_color"].is<int>())
+    {
+        app["config"]["foreground_color"] = TFT_WHITE;
+    }
 
     // start from clear background
     clear_background = true;
@@ -52,7 +60,6 @@ void WP_render()
 {
     // timers
     WP_check_saved();
-    WP_check_sleep();
 
     // CLEAR BACKGROUND
     WP_render_clear();
@@ -66,7 +73,6 @@ void WP_render()
     // STATUS
     WP_render_status();
 
-    //
     if (clear_background)
         clear_background = false;
 
@@ -79,109 +85,75 @@ void WP_render_text()
 {
     JsonDocument &app = status();
 
-    M5Cardputer.Display.drawString("Hello World", 4, M5Cardputer.Display.height() - 24);
-    /*
-        // LOAD COLORS
-        uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-        uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+    // LOAD COLORS
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
-        // SET FONT
-        pu8f->setFont(FONT);
-        pu8f->setForegroundColor(foreground_color);
-        pu8f->setFontMode(1);
+    // SET FONT
+    M5Cardputer.Display.setTextSize(1);
+    M5Cardputer.Display.setTextColor(foreground_color, background_color);
+    M5Cardputer.Display.setFont(&fonts::FreeMonoBold12pt7b);
 
-        // Cursor Information
-        static int cursorLine_prev = 0;
-        static int cursorLinePos_prev = 0;
-        int cursorLine = Editor::getInstance().cursorLine;
-        int cursorLinePos = Editor::getInstance().cursorLinePos;
-        int totalLine = Editor::getInstance().totalLine;
+    // Cursor Information
+    static int cursorLine_prev = 0;
+    static int cursorLinePos_prev = 0;
+    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int totalLine = Editor::getInstance().totalLine;
+
+    //
+    // Middle part of the text will be rendered
+    // Only when refresh background is called
+    //
+    // initiate sprite
+    if (clear_background)
+    {
+        // start line
+        int rows = Editor::getInstance().rows;
 
         //
-        // Middle part of the text will be rendered
-        // Only when refresh background is called
-        //
-        // initiate sprite
-        TFT_eSprite sprite = display_ST7735_sprite();
-        if (clear_background)
+        int y = 0;
+        for (int i = cursorLine - rows; i < cursorLine; i++)
         {
-            sprite.createSprite(screen_width, screen_height);
-            sprite.fillSprite(background_color);
+            if (i >= 0)
+                WP_render_line(i, y);
 
-            //
-            pu8f->begin(sprite);
-            pu8f->setFont(FONT);
-            pu8f->setForegroundColor(foreground_color);
-            pu8f->setFontMode(1);
-
-            //
-            pu8f->setCursor(0, font_height);
-
-            // start line
-            int rows = Editor::getInstance().rows;
-
-            //
-            for (int i = cursorLine - rows; i < cursorLine; i++)
-            {
-                if (i >= 0)
-                    WP_render_line(ptft, pu8f, i);
-
-                //
-                pu8f->print("\n");
-            }
+            // new line
+            y += font_height;
         }
-
+    }
+    else
+    {
         //
         // Bottom line will the the edit area
         //
-        pu8f->setCursor(0, editY);
-        WP_render_line(ptft, pu8f, cursorLine);
-
-        // Clean up sprite
-        if (clear_background)
-        {
-            _debug("Pushing sprite, cursorLine: %d, cursorLinePos: %d\n", cursorLine, cursorLinePos);
-
-            // push sprite
-            sprite.pushSprite(0, 0);
-            sprite.deleteSprite();
-            pu8f->begin(*ptft);
-        }
-            */
+        WP_render_line(cursorLine, editY);
+    }
 }
 
 //
 //
-void WP_render_line()
+void WP_render_line(int line_num, int y)
 {
-    /*
     char *line = Editor::getInstance().linePositions[line_num];
     int length = Editor::getInstance().lineLengths[line_num];
 
-    //_debug("WP_render_line %d, length: %d\n", line_num, length);
-
-    // render
-    for (int i = 0; i < length; i++)
+    if (length > 0)
     {
-        // convert extended ascii into a streamlined string
-        uint8_t value = *(line + i);
-        if (value == '\n')
-            continue;
+        // Create a temporary null-terminated buffer
+        char temp[length + 1];
+        memcpy(temp, line, length);
+        temp[length] = '\0';
 
-        String str = asciiToUnicode(value);
-        if (str.length() == 0)
-            pu8f->print((char)value);
-        else
-            pu8f->print(str);
+        //
+        M5Cardputer.Display.drawString(temp, 0, y);
     }
-            */
 }
 
 //
 // Render Cursor
 void WP_render_cursor()
 {
-    /*
     JsonDocument &app = status();
 
     // retrieve color information
@@ -217,7 +189,7 @@ void WP_render_cursor()
     if (cursorLinePos != cursorLinePos_prev)
     {
         //
-        ptft->fillRect(cursorLinePos_prev * font_width, cursorY, font_width, cursorHeight, background_color);
+        M5Cardputer.Display.fillRect(cursorLinePos_prev * font_width, cursorY, font_width, cursorHeight, background_color);
 
         //
         cursorLinePos_prev = cursorLinePos;
@@ -225,11 +197,9 @@ void WP_render_cursor()
 
     // Cursor Blink will be always at the bottom of the screen
     if (blink)
-        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, foreground_color);
+        M5Cardputer.Display.fillRect(cursorX, cursorY, font_width, cursorHeight, foreground_color);
     else
-        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, background_color);
-
-    */
+        M5Cardputer.Display.fillRect(cursorX, cursorY, font_width, cursorHeight, background_color);
 }
 
 //
@@ -237,47 +207,44 @@ void WP_render_status()
 {
     //
     JsonDocument &app = status();
-/*
-    //
-    const int width = 3;
-    int color = TFT_RED;
-    // SAVE STATUS
-    if (Editor::getInstance().saved)
-    {
-        color = TFT_GREEN;
-    }
+
+    // LOAD COLORS
+    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
+    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
+
+    int STATUSBAR_Y = cursorY + cursorHeight + 2;
 
     // file index number
     const int font_width = 12;
     int file_index = app["config"]["file_index"].as<int>();
-    pu8f->setFont(FONT_SMALL);
-    pu8f->setCursor(screen_width - font_width / 2, font_width * 2 / 3);
-    pu8f->print(String(file_index));
 
-    // Word count print
-    int small_font_width = 10;
-    int bufferSize = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer;
-    ;
-    String bufferStr = String(bufferSize);
-    // Calculate x position so it's right-aligned
-    int textWidth = bufferStr.length() * small_font_width;
-    int x = screen_width - textWidth - 2; // 2px padding
-    int y = screen_height;                // near bottom of the screen
+    //
+    M5Cardputer.Display.setTextSize(1);
+    M5Cardputer.Display.setFont(&fonts::AsciiFont8x16);
+    M5Cardputer.Display.setTextColor(background_color, foreground_color);
+    M5Cardputer.Display.drawString(String(file_index), 4, STATUSBAR_Y);
 
-    // Clear background where buffer size will be drawn
-    ptft->fillRect(x - 2, y - 2, textWidth + 4, small_font_width + 4, app["config"]["background_color"].as<uint16_t>());
+    // WORD COUNT
+    M5Cardputer.Display.setTextColor(foreground_color, background_color);
 
-    // Draw buffer size
-    pu8f->setCursor(x, y);
-    pu8f->print(bufferStr);
+    int wordCount = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer;
+    String wordCountFormatted = formatNumber(wordCount);
+    M5Cardputer.Display.drawString(wordCountFormatted, 30, STATUSBAR_Y);
 
-    // height 100% 80
-    float batteryPercent = app["battery"].as<float>();
-    int height = 80 * batteryPercent / 100.0;
-    if (height < width)
-        height = width;
-    ptft->fillRect(screen_width - width, font_width, width, height - font_width, color);
-    */
+    // SAVE STATUS
+    if (Editor::getInstance().saved)
+    {
+        M5Cardputer.Display.fillCircle(screen_width - 15, STATUSBAR_Y + 8, 5, TFT_GREEN);
+    }
+    else
+    {
+        M5Cardputer.Display.fillCircle(screen_width - 15, STATUSBAR_Y + 8, 5, TFT_RED);
+    }
+    M5Cardputer.Display.drawCircle(screen_width - 15, STATUSBAR_Y + 8, 5, TFT_BLACK);
+
+    // BATTERY
+    int battery = M5Cardputer.Power.getBatteryLevel();
+    M5Cardputer.Display.drawString(format("%d%%", battery), screen_width - 85, STATUSBAR_Y);
 }
 
 //
@@ -286,15 +253,6 @@ void WP_render_status()
 //
 void WP_render_clear()
 {
-    /*
-    // clear background
-    if (clear_background)
-    {
-        // when clearing background
-        // sprite will be activated to reduce the flicker
-        return;
-    }
-
     //
     JsonDocument &app = status();
 
@@ -348,12 +306,23 @@ void WP_render_clear()
     {
         bufferSize_prev = bufferSize;
     }
-        */
+
+    // clear background
+    if (clear_background)
+    {
+        // when clearing background
+        M5Cardputer.Display.fillRect(
+            0,
+            0,
+            M5Cardputer.Display.width(),
+            M5Cardputer.Display.height(),
+            background_color);
+    }
 }
 
 //
 //
-void WP_keyboard(int key, bool pressed)
+void WP_keyboard(int key, bool pressed, int index)
 {
     // ignore non pritable keys
     if (key == 0)
@@ -467,26 +436,4 @@ void WP_check_saved()
     }
 }
 
-//
-//
-void WP_check_sleep()
-{
-    //
-    // when the file is saved then extend the sleep timer
-    if (!Editor::getInstance().saved)
-    {
-        // when typed then reset sleep timer
-        last_sleep = millis();
-    }
 
-    // 600 seconds - 10 minutes
-    if (millis() - last_sleep > 600000)
-    {
-        // if no action for 10 minute go to sleep
-        last_sleep = millis();
-
-        //
-        JsonDocument &app = status();
-        app["screen"] = SLEEPSCREEN;
-    }
-}

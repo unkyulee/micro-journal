@@ -37,7 +37,7 @@ void _log(const char *format, ...)
     Serial1.printf("[%d][%d] %s", COREID, millis(), message);
 #endif
 
-#if defined(DEBUG)
+#if defined(DEBUG_FILE)
     // Append to file
     File f = gfs()->open("/debug.log", FILE_APPEND);
     if (f)
