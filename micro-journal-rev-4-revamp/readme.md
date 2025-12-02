@@ -34,7 +34,7 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 ### Hook's Review
 
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
-* [User Manual for the Micro Journal written by Hook](./user-manual.md)
+
 
 ### Videos
 
