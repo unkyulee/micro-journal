@@ -184,7 +184,6 @@ void display_CARDPUTER_keyboard(int key, bool pressed, int index)
 
   else if (screen == KEYBOARDSCREEN)
   {
-    if (!pressed)
       KeyboardScreen_keyboard(key, pressed, index);
   }
 }
