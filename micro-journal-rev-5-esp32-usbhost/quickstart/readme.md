@@ -1,259 +1,458 @@
-# Quick Start Guide
 
-# Diagram
+# **Micro Journal Rev.5 — Complete User Guide (Refined Edition)**
 
-![Diagram](./images/diagram.jpg)
+## **Table of Contents**
 
-# First things to do
+1. [Introduction](#introduction)
+2. [First Steps](#first-steps)
 
-When you receive the writerDeck, you need to first install a battery and SD card. Please, follow the steps below to complete the setup.
+   * [What You Need](#what-you-need)
+   * [Battery Requirements](#battery-requirements)
+   * [SD Card Requirements](#sd-card-requirements)
+3. [Hardware Setup](#hardware-setup)
 
-Also, please update the firmware when you receive the device. The firmware on the device is still under development and you may not have the latest releases. You can find the guide how to update the firmware on this document.
+   * [Step 1 — Install the Battery](#step-1--install-the-battery)
+   * [Step 2 — Prepare the SD Card](#step-2--prepare-the-sd-card)
+4. [Google Drive Sync Setup](#google-drive-sync-setup)
 
-# Battery
+   * [Create Folder & Apps Script](#1-create-a-folder-in-google-drive)
+   * [Deploy Script & Get Sync URL](#6-deploy-the-apps-script)
+   * [Configure Your SD Card](#9-edit-or-create-configjson-on-the-sd-card)
+   * [Wi-Fi Setup](#10-wifi-setup)
+5. [Firmware Update](#firmware-update)
+6. [Using External Keyboards](#using-external-keyboards)
+7. [Customizing Startup & Sleep Animations](#customizing-start-and-sleep-animation)
+8. [Micro Journal Rev.5 Walkthrough](#the-micro-journal-rev-5-user-manual)
+
+---
+
+# **Introduction**
+
+Welcome to the **Micro Journal Rev.5**, a portable digital typewriter designed for distraction-free writing.
+This guide will walk you through the complete setup, from installing the battery to syncing your writing with Google Drive.
+
+---
+
+# **First Steps**
+
+## **What You Need**
+
+Before turning on the device for the first time, prepare:
+
+* **One 18650 Lithium-ion 3.7V battery**
+* **One SD card (1–32 GB recommended)**
+* A **5V USB-A charger** (non-PD)
+* **USB-A to USB-C cable**
+
+---
+
+## **Battery Requirements**
 
 ![Battery](./images/battery.png)
 
-writerDeck requires one 18650 3.7V Lithium ion Battery. Search with keyboard "18650" in amazon then you should be able to find one. Both flatop and button top works fine. 
+The writerDeck requires a **single 18650 Lithium-ion 3.7V battery**.
 
-[Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
+### ✔ Good to know
 
-* [This Battery Works, Flat-top (US)](https://www.amazon.com/gp/aw/d/B0CPBGDP1H)
+* Both **flat-top** and **button-top** batteries work.
+* Choose **well-known brands only**.
+* **Maximum real capacity is ~3300 mAh** — anything advertised above this is fake.
+* Ensure the battery includes **short-circuit protection**.
+* If you don’t have a battery yet, the device can run temporarily via USB power.
 
-**This is not AA battery or AAA battery.**
+### 🔥 Safety Warning
 
-Please, note that when buying the battery, please buy from a well known brand. One of the tip when buying the battery is to look for maximum capacity. It should _NOT_ be higher than 3300 mAh. There are no such battery with this form factor that has higher capacity that 3300 mAh, so, be careful and note this number when buying a battery.
+**Never use AA or AAA batteries. Only 18650 Li-ion.**
+Incorrect battery type may damage the device or cause fire.
 
-Make sure that the battery has short circuit protection on it.
+### Recommended Battery
 
-In case, you don't have the battery yet. You can plug in a usb cable to the charging port. The device should be able to turn on with it.
+* [Flat-top, verified working (US)](https://www.amazon.com/gp/aw/d/B0CPBGDP1H)
 
-# SD card
+---
+
+## **SD Card Requirements**
 
 ![SD](./images/sd.jpg)
 
-writerDeck takes a SD card. Try to buy lower capacity as possible. If the size is bigger than 32 GB... you need to setup a special partition to make it recognized in the writerDeck. I believe 1 GB should be more than enough.
+* Use **standard SD cards** (the larger size).
+* **MicroSD + adapter works fine**.
+* Prefer **low capacity (1–16 GB)**.
+  Larger cards (>32 GB) require manual partitioning.
+* Avoid ultra-high-speed cards — some SanDisk “Extreme” cards may not be recognized.
 
-Some ultra fast sanDisk micro SD cards were not recognized. So, try to buy something not that fancy.
+---
 
-Make sure to buy the one that has the adapter to the bigger size. writerDeck takes the bigger size SD card.
+# **Hardware Setup**
 
-# Step 1. Open the cover and install the battery
+## **Step 1 — Install the Battery**
 
-![SD](./images/unscrew.jpg)
+![Unscrew](./images/unscrew.jpg)
 
-**PLEASE BE EXTRA CAREFUL TO + and - POLARITY OF THE BATTERY**
+### ⚠️ EXTREMELY IMPORTANT
 
-Install the battery when the enclosure is open. Battery holder should have the polarity written on the bottom. Please check carefully before inserting the battery.
+**Double-check battery polarity (+ and –) before inserting.
+Reversed polarity can permanently damage the device.**
 
-The place with the spring on the holder is the negative (-) side. 
+1. Open the enclosure by removing the screws.
+2. Locate the battery holder.
 
-Check that the positive (+) end of battery is making contact with the positive terminal in the battery panel. Battery can fit snugly, preventing contact. Suggest turning on power switch to confirm connectivity before putting screws back.
+   * **The spring = negative (-)**
+   * **Flat metal = positive (+)**
+3. Insert the battery carefully.
+4. Before closing the case:
 
-![SD](./images/battery_install.jpg)
+   * Toggle the power switch to confirm the screen turns on.
+   * Ensure **no cables are caught** when closing.
+5. Charge the battery **at least 4 hours before first use**.
 
-**PLEASE BE EXTRA CAREFUL TO + and - POLARITY OF THE BATTERY**
+### Signs of low battery
 
-When installed the battery with the wrong polarity, it can cause a unreparable damange to the device.
+* Screen flickering
+* Screen turning white
 
-**PLEASE ENSURE THE BATTERY IS FULLY CHARGED BEFORE USE**
+Recharge if these occur.
 
-LiPo batteries do not come fully charged, so it’s essential to charge the battery before using the device. Install the battery, connect it to the charging port, and leave it charging for at least 4 hours before turning it on for the first time.
+---
 
-When the battery is low, the screen may turn white or flicker—these are common signs of a low battery. If you notice this happening, please check that the battery is functioning properly or recharge it before continuing to use the device.
+## **⚠️ Important: USB Charging Limitations**
 
-**Be extra careful with the battery. It can cause fire**
+The writerDeck **does NOT support USB Power Delivery (PD)**.
 
-When closing the enclosure back. Check very carefully while screwing. Do not force it too much. If the case is not getting aligned well. This means some cable may be clipped. Take a lot of attention when closing the enclosure to check if any cable is clipped. This can cause short circuit and damage the component and in some cases can cause a fire.
+Do NOT use:
 
-⚠️ Important: Use Only Non-PD USB Chargers
+* USB-C to USB-C PD chargers
+* USB-C laptop chargers
+* High-wattage PD power banks
 
-The Micro Journal does not support USB Power Delivery (PD). This means that PD chargers and USB-C to USB-C cables will not work and may prevent the device from powering on or charging. To ensure proper operation, please use a standard 5V USB-A charger (such as an older phone charger) together with a USB-A to USB-C cable. Using the correct charger type is essential for reliable power and safe operation of the device.
+Must use:
 
+* **Standard 5V USB-A charger**
+* **USB-A to USB-C cable**
 
-# Step 2. Prepare SD card
+Using PD chargers may prevent charging or powering the device.
 
-SD card needs to be formatted before inserted into the writerDeck. Connect the SD card to your computer, and initiate formatting process.
+---
+
+## **Step 2 — Prepare the SD Card**
+
+1. Insert SD card into your computer.
+2. Format using:
+
+**File System:** `FAT32`
+**Allocation size:** default
 
 ![format](./images/format.png)
 
-Make sure to format the disk with File system **FAT32**
+If FAT32 is not available:
 
-In case FAT32 options are not appearing. You will need to create a partition that is smaller than 32 GB.
+* Create a partition **smaller than 32 GB**.
 
-Once the SD card is formatted. Put it inside the writerDeck and the writerDeck should be ready.
+Insert the SD card into the writerDeck after formatting.
 
-# Step 3. Google Sync Setup
+---
 
-## 1. Connect to Google Drive
+# **Google Drive Sync Setup**
 
-https://drive.google.com
+This allows your writerDeck to back up files through Wi-Fi.
 
-## 2. Create a folder: "uJournal"
+---
 
-![drive](./images/drive_001.png)
+## **1. Create a Folder in Google Drive**
 
-![drive](./images/drive_002.png)
+1. Visit: [https://drive.google.com](https://drive.google.com)
+2. Create a folder named **uJournal**
 
-## 3. Go inside the uJournal folder
+![drive1](./images/drive_001.png)
+![drive2](./images/drive_002.png)
 
-## 4. Create Google Apps Script
+---
 
-![drive](./images/drive_003.png)
+## **2. Create Google Apps Script**
 
-## 5. Copy the Sync Script
+1. Enter the **uJournal** folder.
+2. Create a new **Google Apps Script** file.
 
-Open the following link to get the lastest script code. Open it can copy and paste the code to the apps script. Overwrite what was existing in the apps script before
+![drive3](./images/drive_003.png)
 
-https://raw.githubusercontent.com/unkyulee/micro-journal/main/micro-journal-rev-4-esp32/install/google/sync.js
+---
 
-Give some name to the apps script project
+## **3. Add the Sync Script**
 
-![drive](./images/drive_004.png)
+Open the latest script here:
 
-## 6. Deploy the Apps Script
+[https://raw.githubusercontent.com/unkyulee/micro-journal/main/micro-journal-rev-4-esp32/install/google/sync.js](https://raw.githubusercontent.com/unkyulee/micro-journal/main/micro-journal-rev-4-esp32/install/google/sync.js)
 
-Click on the "Deploy" button
+Copy and paste into your Apps Script editor:
 
-![drive](./images/drive_005.png)
+![drive4](./images/drive_004.png)
 
-Choose the deployment type as "Web app"
+Save the project with any name.
 
-![drive](./images/drive_006.png)
+---
 
-Configure as the following. Execute as "Me". This will allow the script to access to your drive.
+## **6. Deploy the Apps Script**
 
-![drive](./images/drive_007.png)
+1. Click **Deploy → New deployment**
+2. Select **Web app**
 
-Who has access as "Anyone". This way writerDeck can access to the drive. As long as you don't share the link that is provided. Only the writerDeck should have access to the drive.
+![drive5](./images/drive_005.png)
+![drive6](./images/drive_006.png)
 
-## 7. Press "Deploy" on the popup
+3. Configure as follows:
 
-Wait for a bit, then it will ask you to authorize the app. Choose the account of the google drive.
+* **Execute as:** Me
+* **Who has access:** Anyone
 
-![drive](./images/drive_008.png)
+![drive7](./images/drive_007.png)
 
-It will give a scary message while authorizing it. The script that you just copied is not verified. Considering that this script is on your google drive and will access your own google drive, it is ok to press, "go to uJournal Sync".
+4. Press **Deploy**, authorize the script, and accept the warning.
 
-![drive](./images/drive_009.png)
+![drive8](./images/drive_008.png)
+![drive9](./images/drive_009.png)
+![drive10](./images/drive_010.png)
 
-Allow the Drive access at the next screen. Your account name should appear. (Not mine)
+---
 
-![drive](./images/drive_010.png)
+## **8. Copy Your Web App URL**
 
-## 8. COPY THE LINK PROVIDED AS WEB APP URL
+![drive11](./images/drive_011.png)
 
-![drive](./images/drive_011.png)
+You will need this URL for your `config.json`.
 
-## 9. Open the SD card of the writerDeck
+---
 
-Connect the SD card to the PC and create a file "config.json" \
-If the file already exists then no need to create one \
-Open the file with a text editor (notepad) from PC. 
+## **9. Edit or Create `config.json` on the SD Card**
 
-If aren't familiar with the JSON format. Then delete the existing content and replace it with the following json. Then edit the following part only. 
+On your SD card, open or create a file named:
 
-!!!COPY YOUR WEB APP URL HERE!!!!!
+```
+config.json
+```
 
-Make sure to not to remove / add any comma (,) or bracket ({, }) or quotes (") while you are editing. If by any chance, the format gets broken. Start over by removing all texts inside config.json file and copy & paste the following template.
-
-If you are familiar with the JSON format. One thing you need to add is the "sync" property as the root property in the JSON and leave the rest of the property as it is.
+Use this template:
 
 ```json
 {
   "sync": {
-    "url": "!!!COPY YOUR WEB APP URL HERE!!!!!"
+    "url": "PASTE YOUR WEB APP URL HERE"
   }
 }
 ```
 
-Save the file to the sd card. Safely remove the card from the PC and then you place the SD card back to the writerDeck. After that you should have your Google Sync working with the writerDeck.
+Be careful not to remove commas, quotes, or braces.
 
-While you are on the writerDeck. Press "ESC" on the keyboard then press "S" to see if it is working. Make sure to have the wifi information set before the sync.
+Insert the SD card back into the writerDeck.
 
-**NOTE THAT WIFI IS LIMITED TO 2.4 Ghz. ESP32 doesn't support 5 Ghz wifi at this moment**
+To test sync:
+
+* Press **ESC**, then **S**
+* Ensure Wi-Fi is already configured.
+
+### ⚠ Wi-Fi Notes
+
+* Only **2.4 GHz** networks are supported.
+* 5 GHz Wi-Fi cannot connect.
+
+---
+
+## **10. WiFi Setup**
+
+1. Press **ESC**
+2. Press **W**
+3. Select a profile number
+4. Enter SSID
+5. Enter password
+6. Connection will be tested automatically
+
+You may save up to **5 Wi-Fi networks**.
+
+---
+
+# **Firmware Update**
+
+Keeping firmware updated ensures stability and new features.
+
+## **1. Check Current Version**
+
+Press **ESC** or **M** to open the menu.
+
+If you see:
+
+> **Version 1.0.0**
+
+You *must* update.
+
+![firmware](./images/firmware_001.jpg)
+
+---
+
+## **2. Download Latest Firmware**
+
+Get the newest version from:
+
+[https://github.com/unkyulee/micro-journal/releases](https://github.com/unkyulee/micro-journal/releases)
+
+Download:
+
+```
+firmware_rev_5.bin
+```
+
+---
+
+## **3. Install the Firmware**
+
+1. Power off the device
+2. Remove SD card
+3. Copy the firmware file to the SD card
+4. Insert SD card back into the writerDeck
+5. Turn it on
+
+The screen will turn white for ~10 seconds, then reboot with the new firmware.
+
+If update does not trigger:
+
+* Rename file to `firmware.bin` and try again.
+
+---
+
+# **Using External Keyboards**
+
+The Rev.5 relies heavily on your external keyboard.
+
+### ✔ Supported
+
+* Wired USB keyboards
+* Wireless 2.4 GHz dongle keyboards
+* Bluetooth keyboards (via BLE menu)
+
+### ✖ Not recommended / incompatible
+
+* Keyboards with USB hubs
+* Keyboards that charge through USB (power draw too high)
+* RGB/gaming keyboards with heavy LED load
+* Anything drawing high current
+
+**High-power keyboards may damage the Micro Journal.**
+
+---
+
+# **Customizing Start and Sleep Animation**
+
+You can replace the two animated GIFs:
+
+* **wakeup.gif** → plays at boot
+* **sleep.gif** → plays after 1 minute of inactivity
+
+### GIF Requirements
+
+* **320 × 240 px**
+* **≤ 1 MB each**
+
+Place them directly on the SD card.
+
+Create or convert GIFs here:
+[https://ezgif.com/](https://ezgif.com/)
+
+---
+
+# **The Micro Journal Rev.5 User Manual**
+
+v1.2
+
+Prepared by Hook
+
+```
+I am not Un Kyu Lee, so any mistakes in this document are likely mine and not his. 
+
+- Hook
+```
 
 
-## 10. Wifi Setup
 
-* Press ESC on the keyboard
-* When you see the menu screen press W 
-* In the wifi settings page press the number of the slot where you want to place the wifi information
-* type in WIFI SSID then press enter
-* type in WIFI password then press enter
-* wifi information is saved to the device
+## Introducing the Micro Journal Rev 5
+
+The Rev 5 is one of a line of Micro Journal Writer Decks aimed at (my words) *writing focused* drafting. That is, they are digital typewriters that help you focus on getting the words out when you are drafting. The Rev 5 is the simplest of this line. It is, for the most part, a screen with editing software. You need to add a keyboard to use it. Firmware-wise, it is very similar to a Rev 6, except you may not have to carry a keyboard with you if you are going someplace with a spare keyboard. However, you may want to find a smaller, lightweight keyboard you can use with it. But, ultimately, you don't need to buy a keyboard if you already own keyboards.
+
+Not all keyboards will work, but most will. Wired is easiest, just attach it to the USB port on the back of the Rev 5. But Wireless dongle keyboards should work and BT keyboards should work. However, there are a few things to avoid. In general, don't have a hub between the Rev 5 and a wired keyboard. For wired keyboards, avoid any that have their own internal battery, or draw  excessive power (as might be indicated by lights and LEDs. This isn't an issue for BT keyboards since they are not being connected directly. If wireless keyboards don't work it is likely to be a protocol or signal problem on the part of the keyboards.
+
+We will not be concerned here with the keyboards. There are so many. This guide will assume the user has found a keyboard that works and just run through the features offered by the software.
 
 
-# Firmware Update
+# Using the Micro Journal Rev 5 - A Walkthrough
 
-Please, make sure that you have the latest firmware on the device. The firmware is still under a development and your device may have shipped with outdated firmware.
+## Setting Up the Micro Journal Rev 5
 
-To check the current firmware version. You can press "ESC" on the keyboard or "M" button on the device to see the version.
+For setting up your Rev 5, I really can't do much better than Un Kyu lee has already done with his quick start guide, here:
 
-![drive](./images/firmware_001.jpg)
+https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5-esp32-usbhost/quickstart/readme.md
 
-**!!IF YOU SEE 1.0.0 ON YOUR SCREEN PLEASE UPDATE THE FIRMWARE!!**
-
-## 1. Check latest release
-
-You can check the latest firmware from the following link.
+Before we dive in, **make sure you have the latest stable firmware for the Rev 5** before you proceed any further. If a version is marked [DEV], that is a version in development and could have bugs, although it may have desirable features and fixes. Read the changelog and decide which version you want. You can download the current firmware from here:
 
 https://github.com/unkyulee/micro-journal/releases
 
-## 2. Download the "firmware.bin"
+Then, just remove the SD card from the Rev 5 and use a card reader with your computer to transfer the firmware file to your SD card. Put the SD card back in the Rev 5. When you turn on the Rev 5, you will be asked to acknowledge loading the new firmware.  Then, after some screen flashing, you will be set to go.
 
-Download the file from Assets "firmware_rev_5.bin"
+## Using the Rev 5 Part 1: The Editor
 
-## 3. Place "firmware.bin" inside the SD card
+For right now, we are only considering the Rev 5's editor and it's very simple feature set. We will save other features like WIFI and syncing for the next section when we look at the menu. The Editor is the core functionality of the Rev 5. With an added keyboard, it becomes a digital typewriter to help you get your words out with fewer distractions.
 
-Turn off the writerDeck. \
-Pull out the SD card from the writerDeck. \
-Copy "firmware_rev_5.bin" file inside the SD card. \
-Put back the SD card to the writerDeck. \
-Turn on the writerDeck. \
-writerDeck will show white screen for 10 seconds then automatically boot again to the updated firmware.
+The editor is very basic, but drafting and journaling don't require a very large feature set. It types characters. It has a 320 x 240 pixel color LCD screen, which, with the font size used gives you 11 rows with about 25 characters across. The text is quite sharp, clear and readable assuming good vision (including good vision correction). There is only one thing this editor does. It types words in plain text format, saves them as you go and allows you to navigate through the text with arrow keys if you want to check something, delete or backspace. There is no copy and paste, no spell check, no paragraph formatting (although you can do that with markdown if you wish) and no AI. Best of all, there is no need to be connected to the internet to use this editor and save your texts. If you are distracted, it won't be because of anything on the Rev 5.
 
-In case if firmware_rev_5.bin does not trigger the update. Try to rename to firmare.bin and try again.
+The editor has 10 filespaces, labeled 0-9. These filespaces are where you do your writing. This is very much like the Neo 2 except you don't have dedicated keys to open the different file spaces. Instead you either use the menu to select filespaces.
 
-# USB Keyboard
+When you first turn on the Rev 5, you are instantly placed in the first filespace, numbered 0. The screen is blank except for a status area at the very bottom of the screen. In the status area you will see (left to right) the filespace number, the word count and, to the far right a green dot. When you start typing, the red dot will change to red, meaning there is unsaved typing, and the word count will start updating. When writing, words appear at the bottom and are pushed up, a typewriter metaphor. The text word-wraps with Enter creating a new paragraph. 
 
-Most of the USB keyboard should work by connecting to the writerDeck.
+The Rev 5 doesn't save letter-by-letter, but will save when you pause your typing. You will see the red dot turn to green whenever you pause. You are safest if you wait (it isn't a long one) until the dot turns green before turning off the Rev 5. And that's it. You type. You can use arrow keys to navigate to review or make small local fixes. And you can check your word count. By the way, subsequent to this first session, the Rev 5 will start up in whatever file space you were working in last. 
 
-- Bluetooth keyboard is not able to connect to the writerDeck. (Should be possible in the future development)
-- Wireless keyboard with 2.4 Ghz USB dongle should work
-- Wired USB keyboard should work
-- Some keyboards that has USB Hub on board does not work.
-- **Keyboard should be without a hub, without a battery system. Connecting directly to the keyboard that requries charging will break the Micro Journal**
-- **Keyboards that has many LEDs or has high power demand is not recommended to be connected to the Micro Journal**
+Be aware that the buffer that maintains the text on your screen, allowing you to navigate back to review the text, is limited. When the buffer limit is exceeded, text at the top of the buffer (which will be the earliest text you typed) is lost in the sense that you can't navigate to review it. However, the text is still in your file on the SD card. Nothing should ever be lost. However, this is also how this editor is different from more elaborate editors on your computer. It cannot load files from off the SD card, it can only save text you are creating.
+
+So, you have turned on the Rev 5 and written some text. Now, what can you do with that text? Do you want to edit it on your computer? How do you get it there? Can you sync directly or to a cloud? What settings are available to change your experience of the editor? For these questions or more, we turn to the menu system. 
 
 
-# Customizing Start and Sleep Animation
+## Using the Rev 5 Part 2: The Menu Screen
 
-If you want to change the Startup and Sleep animation. You can place the gif files directly in the SD card. Filename should be exactly the same in order to have the effect.
+You can exit the Editor to the menu screen one of two ways. You can either use the Esc key on your keyboard or you can press the M button on the front of the Rev 5. There are two buttons under the screen on the Rev 5 that can be used any time, even without a keyboard attached. The M button, which takes you to the Menu screen and a button marked B which issues the "Back" command, usually used on the menu screen or to exit a menu function.
 
-- wakeup.gif
+The Menu has several types of things. The top of the screen shows what firmware version you have. On the right hand side of the menu screen is a list of the 10 file spaces.  You can change filespace here by simply typing a number. You can also delete the contents of a file space here by typing "D" on this screen. It will delete the contents of the last file space you were working in (you'll see the number of the filespace to be deleted in parentheses next to the Clear file item.
 
-Startup animation file. When the device boots. It will play the wakeup.gif
+On the left side of the menu are are various settings and functions that affect the editor or allow you to backup you text files to other devices or the cloud. Each one is engaged by typing the single letter in brackets next to them. They are:
 
-- sleep.gif
+* ***[S] SYNC***
+* ***[K] KEYBOARD LAYOUT***
+* ***[F] DEVICE BUTTON***
+* ***[M, MENU] BLE KEYBOARD***
+* ***[W] WIFI***
+* ***[G] BACKGROUND COLOR***
+* ***[C] FONT COLOR***
 
-When no key press for one minute. Device goes into sleep mode and will play the sleep.gif animation.
+* ***[B] BACK***
 
-- File size
+Lets go through each of them one by one.
 
-Width: 320 px \
-Height: 240 px
+**SYNC** - This requires WIFI (the next menu item) to be set up first and it requires the Google Apps Script you set up in the Quickstart guide (which  is done on your computer, and then the app link is added to the config.json file on your Rev 5). If everything is set up correctly, Typing "S" on this menu will send whatever was in the file you were just working in to Google Drive. If you did this for another Micro Journal already you can reuse the same link without going through the whole setup again.
 
-Each file should not exceed 1 MB
+**KEYBOARD LAYOUT** - This allows you to select which standard international keyboard layout you want to use, such as US, UK, French (AZERY), etc.  There is one standard layout option on this list that is not tied to language and that is DVORAK.  Select the letter that represents your choice and you will be returned to the last filespace you were working in. These are standard layouts in each case.
 
-Use the following web site to create your own animation files.
+**DEVICE BUTTON** - This just determines whether you use the device buttons under the screen. The default is that they function. You cannot assign different functions to them.
 
-https://ezgif.com/
+**BLE KEYBOARD** - "BLE" stands for Bluetooth Low Energy. It allows a limited range connection from a Bluetooth Keyboard. The first time with any device you will have to do the pairing, but after that the connection should be automatic once you invoke it on the Rev 5 by typing either "M" or pressing the Menu button on the front of the Rev 5.
+
+**WIFI** - Typing "W" on the menu screen will take you to the Wifi settings screen. You only should need to do this once, though you can have up to 5 WIFI profiles if you take the Rev 6 to different locations. Type the number of the profile you want to set up or edit. You will be asked for an SSD and a password for that SSD. The software will then test the connection. If it succeeds, you are done.  Wifi doesn't stay on, there's no reason for it to do so.  It is only used for syncing to Google Drive. Running Sync will turn on WIFI, sync and turn off Wifi.
+
+<u>*Note*</u> The Rev 6 can only connect to 2.4 Ghz Wifi. It won't connect to 5Ghz WIFI. Sometimes, especially if you use a router that offers both in a mode where the router decides which is appropriate for the device trying to sync, you may have to go through the setup more than once until the router gets it right. After that, you won't have any more trouble.
+
+**BACKGROUND COLOR** - This lets you customize the background color of the editor.
+
+**FONT COLOR** - This lets you customize the color of the font in the editor.
+
+**BACK** - Typing B on the Menu returns you to the editor in the last filespace you were working in.
 
 
-- Example
+You'll notice there is no Keymap customization option beyond the standard layouts provided on the menu. That shouldn't be a mystery. The Rev 5 has no keyboard and simply relies on whatever keyboard is attached (USB, BT or Wireless) to provide the character map. The Rev 5 is a very simple Writer Deck.
 
-![wakeup](../gif/wakeup_balls.gif)
+You should be ready to jump in and write. If you have any questions, feel free to drop by and post them here: https://www.flickr.com/groups/alphasmart/
 
-![wakeup](../gif/wakeup_system.gif)
+Happy writing!
 
