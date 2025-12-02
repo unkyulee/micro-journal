@@ -1,66 +1,34 @@
-# Micro Journal Rev.7 - User Guide
+
+# **Micro Journal Rev.7 — User Guide (v1.2)**
 
 v1.2
 
 Prepared by Hook then Edited by Un Kyu Lee
 
+
 ## **Table of Contents**
 
-* **Things to Buy**
-
-  * Buy 18650 Lithium-Ion Battery
-  * Install the Battery
-  * Power On
-
-* **Quick Instructions**
-
-  * USB-C Charging Port
-  * Knobs Functions
-
-* **Battery Installation**
-
-  * Open Bottom Compartment and Install Battery
-  * Safety Notes
-  * Charging the Battery
-
-* **Google Drive Sync**
-
-  * Create Folder on Google Drive
-  * Set Up Google Apps Script
-  * Configure Micro Journal
-
-* **Wi-Fi Setup**
-
-* **Firmware Update**
-
-* **Customizing Keyboard Layout**
-
-* **Troubleshooting**
-
-* **Micro Journal Rev.7 User Guide**
-
-  * Introducing the Micro Journal Rev.7
-  * Using the Editor
-
-    * Editor Features
-    * Scroll Wheels and Knob Functions
-  * Menu Functions
-  * Key Map Modification via Vial
-
-
-Here’s a polished, organized version of your **Micro Journal Rev.7 Quick Start Guide & User Guide**. I’ve made minor readability and structure improvements, ensured consistent formatting, and highlighted safety notes clearly without changing technical content.
-
----
-
-# **Micro Journal Rev.7 Quick Start Guide & User Guide**
-
-**Version:** 1.2
-**Prepared by:** Hook
-
-```
-I am not Un Kyu Lee, so any mistakes in this document are likely mine and not his.
--Hook
-```
+- [**Micro Journal Rev.7 — User Guide (v1.2)**](#micro-journal-rev7--user-guide-v12)
+  - [**Table of Contents**](#table-of-contents)
+  - [**1. Things to Buy**](#1-things-to-buy)
+  - [**2. Quick Instructions**](#2-quick-instructions)
+  - [**3. Battery Installation**](#3-battery-installation)
+    - [**Step 1: Open the Bottom Compartment**](#step-1-open-the-bottom-compartment)
+    - [**Step 2: Charging the Battery**](#step-2-charging-the-battery)
+  - [**4. Google Drive Sync**](#4-google-drive-sync)
+    - [**Step 1: Create Folder**](#step-1-create-folder)
+    - [**Step 2: Google Apps Script**](#step-2-google-apps-script)
+    - [**Step 3: Configure Micro Journal**](#step-3-configure-micro-journal)
+  - [**5. Wifi Setup**](#5-wifi-setup)
+  - [**6. Firmware Update**](#6-firmware-update)
+  - [**7. Customizing Keyboard Layout**](#7-customizing-keyboard-layout)
+  - [**8. Trouble-shooting**](#8-trouble-shooting)
+  - [Introducing the Micro Journal Rev 7](#introducing-the-micro-journal-rev-7)
+  - [Using the Micro Journal Rev 7 - A Walkthrough](#using-the-micro-journal-rev-7---a-walkthrough)
+    - [Setting Up the Micro Journal Rev 7](#setting-up-the-micro-journal-rev-7)
+  - [Using the Rev 7 Part 1: The Editor](#using-the-rev-7-part-1-the-editor)
+  - [Using the Rev 7 Part 2: The Menu Screen](#using-the-rev-7-part-2-the-menu-screen)
+  - [Using the Rev 7 Part 3: Modifying the Rev 7's Key Map with Vial.](#using-the-rev-7-part-3-modifying-the-rev-7s-key-map-with-vial)
 
 ---
 
@@ -214,58 +182,6 @@ Before using the **Micro Journal Rev.7**, you need a battery.
 * Micro Journal components are common; replacements are available.
 * Refer to [Build Guide](../build-guide.md) for wiring and troubleshooting.
 * Report bugs: [GitHub Issues](https://github.com/unkyulee/micro-journal/issues)
-
----
-
-# **Micro Journal Rev.7 User Guide**
-
-### **Introducing the Micro Journal Rev.7**
-
-* Digital typewriter optimized for focused writing
-* Features:
-
-  * Instant-on, 10 file spaces
-  * eInk screen (4.7” / 540x960 px)
-  * Full staggered QWERTY keyboard
-  * Bluetooth & Google Drive sync
-  * Rechargeable 18650 battery
-
----
-
-### **Using the Editor**
-
-* Simple plain-text editor
-* 11 rows x ~25 characters per row
-* Auto-saves when idle
-* Navigation with arrow keys
-* Scroll wheels: Page Up/Down
-
-  * Right knob click → refresh
-  * Left knob click → shutdown
-
----
-
-### **Menu Functions**
-
-| Function        | Key | Description                         |
-| --------------- | --- | ----------------------------------- |
-| WIFI            | W   | Add/edit Wi-Fi profiles             |
-| SYNC            | S   | Sync to Google Drive                |
-| KEYBOARD LAYOUT | K   | Select layout (US/UK/French/DVORAK) |
-| BLUETOOTH       | T   | Pair & type from other devices      |
-| BACK            | B   | Return to editor                    |
-
----
-
-### **Key Map Modification via Vial**
-
-1. Shutdown and remove front plate.
-2. Connect keyboard controller to PC via USB.
-3. Launch Vial, edit keys (replace/move).
-4. Exit Vial, reconnect wires, replace plate.
-
-
-
 
 
 ## Introducing the Micro Journal Rev 7

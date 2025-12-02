@@ -1,30 +1,51 @@
 
 # **Micro Journal Rev.5 — Complete User Guide (Refined Edition)**
 
-## **Table of Contents**
 
-1. [Introduction](#introduction)
-2. [First Steps](#first-steps)
+# **Table of Contents**
 
-   * [What You Need](#what-you-need)
-   * [Battery Requirements](#battery-requirements)
-   * [SD Card Requirements](#sd-card-requirements)
-3. [Hardware Setup](#hardware-setup)
-
-   * [Step 1 — Install the Battery](#step-1--install-the-battery)
-   * [Step 2 — Prepare the SD Card](#step-2--prepare-the-sd-card)
-4. [Google Drive Sync Setup](#google-drive-sync-setup)
-
-   * [Create Folder & Apps Script](#1-create-a-folder-in-google-drive)
-   * [Deploy Script & Get Sync URL](#6-deploy-the-apps-script)
-   * [Configure Your SD Card](#9-edit-or-create-configjson-on-the-sd-card)
-   * [Wi-Fi Setup](#10-wifi-setup)
-5. [Firmware Update](#firmware-update)
-6. [Using External Keyboards](#using-external-keyboards)
-7. [Customizing Startup & Sleep Animations](#customizing-start-and-sleep-animation)
-8. [Micro Journal Rev.5 Walkthrough](#the-micro-journal-rev-5-user-manual)
+- [**Micro Journal Rev.5 — Complete User Guide (Refined Edition)**](#micro-journal-rev5--complete-user-guide-refined-edition)
+- [**Table of Contents**](#table-of-contents)
+- [**Introduction**](#introduction)
+- [**First Steps**](#first-steps)
+  - [**What You Need**](#what-you-need)
+  - [**Battery Requirements**](#battery-requirements)
+    - [✔ Good to know](#-good-to-know)
+    - [🔥 Safety Warning](#-safety-warning)
+    - [Recommended Battery](#recommended-battery)
+  - [**SD Card Requirements**](#sd-card-requirements)
+- [**Hardware Setup**](#hardware-setup)
+  - [**Step 1 — Install the Battery**](#step-1--install-the-battery)
+    - [⚠️ EXTREMELY IMPORTANT](#️-extremely-important)
+    - [Signs of low battery](#signs-of-low-battery)
+  - [**⚠️ Important: USB Charging Limitations**](#️-important-usb-charging-limitations)
+  - [**Step 2 — Prepare the SD Card**](#step-2--prepare-the-sd-card)
+- [**Google Drive Sync Setup**](#google-drive-sync-setup)
+  - [**1. Create a Folder in Google Drive**](#1-create-a-folder-in-google-drive)
+  - [**2. Create Google Apps Script**](#2-create-google-apps-script)
+  - [**3. Add the Sync Script**](#3-add-the-sync-script)
+  - [**6. Deploy the Apps Script**](#6-deploy-the-apps-script)
+  - [**8. Copy Your Web App URL**](#8-copy-your-web-app-url)
+  - [**9. Edit or Create `config.json` on the SD Card**](#9-edit-or-create-configjson-on-the-sd-card)
+    - [⚠ Wi-Fi Notes](#-wi-fi-notes)
+  - [**10. WiFi Setup**](#10-wifi-setup)
+- [**Firmware Update**](#firmware-update)
+  - [**1. Check Current Version**](#1-check-current-version)
+  - [**2. Download Latest Firmware**](#2-download-latest-firmware)
+  - [**3. Install the Firmware**](#3-install-the-firmware)
+- [**Using External Keyboards**](#using-external-keyboards)
+    - [✔ Supported](#-supported)
+    - [✖ Not recommended / incompatible](#-not-recommended--incompatible)
+- [**Customizing Start and Sleep Animation**](#customizing-start-and-sleep-animation)
+    - [GIF Requirements](#gif-requirements)
+- [Using the Micro Journal Rev 5 - A Walkthrough](#using-the-micro-journal-rev-5---a-walkthrough)
+  - [Introducing the Micro Journal Rev 5](#introducing-the-micro-journal-rev-5)
+  - [Setting Up the Micro Journal Rev 5](#setting-up-the-micro-journal-rev-5)
+  - [Using the Rev 5 Part 1: The Editor](#using-the-rev-5-part-1-the-editor)
+  - [Using the Rev 5 Part 2: The Menu Screen](#using-the-rev-5-part-2-the-menu-screen)
 
 ---
+
 
 # **Introduction**
 
@@ -357,7 +378,9 @@ Create or convert GIFs here:
 
 ---
 
-# **The Micro Journal Rev.5 User Manual**
+
+# Using the Micro Journal Rev 5 - A Walkthrough
+
 
 v1.2
 
@@ -369,8 +392,6 @@ I am not Un Kyu Lee, so any mistakes in this document are likely mine and not hi
 - Hook
 ```
 
-
-
 ## Introducing the Micro Journal Rev 5
 
 The Rev 5 is one of a line of Micro Journal Writer Decks aimed at (my words) *writing focused* drafting. That is, they are digital typewriters that help you focus on getting the words out when you are drafting. The Rev 5 is the simplest of this line. It is, for the most part, a screen with editing software. You need to add a keyboard to use it. Firmware-wise, it is very similar to a Rev 6, except you may not have to carry a keyboard with you if you are going someplace with a spare keyboard. However, you may want to find a smaller, lightweight keyboard you can use with it. But, ultimately, you don't need to buy a keyboard if you already own keyboards.
@@ -379,8 +400,6 @@ Not all keyboards will work, but most will. Wired is easiest, just attach it to 
 
 We will not be concerned here with the keyboards. There are so many. This guide will assume the user has found a keyboard that works and just run through the features offered by the software.
 
-
-# Using the Micro Journal Rev 5 - A Walkthrough
 
 ## Setting Up the Micro Journal Rev 5
 
