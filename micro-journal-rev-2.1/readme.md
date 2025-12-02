@@ -30,6 +30,7 @@ Micro Journal Rev.2.1: cyberDeck blends the tactile joy of mechanical typing wit
 ### Press
 
 * [Liliputing - Micro Journal Rev.2.1 is a distraction-free writerDeck with a full-sized keyboard and flip-up display](https://liliputing.com/micro-journal-rev-2-1-is-a-distraction-free-writerdeck-with-a-full-sized-keyboard-and-flip-up-display/)
+* [PC World - This custom ‘writerdeck’ is a gorgeous digital typewriter from another time](https://www.pcworld.com/article/2975216/this-custom-writerdeck-is-a-gorgeous-digital-typewriter-from-another-time.html)
 
 ### Online Shop
 
