@@ -384,10 +384,6 @@ We will not be concerned here with the keyboards. There are so many. This guide 
 
 ## Setting Up the Micro Journal Rev 5
 
-For setting up your Rev 5, I really can't do much better than Un Kyu lee has already done with his quick start guide, here:
-
-https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5-esp32-usbhost/quickstart/readme.md
-
 Before we dive in, **make sure you have the latest stable firmware for the Rev 5** before you proceed any further. If a version is marked [DEV], that is a version in development and could have bugs, although it may have desirable features and fixes. Read the changelog and decide which version you want. You can download the current firmware from here:
 
 https://github.com/unkyulee/micro-journal/releases
