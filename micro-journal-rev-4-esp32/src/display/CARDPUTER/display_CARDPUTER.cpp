@@ -12,6 +12,7 @@
 #include "WordProcessor/WordProcessor.h"
 #include "Update/Update.h"
 #include "Menu/Menu.h"
+#include "KeyboardScreen/KeyboardScreen.h"
 
 //
 int display_CARDPUTER_core()
@@ -129,6 +130,17 @@ void display_CARDPUTER_loop()
         Update_render();
     }
 
+     // BLUETOOTH KEYBOARD SCREEN
+    else if (screen == KEYBOARDSCREEN)
+    {
+      // setup only once
+      if (screen != screen_prev)
+        KeyboardScreen_setup();
+      else
+        // loop
+        KeyboardScreen_render();
+    }
+
     //
     app["screen_prev"] = screen;
   }
@@ -168,6 +180,12 @@ void display_CARDPUTER_keyboard(int key, bool pressed, int index)
   {
     if (!pressed)
       Update_keyboard(key);
+  }
+
+  else if (screen == KEYBOARDSCREEN)
+  {
+    if (!pressed)
+      KeyboardScreen_keyboard(key, pressed, index);
   }
 }
 

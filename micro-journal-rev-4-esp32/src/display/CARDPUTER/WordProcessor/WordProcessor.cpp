@@ -243,8 +243,55 @@ void WP_render_status()
     M5Cardputer.Display.drawCircle(screen_width - 15, STATUSBAR_Y + 8, 5, TFT_BLACK);
 
     // BATTERY
-    int battery = M5Cardputer.Power.getBatteryLevel();
-    M5Cardputer.Display.drawString(format("%d%%", battery), screen_width - 85, STATUSBAR_Y);
+    static int displayedBattery = -1;     // the value shown on screen
+    static int lastReadBattery = -1;      // last raw value read
+    static uint32_t changeDetectedAt = 0; // when the change was first noticed
+
+    int current = M5Cardputer.Power.getBatteryLevel();
+
+    // First run
+    if (displayedBattery < 0)
+    {
+        displayedBattery = current;
+        lastReadBattery = current;
+    }
+
+    // If battery reading has not changed, reset timer & do nothing
+    if (current == displayedBattery)
+    {
+        changeDetectedAt = 0;
+        lastReadBattery = current;
+    }
+    // Battery reading changed (ex: 100 → 99)
+    else
+    {
+        // If a change was just detected, start the timer
+        if (changeDetectedAt == 0)
+        {
+            changeDetectedAt = millis();
+            lastReadBattery = current;
+        }
+
+        // If reading fluctuates (ex: 100 → 99 → 100), cancel
+        if (current != lastReadBattery)
+        {
+            changeDetectedAt = millis(); // restart timer with new reading
+            lastReadBattery = current;
+        }
+
+        // If a second passed with stable new value → update UI
+        if (millis() - changeDetectedAt >= 1000)
+        {
+            displayedBattery = current;
+            changeDetectedAt = 0;
+        }
+    }
+
+    // Draw smoothed / stabilized value
+    M5Cardputer.Display.drawString(
+        format("%d%%", displayedBattery),
+        screen_width - 85,
+        STATUSBAR_Y);
 }
 
 //
@@ -435,5 +482,3 @@ void WP_check_saved()
             Editor::getInstance().saveFile();
     }
 }
-
-

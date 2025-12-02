@@ -19,16 +19,32 @@ void keypad_cardputer_setup()
 ///
 void keypad_cardputer_loop()
 {
+    // Minimum delay between key events (in ms)
+    static const uint32_t KEY_DEBOUNCE_INTERVAL = 100;
+
+    // Last time a key was accepted
+    static uint32_t lastKeyTime = 0;
+
+    // Debounce / rate limiting
+    uint32_t now = millis();
+    if (now - lastKeyTime < KEY_DEBOUNCE_INTERVAL)
+    {
+        return; // ignore fast key bursts
+    }
+
     M5Cardputer.update();
     if (M5Cardputer.Keyboard.isChange())
     {
         if (M5Cardputer.Keyboard.isPressed())
         {
+            lastKeyTime = now; // update debounce timer
+
+            //
             Keyboard_Class::KeysState status = M5Cardputer.Keyboard.keysState();
 
             // when FN key is pressed
             if (status.fn)
-            { 
+            {
                 // ESC
                 if (M5Cardputer.Keyboard.isKeyPressed('`'))
                 {
@@ -41,6 +57,13 @@ void keypad_cardputer_loop()
                 {
                     display_keyboard(127, true, 127);
                     display_keyboard(127, false, 127);
+                }
+
+                // FN + TAB -> MENU
+                else if (status.tab)
+                {
+                    display_keyboard(MENU, true, MENU);
+                    display_keyboard(MENU, false, MENU);
                 }
 
                 // ARROW KEY - UP
@@ -70,6 +93,26 @@ void keypad_cardputer_loop()
                     display_keyboard(19, true, 19);
                     display_keyboard(19, false, 19);
                 }
+
+                // FILE CHANGE REQUEST
+                // FN + NUMBER
+                // (key >= 1000 && key <= 1010)
+                else
+                {
+                    // Check keys '0' to '9'
+                    for (char k = '0'; k <= '9'; k++)
+                    {
+                        if (M5Cardputer.Keyboard.isKeyPressed(k))
+                        {
+                            int index = k - '0';          // 0..9
+                            int customKey = 1000 + index; // 1000..1009
+
+                            display_keyboard(customKey, true, customKey);
+                            display_keyboard(customKey, false, customKey);
+                            return;
+                        }
+                    }
+                }
             }
 
             else
@@ -89,7 +132,8 @@ void keypad_cardputer_loop()
                     break;
                 }
 
-                if(status.tab) {
+                if (status.tab)
+                {
                     // TAB -> CAPSLOCK
                     keyboard_capslock_toggle();
                 }
