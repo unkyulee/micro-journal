@@ -29,6 +29,7 @@ I hope you enjoy exploring Micro Journal on the Cardputer. It is worth trying, b
 2. Open M5Burner on your computer and select the Cardputer device.
 
 3. Choose the Cardputer device, then type "micro journal" in the search bar.
+<img src="./images/002.png" width=600 />
 
 4. Download the firmware and press Burn.  
    Make sure the Cardputer is in download mode. While pressing BtnG0, tap Rst. This will boot the device into download mode.
