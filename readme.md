@@ -10,6 +10,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 | Date       | Revision                                                                | Preview                                                                        |
 | ---------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 2025-12-02 | **[Cardputer](/cardputer/readme.md)**                                   | <img src="./cardputer/images/001.png" width="200">                             |
 | 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                         | <img src="./micro-journal-rev-2.1/images/002.jpg" width="200">                 |
 | 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)** | <img src="./micro-journal-neo2/images/001.jpg" width="200">                    |
 | 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**               | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
@@ -45,6 +46,8 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 
 * **[AlphaSmart Neo2 Desktop TypeWriter Conversion Kit](/micro-journal-neo2/readme.md)** – Transform your AlphaSmart Neo2 into a beautiful desktop typewriter with this custom-designed enclosure.  
+
+* **[M5Stack Cardputer](/cardputer/readme.md)** – Micro Journal Firmware running on a M5Stack Cardputer.
 
 
 
