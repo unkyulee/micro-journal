@@ -57,6 +57,32 @@ After these steps, Micro Journal is ready to use.
 - You can then use the device as a Bluetooth keyboard.  
 - Pressing FN + Tab will send your text as keystrokes to the paired device.
 
+## Keyboard Language
+
+Other language keyboard than US layout is supported. But this is going to require manual update on the config.json inside the SD card. You will see config.json file inside the SD card and adding this property will allow you to use other keyboard layouts.
+
+```json
+{
+   ... other configurations
+
+   "keyboard_layout": "UK"
+}
+```
+
+* "INT": international layout
+* "BE": Belgium
+* "CA": Canada Multi Language 
+* "DV": I totally forgot what this stands for... Dvorak maybe?
+* "FN": Finnish
+* "SWE": Swedish
+* "NO": Norweigian
+* "FR": AZERTY
+* "GE": German
+* "IT": Italian
+* "LAT": Latin American Layout
+* "UK": Great Britain
+
+
 ## Building From Source (Optional)
 
 If you want to compile the firmware yourself:
