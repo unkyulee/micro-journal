@@ -11,6 +11,7 @@
 #include "Background/Background.h"
 #include "Foreground/Foreground.h"
 #include "Brightness/Brightness.h"
+#include "PairBLE/PairBLE.h"
 
 //
 #include "display/CARDPUTER/display_CARDPUTER.h"
@@ -132,6 +133,14 @@ void Menu_render()
         Clear_render();
     }
 
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        if (menu_state_prev != menu_state)
+            PairBLE_setup();
+
+        PairBLE_render();
+    }
+
     // save prev state
     menu_state_prev = menu_state;
 }
@@ -190,6 +199,12 @@ void Menu_keyboard(char key)
     else if (menu_state == MENU_BRIGHTNESS)
     {
         Brightness_keyboard(key);
+    }
+
+    //
+    else if (menu_state == MENU_BLUETOOTH)
+    {
+        PairBLE_keyboard(key);
     }
 }
 

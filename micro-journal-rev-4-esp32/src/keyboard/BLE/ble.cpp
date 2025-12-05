@@ -23,7 +23,7 @@ void ble_setup(const char *adName)
 {
     //
     JsonDocument &app = status();
-
+    
     // When ble.address exists then try to connect to the keyboard
     if (app["config"]["ble"]["address"].is<const char *>())
     {
@@ -35,10 +35,12 @@ void ble_setup(const char *adName)
         const int type = app["config"]["ble"]["type"].as<int>();
 
         //
+        _log("[ble_setup] Attempting to connect BLE keyboard: %s\n", address);
         if (!ble_connect(address, type))
         {
             // Initiate scan
             app["task"] = "ble_connect";
+            _log("[ble_setup] Request BLE Connect\n");
         }
     }
 
@@ -64,18 +66,24 @@ void ble_loop()
         last = millis();
 
         bool ble_connected = app["ble_connected"].as<bool>();
-        _debug("BLE Keyboard Connection: %d\n", ble_connected);
+        _log("BLE Keyboard Connection: %d\n", ble_connected);
         if (ble_connected == false)
         {
             // When ble.address exists then try to connect to the keyboard
             if (app["config"]["ble"]["address"].is<const char *>())
             {
                 //
-                _log("BLE configuration found: %s\n", app["config"]["ble"]["address"].as<const char *>());
+                _log("[ble_loop] BLE configuration found: %s\n", app["config"]["ble"]["address"].as<const char *>());
 
                 // Initiate scan
-                if (app["task"].as<String>().isEmpty())
+                String task = app["task"].as<String>();
+                if (task.isEmpty())
+                {
                     app["task"] = "ble_connect";
+                    _log("[ble_loop] ble connect request\n");
+                } else {
+                    _debug("[ble_loop] task exists: %s\n", task.c_str());
+                }
             }
         }
     }

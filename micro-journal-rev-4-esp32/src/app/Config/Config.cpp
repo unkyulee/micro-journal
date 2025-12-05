@@ -11,6 +11,9 @@ void _set_default_config()
     _log("Creating default config.json template\n");
     
     // create a default config
+    app["task"] = "";
+
+    //
     app["config"]["sync"]["url"] = "";
     app["config"]["ble"]["remote"] = "";
 

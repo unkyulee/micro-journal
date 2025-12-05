@@ -21,6 +21,8 @@ void BLEServer_init()
     app["ble_state"] = 0;
     app["ble_error"] = "";
     app["ble_message"] = "";
+
+    _log("[BLEServer_init]\n");
 }
 
 void BLEServer_loop()

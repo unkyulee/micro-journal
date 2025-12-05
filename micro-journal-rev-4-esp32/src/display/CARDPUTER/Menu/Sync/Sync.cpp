@@ -10,7 +10,6 @@
 //
 #include "display/CARDPUTER/display_CARDPUTER.h"
 
-
 //
 void Sync_setup()
 {

@@ -18,10 +18,11 @@ const char *menu[] = {
     "Sync",         // 0
     "WIFI",         // 1
     "BLE KEYBOARD", // 2
-    "Brightness",   // 3
-    "Color BG",     // 4
-    "Color Font",   // 5
-    "Delete Text",  // 6
+    "BLE HOST",     // 3
+    "Brightness",   // 4
+    "Color BG",     // 5
+    "Color Font",   // 6
+    "Delete Text",  // 7
     "Exit"};
 
 //
@@ -129,29 +130,36 @@ void Home_keyboard(char key)
             app["screen"] = KEYBOARDSCREEN;
         }
 
-        // 3 - Brightness
+        // 3 - BLE Host
         else if (selectedHome == 3)
+        {
+            _debug("BLE Host Selected\n");
+            app["menu"]["state"] = MENU_BLUETOOTH;
+        }
+
+        // 4 - Brightness
+        else if (selectedHome == 4)
         {
             _debug("Brightness Selected\n");
             app["menu"]["state"] = MENU_BRIGHTNESS;
         }
 
-        // 4 - Background Color
-        else if (selectedHome == 4)
+        // 5 - Background Color
+        else if (selectedHome == 5)
         {
             _debug("Background Color Selected\n");
             app["menu"]["state"] = MENU_BACKGROUND;
         }
 
-        // 5 - Font Color
-        else if (selectedHome == 5)
+        // 6 - Font Color
+        else if (selectedHome == 6)
         {
             _debug("Font Color Selected\n");
             app["menu"]["state"] = MENU_FONTCOLOR;
         }
 
-        // 6 - Clear Text
-        else if (selectedHome == 6)
+        // 7 - Clear Text
+        else if (selectedHome == 7)
         {
             _debug("Clear Text Selected\n");
 

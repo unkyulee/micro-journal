@@ -43,5 +43,4 @@ int display_core(); // show which core to run display routine
 
 //
 void display_keyboard(int key, bool pressed, int index = -1);
-void display_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes);
-
+void display_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes);

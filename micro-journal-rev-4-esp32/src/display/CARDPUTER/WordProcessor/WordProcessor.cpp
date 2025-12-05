@@ -378,38 +378,7 @@ void WP_keyboard(int key, bool pressed, int index)
     JsonDocument &app = status();
     _debug("WP_keyboard key: %d, pressed: %d\n", key, pressed);
 
-    // Check if menu key or ESC is pressed
-    if (key == MENU)
-    {
-        if (!pressed)
-        {
-            _debug("Menu key pressed\n");
-            // Save before transitioning to the menu
-            Editor::getInstance().saveFile();
-
-            if (app["knobLongPressed"].as<bool>())
-            {
-                // open menu
-                _debug("WP_keyboard - Received MENU Key\n");
-                app["screen"] = MENUSCREEN;
-            }
-            else
-            {
-                // move to writerDeck
-                _debug("WP_keyboard - Received LONG PRESS MENU Key\n");
-                app["screen"] = KEYBOARDSCREEN;
-
-                // save the default screen to config
-                app["config"]["UsbKeyboard"] = true;
-                config_save();
-            }
-        }
-
-        // menu button is ignored
-        return;
-    }
-
-    if (key == 27)
+    if (key == 27 || key == 6)
     {
         if (!pressed)
         {

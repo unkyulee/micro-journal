@@ -27,6 +27,7 @@
 
 #ifdef CARDPUTER
 #include "M5Cardputer.h"
+#include "service/BLEServer/BLEServer.h"
 #endif
 //
 
@@ -117,7 +118,7 @@ void app_setup()
     battery_setup();
 #endif
 
-#ifdef REV5
+#if defined(REV5) || defined(CARDPUTER)
     // BLE Server Background Task
     BLEServer_init();
 #endif
@@ -139,6 +140,12 @@ void app_loop()
     }
 
     wordcounter_service();
+
+#ifdef CARDPUTER
+    // BLE Server Background Task
+    BLEServer_loop();
+#endif
+
 
 #ifdef BOARD_PICO
     // Mass Storage Control Loop
