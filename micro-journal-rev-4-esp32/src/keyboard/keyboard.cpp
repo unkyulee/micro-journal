@@ -20,6 +20,7 @@
 
 #ifdef CARDPUTER
 #include "keyboard/CardPuter/keypad_CardPuter.h"
+#include "keyboard/USBHost/USBHost.h"
 #include "keyboard/BLE/ble.h"
 #endif
 
@@ -55,7 +56,7 @@ void keyboard_setup()
   USBHost_setup();
 
   // setup BLE Keyboard
-  ble_setup();
+  ble_setup("Micro Journal 5");
 
   // Front Button Setup
   button_setup();
@@ -67,6 +68,9 @@ void keyboard_setup()
 
 #ifdef CARDPUTER
   keypad_cardputer_setup();
+
+  // setup USB Host
+  USBHost_setup();
 
   // setup BLE Keyboard
   ble_setup("MJ CARDPUTER");
@@ -86,6 +90,9 @@ void keyboard_loop()
 
 #ifdef CARDPUTER
   keypad_cardputer_loop();
+
+  // setup USB Host
+  USBHost_loop();
 
   // setup BLE Keyboard
   ble_loop();
