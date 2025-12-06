@@ -10,6 +10,8 @@ For a long time, I wondered if it would be possible to create a pocketable writi
 
 The conclusion surprised me. I do not know if this size makes sense for writing anything long. Typing more than a few words at a time quickly becomes uncomfortable, and the tiny keyboard makes longer writing stressful. That was a bit disappointing. 
 
+[EDIT] Later added support for external keyboards. It works with BLE keyboard and USB keyboard to type. With those features, the device became very decent writerDeck. 
+
 But then something unexpected happened. My four year old son picked it up and started playing with it. He began typing simple words with me and treated it as a fun way to learn letters. He still insists that the letter I is the number one. It was a surprise to find an educational purpose by accident.
 
 After that, I started looking for practical uses. It turns out that the Cardputer is surprisingly good for very short writing tasks, such as quick todo items or shopping lists. It powers on quickly, and you can begin writing within seconds. For these tiny tasks, the size actually works well.
@@ -81,6 +83,17 @@ Other language keyboard than US layout is supported. But this is going to requir
 * "IT": Italian
 * "LAT": Latin American Layout
 * "UK": Great Britain
+
+
+## External Keyboard Support - Connecting BLE, and USB Keyboard
+
+* BLE Keyboard
+  You can use BLE keyboard. It's BLE (Bluetooth Low Energy) not Bluetooth Classic. Make sure to distinguish the differences. Go through pairing process and you will be able to write with BLE keyboard. [BLE Keyboard Usage Video](https://www.youtube.com/watch?v=SoMUMCcXLDs).
+
+
+* USB Keyboard
+  You can connect to the USB port on the cardputer to use USB keyboard. Make sure to turn the switch on the left hand side to "5V OUT" on the device which power the connected USB Keyboard. [USB Keyboard Usage Video] TBD.
+
 
 
 ## Building From Source (Optional)
