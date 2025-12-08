@@ -66,7 +66,6 @@ Other language keyboard than US layout is supported. But this is going to requir
 ```json
 {
    ... other configurations
-
    "keyboard_layout": "UK"
 }
 ```

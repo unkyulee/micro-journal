@@ -11,6 +11,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 | Date       | Revision                                                                | Preview                                                                        |
 | ---------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | 2025-12-02 | **[Cardputer](/cardputer/readme.md)**                                   | <img src="./cardputer/images/001.png" width="200">                             |
+| 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)**                         | <img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" width="200">                 |
 | 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                         | <img src="./micro-journal-rev-2.1/images/002.jpg" width="200">                 |
 | 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)** | <img src="./micro-journal-neo2/images/001.jpg" width="200">                    |
 | 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**               | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
