@@ -62,6 +62,11 @@ Micro Journal is a DIY project, complete with build guides so you can source the
 * [Tindie – Online Shop](https://www.tindie.com/stores/unkyulee/)
 
 
+## Community
+
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+
+
 
 ## Contact
 
