@@ -9,11 +9,7 @@
 // keyboard
 #include "keyboard/keyboard.h"
 
-#ifdef REV5
-// BLE keyboard setup
-#include "keyboard/BLE/ble.h"
-#endif
-
+// Dual Core for ESP32
 #ifdef BOARD_ESP32_S3
 void SecondaryCore(void *pvParameters);
 #endif
@@ -68,6 +64,28 @@ void loop()
     yield();
 }
 
+
+#ifdef BOARD_ESP32_S3
+// This is for ESP32 secondary core
+void SecondaryCore(void *pvParameters)
+{
+    _log("Secondary Core started.\n");
+
+    while (1)
+    {
+        // background tasks
+        app_loop();
+
+        // some conditions display render can run in second core
+        if (display_core() == 1)
+            display_loop();
+
+        //
+        yield();
+    }
+}
+#endif
+
 /*----------------------------------------------
 Dual Core: Second Core
 Second core will contain tasks that can get blocked
@@ -100,31 +118,5 @@ void loop1()
 
     // try to yield to avoid infinite loop
     yield();
-}
-#endif
-
-#ifdef BOARD_ESP32_S3
-// This is for ESP32 secondary core
-void SecondaryCore(void *pvParameters)
-{
-    _log("Secondary Core started.\n");
-
-#ifdef REV5
-    // setup BLE Keyboard
-    ble_setup("Micro Journal 5");
-#endif
-
-    while (1)
-    {
-        // background tasks
-        app_loop();
-
-        // some conditions display render can run in second core
-        if (display_core() == 1)
-            display_loop();
-
-        //
-        yield();
-    }
 }
 #endif
