@@ -4,8 +4,6 @@
 
 What you get out of the box is a writing device with a large screen, a mechanical keyboard that is well laid out for writers, a well-featured while still minimal text editor and a quick and easy method of sharing files with your PC. In other words, everything you need to write (and even edit if you want to, but your PC will always be better at that). You don't need any technical skills beyond following directions to set it up and you quickly have a Modern Dana. You should add an external battery to get longer life, but that's it.
 
-* [Quick Start Guide for the build purchased before 2025-03-7](https://github.com/unkyulee/micro-journal/blob/8c094b73cb37829cf0c793ede7a3ebdd549733d1/micro-journal-rev-2-revamp/quickstart.md)
-
 ---
 
 # Setup Micro SD Card

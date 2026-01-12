@@ -40,7 +40,7 @@ Helpful links:
   [https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
 
 * **Verified Working Battery (Flat-top, US):**
-  [https://www.amazon.com/gp/aw/d/B0CPBGDP1H](https://www.amazon.com/gp/aw/d/B0CPBGDP1H)
+  [https://www.18650batterystore.com/products/samsung-30q](https://www.18650batterystore.com/products/samsung-30q)
 
 Search for **“18650 Li-ion flat-top”** or **“LiPo 18650”** to find compatible batteries. These are the most commonly used by current Micro Journal users.
 

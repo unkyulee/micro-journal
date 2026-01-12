@@ -88,7 +88,7 @@ Incorrect battery type may damage the device or cause fire.
 
 ### Recommended Battery
 
-* [Flat-top, verified working (US)](https://www.amazon.com/gp/aw/d/B0CPBGDP1H)
+* [Flat-top, verified working (US)](https://www.18650batterystore.com/products/samsung-30q)
 
 ---
 

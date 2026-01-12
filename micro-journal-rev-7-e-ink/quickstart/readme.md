@@ -40,7 +40,7 @@ Before using the **Micro Journal Rev.7**, you need a battery.
    Search for "LiPo 18650". Recommended links:
 
    * [Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
-   * [Flat-top battery (US)](https://www.amazon.com/gp/aw/d/B0CPBGDP1H)
+   * [Flat-top battery (US)](https://www.18650batterystore.com/products/samsung-30q)
 
 2. **Install the battery**
    The device will not power on without a battery.
