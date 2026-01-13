@@ -224,8 +224,6 @@ If the screen **flickers during boot**, this indicates that the power supply is 
 
 **Check the SD card:** If the screen remains blank for too long, check for a green light on raspberry pi. This light indicates that the system is booting. If no green light appears, the SD card may not be properly installed. 
 
-<img src="./quickstart/008.png" width="400" />
-
 **When not booting** Power off, reinsert the SD card, and try again. If the issue persists, you may need to replace or reconfigure the SD card. 99% of the issues is related to SD card. Please, refer to this document when you need to setup the SD card.
 
 
