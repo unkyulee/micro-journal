@@ -27,9 +27,4 @@ void WP_render_cursor();
 // 
 void WP_keyboard(int key, bool pressed, int index);
 
-//
-String formatNumberWithCommas(long num);
-
-//
-String asciiToUnicode(uint8_t value);
 

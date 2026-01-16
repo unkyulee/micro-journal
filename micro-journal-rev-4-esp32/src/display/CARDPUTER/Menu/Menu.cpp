@@ -12,6 +12,7 @@
 #include "Foreground/Foreground.h"
 #include "Brightness/Brightness.h"
 #include "PairBLE/PairBLE.h"
+#include "Language/Language.h"
 
 //
 #include "display/CARDPUTER/display_CARDPUTER.h"
@@ -140,6 +141,13 @@ void Menu_render()
 
         PairBLE_render();
     }
+    else if (menu_state == MENU_LANGUAGE)
+    {
+        if (menu_state_prev != menu_state)
+            Language_setup();
+
+        Language_render();
+    }
 
     // save prev state
     menu_state_prev = menu_state;
@@ -205,6 +213,10 @@ void Menu_keyboard(char key)
     else if (menu_state == MENU_BLUETOOTH)
     {
         PairBLE_keyboard(key);
+    }
+    else if (menu_state == MENU_LANGUAGE)
+    {
+        Language_keyboard(key);
     }
 }
 

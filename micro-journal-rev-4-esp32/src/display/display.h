@@ -28,6 +28,7 @@
 #define MENU_STORAGE 12
 #define MENU_BRIGHTNESS 13
 #define MENU_INFO 14
+#define MENU_LANGUAGE 15
 
 // MENU button
 #define FN 28

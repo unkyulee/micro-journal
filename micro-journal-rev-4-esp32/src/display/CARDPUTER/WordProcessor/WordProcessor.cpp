@@ -8,6 +8,9 @@
 
 //
 #include "display/CARDPUTER/display_CARDPUTER.h"
+#include <u8g2_fonts.h>
+
+extern const uint8_t u8g2_font_profont22_tf[];
 
 //
 int screen_width = 240;
@@ -26,6 +29,8 @@ const int cursorHeight = 2;
 // Some flags
 bool clear_background = true;
 unsigned int last_sleep = millis();
+
+static const lgfx::U8g2font g_profont22(u8g2_font_profont22_tf);
 
 //
 void WP_setup()
@@ -92,7 +97,7 @@ void WP_render_text()
     // SET FONT
     M5Cardputer.Display.setTextSize(1);
     M5Cardputer.Display.setTextColor(foreground_color, background_color);
-    M5Cardputer.Display.setFont(&fonts::FreeMonoBold12pt7b);
+    M5Cardputer.Display.setFont(&g_profont22);
 
     // Cursor Information
     static int cursorLine_prev = 0;
@@ -138,15 +143,32 @@ void WP_render_line(int line_num, int y)
     char *line = Editor::getInstance().linePositions[line_num];
     int length = Editor::getInstance().lineLengths[line_num];
 
+    // render
+    int x = 0;
+    for (int i = 0; i < length; i++)
+    {
+        // convert extended ascii into a streamlined string
+        uint8_t value = *(line + i);
+        if (value == '\n')
+            continue;
+
+        String str = asciiToUnicode(value);
+        if (str.length() == 0)
+            M5Cardputer.Display.drawChar((char)value, x, y+font_height);
+        else
+            //
+            M5Cardputer.Display.drawString(str, x, y);
+
+        //
+        x += font_width;
+    }
+
     if (length > 0)
     {
         // Create a temporary null-terminated buffer
         char temp[length + 1];
         memcpy(temp, line, length);
         temp[length] = '\0';
-
-        //
-        M5Cardputer.Display.drawString(temp, 0, y);
     }
 }
 

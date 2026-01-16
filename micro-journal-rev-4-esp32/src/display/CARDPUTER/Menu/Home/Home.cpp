@@ -19,10 +19,11 @@ const char *menu[] = {
     "WIFI",         // 1
     "BLE KEYBOARD", // 2
     "BLE HOST",     // 3
-    "Brightness",   // 4
-    "Color BG",     // 5
-    "Color Font",   // 6
-    "Delete Text",  // 7
+    "Language",     // 4
+    "Brightness",   // 5
+    "Color BG",     // 6
+    "Color Font",   // 7
+    "Delete Text",  // 8
     "Exit"};
 
 //
@@ -140,26 +141,33 @@ void Home_keyboard(char key)
         // 4 - Brightness
         else if (selectedHome == 4)
         {
+            _debug("Language Selected\n");
+            app["menu"]["state"] = MENU_LANGUAGE;
+        }
+
+        // 5 - Brightness
+        else if (selectedHome == 5)
+        {
             _debug("Brightness Selected\n");
             app["menu"]["state"] = MENU_BRIGHTNESS;
         }
 
-        // 5 - Background Color
-        else if (selectedHome == 5)
+        // 6 - Background Color
+        else if (selectedHome == 6)
         {
             _debug("Background Color Selected\n");
             app["menu"]["state"] = MENU_BACKGROUND;
         }
 
-        // 6 - Font Color
-        else if (selectedHome == 6)
+        // 7 - Font Color
+        else if (selectedHome == 7)
         {
             _debug("Font Color Selected\n");
             app["menu"]["state"] = MENU_FONTCOLOR;
         }
 
-        // 7 - Clear Text
-        else if (selectedHome == 7)
+        // 8 - Clear Text
+        else if (selectedHome == 8)
         {
             _debug("Clear Text Selected\n");
 
