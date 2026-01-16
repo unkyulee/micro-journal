@@ -18,11 +18,11 @@ int screen_height = 135;
 
 //
 const int font_width = 14;
-const int font_height = 20;
+const int font_height = 22;
 
 // Lines will be rendered at the bottom on the screen
 // need to calculate the Y position considering the status bar height
-const int editY = 100;
+const int editY = 90;
 const int cursorY = editY + font_height - 2;
 const int cursorHeight = 2;
 
@@ -36,7 +36,7 @@ static const lgfx::U8g2font g_profont22(u8g2_font_profont22_tf);
 void WP_setup()
 {
     // Editor Init - setup screen size
-    Editor::getInstance().init(17, 5);
+    Editor::getInstance().init(17, 4);
 
     // setup default color
     JsonDocument &app = status();
@@ -154,7 +154,7 @@ void WP_render_line(int line_num, int y)
 
         String str = asciiToUnicode(value);
         if (str.length() == 0)
-            M5Cardputer.Display.drawChar((char)value, x, y+font_height);
+            M5Cardputer.Display.drawChar((char)value, x, y+font_height-4);
         else
             //
             M5Cardputer.Display.drawString(str, x, y);
@@ -234,7 +234,7 @@ void WP_render_status()
     uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
-    int STATUSBAR_Y = cursorY + cursorHeight + 2;
+    int STATUSBAR_Y = M5Cardputer.Display.height() - 18;
 
     // file index number
     const int font_width = 12;

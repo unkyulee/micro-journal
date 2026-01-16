@@ -1,7 +1,7 @@
 #pragma once
 
 // app version
-#define VERSION "1.0.20.1202"
+#define VERSION "1.0.20.0106"
 
 // default utility headers
 #include <ArduinoJson.h>
