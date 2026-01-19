@@ -57,6 +57,22 @@ bool filesystem_check()
     _log("SD Card detected\n");
 #endif
 
+#if defined(DEBUG_FILE)
+    // Delete debug.log
+    const char *debugPath = "/debug.log";
+    if (gfs()->exists(debugPath))
+    {
+        if (gfs()->remove(debugPath))
+        {
+            _log("Deleted %s\n", debugPath);
+        }
+        else
+        {
+            _log("Failed to delete %s\n", debugPath);
+        }
+    }
+#endif
+
     // file system check pass
     return true;
 }
