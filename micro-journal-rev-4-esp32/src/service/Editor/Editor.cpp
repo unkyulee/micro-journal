@@ -244,15 +244,62 @@ void Editor::saveFile()
 
     // writing the file content
     size_t length = file.print(buffer);
-    if (length >= 0)
+    _log("File written: %d bytes\n", length);
+
+    // If the new buffer is shorter than the old content, trim the file.
+    size_t newSize = seekPos + length;
+    if (newSize < fileSize)
     {
-        _log("File written: %d bytes\n", length);
-    }
-    else
-    {
-        app["error"] = "Save failed\n";
-        app["screen"] = ERRORSCREEN;
-        _log(app["error"].as<const char *>());
+        file.close();
+        delay(100);
+
+        String tempFileName = format("%s.tmp", fileName.c_str());
+        if (gfs()->exists(tempFileName.c_str()))
+        {
+            gfs()->remove(tempFileName.c_str());
+        }
+
+        if (!gfs()->rename(fileName.c_str(), tempFileName.c_str()))
+        {
+            app["error"] = "Save failed (rename for trim)\n";
+            app["screen"] = ERRORSCREEN;
+            _log(app["error"].as<const char *>());
+            savingInProgress = false;
+            return;
+        }
+
+        File src = gfs()->open(tempFileName.c_str(), "r");
+        File dst = gfs()->open(fileName.c_str(), "w");
+        if (!src || !dst)
+        {
+            app["error"] = "Save failed (trim open)\n";
+            app["screen"] = ERRORSCREEN;
+            _log(app["error"].as<const char *>());
+            if (src)
+                src.close();
+            if (dst)
+                dst.close();
+            savingInProgress = false;
+            return;
+        }
+
+        const size_t chunkSize = 256;
+        uint8_t chunk[chunkSize];
+        size_t remaining = newSize;
+        while (remaining > 0)
+        {
+            size_t toRead = remaining < chunkSize ? remaining : chunkSize;
+            size_t readSize = src.read(chunk, toRead);
+            if (readSize == 0)
+                break;
+            dst.write(chunk, readSize);
+            remaining -= readSize;
+        }
+
+        src.close();
+        dst.close();
+        delay(100);
+        gfs()->remove(tempFileName.c_str());
     }
 
     //
