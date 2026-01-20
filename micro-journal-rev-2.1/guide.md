@@ -347,7 +347,7 @@ The advantage of such a powerful system for a Writer Deck is that it opens up th
 
 ---
 
-## The Micro Journal Rev 2.1 Walkthrough
+## The Micro Journal Rev 2.1 - A Walkthrough
 
 The Micro Journal Rev 2.1 is not instant on. Because it is starting up Linux, it takes some time to boot.  However, it is only about 20 seconds. For the first half of that 20 seconds, after you turn on power and hit the big button in front of the screen, you may not see anything on the screen and may think it didn't come on.  Be patient. You will suddenly see all kinds of status lines on the screen. You don't need to be concerned about any of those lines flashing by. Finally it will drop you into a launcher menu.
 
@@ -355,66 +355,66 @@ The Micro Journal Rev 2.1 is not instant on. Because it is starting up Linux, it
 
 ## Using the Rev 2.1 Part 1: The Launcher
 
-The launcher menu is where you start various functions and software.  The program providing the menu is called ranger and it is actually a file manager. The launcher is showing folders and script files in the current directory. By selecting a script and pressing Enter, you can start programs and settings. This menu is where you will operate from unless you choose to go and do more with Linux. There is no reason for anyone to have to use anything else if just using the Rev 2.1 as a Writer Deck. 
+The launcher menu is where you start various functions and software.  The program providing the menu is called ranger and it is actually a file manager. The launcher is showing folders and script files in the current directory. In a panel on the right, it will show you the contents of the file or directory you select. So, in the picture below, we have selected the "draft_txt.sh" script and in the right panel you see the contents of that script. By selecting a script and pressing Enter, you can start programs and settings. This menu is where you will operate from unless you choose to go and do more with Linux. There is no reason for anyone to have to use anything else if just using the Rev 2.1 as a Writer Deck. 
 
 Here is the menu you will see when you first boot up. We will go through each of the options.
 
 <img src="./images/rev21menu.jpg" width=600 />
 
-The first item you have at the top of the launcher is *documents*, so we will start there. You will notice there is an  item on the menu in the picture called "DISK", but that won't appear on your first boot, so we'll come back to that. First we'll briefly describe the function of each menu choice. Then we will follow up with more detail on each choice organized by Task.
+The first item you have at the top of the launcher is *documents*, so we will start there. First we'll briefly describe the function of each menu choice. Then we will follow up with more detail on each choice organized by Task.
+
 
 * ***Documents*** - This is a directory ("folder" to Windows users). It is the directory that, as set up now, all of your writing will be stored in. When selected, it will show a list of all the writing files you have saved to the right of the Launcher menu. If you haven't yet created any writing files, as on fist boot, it will show "empty" in a red box. Once you have created writing files, to continue working on the same file, you would move the cursor to the list of files (right arrow) and then move up and down until you have selected the file you want to work with. Then hit Enter.
 
     > **<u>Note:</u>** *We will use arrow keys to describe cursor movement in ranger/the launcher. The scroll wheels on the Rev 2.1 also control cursor movement. The right wheel scrolls up and down and the left wheel scrolls right and left.  However, if you make a mistake in the direction you turn with the left wheel in the launcher, you will scroll across to other folders and you may be disoriented. It is clearer and more precise to use arrow keys in the directions here.* 
+    
+* ***draft_txt.sh*** - All the rest of the choices on the launcher are executable shell scripts (like batch files in Windows) that all end in ".sh". When each is selected, you will see the actual script in the right pane, but you don't care about that script. This script opens a new text file to start writing with the plain text editor **<u>nano</u>**, one of two editors made available to you on this launcher.  I will go into more detail on both editors below. The script obtains the system date/time and uses those as a filename for the new file, which you can change later. But using date and time means that even if you create a second file 30 seconds later and don't rename either, the second one won't overwrite the first. When you are done, have saved your file and exit nano, you are returned to the Launcher screen. And, in fact, exiting from any of these launcher script functions returns you to the launcher.
 
-* ***setting.sh*** - All the rest of the choices on the launcher are executable shell scripts (like batch files in Windows) that all end in ".sh". When each is selected, you will see the actual script inn the right pane, but you don't care about that script. Config.sh grants you temporary root (administrator) privileges and takes you to the Raspberry Pi system configuration tools.  We recommend not changing anything you don't need to or understand. If you have a lot of experience, feel free to change anything you want. You will want to set up your network by selecting "S1 Wireless LAN" under "System Options" and you will want to identify your locale and Time Zone under "Localization Options". Esc backs you out to the top level when you are done and a final Esc takes you back to the menu. And, in fact, exiting from any of these launcher script functions returns you to the launcher as part of the script.
+* ***draft_word.sh*** - This script opens a new document to start writing in the editor **<u>WordGrinder</u>**. Unlike micro, WordGrinder doesn't use plain text natively, but uses it's own proprietary format you can export to text. But it offers more word processor-like features even though it is a terminal editor. And, while it offers extensive features, it keeps the UI out of the way while you are typing. WordGrinder also uses the date/time filename convention.
 
-* ***setting_font.sh*** -  This takes you to the console configuration utility. If you have not done this before and the font size and style are usable for you, you might wait to experiment with this. 
+* ***drive_mount.sh*** - This script allows the Rev 2.1 to mount an external flash drive that has been inserted into the USB-A port at the back of the Rev 2.1. This is an alternative method to back up or load files without the internet. When you make this connection, a directory called DISK is added to the launcher menu. This will likely only work with flash memory (thumb drives, SD cards), not larger external drives that have moving parts or high energy demands.
 
-* ***draft_txt.sh*** - this opens the plain text editor nano creates a new text file to start writing in with the plain text editor **<u>nano</u>**, one of two editors made available to you on this launcher.  I will go into more detail on both editors below. The script obtains the system date/time and uses those as a filename for the new file, which you can change later. But using date and time means that even if you create a second file 30 seconds later and don't rename either, the second one won't overwrite the first.
-
-* ***draft_word.sh*** - This script opens a new document to start writing in the editor **<u>WordGrinder</u>**. Unlike micro, WordGrinder doesn't use plain text natively but uses it's own proprietary format you can export to text. But it offers more word processor-like features even though it is a terminal editor. And, while it offers extensive features, it keeps the UI out of the way while you are typing. WordGrinder also uses the date/time filename convention.
+* ***drive_unmount.sh*** - This script allows you to safely remove the external flash drive, in order to be sure the drive has stopped operations including read/write activity before removing the thumb drive.
 
 * ***file_share.sh*** - This is a script that displays a network URL that you can type into your browser address bar. You will be presented with a file manager window looking in the documents directory. You can use this to either copy files to your computer or upload files to The Rev 2.1. 
 
+* ***setting.sh*** -  This script grants you temporary root (administrator) privileges and takes you to the Raspberry Pi system configuration tools.  We recommend not changing anything you don't need to or understand. You will want to set up your network by selecting "S1 Wireless LAN" under "System Options" and you will want to identify your locale and Time Zone under "Localization Options". If you have a lot of experience, feel free to change anything you want. Esc backs you out to the top level when you are done and a final Esc takes you back to the menu. 
+
+* ***setting-font.sh*** -  This takes you to the console configuration utility. If you have not done this before and the font size and style are usable for you, you might wait to experiment with this. 
+
 * ***shutdown.sh*** - This is a script you use as the first stage of turning off the Rev 2.1. It does a proper shutdown of the software and operating system. Unlike with computers, it does not actually shut down power, so you will still have to switch off the power toggle on the back of the Rev 2.1. Just don't turn off the power toggle before you use the shutdown script.
 
-* ***drive_mount.sh*** - This script allows the Rev 2.1 to mount an external flash drive that has been inserted into the USB-A port at the back of the Rev 2.1. This is alternative method to back up or load files without the internet. When you make this connection, the DISK directory is added to the launcher menu. This will likely only work with flash memory (thumb drives, SD cards), not larger external drives that have moving parts or high energy demands.
+We are only using ranger for this launcher menu, but if you wish to learn more about ranger, here are two sources:
 
-* ***drive_unmount.sh*** - This script allows you to safely remove the external flash drive, in order to be sure the drive has stopped operations and been unmounted.
+https://gist.github.com/heroheman/aba73e47443340c35526755ef79647eb
+
+https://github.com/ranger/ranger/wiki/Official-user-guide
 
 
 ---
 
 ## Using the Rev 2.1 Part 2: Drafting and Editing
 
-There are two programs for writing and editing that have been set up and are made available by the launcher. This guide only gives you a general overview of the two programs, not a thorough walkthrough of each. We will provide links to online documentation and one of the programs, micro, includes internal help documentation.  However, as set up here, for just drafting and basic editing, either program is intuitive and simple to use without digging into documentation.
+There are two programs for writing and editing that have been set up and are made available by the launcher. This guide only gives you a general overview of the two programs, not a thorough walkthrough of each. We will provide links to online documentation and there are some internal help functions. However, as set up here, for just drafting and basic editing, either program is intuitive and simple to use without digging into documentation.
 
-**WordGrinder** - This is one of two text editors made available by the launcher as a default on the Rev 2.1. It operates in a terminal, but is has some advanced functions usually associated with word processing software. But don't expect an office style word processor. There is nothing WYSIWYG about WordGrinder. It is focused on typing words. It's advantage is relatively straight forward and simple. Type and save. It has key functions like copy and paste, find and replace, undo and redo and spell check. There are basic paragraph styles and character styles.  These are all available on menus invoked by pressing Esc, or you can use keyboard shortcuts. Wordgrinder will feel familiar to people who use office style word processors even though it is a terminal app and therefore may be easier for folks to use. But when you are writing, the menu for all these many features disappears until you hit Esc again, so you have a pretty clean writing screen with no complex UI features getting in your way. 
+**nano** - nano (program names in all lower case are common for Linux) is a deceptively simple terminal-based editor. It opens up to a clean writing screen, ready for you to type away.  It is set to do both smooth scroll and word wrap.  At the bottom of the screen are your most common keyboard shortcuts. While nano may use different short cuts than you are used to, they are always there to refer to. So, while you might be expecting Ctrl-S for save, here it is Ctrl-O for Write Out. Actually, Ctrl-S works as a quick save, with no prompts. However, it is not on the shortcut list, Ctrl-O is safer as it acts like "Save As" and always shows you the path and filename it is using for the save. If you want to make any changes to those (like creating a new version), you can do so.  An extra step or two, but useful. nano is ready to go as soon as you jump in. An easy draft editor that saves in plain txt format that any editor on any platform can read. Included in the shortcuts on the bottom of the screen is a help function with more details.
+
+Here is some helpful documentation.  This first link is to all the shortcuts available in nano:
+https://www.nano-editor.org/dist/latest/cheatsheet.html
+
+And here is a more detailed help page on nano, but probably not needed just to write.
+https://www.nano-editor.org/dist/latest/nano.pdf
+
+
+**WordGrinder** -  WordGrinder operates in a terminal, but is has some advanced functions usually associated with word processing software. But don't expect an office style word processor. There is nothing WYSIWYG about WordGrinder. It is focused on typing words. It's advantage is relatively straight forward and simple. Type and save. It has key functions like copy and paste, find and replace, undo and redo and spell check. There are basic paragraph styles and character styles.  These are all available on menus invoked by pressing Esc, or you can use keyboard shortcuts. Wordgrinder will feel familiar to people who use office style word processors even though it is a terminal app and therefore may be easier for folks to use. But when you are writing, the menu for all these many features disappears until you hit Esc again. This leaves you with a pretty clean writing screen with no complex UI features getting in your way. 
 
 However, the one minor disadvantage is that WordGrinder, like office apps in general, uses a proprietary file format, with the file extension ".wg".  In order to use a WordGrinder file outside of WordGrinder, you have to use the option on the File menu to export to text. While it is an inconvenient extra step, if you like what WordGrinder offers you, it is easy enough to do. There is no dedicated manual for Wordgrinder, but that should indicate how easy it is to figure out on your own.
 
 Here is a page that documents WordGrinder in more detail: https://gist.github.com/davidgiven/1aba97e96a9b8f9b573b 
 
-
-**nano** - is a terminal based text editor designed to be simple, predictable, and immediately usable. It is widely available on Linux systems and is often the first editor encountered by new users. As configured on the Micro Journal Rev 2.1, nano is intended to function as a straightforward plain text editor that lets you begin writing without learning complex commands or workflows.
-
-nano was not created specifically for writers. Like many terminal editors, it is also commonly used for configuration files, scripting, and remote editing over SSH. However, its minimal interface and clear on screen guidance make it well suited for drafting text. Files created in nano are saved in plain text format, with no conversion required.
-
-When you open a new file in nano, you are presented with a mostly blank screen and a blinking cursor at the top left. At the bottom of the screen is a two line help bar that displays commonly used keyboard shortcuts. These shortcuts are shown directly on screen, using the caret notation for the Control key. For example, ^O is used to write a file, and ^X is used to exit.
-
-The help bar remains visible while you work, which makes nano easy to use without memorizing commands. Pressing ^G opens the built in help screen, which provides an overview of available commands and navigation options. If this level of functionality meets your needs, nano allows you to write, save, and exit with very little friction.
-
-nano includes basic editing features such as search, replace, copy and paste, and undo. While it does not offer the extensive customization or advanced features of more complex editors, those features are intentionally unnecessary for focused drafting. The editor stays out of the way and allows you to concentrate on writing.
-
-For users who also work with code or system configuration, nano provides a familiar environment that can be used interchangeably for writing and technical tasks.
-
-Official nano documentation can be found here:
-https://www.nano-editor.org/docs.php
-
 ---
 
-## Using the Rev 2.1 Part 3: File Management and Backups
+## Using the Rev 2.1 Part 3: File Management and Backing Up Files.
 
 Once you have done some writing, edited or not, you want to back it up to your computer. You do this in order to have back-ups, but also to do things with what you have written that are harder to do on the Rev 2.1, such as loading the text into Scrivener or some other WYSIWYG editing and publishing platform.  The Rev 2.1 provides two ways of doing this.
 
@@ -425,16 +425,16 @@ We are assuming you have previously set up the Rev 2.1 to use your network using
 When you have finished, press Ctrl+c to return to the launcher.
 
 
-**Back up to a Flash Drive** - You can also back up files directly to a USB flash storage device. No network is involved in this. With the Rev 2.1 on, plug an external memory accessory into the USB-A port in the back of the Rev 2.1.  On the launcher menu, select "drive_mount.sh" and press Enter.  At the bottom of the screen you will see:
+**Back up to a Flash Drive** - You can also back up files directly to a USB flash storage device. No network is involved in this. With the Rev 2.1 on, plug an external memory accessory into the USB-A port in the back of the Rev 2.1.  On the launcher menu, select "usb_disk_connnect.sh" and press Enter.  At the bottom of the screen you will see:
 
         Device /dev/sda1 mounted to /home/microjournal/microjournal/DISK
         Press any key to continue...
 
 As it says, press any key.
 
-You will now see the "DISK" directory has been added at the top of the Launcher menu. Select DISK and you will see any files that are already on the flash memory device. To back up a file to the external memory, select the documents folder. Use the right arrow to move to your list of files in documents.  Use the up arrow and down arrow to select the file you want to back up. Type **yy** (a command help text will appear with the first y, but just type the second y). This copies the file.  Then type the left arrow to return to the launcher list and select DISK. Use the right arrow again to move into the DISK directory and type **pp** to paste the file there.  That file is now on the flash memory.  Repeat this as needed for whatever files you want to transfer. You can also copy files from the external memory and paste them in the documents folder if you choose by reversing these instructions.
+You will now see the "DISK" directory has been added at the top of the Launcher menu. Select DISK and you will see any files that are already on the flash memory device. To back up a file to the external memory, select the documents folder. Use the right arrow to move to your list of files in documents.  Use the up arrow and down arrow to select the file you want to back up. Type yy (a command help text will appear with the first y, but just type the second y). This copies the file.  Then type the left arrow to return to the launcher list and select DISK. Use the right arrow again to move into the DISK directory and type pp to paste the file there.  That file is now on the flash memory.  Repeat this as needed for whatever files you want to transfer. You can also copy files from the external memory and paste them in the documents folder if you choose by reversing these instructions.
 
-When you are finished copying files, on the launcher, select "drive_unmount.sh". Hit Enter. At the bottom of the screen you will see:
+When you are finished copying files, on the launcher, select "usb_disk_safe_remove.sh". Hit Enter. At the bottom of the screen you will see:
 
         Flushing filesystem buffers...
         Unmounting /home/microjournal/microjournal/DISK...
@@ -444,6 +444,7 @@ When you are finished copying files, on the launcher, select "drive_unmount.sh".
 Press any key and remove the external memory device from the port in the back of the Rev 2.1. 
 
 This is an entirely private way to back up your files and get them to your computer. Not even the local network is involved, so this can be done even where there is no internet or where the network provided isn't secure. Or even in a location with no electricity (if your batteries aren't low).
+
 
 ---
 
@@ -504,6 +505,7 @@ So here are the basic steps, from beginning to end, for making simple changes (r
 That’s it.  The next time you boot up, you should have the changes on the Rev 2.1’s keyboard. It really is that easy.
 
 
+
 ## Example: Changing your Key Map.
 
 So here is an example of simple changes Hook made to his key map. This is just to show you an example, not to suggest that you should make these changes.  Here is Layer 0 on Hook's Key Map:
@@ -526,7 +528,6 @@ These are very minor changes. This layer enables Caps Lock if it is ever needed.
 
 Hopefully it helps to see a concrete example.  The keyboard is already set up pretty well for drafting with the default key map using only Layer 0.  But if you want to tweak, you can.
 
-
 ## The Micro Journal Rev 2.1 Is In You Hands Now.
 
 That's it for getting started. If you have questions or want to reach out to other users, check out the links here under "Community."
@@ -534,6 +535,7 @@ That's it for getting started. If you have questions or want to reach out to oth
 https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2.1/readme.md#community
 
 Happy Writing!
+
 
 
 ---
