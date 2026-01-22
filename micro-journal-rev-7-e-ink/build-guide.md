@@ -61,7 +61,7 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 
 - [Type C to USB-C Slim 90 Angled Adapter straight- side bend](https://it.aliexpress.com/item/1005007531893239.html)
 
-- [2 Pin Round Snap Rocker Switch 0.65 inch](https://www.aliexpress.com/item/1005006005552235.html)
+- [2 Pin Round Snap Rocker Switch 19mm](https://it.aliexpress.com/item/1005008528747478.html)
 
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) 
   
