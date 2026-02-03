@@ -12,7 +12,6 @@ Edited by Un Kyu Lee
    - Battery Installation
    - SD Card Preparation
    - Firmware Update
-   - Strap Installation
    - Google Drive Sync
 3. Using the Micro Journal Rev.6
    - The Editor
@@ -35,7 +34,7 @@ Edited by Un Kyu Lee
 
 The Rev 6 is one of a line of Micro Journal Writer Decks aimed at (my words) *writing focused* drafting. That is, they are digital typewriters that help you focus on getting the words out when you are drafting. That is certainly what the Rev 6 is optimized for. It can do other things. You can edit on it, though you probably should export the text to a more capable computer (which the Rev 6 has the means to do) for the heavier lifting type of editing like moving text around and rewriting. However, all in all, the Rev 6 stands out in the Micro Journal line as the simplest and most budget friendly replacement for the Neo 2. 
 
-<img src="./images/005.png">
+<img src="./images/005.png" width=600>
 
 The software is simple, but capable, and the Rev 6's unibody, light weight design with mechanical keyboard and small screen makes it perfect for carrying out with you in a bag. It even has a strap you can use to carry it without a bag. In addition, it has the "Send" capability if you don't want to sync to Google's cloud. However, thanks to Bluetooth (BT) built in, which the Neo 2 never had, it doesn't need a usb cord to use "send" (it can also act as a BT keyboard for your computer. We will get to all that in this guide).
 
@@ -78,12 +77,6 @@ The **Micro Journal Rev.6 requires a full-size SD card**, not a microSD card. If
 2. Copy `firmware_rev_6.bin` to SD card.  
 3. Reboot device; it will auto-update.  
 
-
-### Strap Installation
-![strap](./images/strap_001.png)
-- Place strap between knob and ring.  
-- Avoid overtightening.  
-- Replacement STL files available on GitHub.
 
 
 ### Ports and Buttons
@@ -177,7 +170,7 @@ Ensure WiFi is configured before attempting sync.
 1. On the device, press **MENU**.  
 2. Press **S** to initiate sync.  
 
-**Note:** The ESP32 only supports **2.4 GHz WiFi**. It will not connect to 5 GHz networks.
+**Note:** The ESP32 only supports **2.4 GHz WiFi**. It will not connect to 5 GHz networks. Sync menu will not appear if Google Drive Sync is not configured.
 
 
 ---
