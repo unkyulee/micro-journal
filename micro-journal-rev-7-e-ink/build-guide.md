@@ -65,7 +65,7 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 
 - 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html) 
   
-- [Spacebar Stabilizer 6.25](https://it.aliexpress.com/item/1005007119644385.html)
+- Costar Stabilizers 6.25u
 
 - [B-7000 Glue](https://www.aliexpress.com/item/1005005379063116.html)
 
