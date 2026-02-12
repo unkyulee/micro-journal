@@ -284,6 +284,8 @@ To connect to a WiFi network, follow these steps:
 Make sure that the wifi system is in 2.4 Ghz. 
 Also, try to seting the WiFi country. 5 Localisation Options -> L4 WLAN Country
 
+When you continue to have troubles connecting to wifi. Try command line option "nmtui" which has more detailed steps to configure the wifi.
+
 ---
 
 
