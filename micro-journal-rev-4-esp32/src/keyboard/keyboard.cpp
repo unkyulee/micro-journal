@@ -56,7 +56,7 @@ void keyboard_setup()
   knob_setup();
 #endif
 
-#ifdef KEYPAD_48
+#if defined(KEYPAD_48) && defined(BOARD_PICO) 
   keyboard_keypad_48_setup();
   knob_setup();
 #endif
@@ -124,7 +124,7 @@ void keyboard_loop()
   knob_loop();
 #endif
 
-#ifdef KEYPAD_48
+#if defined(KEYPAD_48) && defined(BOARD_PICO) 
   keyboard_keypad_48_loop();
   knob_loop();
 #endif
