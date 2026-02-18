@@ -38,6 +38,12 @@ It's easy to assemble, satisfying to use. Most importantly, brings the AlphaSmar
 * [Design Files](./STL)
 
 
+### Press
+
+* [Liliputing - This kit gives the AlphaSmart Neo2 more of a portable typewriter-like design](https://liliputing.com/this-kit-gives-the-alphasmart-neo2-more-of-a-portable-typewriter-like-design/)
+* [Hackaday](https://hackaday.com/2026/02/16/keebin-with-kristina-the-one-with-the-neo-with-the-typewriter-shell/)
+
+
 ### Community
 
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
