@@ -10,8 +10,15 @@
 //
 #define LAYERS 6 // layers
 
+#if defined(BOARD_ESP32_S3)
+//
 #define ROWS 4  // rows
 #define COLS 12 // columns
+
+//
+byte rowPins[ROWS] = {15, 16, 17, 18};
+byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
+
 
 // 2 - Home
 // 3 - End
@@ -33,6 +40,7 @@
 // 27 - ESC
 
 // 127 - DEL
+
 
 // layers
 // prettier-ignore
@@ -85,9 +93,78 @@ char keys[ROWS][COLS] = {
     {36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47},
 };
 
+#endif
+
+#if defined(BOARD_PICO)
 //
-byte rowPins[ROWS] = {15, 16, 17, 18};
-byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47, 21, 20, 19};
+#define ROWS 5  // rows
+#define COLS 12 // columns0-
+
+//
+byte rowPins[ROWS] = {0, 1, 2, 3, 21};
+byte colPins[COLS] = {4, 5, 6, 7, 13, 14, 15, 16, 17, 18, 19, 20};
+
+// layers
+// prettier-ignore
+int layers[LAYERS][ROWS * COLS] = {
+
+    {// normal layers
+     27, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '\b',
+     '\\', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+     14, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 14,
+     '-', '=', '[', ']', 17, ' ', ' ', 18, 21, 20, 19, '\n',
+     MENU},
+
+    {// when shift is pressed
+     27, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 127,
+     '|', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '"',
+     14, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 14,
+     '_', '+', '{', '}', 17, ' ', ' ', 2, 21, 20, 3, '\n',
+     MENU},
+
+    {// LOWER layer
+     27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 127,
+     '`', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+     14, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 14,
+     '-', '=', '[', ']', 17, ' ', ' ', 2, 21, 20, 3, '\n',
+     MENU},
+
+    {// LOWER layer shift100923455678901---00
+     27, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 127,
+     '~', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\'',
+     14, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 14,
+     '_', '+', '{', '}', 17, ' ', ' ', 2, 21, 20, 3, '\n',
+     MENU},
+
+     {// RAISE layer
+     27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 127,
+     '`', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'',
+     14, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 14,
+     '-', '=', '[', ']', 17, ' ', ' ', 2, 21, 20, 3, '\n',
+     MENU},
+
+    {// RAISE layer shift
+     27, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', 127,
+     '~', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\'',
+     14, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 14,
+     '_', '+', '{', '}', 17, ' ', ' ', 2, 21, 20, 3, '\n',
+     MENU},
+
+};
+
+// define the symbols on the buttons of the keypads
+// prettier-ignore
+char keys[ROWS][COLS] = {
+    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
+    {12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23},
+    {24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35},
+    {36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47},
+    {48},
+};
+
+#endif
+
+
 
 //
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
@@ -95,6 +172,8 @@ Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPin
 // initialize keymap
 void keyboard_keypad_48_setup()
 {
+    _debug("[keyboard_keypad_48_setup]\n");
+
     // load keyboard.json if exists
     const char *keys[] = {"main", "main-shift", "lower", "lower-shift", "raise", "raise-shift"};
     keypad_load_config("/keyboard.json", (int *)layers, COLS * ROWS, keys, 6);
@@ -128,11 +207,11 @@ void keyboard_keypad_48_loop()
             int character = keyboard_keypad_48_get_key(e);
 
             // send over the key to the display
-            /*
+
             _debug("[keyboard_keypad_48_get_key] Key: %d, Event: %d, Row: %d, Col: %d Character: [%d] '%c'\n",
                    e.bit.KEY, e.bit.EVENT, e.bit.ROW, e.bit.COL,
                    character, character);
-            */
+ 
            
             //
             display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);

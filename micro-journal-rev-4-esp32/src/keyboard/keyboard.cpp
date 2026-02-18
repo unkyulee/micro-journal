@@ -10,6 +10,11 @@
 #include "keyboard/Knob/Knob.h"
 #endif
 
+#ifdef KEYPAD_48
+#include "keyboard/Keypad/48/keypad_48.h"
+#include "keyboard/Knob/Knob.h"
+#endif
+
 #ifdef REV7
 #include "keyboard/USBHost/USBHost.h"
 #endif
@@ -48,6 +53,11 @@ void keyboard_setup()
 
 #ifdef KEYPAD_68
   keyboard_keypad_68_setup();
+  knob_setup();
+#endif
+
+#ifdef KEYPAD_48
+  keyboard_keypad_48_setup();
   knob_setup();
 #endif
 
@@ -111,6 +121,11 @@ void keyboard_loop()
 
 #ifdef KEYPAD_68
   keyboard_keypad_68_loop();
+  knob_loop();
+#endif
+
+#ifdef KEYPAD_48
+  keyboard_keypad_48_loop();
   knob_loop();
 #endif
 }
