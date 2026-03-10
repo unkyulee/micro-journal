@@ -8,20 +8,21 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 ## Timeline
 
-| Date       | Revision                                                                | Preview                                                                        |
-| ---------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 2025-12-02 | **[Cardputer](/cardputer/readme.md)**                                   | <img src="./cardputer/images/001.png" width="200">                             |
-| 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)**                         | <img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" width="200">                 |
-| 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                         | <img src="./micro-journal-rev-2.1/images/002.jpg" width="200">                 |
-| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)** | <img src="./micro-journal-neo2/images/001.jpg" width="200">                    |
-| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**               | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">            |
-| 2025-01-30 | **[Rev.7](/micro-journal-rev-7-e-ink/readme.md)**                       | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">            |
-| 2024-09-17 | **[Rev.2 Revamp](/micro-journal-rev-2-revamp/readme.md)**               | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">       |
-| 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**                   | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">         |
-| 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**               | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">     |
-| 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**                       | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">               |
-| 2024-03-15 | **[Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)**           | <img src="./micro-journal-rev-3-samsung-galaxy-s8/images/009.jpg" width="200"> |
-| 2024-03-04 | **[Rev.2](/micro-journal-rev-2-raspberypi/readme.md)**                  | <img src="./micro-journal-rev-2-raspberypi/images/rev1.jpg" width="200">       |
+| Date       | Revision                                                                                         | Preview                                                                                                    |
+| ---------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| 2026-03-09 | **[Rev.3 Nadia](/micro-journal-rev-3-revamp/readme.md)**                                         | <img src="./micro-journal-rev-3-revamp/images/001.png" width="200">                                        |
+| 2025-12-02 | **[Cardputer](/cardputer/readme.md)**                                                            | <img src="./cardputer/images/001.png" width="200">                                                         |
+| 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** | <img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" width="200"> |
+| 2025-11-11 | **[Rev.2.1](/micro-journal-rev-2.1/readme.md)**                                                  | <img src="./micro-journal-rev-2.1/images/002.jpg" width="200">                                             |
+| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/micro-journal-neo2/readme.md)**                          | <img src="./micro-journal-neo2/images/001.jpg" width="200">                                                |
+| 2025-07-26 | **[Rev.4 Revamp](/micro-journal-rev-4-revamp/readme.md)**                                        | <img src="./micro-journal-rev-4-revamp/images/014.jpg" width="200">                                        |
+| 2025-01-30 | **[Rev.7](/micro-journal-rev-7-e-ink/readme.md)**                                                | <img src="./micro-journal-rev-7-e-ink/images/home.jpg" width="200">                                        |
+| 2024-09-17 | **[Rev.2 Revamp](/micro-journal-rev-2-revamp/readme.md)**                                        | <img src="./micro-journal-rev-2-revamp/images/home_001.jpg" width="200">                                   |
+| 2024-06-13 | **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)**                                            | <img src="./micro-journal-rev-6-one-piece/images/001.png" width="200">                                     |
+| 2024-04-18 | **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)**                                        | <img src="./micro-journal-rev-5-esp32-usbhost/images/001.jpg" width="200">                                 |
+| 2024-03-15 | **[Rev.4](/micro-journal-rev-4-esp32/readme.md)**                                                | <img src="./micro-journal-rev-4-esp32/doc/001.webp" width="200">                                           |
+| 2024-03-15 | **[Rev.3](/micro-journal-rev-3-samsung-galaxy-s8/readme.md)**                                    | <img src="./micro-journal-rev-3-samsung-galaxy-s8/images/009.jpg" width="200">                             |
+| 2024-03-04 | **[Rev.2](/micro-journal-rev-2-raspberypi/readme.md)**                                           | <img src="./micro-journal-rev-2-raspberypi/images/rev1.jpg" width="200">                                   |
 
 
 
@@ -30,11 +31,11 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 * Rev.1 – *a place holder for future projects*
 
-* **[Rev.2](/micro-journal-rev-2-revamp/readme.md)** – A Raspberry Pi–based setup with a wide display and mechanical keyboard. This version aimed to combine a focused writing experience with the editing power of a full computer, offering both simplicity and flexibility. A variant with bigger keyboard is called [Rev.2.1: CyberDeck](/micro-journal-rev-2-revamp/readme.md).
+* **[Rev.2](/micro-journal-rev-2-revamp/readme.md)** – A Raspberry Pi–based setup with a wide display and mechanical keyboard. This version aimed to combine a focused writing exp*a place holder for future projects*
 
-* Rev.3 – *a place holder for future projects*
+* **[Rev.4](/micro-journal-rev-4-revamp/readme.md)** – A writer-focused mechanical keyboard that blends seamless everyday typing with instant transformation into a standalone writing device, offering specialized keys, customizable functions, and a tactile, inspiring typing experience to capture ideas the momerience with the editing power of a full computer, offering both simplicity and flexibility. A variant with bigger keyboard is called [Rev.2.1: CyberDeck](/micro-journal-rev-2-revamp/readme.md).
 
-* **[Rev.4](/micro-journal-rev-4-revamp/readme.md)** – A writer-focused mechanical keyboard that blends seamless everyday typing with instant transformation into a standalone writing device, offering specialized keys, customizable functions, and a tactile, inspiring typing experience to capture ideas the moment they strike.
+* **[Rev.3 Nadia](/micro-journal-rev-3-revamp/readme.md)** - A setup for a phone. The phone is a distraction trap. It easily leads you into endless scrolling before you even notice it. Yet somewhere inside those long stretches of drifting attention, there are small moments when you actually want to write. Sometimes it is an elegant troll comment. Sometimes it is a thoughtful reply to an email, hiding the fact that it was written on a phone. It is a setup that anyone could make. A phone. A keyboard. A place to rest your hands.
 
 * **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)** – An ESP32-powered screen-only device where you can plug in your own keyboard. This revision focused on flexibility, letting users pair the device with their favorite mechanical keyboards while keeping the writing deck lightweight and minimal.
 

@@ -2,16 +2,18 @@
 
 <img src="./images/001.png" width=800/>
 
-Micro Journal Rev.3: Nadia, is a small keyboard, meant to live beside a phone or a tablet. Sometimes I sit on the sofa. The television is on, though it belongs to the kids. I sit nearby, orbiting their world. A thought drifts in. Will there ever be a moment of television for me? The future feels distant. So I pull out my phone. Emails wait patiently. I scroll through them, answering with my thumbs, letter by letter. And somewhere in that slow tapping a quiet wish appears.
+Micro Journal Rev.3: Nadia is a small keyboard meant to live beside a phone or a tablet. Sometimes I sit on the sofa. The television is on, though it belongs to the kids. I sit nearby. A thought drifts in. Will there ever be a moment of television for me? The future feels distant. So I pull out my phone. Emails. I scroll through them, answering with my thumbs.
 
-I wish I had a keyboard. Just something small enough to appear in moments like this.
+I wish I had a keyboard.
+
+The phone is a common device these days, and it is clearly capable of being a decent writing tool. At the same time, it is also a powerful distraction trap. One moment you intend to write, and the next you find yourself drifting into endless scrolling without noticing. Yet I cannot deny that it is also a wonderful device for closing a few emails that were due tomorrow.
 
 
 ### Documents 
 
-* [Behind Story](./story.md)
+* [Behind Story] TBD
 * [Introduction Video] TBD
-* [Quick Start Guide](./guide.md)
+* [Quick Start Guide] TBD
 * [Build Guide] TBD
 
 ### Resources
