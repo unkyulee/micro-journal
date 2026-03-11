@@ -168,3 +168,4 @@ If any soldering or wiring is a tough deal then, you can simply pass through a u
 
 Micro Journal, is a pursuit of a simple yet effective writing solution. Born from inspiration of many cyberdeck ideas from the internet, overcoming design challenges, and fueled by a passion for mechanical keyboards, this device has found its place as a cherished tool for daily journaling. While not a daily driver, it provides a delightful writing experience and serves as a proof that mechanical keyboards can indeed find a place in a portable writing device. For those seeking niche solution for the on-the-go writing pleasure, this can open up a new channel for creativity and expression.
 
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)

@@ -104,3 +104,5 @@ For oganizing idea, or digging into the complex problems, I find obsidian as a g
 This started as an idea to use the phone to build a focused writing device, that would be appropriate for my daughter. Hence the pink. I was thinking to make it more accessible to build for those diy'er out there... but I ended up making a hand-wired mechanical keyboard. 
 
 Since, the mechanical keyboard is quite an essential component when it comes to a writing device like this. Hand wiring seems like a great skill to have and use for such a build. It opens up large amount of options to choose from when you can create an hand-wired keyboard. It is not that difficult, in my opinion, and it really does provide great satisfaction to my tingling sense of diy. 
+
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)

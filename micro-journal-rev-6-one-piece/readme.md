@@ -59,4 +59,4 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 ### Online Shop
 
 * [Buy Micro Journal from UnKyu's Tindie Store](https://www.tindie.com/products/unkyulee/micro-journal-rev6-vivian-in-new-york/)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)

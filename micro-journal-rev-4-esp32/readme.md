@@ -204,3 +204,5 @@ Create a new Google Apps Script document in your Google Drive, then copy the pro
 I'm confident that this project will inspire others and demonstrate that creating an ESP32-based WriterDeck is indeed possible. Your initiative to push ESP32 projects into more user-friendly, standalone territory is commendable. By sharing your experience and insights, you're paving the way for more creativity and innovation within the community. I believe that others will pick up on the ideas and contributions presented here, fostering a more positive and collaborative environment for creators worldwide. Your efforts are sure to make a meaningful impact in the DIY and maker communities.
 
 Thanks for reading up to here.
+
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)

@@ -49,5 +49,5 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 ### Online Shop
 
 * [Buy Micro Journal from UnKyu's Tindie Store](https://www.tindie.com/products/unkyulee/micro-journal-rev7-kindred-gift-epaper/)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 

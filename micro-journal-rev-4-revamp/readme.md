@@ -45,9 +45,4 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
 * [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
-
-
-### Online Shop
-
-* [Buy Micro Journal Rev.4](https://www.tindie.com/products/unkyulee/micro-journal-rev4-captain-hook/)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)

@@ -53,7 +53,4 @@ If you're curious about the technical journey — including the exploration of U
 
 
 
-### Online Shop
-
-* [Buy Micro Journal from UnKyu's Tindie Store](https://www.tindie.com/products/unkyulee/micro-journal-rev5-a-personal-journey/)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)

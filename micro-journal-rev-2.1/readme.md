@@ -33,3 +33,4 @@ Micro Journal Rev.2.1: cyberDeck blends the tactile joy of mechanical typing wit
 ### Online Shop
 
 * [Order from Un Kyu's Tindie Shop](https://www.tindie.com/products/unkyulee/micro-journal-rev21-cyberdeck/)
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
