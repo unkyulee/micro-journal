@@ -1,4 +1,4 @@
-#include "editor.h"
+#include "Editor.h"
 #include "app/app.h"
 #include "display/display.h"
 
