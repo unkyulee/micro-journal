@@ -151,9 +151,8 @@ Please, watch the use case video in order to understand the features and most im
 
 ### Community
 
-* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
 * [Reddit - Un Kyu Lee's Timeline](https://www.yesbut.it/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
+* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
 
 
 ### Press

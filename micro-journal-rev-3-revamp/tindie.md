@@ -70,6 +70,5 @@ Here are color options that are already set by previous users
 
 ### Community
 
+* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
-* [Reddit - Un Kyu Lee's Timeline](https://www.reddit.com/r/unkyulee/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)

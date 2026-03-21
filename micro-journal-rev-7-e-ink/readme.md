@@ -33,8 +33,8 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 
 ### Community
 
+* [Reddit - Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721922242110/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 
 ### Press

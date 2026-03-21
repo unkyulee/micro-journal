@@ -96,8 +96,8 @@ Micro Journal Rev.5 perfect for capturing sudden bursts of inspiration or quickl
 
 ### Community
 
+* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721921183163/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 
 ### Press

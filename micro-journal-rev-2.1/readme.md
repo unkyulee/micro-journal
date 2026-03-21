@@ -22,8 +22,8 @@ Micro Journal Rev.2.1: cyberDeck blends the tactile joy of mechanical typing wit
 
 ### Community
 
+* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 ### Press
 

@@ -39,8 +39,8 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 
 ### Community
 
+* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721921914961/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 
 ### Press
