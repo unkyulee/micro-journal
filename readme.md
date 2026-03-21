@@ -10,6 +10,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 | Date       | Revision                                                                                         | Preview                                                                                                    |
 | ---------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| 2026-03-09 | **[Rev.6.1 Mini](/micro-journal-rev-6.1-mini/readme.md)**                                         | <img src="./micro-journal-rev-6.1-mini/images/001.jpg" width="200">                                        |
 | 2026-03-09 | **[Rev.3 Nadia](/micro-journal-rev-3-revamp/readme.md)**                                         | <img src="./micro-journal-rev-3-revamp/images/001.png" width="200">                                        |
 | 2025-12-02 | **[Cardputer](/cardputer/readme.md)**                                                            | <img src="./cardputer/images/001.png" width="200">                                                         |
 | 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** | <img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" width="200"> |
@@ -40,6 +41,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 * **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)** – An ESP32-powered screen-only device where you can plug in your own keyboard. This revision focused on flexibility, letting users pair the device with their favorite mechanical keyboards while keeping the writing deck lightweight and minimal.
 
 * **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)** – An ESP32-based all-in-one unit combining both screen and keyboard. Portable and self-contained, this version brought the writerDeck concept closer to a dedicated, ready-to-use device with a clean design.
+  * **[Rev.6.1](/micro-journal-rev-6.1-mini/readme.md)** - Clamshell version of Rev.6
 
 * **[Rev.7](/micro-journal-rev-2-revamp/readme.md)** – An ESP32-based an e-ink writing device with a built-in keyboard. Optimized for comfort, it offers an easy-on-the-eyes experience and works beautifully in bright environments thanks to its paper-like e-ink display.
 
@@ -51,6 +53,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 * **[M5Stack Cardputer](/cardputer/readme.md)** – Micro Journal Firmware running on a M5Stack Cardputer.
 
+* **[The PDA Terminal](https://github.com/unkyulee/phone-enclosure)** - Phone Enclosure with a keyboard for Boox Palma 2
 
 
 ## Support

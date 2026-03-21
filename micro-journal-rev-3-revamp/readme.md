@@ -26,7 +26,7 @@ The phone is a common device these days, and it is clearly capable of being a de
 ### Community
 
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
-* [Reddit - Un Kyu Lee's Timeline](https://www.reddit.com/r/unkyulee/)
+* [Reddit - Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 
