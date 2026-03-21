@@ -69,14 +69,7 @@ Micro Journal is a DIY project, complete with build guides so you can source the
 
 ## Community
 
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 * [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
-* [Reddit - Un Kyu Lee's Timeline](https://www.reddit.com/r/unkyulee/)
-* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
-
-
-
-## Contact
-
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Background\_Ad\_1810](https://www.reddit.com/user/Background_Ad_1810/)
-* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
