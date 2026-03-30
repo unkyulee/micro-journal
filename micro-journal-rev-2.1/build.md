@@ -19,7 +19,7 @@ You'll also need access to 3D-printed parts to complete the build. Many 3D print
 - [Wisecoco 7.84 Inch 1280x400 LCD Display](https://www.aliexpress.com/item/1005004986951553.html)
 - Raspberry Pi Zero 2W
 - Raspberry Pi Pico (rp2040)
-- [68 Keyboard PCB] link to purchase to be provided
+- [68 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-68-keys-keyboard-pcb.html)
 - [18650 Lithium Battery Shield with 4 Battery Holder](https://www.aliexpress.com/item/1005007581124399.html)
 - [Micro USB Hub with Power Input](https://www.aliexpress.com/item/1005006750076510.html)
 - [2x Micro USB 2 PIN Male Cable](https://www.aliexpress.com/item/1005008243661710.html)

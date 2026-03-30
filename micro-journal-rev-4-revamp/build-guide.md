@@ -18,7 +18,7 @@ You'll also need access to 3D-printed parts to complete the build. Many 3D print
 # Materials
 
 - [RP2040-LCD-0.96, a Pico-like MCU Board Based on Raspberry Pi MCU RP2040, with LCD](https://www.waveshare.com/rp2040-lcd-0.96.htm)
-- [69 Keyboard PCB](https://www.tindie.com/products/unkyulee/diy-kit-keyboard-pcb/)
+- [69 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-68-keys-keyboard-pcb.html)
 
 - 12x M3 Heated Inserts OD 4.5mm Length 3mm
 - 12x M3 Hex Screw Length 10mm

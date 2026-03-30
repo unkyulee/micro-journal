@@ -41,7 +41,7 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 
 - [LILYGO T5 e-Paper (Touch)](https://lilygo.cc/products/t5-4-7-inch-e-paper-v2-3)
 - Raspberry Pi Pico (rp2040)
-- [69 Keyboard PCB](https://www.tindie.com/products/unkyulee/diy-kit-keyboard-pcb/)
+- [69 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-68-keys-keyboard-pcb.html)
 - Micro SD card minimum 8 GB
 
 - 12x M3 Heated Inserts OD 4.5mm Length 3mm
