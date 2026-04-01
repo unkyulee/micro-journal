@@ -13,7 +13,7 @@ The phone is a common device these days, and it is clearly capable of being a de
 
 * [Behind Story] TBD
 * [Introduction Video](https://youtu.be/GcJ9Ggf5daw)
-* [Quick Start Guide] TBD
+* [Quick Start Guide](./guide.md)
 * [Build Guide] TBD
 * [Various Colorway](https://www.youtube.com/playlist?list=PLrUXYLEnAaNR1lVuNkHQ0WrtUofGpW3S8)
 
