@@ -198,9 +198,6 @@ First 5 pins are for the knob on the left hand side. Last 5 pins are for the kno
 
 <img src="build/EC11webp.webp" width="600">
 
---
-Currently rev.7 build guide work is in progress.
-
 
 <img src="build/014.jpg" width="600">
 

@@ -66,6 +66,9 @@ Micro Journal is a DIY project, complete with build guides so you can source the
 
 * [Tindie – Online Shop](https://www.tindie.com/stores/unkyulee/)
 
+When Tindie is not available you can make an order request from the link below
+
+* [Micro Journal Order Request](https://forms.gle/obXzCUKWc8Fx6AD8A)
 
 ## Community
 
