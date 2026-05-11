@@ -128,7 +128,7 @@ Once all the wirings are done. Place the keyboard PCB and the ESP32 inside the e
 
 Display used in this build is called
 
-- ILI9341 320 \* 240 TFT LCD display
+- ILI9341 2.8 inch 320 x 240 TFT LCD display
 
 <img src="build/display_001.png" width="600">
 
