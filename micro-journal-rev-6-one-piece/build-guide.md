@@ -44,6 +44,13 @@ Please, refer to the image below for placement of the prints. Most of the prints
 
 Once the prints are done. Remove the support materials from the print.
 
+# Custom Spacebar
+
+https://makerworld.com/en/models/2821063-spacebar-for-micro-journal-rev-6
+
+Credit to: Jay is an owl
+
+
 # Keyboard PCB
 
 [Gerber File](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB) for the Keyboard PCB are available in the github.
