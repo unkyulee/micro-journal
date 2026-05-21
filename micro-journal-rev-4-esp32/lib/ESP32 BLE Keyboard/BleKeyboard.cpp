@@ -111,7 +111,6 @@ void BleKeyboard::begin(void)
 	NimBLEDevice::setSecurityAuth(true, true, true);
 
 	hid->setReportMap((uint8_t *)_hidReportDescriptor, sizeof(_hidReportDescriptor));
-	hid->startServices();
 
 	onStarted(pServer);
 

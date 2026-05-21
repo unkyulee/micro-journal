@@ -1,8 +1,8 @@
 #include "display.h"
 #include "app/app.h"
 
-// ILI9341 DISPLAY
-#ifdef ILI9341_DRIVER
+// 320x240 TFT_eSPI display
+#if defined(ILI9341_DRIVER) || defined(ST7789_DRIVER)
 #include "display/ILI9341/display_ILI9341.h"
 #endif
 
@@ -24,7 +24,7 @@
 //
 void display_setup()
 {
-#ifdef ILI9341_DRIVER
+#if defined(ILI9341_DRIVER) || defined(ST7789_DRIVER)
   display_ILI9341_setup();
 #endif
 
@@ -95,7 +95,7 @@ void display_setup()
 //
 void display_loop()
 {
-#ifdef ILI9341_DRIVER
+#if defined(ILI9341_DRIVER) || defined(ST7789_DRIVER)
   display_ILI9341_loop();
 #endif
 
@@ -118,7 +118,7 @@ void display_keyboard(int key, bool pressed, int index)
 {
   _debug("[display_keyboard] Key: [%d] pressed: %d index: %d\n", key, pressed, index);
 
-#ifdef ILI9341_DRIVER
+#if defined(ILI9341_DRIVER) || defined(ST7789_DRIVER)
   display_ILI9341_keyboard(key, pressed, index);
 #endif
 
@@ -138,7 +138,7 @@ void display_keyboard(int key, bool pressed, int index)
 
 int display_core()
 {
-#ifdef ILI9341_DRIVER
+#if defined(ILI9341_DRIVER) || defined(ST7789_DRIVER)
   return display_ILI9341_core();
 #endif
 
