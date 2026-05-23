@@ -55,10 +55,6 @@ void ble_loop()
     //
     JsonDocument &app = status();
 
-    // nothing to do when BLE is not paired
-    // if (!app["config"]["ble"]["address"].is<const char *>())
-    //    return;
-
     // every 10 seconds check reconnect
     static unsigned int last = millis();
     if (millis() - last > 10000)
@@ -66,7 +62,6 @@ void ble_loop()
         last = millis();
 
         bool ble_connected = app["ble_connected"].as<bool>();
-        _log("BLE Keyboard Connection: %d\n", ble_connected);
         if (ble_connected == false)
         {
             // When ble.address exists then try to connect to the keyboard

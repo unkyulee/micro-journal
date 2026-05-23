@@ -42,11 +42,13 @@ Internals of Rev.5.1. is the same as the previous Rev.5 build. Please, refer to 
 
 ## USB Cable Reference
 
-Next to the Black wire (GND) is D+
 Next to the Red wire (Vcc) is D-
+Next to the Black wire (GND) is D+
 
-GND
-D+
-D-
-VCC
+| Pin  | Purpose                |
+| ---- | ---------------------- |
+| GND  | To power supply GND    |
+| VBUS | 5V from sliding switch |
+| D-   | ESP32 pin 19           |
+| D+   | ESP32 pin 20           |
 
