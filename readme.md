@@ -1,6 +1,6 @@
 # Micro Journal
 
-**Micro Journal** is an open-source DIY project that reimagines the joy of focused writing through a personal **writerDeck**. A writerDeck is a modern take on the typewriter: a simple, distraction-free device made for writing, without the noise of notifications, apps, or endless browser tabs. It brings back the purity of just you and your words, while quietly adding the convenience of digital storage and portability.
+**Micro Journal** is an open-source DIY project that reimagines the joy of focused writing through a personal **writing device**. It is a modern take on the typewriter: a simple, distraction-free device made for writing, without the noise of notifications, apps, or endless browser tabs. It brings back the purity of just you and your words, while quietly adding the convenience of digital storage and portability.
 
 With Micro Journal, I'm exploring how to build such a device from the ground up. Experimenting with hardware, design, and features across different revisions. Each iteration aims to refine the experience, from adding battery power and portability to improving usability and syncing. Every revision comes with documentation and build guides, so that anyone who wishes can create their own. And if you'd prefer to have one made for you, there's also an [online shop](https://www.tindie.com/stores/unkyulee/) where you can request a custom build.
 
@@ -10,7 +10,8 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 | Date       | Revision                                                                                         | Preview                                                                                                    |
 | ---------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| 2026-03-09 | **[Rev.6.1 Mini](/micro-journal-rev-6.1-mini/readme.md)**                                         | <img src="./micro-journal-rev-6.1-mini/images/001.jpg" width="200">                                        |
+| 2026-03-09 | **[Rev.5.1 Mini](/micro-journal-rev-5.1/readme.md)**                                             |                                                                                                            |
+| 2026-03-09 | **[Rev.6.1 Mini](/micro-journal-rev-6.1-mini/readme.md)**                                        | <img src="./micro-journal-rev-6.1-mini/images/001.jpg" width="200">                                        |
 | 2026-03-09 | **[Rev.3 Nadia](/micro-journal-rev-3-revamp/readme.md)**                                         | <img src="./micro-journal-rev-3-revamp/images/001.png" width="200">                                        |
 | 2025-12-02 | **[Cardputer](/cardputer/readme.md)**                                                            | <img src="./cardputer/images/001.png" width="200">                                                         |
 | 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** | <img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" width="200"> |
@@ -38,7 +39,7 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 
 * **[Rev.3 Nadia](/micro-journal-rev-3-revamp/readme.md)** - A setup for a phone. The phone is a distraction trap. It easily leads you into endless scrolling before you even notice it. Yet somewhere inside those long stretches of drifting attention, there are small moments when you actually want to write. Sometimes it is an elegant troll comment. Sometimes it is a thoughtful reply to an email, hiding the fact that it was written on a phone. It is a setup that anyone could make. A phone. A keyboard. A place to rest your hands.
 
-* **[Rev.5](/micro-journal-rev-5-esp32-usbhost/readme.md)** – An ESP32-powered screen-only device where you can plug in your own keyboard. This revision focused on flexibility, letting users pair the device with their favorite mechanical keyboards while keeping the writing deck lightweight and minimal.
+* **[Rev.5.1](/micro-journal-rev-5.1/readme.md)** – An ESP32-powered screen-only device where you can plug in your own keyboard. This revision focused on flexibility, letting users pair the device with their favorite mechanical keyboards while keeping the writing deck lightweight and minimal.
 
 * **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)** – An ESP32-based all-in-one unit combining both screen and keyboard. Portable and self-contained, this version brought the writerDeck concept closer to a dedicated, ready-to-use device with a clean design.
   * **[Rev.6.1](/micro-journal-rev-6.1-mini/readme.md)** - Clamshell version of Rev.6
@@ -69,6 +70,7 @@ Micro Journal is a DIY project, complete with build guides so you can source the
 When Tindie is not available you can make an order request from the link below
 
 * [Micro Journal Order Request](https://forms.gle/obXzCUKWc8Fx6AD8A)
+
 
 ## Community
 

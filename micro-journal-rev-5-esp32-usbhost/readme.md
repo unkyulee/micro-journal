@@ -1,6 +1,6 @@
 ## Micro Journal Rev.5: A Personal Journey
 
-With Rev.5, I wanted to take a step back from building the keyboard itself and instead focus on something more flexible: letting writers use the keyboard they already love. The idea was simple — instead of being tied to a built-in keyboard, why not make the device work with *any* mechanical keyboard?
+With Rev.5, I wanted to take a step back from building the keyboard itself and instead focus on something more flexible: letting writers use the keyboard they already love. The idea was simple, instead of being tied to a built-in keyboard, why not make the device work with *any* mechanical keyboard?
 
 That's where the USB port comes in. By tapping into the ESP32-S3's native USB host features, I was able to design an enclosure that sits neatly next to your keyboard and connects directly. After updating the code and refining the hardware, Rev.5 came to life.
 

@@ -45,13 +45,12 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 - Micro SD card minimum 8 GB
 
 - 12x M3 Heated Inserts OD 4.5mm Length 3mm
-- 4x M3 Hex Screw Length 20mm
-- 4x M3 Hex Screw Length 10mm
-- 4x M3 Hex Screw Length 70mm
+- 4x DIN 912 M3 Hex Screw Length 20mm
+- 4x DIN 912 M3 Hex Screw Length 10mm
+- 4x DIN 912 M3 Hex Screw Length 70mm
 
 - 14x M2 Heated Inserts OD 3.2mm Length 3mm
-- 12x M2 Hex Screw Length 5mm
-- 2x M2 HEx Screw Length 3mm
+- 14x DIN 7046 M2 Machine Screw Length 5mm
 
 - [LiPo Charger and Step Up Controller](https://www.aliexpress.com/item/1005006366996657.html)
 
