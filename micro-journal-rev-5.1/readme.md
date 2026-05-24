@@ -9,9 +9,9 @@ This is an enhanced version of [previous rev.5](../micro-journal-rev-5-esp32-usb
 
 ### Documents 
 
-* [Behind Story] TBD
-* [Introduction Video] TBD
-* [Quick Start Guide] TBD
+* [Behind Story](./story.md)
+* [Introduction Video](https://youtu.be/4LoZSAb_AXQ)
+* [Quick Start Guide](./guide.md)
 * [Build Guide](./build.md)
 
 ### Resources

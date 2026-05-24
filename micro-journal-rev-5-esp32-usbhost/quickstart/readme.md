@@ -1,10 +1,10 @@
 
-# **Micro Journal Rev.5 — Complete User Guide (Refined Edition)**
+# **Micro Journal Rev.5 — Complete User Guide**
 
 
 # **Table of Contents**
 
-- [**Micro Journal Rev.5 — Complete User Guide (Refined Edition)**](#micro-journal-rev5--complete-user-guide-refined-edition)
+- [**Micro Journal Rev.5 — Complete User Guide**](#micro-journal-rev5--complete-user-guide)
 - [**Table of Contents**](#table-of-contents)
 - [**Introduction**](#introduction)
 - [**First Steps**](#first-steps)
