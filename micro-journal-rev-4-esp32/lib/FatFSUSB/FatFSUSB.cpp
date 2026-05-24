@@ -118,7 +118,10 @@ int32_t FatFSUSBClass::read10(uint32_t lba, uint32_t offset, void *buffer, uint3
         return -1;
     }
 
-    assert(offset + bufsize <= _sectSize);
+    if (offset + bufsize > _sectSize)
+    {
+        return -1;
+    }
 
     if (_sectNum >= 0)
     {
@@ -230,7 +233,10 @@ int32_t FatFSUSBClass::write10(uint32_t lba, uint32_t offset, uint8_t *buffer, u
         return -1;
     }
 
-    assert(offset + bufsize <= _sectSize);
+    if (offset + bufsize > _sectSize)
+    {
+        return -1;
+    }
 
     if ((offset == 0) && (bufsize == _sectSize))
     {
