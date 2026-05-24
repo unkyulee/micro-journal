@@ -48,3 +48,7 @@ I sold a few units of Rev.5. Only three, technically. Still, I remember waking u
 
 Someone saw what I saw. This is why first creations stayed so deeply. They are not yet polished enough. Later work may become more refined. But the first meaningful creation contains something rare. An evidence.
 
+<img src="./images/001.png" width=400 />
+
+
+Designed by Un Kyu Lee.
