@@ -52,3 +52,9 @@ Next to the Black wire (GND) is D+
 | D-   | ESP32 pin 19           |
 | D+   | ESP32 pin 20           |
 
+
+## Some more Reference Images
+
+<img src="./images/rev 5 1 floorplan_display blank.png" />
+
+<img src="./images/rev 5 1 floorplan_2.png" />
