@@ -115,6 +115,8 @@ Incorrect battery type may damage the device or cause fire.
 **Double-check battery polarity (+ and –) before inserting.
 Reversed polarity can permanently damage the device.**
 
+[How to Open Rev.5.1.](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5.1/guide.md)
+
 1. Open the enclosure by removing the screws.
 2. Locate the battery holder.
 
