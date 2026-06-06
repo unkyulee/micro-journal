@@ -1,0 +1,67 @@
+#########################################
+# Syntax Coloring Map For ST7305_MonoTFT_Library
+#########################################
+
+#########################################
+# Datatypes (KEYWORD1)
+#########################################
+ST7305_2p9_BW_DisplayDriver	KEYWORD1
+ST73XX_UI	KEYWORD1
+U8G2_FOR_ST73XX	KEYWORD1
+
+#########################################
+# Methods and Functions (KEYWORD2)
+#########################################
+High_Power_Mode	KEYWORD2
+Initial_ST7305	KEYWORD2
+Low_Power_Mode	KEYWORD2
+ST7305_COLOR_WHITE	KEYWORD2
+U8G2_FONT_SECTION	KEYWORD2
+Write_Parameter	KEYWORD2
+Write_Register	KEYWORD2
+address	KEYWORD2
+clearDisplay	KEYWORD2
+display	KEYWORD2
+display_Inversion	KEYWORD2
+display_on	KEYWORD2
+drawCircle	KEYWORD2
+drawFastHLine	KEYWORD2
+drawFastVLine	KEYWORD2
+drawFilledCircle	KEYWORD2
+drawFilledPolygon	KEYWORD2
+drawFilledRectangle	KEYWORD2
+drawFilledTriangle	KEYWORD2
+drawGlyph	KEYWORD2
+drawLine	KEYWORD2
+drawPolygon	KEYWORD2
+drawRectangle	KEYWORD2
+drawTriangle	KEYWORD2
+drawUTF8	KEYWORD2
+fill	KEYWORD2
+getUTF8Width	KEYWORD2
+home	KEYWORD2
+initialize	KEYWORD2
+setBackgroundColor	KEYWORD2
+setFont	KEYWORD2
+setFontMode	KEYWORD2
+setForegroundColor	KEYWORD2
+u8g2_DrawGlyph	KEYWORD2
+u8g2_DrawStr	KEYWORD2
+u8g2_GetGlyphWidth	KEYWORD2
+u8g2_IsGlyph	KEYWORD2
+u8g2_SetBackgroundColor	KEYWORD2
+u8g2_SetFont	KEYWORD2
+u8g2_SetFontDirection	KEYWORD2
+u8g2_SetFontMode	KEYWORD2
+u8g2_SetForegroundColor	KEYWORD2
+utf8_next	KEYWORD2
+write	KEYWORD2
+writePoint	KEYWORD2
+
+#########################################
+# Constants (LITERAL1)
+#########################################
+DISPLAY_HEIGHT	LITERAL1
+DISPLAY_WIDTH	LITERAL1
+ST7305_COLOR_BLACK	LITERAL1
+ST7305_COLOR_WHITE	LITERAL1
