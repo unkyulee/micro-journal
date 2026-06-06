@@ -1,6 +1,6 @@
 # Micro Journal Rev.6.1: Mini
 
-<img src="./images/001.jpg" width=800/>
+<img src="./images/landing.png" width=800/>
 
 
 
