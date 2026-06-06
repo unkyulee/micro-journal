@@ -66,7 +66,7 @@ static void setFontForLang(uint8_t idx)
         u8g2.setFont(u8g2_font_unifont_t_cyrillic);
         break; // Russian
     default:
-        u8g2.setFont(u8g2_font_helvR14_tf);
+        u8g2.setFont(u8g2_font_profont22_tf);
         break; // Latin languages
     }
 }
@@ -102,7 +102,7 @@ void setup()
     // Important:
     // 0 = draw foreground and background
     // 1 = transparent background
-    u8g2.setFontMode(0);
+    u8g2.setFontMode(1);
 
     u8g2.setForegroundColor(ST7305_COLOR_BLACK);
     u8g2.setBackgroundColor(ST7305_COLOR_WHITE);

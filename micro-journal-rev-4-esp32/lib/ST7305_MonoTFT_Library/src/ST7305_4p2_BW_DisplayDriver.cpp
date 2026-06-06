@@ -10,25 +10,21 @@ ST7305_4p2_BW_DisplayDriver::ST7305_4p2_BW_DisplayDriver(
     int csPin,
     int sclkPin,
     int sdinPin,
-    SPIClass &spi) : DC_PIN(dcPin),
-                     RES_PIN(resPin),
-                     CS_PIN(csPin),
-                     SCLK_PIN(sclkPin),
-                     SDIN_PIN(sdinPin),
-                     LCD_WIDTH(300),
-                     LCD_HEIGHT(400),
-                     ST73XX_UI(400, 300),  // this is going to be landscape
-                     LCD_DATA_WIDTH(75),   // 300 / 4 = 75 bytes
-                     LCD_DATA_HEIGHT(200), // 400 / 2 = 200
-                     DISPLAY_BUFFER_LENGTH(15000),
-                     spiRef(spi)
+    SPIClass &spi)
+    : DC_PIN(dcPin),
+      RES_PIN(resPin),
+      CS_PIN(csPin),
+      SCLK_PIN(sclkPin),
+      SDIN_PIN(sdinPin),
+      LCD_WIDTH(300),
+      LCD_HEIGHT(400),
+      ST73XX_UI(300, 400),
+      LCD_DATA_WIDTH(150),
+      LCD_DATA_HEIGHT(200),
+      DISPLAY_BUFFER_LENGTH(30000),
+      spiRef(spi)
 {
     display_buffer = new uint8_t[DISPLAY_BUFFER_LENGTH];
-
-    // one byte carries 8 pixels information
-    // 1 byte = 4 columns x 2 rows = 8 pixels
-    // top row:    BIT7 BIT5 BIT3 BIT1
-    // bottom row: BIT6 BIT4 BIT2 BIT0
 }
 
 ST7305_4p2_BW_DisplayDriver::~ST7305_4p2_BW_DisplayDriver()
@@ -59,95 +55,57 @@ void ST7305_4p2_BW_DisplayDriver::fill(uint8_t data)
 
 void ST7305_4p2_BW_DisplayDriver::clearDisplay()
 {
-    memset(display_buffer, 0xCC, DISPLAY_BUFFER_LENGTH); // white, white
+    memset(display_buffer, 0x00, DISPLAY_BUFFER_LENGTH);
 }
 
-void ST7305_4p2_BW_DisplayDriver::writePhysicalPoint(uint x, uint y, bool enabled)
+static constexpr uint8_t ST7306_WHITE = 0x00;
+static constexpr uint8_t ST7306_BLACK = 0x0F;
+
+void ST7305_4p2_BW_DisplayDriver::writePhysicalPoint(uint x, uint y, bool black)
 {
-    if (x >= LCD_WIDTH || y >= LCD_HEIGHT)
+    // handle rotation
+    if (x >= LCD_HEIGHT || y >= LCD_WIDTH)
     {
         return;
     }
-    
-    uint real_x = x / 4; // 0->0, 3->0, 4->1, 7->1
-    uint real_y = y / 2; // 0->0, 1->0, 2->1, 3->1
-    uint write_byte_index = real_y * LCD_DATA_WIDTH + real_x;
-    uint one_two = (y % 2 == 0) ? 0 : 1; // 0 1
-    uint line_bit_4 = x % 4;             // 0 1 2 3
-    uint8_t write_bit = 7 - (line_bit_4 * 2 + one_two);
+    uint px = LCD_WIDTH - 1 - y;
+    uint py = x;
 
-    if (enabled)
-    {        
-        display_buffer[write_byte_index] |= (1 << write_bit);
+    // convert to real byte location
+    uint real_x = px / 2;
+    uint real_y = py / 2;
+
+    uint write_byte_index = real_y * LCD_DATA_WIDTH + real_x;
+
+    if (write_byte_index >= DISPLAY_BUFFER_LENGTH)
+    {
+        return;
+    }
+
+    uint8_t color = black ? ST7306_BLACK : ST7306_WHITE;
+
+    if ((x & 1) == 0)
+    {
+        // even x -> high nibble
+        display_buffer[write_byte_index] =
+            (display_buffer[write_byte_index] & 0x0F) | (color << 4);
     }
     else
     {
-        display_buffer[write_byte_index] &= ~(1 << write_bit);
+        // odd x -> low nibble
+        display_buffer[write_byte_index] =
+            (display_buffer[write_byte_index] & 0xF0) | (color & 0x0F);
     }
+}
+
+void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, bool data)
+{
+    writePhysicalPoint(x, y, data);
 }
 
 void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data)
 {
-    uint px;
-    uint py;
-
-    //
-    // Logical 400 x 300 -> physical 300 x 400
-    if (x >= 400 || y >= 300)
-    {
-        return;
-    }
-    px = y;
-    py = 399 - x;
-
-    //
-    writePhysicalPoint(px, py, data != 0);
-
-    /*
-    switch (rotation) {
-    case 1:
-        // Logical 400 x 300 -> physical 300 x 400
-        if (x >= 400 || y >= 300) {
-            return;
-        }
-        px = y;
-        py = 399 - x;
-        break;
-
-    case 3:
-        // Rotate 3 times
-        if (x >= 400 || y >= 300)
-        {
-            return;
-        }
-        px = 299 - y;
-        py = x;
-
-    case 2:
-        // Logical 300 x 400 -> physical 300 x 400
-        if (x >= 300 || y >= 400) {
-            return;
-        }
-        px = 299 - x;
-        py = 399 - y;
-        break;
-
-    case 0:
-    default:
-        // Logical 300 x 400 -> physical 300 x 400
-        if (x >= 300 || y >= 400) {
-            return;
-        }
-        px = x;
-        py = y;
-        break;
-    }
-    */
-}
-
-void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, bool enabled)
-{
-    writePoint(x, y, static_cast<uint16_t>(enabled ? 1 : 0));
+    writePhysicalPoint(x, y, data != 0);
 }
 
 void ST7305_4p2_BW_DisplayDriver::display()
@@ -166,7 +124,7 @@ void ST7305_4p2_BW_DisplayDriver::Initial_ST7305()
     digitalWrite(RES_PIN, LOW);
     delay(10);
     digitalWrite(RES_PIN, HIGH);
-    delay(120);
+    delay(10);
 
     /////////////HSD 4.2” 300x400 Mono High Scan Rate Initial Code (8Hz)/////////////////
     Write_Register(0xD6); // NVM Load Control
@@ -256,7 +214,6 @@ void ST7305_4p2_BW_DisplayDriver::Initial_ST7305()
     // Write_Parameter(0X00); //Memory Data Access Control: MX=0 ; DO=0
     Write_Parameter(0X48); // MX=1 ; DO=1
     // Write_Parameter(0X4c); //MX=1 ; DO=1 GS=1
-    // Write_Parameter(0xC8);
 
     Write_Register(0x3A);  // Data Format Select
     Write_Parameter(0X11); // 10:4write for 24bit ; 11: 3write for 24bit
@@ -264,9 +221,8 @@ void ST7305_4p2_BW_DisplayDriver::Initial_ST7305()
     Write_Register(0xB9);  // Gamma Mode Setting
     Write_Parameter(0X20); // 20: Mono 00:4GS
 
-    Write_Register(0xB8); // Panel Setting
-    // Write_Parameter(0X29); // Panel Setting Frame inversion  09:column 29:dot_1-Frame 25:dot_1-Line
-    Write_Parameter(0X09);
+    Write_Register(0xB8);  // Panel Setting
+    Write_Parameter(0X29); // Panel Setting Frame inversion  09:column 29:dot_1-Frame 25:dot_1-Line
 
     Write_Register(0x21); // Inverse
 
@@ -278,10 +234,10 @@ void ST7305_4p2_BW_DisplayDriver::Initial_ST7305()
     Write_Register(0x2B); // Row Address Setting
     Write_Parameter(0X00);
     Write_Parameter(0XC7);
-
-    Write_Register(0x72); // de-stress off
-    Write_Parameter(0X13);
-
+    /*
+        Write_Register(0x72); //de-stress off
+        Write_Parameter(0X13);
+    */
     Write_Register(0x35);  // TE
     Write_Parameter(0X00); //
 
