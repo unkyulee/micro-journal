@@ -5,7 +5,6 @@
 
 //
 #include <HTTPClient.h>
-#include <SD.h>
 #include <base64.h>
 
 // Reset all the sync related flags
@@ -262,7 +261,7 @@ void sync_send()
 
     // convert to BASE64 file
     String base64Filename = Editor::getInstance().fileName + ".base64";
-    File outputFile = SD.open(base64Filename, FILE_WRITE);
+    File outputFile = gfs()->open(base64Filename.c_str(), "w");
     if (!outputFile)
     {
         //
@@ -318,7 +317,7 @@ void sync_send()
         http.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
 
         // Read file in chunks and send via POST request
-        File file = SD.open(base64Filename, FILE_READ);
+        File file = gfs()->open(base64Filename.c_str(), "r");
         if (!file)
         {
             app["sync_error"] = "Failed to open file" + base64Filename;

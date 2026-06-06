@@ -1,14 +1,6 @@
 #include "Tools.h"
 #include "app/app.h"
 
-//
-//
-#include <SD.h>
-
-#ifdef BOARD_ESP32_S3
-#include <SPIFFS.h>
-#endif
-
 String formatNumber(int num)
 {
     String formattedNumber = "";
@@ -36,9 +28,9 @@ String formatNumber(int num)
 size_t fileSize(String fileName)
 {
     size_t file_size = 0;
-    if (SD.exists(fileName))
+    if (gfs()->exists(fileName.c_str()))
     {
-        File file = SD.open(fileName, FILE_READ);
+        File file = gfs()->open(fileName.c_str(), "r");
         if (!file)
         { // something bad happened
             char buffer[32];

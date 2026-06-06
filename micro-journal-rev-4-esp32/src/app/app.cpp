@@ -6,7 +6,11 @@
 #include "service/WordCounter/WordCounter.h"
 
 #ifdef BOARD_ESP32_S3
+#ifdef SD_CS
 #include "app/FileSystem/FileSystemSD.h"
+#else
+#include "app/FileSystem/FileSystemSPIFFS.h"
+#endif
 #include "service/Sync/Sync.h"
 #include "service/Send/Send.h"
 #endif
@@ -191,8 +195,12 @@ FileSystem *gfs()
 #endif
 
 #ifdef BOARD_ESP32_S3
-        // ESP32 will use SD card as a main file system
+// ESP32-S3 boards with SD configured use SD; otherwise use internal SPIFFS.
+#ifdef SD_CS
         fileSystem = new FileSystemSD();
+#else
+        fileSystem = new FileSystemSPIFFS();
+#endif
 #endif
         if (!fileSystem->begin())
         {
