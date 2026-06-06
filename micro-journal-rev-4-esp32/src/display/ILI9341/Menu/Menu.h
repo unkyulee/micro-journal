@@ -1,5 +1,4 @@
-#ifndef Menu_h
-#define Menu_h
+#pragma once
 
 #include <TFT_eSPI.h>
 #include <U8g2_for_TFT_eSPI.h>
@@ -19,5 +18,3 @@ void Menu_clear();
 //
 void Menu_sync(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f);
 
-
-#endif

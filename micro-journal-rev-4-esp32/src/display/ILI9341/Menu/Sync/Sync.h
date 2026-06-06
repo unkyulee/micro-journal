@@ -1,5 +1,4 @@
-#ifndef Sync_h
-#define Sync_h
+#pragma once
 
 #include <TFT_eSPI.h>
 #include <U8g2_for_TFT_eSPI.h>
@@ -13,5 +12,5 @@ void Sync_render(TFT_eSPI* ptft, U8g2_for_TFT_eSPI *pu8f);
 // 
 void Sync_keyboard(char key);
 
-#endif
+
 

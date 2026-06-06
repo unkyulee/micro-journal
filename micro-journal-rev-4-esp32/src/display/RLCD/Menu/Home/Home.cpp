@@ -8,7 +8,7 @@
 #include "service/Editor/Editor.h"
 
 //
-void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void Home_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     //
     Menu_clear();
@@ -19,7 +19,7 @@ void Home_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 }
 
 //
-void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
+void Home_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     JsonDocument &app = status();
 
@@ -29,65 +29,42 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         keyboard_layout = "US";
 
     // Text to be displayed
-    ptft->setCursor(0, 20, 2);
-    ptft->setTextSize(1);
+    u8->setCursor(0, 20);
 
     //
-    ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-    ptft->println();
+    u8->println();
 
     //
     if (app["config"]["sync"]["url"].as<String>().isEmpty() == false)
     {
-        ptft->println(" [S] SYNC ");
+        u8->println(" [S] SYNC ");
     }
 
-    ptft->println(" [W] WIFI");
+    u8->println(" [W] WIFI");
+    u8->println(" [T] BLE KEYBOARD");
 
-#ifdef REV5
-    ptft->println(" [K] KEY LAYOUT - " + keyboard_layout);
-    ptft->println(" [F] DEVICE BUTTON");
-    ptft->println(" [M, MENU] BLE KEYBOARD");
-#endif
-
-#ifdef REV6
-    ptft->println(" [T] BLE KEYBOARD");
-#endif
-
-    ptft->println(" [G] BACKGROUND COLOR");
-    ptft->println(" [C] FONT COLOR");
-
-    ptft->println();
-    ptft->println(" [B] BACK ");
-    ptft->println();
-    ptft->println();
+    u8->println();
+    u8->println(" [B] BACK ");
+    u8->println();
+    u8->println();
 
     // File Selection
     int pos_x = 190;
-    ptft->setCursor(pos_x, 25, 2);
-    ptft->print("CHOOSE A FILE");
+    u8->setCursor(pos_x, 25);
+    u8->print("CHOOSE A FILE");
 
     int file_index = app["config"]["file_index"].as<int>();
     for (int i = 0; i < 10; i++)
     {
-        if (file_index == i)
-        {
-            ptft->setTextColor(TFT_GREEN, TFT_BLACK);
-        }
-        else
-        {
-            ptft->setTextColor(TFT_WHITE, TFT_BLACK);
-        }
-
         // word count
         int wordCount = app["config"][format("wordcount_file_%d", i)].as<int>() + app["config"][format("wordcount_buffer_%d", i)].as<int>();
 
-        ptft->setCursor(pos_x, 45 + i * 16, 2);
-        ptft->printf(" [%d]: %zu", i, wordCount);
+        u8->setCursor(pos_x, 45 + i * 16);
+        u8->printf(" [%d]: %zu", i, wordCount);
     }
     //
-    ptft->setCursor(pos_x, 210, 2);
-    ptft->printf(" [D] Clear File [%d] ", file_index);
+    u8->setCursor(pos_x, 210);
+    u8->printf(" [D] Clear File [%d] ", file_index);
 }
 
 //
@@ -118,24 +95,6 @@ void Home_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
-#ifdef REV5
-    else if (key == 'k')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_LAYOUT;
-    }
-    else if (key == 'f')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_BUTTONS;
-    }
-    else if (key == 'm' || key == MENU)
-    {
-        // move to bluetooth setup
-        app["menu"]["state"] = MENU_BLUETOOTH;
-    }
-
-#endif
 
     else if (key == 'w')
     {
@@ -143,25 +102,12 @@ void Home_keyboard(char key)
         app["menu"]["state"] = MENU_WIFI;
     }
 
-#ifdef REV6
     else if (key == 't')
     {
         // move to keyboard layout
         app["screen"] = KEYBOARDSCREEN;
     }
-#endif
 
-    else if (key == 'g')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_BACKGROUND;
-    }
-
-    else if (key == 'c')
-    {
-        // move to keyboard layout
-        app["menu"]["state"] = MENU_FONTCOLOR;
-    }
 
     // chose file
     if (key > 47 && key < 58)

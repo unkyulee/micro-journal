@@ -1,5 +1,4 @@
-#ifndef WORDPROCESSOR_h
-#define WORDPROCESSOR_h
+#pragma once
 
 #include <TFT_eSPI.h>
 #include <U8g2_for_TFT_eSPI.h>
@@ -35,5 +34,3 @@ void WP_keyboard(int key, bool pressed, int index = -1);
 //
 String formatNumberWithCommas(long num);
 
-
-#endif

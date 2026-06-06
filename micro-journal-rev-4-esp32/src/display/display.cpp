@@ -21,6 +21,11 @@
 #include "display/CARDPUTER/display_CARDPUTER.h"
 #endif
 
+// Reflective LCD
+#ifdef REV8
+#include "display/RLCD/display_RLCD.h"
+#endif
+
 //
 void display_setup()
 {
@@ -39,6 +44,10 @@ void display_setup()
 // Cardputer
 #ifdef CARDPUTER
   display_CARDPUTER_setup();
+#endif
+
+#ifdef REV8
+  display_RLCD_setup();
 #endif
 
   // Identifying which screen to show
@@ -111,6 +120,10 @@ void display_loop()
 #ifdef CARDPUTER
   display_CARDPUTER_loop();
 #endif
+
+#ifdef REV8
+  display_RLCD_loop();
+#endif
 }
 
 //
@@ -130,9 +143,12 @@ void display_keyboard(int key, bool pressed, int index)
   display_ST7735_keyboard(key, pressed, index);
 #endif
 
-// Cardputer
 #ifdef CARDPUTER
   display_CARDPUTER_keyboard(key, pressed, index);
+#endif
+
+#ifdef REV8
+  display_RLCD_keyboard(key, pressed, index);
 #endif
 }
 
@@ -155,10 +171,15 @@ int display_core()
   return display_CARDPUTER_core();
 #endif
 
+#ifdef REV8
+  return display_RLCD_core();
+#endif
+
   // default
   return 0;
 }
 
+// This function is used to redirect the USB keyboard message to the BLE channel
 void display_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
 {
 #ifdef LILYGO_T5_EPD47_S3

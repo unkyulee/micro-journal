@@ -7,11 +7,13 @@
 
 #ifdef KEYPAD_68
 #include "keyboard/Keypad/68/keypad_68.h"
-#include "keyboard/Knob/Knob.h"
 #endif
 
 #ifdef KEYPAD_48
 #include "keyboard/Keypad/48/keypad_48.h"
+#endif
+
+#ifdef KNOB
 #include "keyboard/Knob/Knob.h"
 #endif
 
@@ -53,11 +55,14 @@ void keyboard_setup()
 
 #ifdef KEYPAD_68
   keyboard_keypad_68_setup();
-  knob_setup();
 #endif
 
-#if defined(KEYPAD_48) && defined(BOARD_PICO) 
+#if defined(KEYPAD_48) && defined(BOARD_PICO)
   keyboard_keypad_48_setup();
+
+#endif
+
+#ifdef KNOB
   knob_setup();
 #endif
 
@@ -121,11 +126,13 @@ void keyboard_loop()
 
 #ifdef KEYPAD_68
   keyboard_keypad_68_loop();
-  knob_loop();
 #endif
 
-#if defined(KEYPAD_48) && defined(BOARD_PICO) 
+#if defined(KEYPAD_48) && defined(BOARD_PICO)
   keyboard_keypad_48_loop();
+#endif
+
+#ifdef KNOB
   knob_loop();
 #endif
 }
