@@ -4,25 +4,31 @@
 
 #define ABS_DIFF(x, y) (((x) > (y)) ? ((x) - (y)) : ((y) - (x)))
 
-ST7305_4p2_BW_DisplayDriver::ST7305_4p2_BW_DisplayDriver(int dcPin, int resPin, int csPin, int sclkPin, int sdinPin, SPIClass &spi) : DC_PIN(dcPin), RES_PIN(resPin), CS_PIN(csPin), SCLK_PIN(sclkPin), SDIN_PIN(sdinPin),
-                                                                                                                                      LCD_WIDTH(300), LCD_HIGH(400),
-                                                                                                                                      ST73XX_UI(400, 300),
-                                                                                                                                      LCD_DATA_WIDTH(75), LCD_DATA_HIGH(200), DISPLAY_BUFFER_LENGTH(30000),
-                                                                                                                                      spiRef(spi)
+ST7305_4p2_BW_DisplayDriver::ST7305_4p2_BW_DisplayDriver(
+    int dcPin,
+    int resPin,
+    int csPin,
+    int sclkPin,
+    int sdinPin,
+    SPIClass &spi) : DC_PIN(dcPin),
+                     RES_PIN(resPin),
+                     CS_PIN(csPin),
+                     SCLK_PIN(sclkPin),
+                     SDIN_PIN(sdinPin),
+                     LCD_WIDTH(300),
+                     LCD_HEIGHT(400),
+                     ST73XX_UI(400, 300),  // this is going to be landscape
+                     LCD_DATA_WIDTH(75),   // 300 / 4 = 75 bytes
+                     LCD_DATA_HEIGHT(200), // 400 / 2 = 200
+                     DISPLAY_BUFFER_LENGTH(15000),
+                     spiRef(spi)
 {
     display_buffer = new uint8_t[DISPLAY_BUFFER_LENGTH];
-    // delete[] display_buffer;
 
-    // 像素数据结构为：
-    // P1 P3 P5 P7
-    // P2 P5 P6 P8
-
-    // P0 P2 P4 P6
-    // P1 P3 P5 P7
-
-    // 对应一个byte数据的：
-    // BIT7 BIT5 BIT3 BIT1
-    // BIT6 BIT4 BIT2 BIT0
+    // one byte carries 8 pixels information
+    // 1 byte = 4 columns x 2 rows = 8 pixels
+    // top row:    BIT7 BIT5 BIT3 BIT1
+    // bottom row: BIT6 BIT4 BIT2 BIT0
 }
 
 ST7305_4p2_BW_DisplayDriver::~ST7305_4p2_BW_DisplayDriver()
@@ -45,9 +51,10 @@ void ST7305_4p2_BW_DisplayDriver::initialize()
     fill(0x00);
 }
 
-void ST7305_4p2_BW_DisplayDriver::setRotation(uint8_t r)
+void ST7305_4p2_BW_DisplayDriver::fill(uint8_t data)
 {
-    rotation = r & 3;
+    memset(display_buffer, data, DISPLAY_BUFFER_LENGTH);
+    Serial.printf("fill data = 0x%x\n", data);
 }
 
 void ST7305_4p2_BW_DisplayDriver::clearDisplay()
@@ -55,10 +62,48 @@ void ST7305_4p2_BW_DisplayDriver::clearDisplay()
     memset(display_buffer, 0xCC, DISPLAY_BUFFER_LENGTH); // white, white
 }
 
-void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data) {
+void ST7305_4p2_BW_DisplayDriver::writePhysicalPoint(uint x, uint y, bool enabled)
+{
+    if (x >= LCD_WIDTH || y >= LCD_HEIGHT)
+    {
+        return;
+    }
+    
+    uint real_x = x / 4; // 0->0, 3->0, 4->1, 7->1
+    uint real_y = y / 2; // 0->0, 1->0, 2->1, 3->1
+    uint write_byte_index = real_y * LCD_DATA_WIDTH + real_x;
+    uint one_two = (y % 2 == 0) ? 0 : 1; // 0 1
+    uint line_bit_4 = x % 4;             // 0 1 2 3
+    uint8_t write_bit = 7 - (line_bit_4 * 2 + one_two);
+
+    if (enabled)
+    {        
+        display_buffer[write_byte_index] |= (1 << write_bit);
+    }
+    else
+    {
+        display_buffer[write_byte_index] &= ~(1 << write_bit);
+    }
+}
+
+void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data)
+{
     uint px;
     uint py;
 
+    //
+    // Logical 400 x 300 -> physical 300 x 400
+    if (x >= 400 || y >= 300)
+    {
+        return;
+    }
+    px = y;
+    py = 399 - x;
+
+    //
+    writePhysicalPoint(px, py, data != 0);
+
+    /*
     switch (rotation) {
     case 1:
         // Logical 400 x 300 -> physical 300 x 400
@@ -70,15 +115,16 @@ void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data) {
         break;
 
     case 3:
-        // Logical 400 x 300 -> physical 300 x 400
-        if (x >= 400 || y >= 300) {
+        // Rotate 3 times
+        if (x >= 400 || y >= 300)
+        {
             return;
         }
         px = 299 - y;
         py = x;
-        break;
 
     case 2:
+        // Logical 300 x 400 -> physical 300 x 400
         if (x >= 300 || y >= 400) {
             return;
         }
@@ -88,6 +134,7 @@ void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data) {
 
     case 0:
     default:
+        // Logical 300 x 400 -> physical 300 x 400
         if (x >= 300 || y >= 400) {
             return;
         }
@@ -95,64 +142,13 @@ void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data) {
         py = y;
         break;
     }
-
-    writePhysicalPoint(px, py, data != 0);
+    */
 }
-
 
 void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, bool enabled)
 {
-    if (x >= LCD_WIDTH || y >= LCD_HIGH)
-    {
-        return;
-    }
-
-    uint real_x = x / 4;
-    uint real_y = y / 2;
-
-    uint write_byte_index = real_y * LCD_DATA_WIDTH + real_x;
-
-    if (write_byte_index >= DISPLAY_BUFFER_LENGTH)
-    {
-        return;
-    }
-
-    uint one_two = (y % 2 == 0) ? 0 : 1;
-    uint line_bit_4 = x % 4;
-    uint8_t write_bit = 7 - (line_bit_4 * 2 + one_two);
-
-    if (enabled)
-    {
-        display_buffer[write_byte_index] |= (1 << write_bit);
-    }
-    else
-    {
-        display_buffer[write_byte_index] &= ~(1 << write_bit);
-    }
+    writePoint(x, y, static_cast<uint16_t>(enabled ? 1 : 0));
 }
-
-
-void ST7305_4p2_BW_DisplayDriver::writePhysicalPoint(uint x, uint y, bool enabled) {
-    uint real_x = x / 4;
-    uint real_y = y / 2;
-
-    uint write_byte_index = real_y * LCD_DATA_WIDTH + real_x;
-
-    if (write_byte_index >= DISPLAY_BUFFER_LENGTH) {
-        return;
-    }
-
-    uint one_two = (y % 2 == 0) ? 0 : 1;
-    uint line_bit_4 = x % 4;
-    uint8_t write_bit = 7 - (line_bit_4 * 2 + one_two);
-
-    if (enabled) {
-        display_buffer[write_byte_index] |= (1 << write_bit);
-    } else {
-        display_buffer[write_byte_index] &= ~(1 << write_bit);
-    }
-}
-
 
 void ST7305_4p2_BW_DisplayDriver::display()
 {

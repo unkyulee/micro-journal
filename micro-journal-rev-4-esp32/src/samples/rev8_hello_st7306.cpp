@@ -96,7 +96,6 @@ void setup()
     display.High_Power_Mode();
     display.display_on(true);
     display.display_Inversion(false);
-    display.setRotation(3);
 
     u8g2.begin(display);
 
@@ -111,7 +110,7 @@ void setup()
 
 void loop()
 {
-    display.fill(ST7305_COLOR_WHITE);
+    display.clearDisplay();
 
     int y = 28;
     for (uint8_t i = 0; i < 10; ++i)

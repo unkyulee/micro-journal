@@ -36,8 +36,6 @@ public:
     void display_on(bool enabled);
     void display_Inversion(bool enabled);
 
-    void setRotation(uint8_t r);
-
 private:
     const int DC_PIN;
     const int RES_PIN;
@@ -45,14 +43,12 @@ private:
     const int SCLK_PIN;
     const int SDIN_PIN;
     const int LCD_WIDTH;
-    const int LCD_HIGH;
+    const int LCD_HEIGHT;
     const int LCD_DATA_WIDTH;
-    const int LCD_DATA_HIGH;
+    const int LCD_DATA_HEIGHT;
     const int DISPLAY_BUFFER_LENGTH;
     uint8_t *display_buffer;
     SPIClass &spiRef;
-
-    uint8_t rotation = 0;
 
     void address();
     void Write_Register(uint8_t idat);
