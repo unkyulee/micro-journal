@@ -173,10 +173,13 @@ Yes, it's spaghetti. Delicious, functional spaghetti.
    [https://github.com/unkyulee/micro-journal](https://github.com/unkyulee/micro-journal)
 3. Navigate to `/micro-journal-rev-4-esp32` and open the folder with Visual Studio Code. 
 4. Wait until Visual Studio Code installed PlatformIO plugins
-5. Compile Rev.5 and upload to ESP32-S3.
-6. Run `Platform → Upload Filesystem Image` at least once to set up SPIFFS.
+5. Compile Rev.5 and upload to ESP32-S3. You need to connect ESP32-S3 to the PC with USB cable.
 
 <img src="./images/017.jpg" width=400>  
+
+6. Run `Platform → Upload Filesystem Image` at least once to set up SPIFFS.
+
+
 
 ---
 
