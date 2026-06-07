@@ -168,15 +168,13 @@ Yes, it's spaghetti. Delicious, functional spaghetti.
 
 ## Step 6. Compile & Upload Firmware
 
-1. Clone the firmware repo:
+1. Download [Visual Studio Code](https://code.visualstudio.com/) and install it on your PC
+2. Download the github repository to your PC:
    [https://github.com/unkyulee/micro-journal](https://github.com/unkyulee/micro-journal)
-2. Navigate to `/micro-journal-rev-4-esp32` for the PlatformIO project.
-3. Open in **Visual Studio Code** with the PlatformIO plugin.
-4. Compile and upload to ESP32-S3.
-5. Run `Platform → Upload Filesystem Image` at least once to set up SPIFFS.
-
-You may also need to edit:
-`/src/service/keyboard/usb/usb.cpp` → adjust `usbHost.setHIDLocal()` for your keyboard layout.
+3. Navigate to `/micro-journal-rev-4-esp32` and open the folder with Visual Studio Code. 
+4. Wait until Visual Studio Code installed PlatformIO plugins
+5. Compile Rev.5 and upload to ESP32-S3.
+6. Run `Platform → Upload Filesystem Image` at least once to set up SPIFFS.
 
 <img src="./images/017.jpg" width=400>  
 
