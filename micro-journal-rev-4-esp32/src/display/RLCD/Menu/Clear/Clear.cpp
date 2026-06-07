@@ -14,17 +14,18 @@ void Clear_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
 //
 void Clear_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
-{
-    u8->setCursor(0, 30);
-    u8->setFont(u8g2_font_profont22_tf);
-
+{    
     //
+    u8->setCursor(0, 50);
+    u8->println();
+    u8->println(" WARNING: This action will delete");
+    u8->println(" the selected file.");
+    u8->println(" Make sure to sync your content");
+    u8->println(" before confirming");
+    u8->println(" to prevent loss of data.");
+    u8->println();
     u8->println();
     u8->println(" [Y] ARE YOU SURE?");
-
-    u8->println();
-    u8->println("WARNING: This action will delete the selected file. Make sure to sync your content before confirming to prevent loss of data.");
-    u8->println();
     u8->println(" [B] BACK ");
 }
 

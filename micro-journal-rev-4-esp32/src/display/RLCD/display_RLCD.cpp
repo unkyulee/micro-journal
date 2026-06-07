@@ -64,7 +64,7 @@ void display_RLCD_setup()
 
   // connect u8g2 procedures to TFT_eSPI
   u8g2.begin(display);
-  u8g2.setFontMode(1);
+  u8g2.setFontMode(0);
   u8g2.setForegroundColor(ST7305_COLOR_BLACK);
   u8g2.setBackgroundColor(ST7305_COLOR_WHITE);
 }
@@ -145,6 +145,9 @@ void display_RLCD_loop()
 
     //
     app["screen_prev"] = screen;
+
+    // 
+    display.display();
   }
 }
 

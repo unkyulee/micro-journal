@@ -18,7 +18,7 @@ void Wifi_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 void Wifi_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     // Text to be displayed
-    u8->setCursor(0, 30);
+    u8->setCursor(0, 50);
 
     //
     u8->println(" WIFI SETTINGS ");

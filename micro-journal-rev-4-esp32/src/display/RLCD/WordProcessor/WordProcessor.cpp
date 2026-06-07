@@ -16,18 +16,18 @@ unsigned int last_sleep = millis();
 
 //
 const int font_width = 12;
-const int font_height = 18;
-const int cursorY = 275;
+const int font_height = 22;
+const int cursorY = 270;
 const int cursorHeight = 2;
 const int marginX = 5;
 //
-const int editY = cursorY - 4;
+const int editY = cursorY - 6;
 
 //
 void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     // editor instantiate
-    Editor::getInstance().init(34, 15);
+    Editor::getInstance().init(34, 12);
 
     // setup default color
     JsonDocument &app = status();
@@ -38,6 +38,8 @@ void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // start from clear background
     clear_background = true;
+    display->clearDisplay();
+    display->display();
 
     // sleep timer reset
     last_sleep = millis();
@@ -69,8 +71,6 @@ void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     // Editor House Keeping Task
     Editor::getInstance().loop();
 
-    //
-    display->display();
 }
 
 // Check if text is saved
@@ -319,12 +319,11 @@ void WP_render_cursor(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     {
         //
         display->drawFilledRectangle(
-            cursorLinePos_prev * font_width - marginX,
+            0,
             cursorY,
-            cursorLinePos_prev * font_width + font_width + marginX,
+            screen_width,
             cursorY + cursorHeight,
             0);
-
 
         //
         cursorLinePos_prev = cursorLinePos;

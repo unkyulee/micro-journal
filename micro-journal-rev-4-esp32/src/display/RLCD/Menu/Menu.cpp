@@ -30,6 +30,9 @@ void Menu_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     //
     app["menu"]["state"] = MENU_HOME;
+
+    //
+    
 }
 
 void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
@@ -63,10 +66,12 @@ void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     }
 
     // display tool bar
-    u8->setCursor(0, 2);
+    u8->setFont(u8g2_font_profont17_tf);
+    u8->setCursor(0, 5);
+    u8->println();
     u8->print(" MENU ");
     u8->print(VERSION);
-    u8->print(" ");
+    display->drawLine(0, 25, 400, 25, 1);
 
     // draw sub module of menu
     int menu_state = app["menu"]["state"].as<int>();
@@ -99,8 +104,6 @@ void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
         Wifi_render(display, u8);
     }
-    
-
 
     // save prev state
     menu_state_prev = menu_state;
@@ -143,7 +146,6 @@ void Menu_keyboard(char key)
         Wifi_keyboard(key);
         return;
     }
-
 }
 
 //

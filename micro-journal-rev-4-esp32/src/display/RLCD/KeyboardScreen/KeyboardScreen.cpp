@@ -111,14 +111,14 @@ void KeyboardScreen_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX
         int screenH = 300;
 
         //
-        u8->setFont(u8g2_font_profont22_tf);
+        u8->setFont(u8g2_font_courB14_tf);
 
         // Title
-        u8->setCursor(20, 25);
+        u8->setCursor(20, 30);
         u8->print("BLUETOOTH KEYBOARD");
 
         // Status Box
-        u8->setCursor(45, 80);
+        u8->setCursor(20, 80);
         if (keyboardConnected)
         {
             u8->print("Status: Connected");
@@ -128,20 +128,14 @@ void KeyboardScreen_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX
             u8->print("Status: Waiting...");
         }
 
-        // Instruction Box
-        // U8G2_FOR_ST73XX가 drawRoundFrame을 지원하면 사용 가능
-        // u8->drawRoundFrame(20, 120, screenW - 40, 100, 8);
-
         // Instructions
-        u8->setFont(u8g2_font_6x10_tf);
-
-        u8->setCursor(40, 145);
+        u8->setCursor(20, 145);
         u8->print("Turn off device to end session.");
 
-        u8->setCursor(40, 165);
+        u8->setCursor(20, 175);
         u8->print("Press top-left and top-right keys");
 
-        u8->setCursor(40, 185);
+        u8->setCursor(20, 205);
         u8->print("simultaneously to SEND.");
     }
 }

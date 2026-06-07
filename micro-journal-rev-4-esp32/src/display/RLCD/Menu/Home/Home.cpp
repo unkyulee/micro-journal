@@ -29,10 +29,9 @@ void Home_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
         keyboard_layout = "US";
 
     // Text to be displayed
-    u8->setCursor(0, 20);
-
-    //
+    u8->setCursor(0, 40);
     u8->println();
+    //
 
     //
     if (app["config"]["sync"]["url"].as<String>().isEmpty() == false)
@@ -45,12 +44,11 @@ void Home_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     u8->println();
     u8->println(" [B] BACK ");
-    u8->println();
-    u8->println();
+
 
     // File Selection
     int pos_x = 190;
-    u8->setCursor(pos_x, 25);
+    u8->setCursor(pos_x, 45);
     u8->print("CHOOSE A FILE");
 
     int file_index = app["config"]["file_index"].as<int>();
@@ -59,12 +57,12 @@ void Home_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
         // word count
         int wordCount = app["config"][format("wordcount_file_%d", i)].as<int>() + app["config"][format("wordcount_buffer_%d", i)].as<int>();
 
-        u8->setCursor(pos_x, 45 + i * 16);
+        u8->setCursor(pos_x, 75 + i * 20);
         u8->printf(" [%d]: %zu", i, wordCount);
     }
     //
-    u8->setCursor(pos_x, 210);
-    u8->printf(" [D] Clear File [%d] ", file_index);
+    u8->setCursor(pos_x, 290);
+    u8->printf(" [D] Clear File # %d", file_index);
 }
 
 //
@@ -95,7 +93,6 @@ void Home_keyboard(char key)
         app["screen"] = WORDPROCESSOR;
     }
 
-
     else if (key == 'w')
     {
         // move to keyboard layout
@@ -107,7 +104,6 @@ void Home_keyboard(char key)
         // move to keyboard layout
         app["screen"] = KEYBOARDSCREEN;
     }
-
 
     // chose file
     if (key > 47 && key < 58)
