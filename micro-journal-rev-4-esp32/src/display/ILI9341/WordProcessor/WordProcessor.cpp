@@ -27,7 +27,6 @@ void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
     // editor instantiate
     Editor::getInstance().init(26, 10);
-    STATUSBAR_Y = 224;
 
     // setup default color
     JsonDocument &app = status();

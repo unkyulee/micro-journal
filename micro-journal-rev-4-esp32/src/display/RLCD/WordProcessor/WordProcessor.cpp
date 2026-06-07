@@ -8,17 +8,18 @@
 #include "service/Editor/Editor.h"
 
 //
-int STATUSBAR_Y = 224;
-int screen_width = 320;
-int screen_height = 240;
+int STATUSBAR_Y = 295;
+int screen_width = 400;
+int screen_height = 300;
 bool clear_background = true;
 unsigned int last_sleep = millis();
 
 //
 const int font_width = 12;
 const int font_height = 18;
-const int cursorY = 210;
+const int cursorY = 275;
 const int cursorHeight = 2;
+const int marginX = 5;
 //
 const int editY = cursorY - 4;
 
@@ -26,8 +27,7 @@ const int editY = cursorY - 4;
 void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     // editor instantiate
-    Editor::getInstance().init(26, 10);
-    STATUSBAR_Y = 224;
+    Editor::getInstance().init(34, 15);
 
     // setup default color
     JsonDocument &app = status();
@@ -46,10 +46,9 @@ void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 //
 void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
-    /*
+
     // timers
     WP_check_saved();
-    WP_check_sleep();
 
     // CLEAR BACKGROUND
     WP_render_clear(display, u8);
@@ -69,7 +68,9 @@ void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // Editor House Keeping Task
     Editor::getInstance().loop();
-    */
+
+    //
+    display->display();
 }
 
 // Check if text is saved
@@ -102,28 +103,6 @@ void WP_check_saved()
     }
 }
 
-void WP_check_sleep()
-{
-    //
-    // when the file is saved then extend the sleep timer
-    if (!Editor::getInstance().saved)
-    {
-        // when typed then reset sleep timer
-        last_sleep = millis();
-    }
-
-    // 600 seconds - 10 minutes
-    if (millis() - last_sleep > 600000)
-    {
-        // if no action for 10 minute go to sleep
-        last_sleep = millis();
-
-        //
-        JsonDocument &app = status();
-        app["screen"] = SLEEPSCREEN;
-    }
-}
-
 //
 // Clear Screen
 // Do it as less as possible so that there is the least amount of the flicker
@@ -133,17 +112,12 @@ void WP_render_clear(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     // clear background
     if (clear_background)
     {
-        // when clearing background
-        // sprite will be activated to reduce the flicker
+        // screen buffer will be pushed after
         return;
     }
 
     //
     JsonDocument &app = status();
-
-    // LOAD COLORS
-    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     //
     static int cursorLine_prev = 0;
@@ -170,6 +144,7 @@ void WP_render_clear(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     // When Backspace, trailing characters should be deleted
     // if it is backspace or del key
     if (cursorPos_prev >= cursorPos && bufferSize_prev != bufferSize)
+
         clear_background = true;
 
     if (cursorPos_prev != cursorPos)
@@ -190,6 +165,13 @@ void WP_render_clear(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     if (bufferSize != bufferSize_prev)
     {
         bufferSize_prev = bufferSize;
+    }
+
+    //
+    if (clear_background)
+    {
+        // clear the screen buffer so the next render will get the clean
+        display->clearDisplay();
     }
 }
 
@@ -220,14 +202,8 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     JsonDocument &app = status();
 
-    // LOAD COLORS
-    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
-
     // SET FONT
     u8->setFont(u8g2_font_profont22_tf);
-    u8->setForegroundColor(foreground_color);
-    u8->setFontMode(1);
 
     // Cursor Information
     static int cursorLine_prev = 0;
@@ -235,56 +211,37 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     int cursorLine = Editor::getInstance().cursorLine;
     int cursorLinePos = Editor::getInstance().cursorLinePos;
     int totalLine = Editor::getInstance().totalLine;
-/*
+
     //
     // Middle part of the text will be rendered
     // Only when refresh background is called
     //
     // initiate sprite
-    TFT_eSprite sprite = display_ILI9341_sprite();
     if (clear_background)
     {
-        sprite.createSprite(screen_width, screen_height);
-        sprite.fillSprite(background_color);
-
         //
-        u8->begin(sprite);
         u8->setFont(u8g2_font_profont22_mf);
-        u8->setForegroundColor(foreground_color);
-        u8->setFontMode(1);
-
-        //
-        u8->setCursor(0, font_height + font_height / 2);
 
         // start line
         int rows = Editor::getInstance().rows;
 
-        //
+        // I think
+        int startLine = cursorLine - rows;
         for (int i = cursorLine - rows; i < cursorLine; i++)
         {
-            if (i >= 0)
-                WP_render_line(ptft, pu8f, i);
-
             //
-            u8->print("\n");
+            u8->setCursor(marginX, font_height * (i - startLine));
+
+            if (i >= 0) 
+                WP_render_line(display, u8, i);
         }
     }
 
     //
     // Bottom line will the the edit area
     //
-    u8->setCursor(0, editY);
-    WP_render_line(ptft, pu8f, cursorLine);
-
-    // Clean up sprite
-    if (clear_background)
-    {
-        // push sprite
-        sprite.pushSprite(0, 0);
-        sprite.deleteSprite();
-        u8->begin(*ptft);
-    }
-*/
+    u8->setCursor(marginX, editY);
+    WP_render_line(display, u8, cursorLine);
 }
 
 // Status Bar
@@ -295,51 +252,41 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 void WP_render_status(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     JsonDocument &app = status();
-/*
-    // LOAD COLORS
-    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
-    // RENDER STATUS BAR
-    ptft->setTextColor(foreground_color, background_color);
-    ptft->setTextSize(1);
+    // STATUS BAR
+    display->drawLine(0, STATUSBAR_Y - 16, screen_width, STATUSBAR_Y - 16, 1);
 
     // FILE INDEX
-    ptft->setCursor(0, STATUSBAR_Y, 2);
-    ptft->setTextColor(background_color, foreground_color);
-    ptft->printf(" %d ", app["config"]["file_index"].as<int>());
+    u8->setFont(u8g2_font_profont17_tf);
+    u8->setCursor(5, STATUSBAR_Y);
+    u8->printf("FILE %d ", app["config"]["file_index"].as<int>());
 
     // WORD COUNT
-    ptft->setTextColor(foreground_color, background_color);
-    ptft->setCursor(30, STATUSBAR_Y, 2);
+    u8->setCursor(100, STATUSBAR_Y);
 
     int wordCount = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer;
     String wordCountFormatted = formatNumber(wordCount);
-    ptft->printf("%s words", wordCountFormatted);
+    u8->printf("%s WORDS", wordCountFormatted);
 
-    // SAVE STATUS
+    // SAVE STATUS    
     if (Editor::getInstance().saved)
     {
-        ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_GREEN);
+        // when saved write SAVED
+        u8->setCursor(350, STATUSBAR_Y);
+        u8->printf("SAVED");
     }
     else
     {
-        ptft->fillCircle(310, STATUSBAR_Y + 8, 5, TFT_RED);
+        // don't show "SAVED"
+        display->drawFilledRectangle(200, STATUSBAR_Y - 12, screen_width, screen_height, 0);
     }
-    ptft->drawCircle(310, STATUSBAR_Y + 8, 5, TFT_BLACK);
-*/
 }
 
 //
 // Render Cursor
 void WP_render_cursor(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
-    /*
     JsonDocument &app = status();
-
-    // retrieve color information
-    uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
-    uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // Cursor information
     static int cursorLinePos_prev = 0;
@@ -350,11 +297,12 @@ void WP_render_cursor(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     // Calculate Cursor X position
     // reached the line where cursor is
     // distance X is cursorPos - pos
-    int cursorX = 0;
+    int cursorX = marginX;
     if (Editor::getInstance().buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
     {
         // font width 12
-        cursorX = cursorLinePos * font_width;
+        // give a bit of margin
+        cursorX = cursorLinePos * font_width + marginX;
     }
 
     // Blink the cursor every 500 ms
@@ -370,7 +318,13 @@ void WP_render_cursor(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     if (cursorLinePos != cursorLinePos_prev)
     {
         //
-        ptft->fillRect(cursorLinePos_prev * font_width, cursorY, font_width, cursorHeight, background_color);
+        display->drawFilledRectangle(
+            cursorLinePos_prev * font_width - marginX,
+            cursorY,
+            cursorLinePos_prev * font_width + font_width + marginX,
+            cursorY + cursorHeight,
+            0);
+
 
         //
         cursorLinePos_prev = cursorLinePos;
@@ -378,10 +332,9 @@ void WP_render_cursor(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // Cursor Blink will be always at the bottom of the screen
     if (blink)
-        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, foreground_color);
+        display->drawFilledRectangle(cursorX, cursorY, cursorX + font_width, cursorY + cursorHeight, 1);
     else
-        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, background_color);
-    */
+        display->drawFilledRectangle(cursorX, cursorY, cursorX + font_width, cursorY + cursorHeight, 0);
 }
 
 //
@@ -419,11 +372,11 @@ void WP_keyboard(int key, bool pressed, int index)
 
             //
             Editor::getInstance().saveFile();
-            
+
             // save config
             app["config"]["file_index"] = fileIndex;
             config_save();
-            
+
             // load new file
             Editor::getInstance().loadFile(format("/%d.txt", fileIndex));
         }

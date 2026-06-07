@@ -92,6 +92,13 @@ void display_RLCD_loop()
         ErrorScreen_render(&display, &u8g2);
     }
 
+    // SLEEP WAKEUP
+    else if (screen == SLEEPSCREEN || screen == WAKEUPSCREEN)
+    {
+      // redirect to WORDPROCESSOR
+      app["screen"] = WORDPROCESSOR;
+    }
+
     // WORD PROCESSOR
     else if (screen == WORDPROCESSOR)
     {

@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef BOARD_PICO
+
 #include "app/FileSystem/FileSystem.h"
 #include <FatFS.h>
 #include "app/app.h"
@@ -22,3 +24,5 @@ public:
         return FatFS.rename(pathFrom, pathTo);
     }
 };
+
+#endif

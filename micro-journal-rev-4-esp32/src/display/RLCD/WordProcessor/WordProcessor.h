@@ -10,7 +10,6 @@ void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8);
 
 //
 void WP_check_saved();
-void WP_check_sleep();
 
 //
 void WP_render_clear(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8);

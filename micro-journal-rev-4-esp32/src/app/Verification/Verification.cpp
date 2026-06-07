@@ -38,7 +38,7 @@ bool filesystem_check()
     // Call File System for the first time to initialize
     gfs();
 
-#if defined(BOARD_ESP32_S3) && defined(SD_CS)
+#if defined(SD_CS)
     // Check if SD card is inserted
     uint8_t cardType = SD.cardType();
     if (cardType == CARD_NONE)
@@ -55,8 +55,6 @@ bool filesystem_check()
 
     //
     _log("SD Card detected\n");
-#elif defined(BOARD_ESP32_S3)
-    _log("SPIFFS file system initialized\n");
 #endif
 
 #if defined(DEBUG_FILE)

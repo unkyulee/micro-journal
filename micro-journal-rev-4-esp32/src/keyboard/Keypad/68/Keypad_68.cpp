@@ -155,6 +155,34 @@ void keyboard_keypad_68_loop()
             display_keyboard(character, e.bit.EVENT == KEY_JUST_PRESSED, e.bit.KEY);
         }
     }
+
+#ifdef USE_SERIAL_KEYBOARD
+    // receive SERIAL input and redirect to the display
+    if (Serial.available())
+    {
+        char c = Serial.read();
+        /*
+                // simulate up, down, left, right
+                if (c == 'w')
+                    c = 20;
+                if (c == 'a')
+                    c = 18;
+                if (c == 's')
+                    c = 21;
+                if (c == 'd')
+                    c = 19;
+        */
+        if (c == 13)
+            return; // ignore /r key
+        _debug("Serial keyboard input %c %d\n", c, c);
+
+        // find the scan code based on the input received
+
+        // You can choose a key index, e.g., 0 for generic input
+        display_keyboard(c, true);  // Key press
+        display_keyboard(c, false); // Key release (optional, for GUI consistency)
+    }
+#endif
 }
 
 //

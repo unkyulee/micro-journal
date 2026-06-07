@@ -5,12 +5,15 @@
 //
 #include "service/WordCounter/WordCounter.h"
 
-#ifdef BOARD_ESP32_S3
 #ifdef SD_CS
 #include "app/FileSystem/FileSystemSD.h"
-#else
-#include "app/FileSystem/FileSystemSPIFFS.h"
 #endif
+
+#ifdef USE_MSC
+#include "app/FileSystem/FileSystemFAT.h"
+#endif
+
+#ifdef BOARD_ESP32_S3
 #include "service/Sync/Sync.h"
 #include "service/Send/Send.h"
 #endif
@@ -150,7 +153,6 @@ void app_loop()
     BLEServer_loop();
 #endif
 
-
 #ifdef BOARD_PICO
     // Mass Storage Control Loop
     ms_loop();
@@ -194,14 +196,21 @@ FileSystem *gfs()
         fileSystem = new FileSystemRP2040();
 #endif
 
-#ifdef BOARD_ESP32_S3
 // ESP32-S3 boards with SD configured use SD; otherwise use internal SPIFFS.
 #ifdef SD_CS
+
+        // Use SD Card
         fileSystem = new FileSystemSD();
-#else
-        fileSystem = new FileSystemSPIFFS();
+
 #endif
+
+#ifdef USE_MSC
+
+        // file system in FAT
+        fileSystem = new FileSystemFAT("storage");
+
 #endif
+
         if (!fileSystem->begin())
         {
             //

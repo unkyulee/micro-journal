@@ -1,6 +1,6 @@
 #pragma once
-// use it only for ESP32
-#ifdef BOARD_ESP32_S3
+
+#ifdef SD_CS
 
 #include "app/FileSystem/FileSystem.h"
 #include "app/app.h"
