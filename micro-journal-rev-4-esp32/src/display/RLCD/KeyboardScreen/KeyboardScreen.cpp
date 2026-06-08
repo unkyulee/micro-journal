@@ -90,7 +90,7 @@ void KeyboardScreen_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX 
         3);
 
     // Setup Bluetooth Keyboard
-    bleKeyboard.setName("Micro Journal 6");
+    bleKeyboard.setName("Micro Journal");
     bleKeyboard.begin();
     _log("Bluetooth Keyboard Started\n");
 }

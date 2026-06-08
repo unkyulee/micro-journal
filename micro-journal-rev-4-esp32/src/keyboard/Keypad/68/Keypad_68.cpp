@@ -62,9 +62,16 @@ char keys[ROWS][COLS] = {
     {54, 55, 56, 57, 58, 59, 60, 61, 62},
     {63, 64, 65, 66, 67, 68, 69, 70, 71}};
 
-//
+
+#ifdef BOARD_PICO
 byte rowPins[ROWS] = {0, 1, 2, 3, 4, 5, 6, 7};
 byte colPins[COLS] = {13, 14, 15, 16, 17, 18, 19, 20, 21};
+#endif
+
+#ifdef BOARD_ESP32_S3
+byte rowPins[ROWS] = {8, 18, 17, 16, 15, 7, 6, 5};
+byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47};
+#endif
 
 //
 Adafruit_Keypad customKeypad = Adafruit_Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
