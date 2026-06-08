@@ -29,7 +29,7 @@ void Sync_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     JsonDocument &app = status();
 
     // header
-    u8->setCursor(0, 30);
+    u8->setCursor(0, 50);
     u8->println(" SYNC & BACKUP ");
     u8->println("");
 
