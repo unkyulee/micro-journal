@@ -5,12 +5,15 @@
 
 USBMSC FatFSUSBClass::msc;
 wl_handle_t FatFSUSBClass::wlHandle = WL_INVALID_HANDLE;
+uint8_t *FatFSUSBClass::sectorBuffer = nullptr;
 
 bool FatFSUSBClass::usbStarted = false;
 bool FatFSUSBClass::mediaStarted = false;
 bool FatFSUSBClass::ejected = false;
 
 uint32_t FatFSUSBClass::blockCount = 0;
+uint16_t FatFSUSBClass::blockSize = 0;
+size_t FatFSUSBClass::mediaSize = 0;
 
 FatFSUSBClass FatFSUSB;
 
@@ -104,7 +107,24 @@ bool FatFSUSBClass::begin()
         return false;
     }
 
-    blockCount = wl_size(wlHandle) / BLOCK_SIZE;
+    size_t wlSectorSize = wl_sector_size(wlHandle);
+
+    if (wlSectorSize == 0 || wlSectorSize > UINT16_MAX)
+    {
+        Serial.printf(
+            "MassStorageESP32: invalid WL sector size: %u\n",
+            static_cast<unsigned>(wlSectorSize));
+
+        wl_unmount(wlHandle);
+        wlHandle = WL_INVALID_HANDLE;
+
+        return false;
+    }
+
+    blockSize = static_cast<uint16_t>(wlSectorSize);
+    mediaSize = wl_size(wlHandle);
+    blockCount = mediaSize / blockSize;
+    mediaSize = static_cast<size_t>(blockCount) * blockSize;
 
     if (blockCount == 0)
     {
@@ -112,6 +132,23 @@ bool FatFSUSBClass::begin()
 
         wl_unmount(wlHandle);
         wlHandle = WL_INVALID_HANDLE;
+
+        return false;
+    }
+
+    sectorBuffer = static_cast<uint8_t *>(malloc(blockSize));
+
+    if (sectorBuffer == nullptr)
+    {
+        Serial.printf(
+            "MassStorageESP32: sector buffer allocation failed: %u\n",
+            blockSize);
+
+        wl_unmount(wlHandle);
+        wlHandle = WL_INVALID_HANDLE;
+        blockCount = 0;
+        blockSize = 0;
+        mediaSize = 0;
 
         return false;
     }
@@ -126,12 +163,18 @@ bool FatFSUSBClass::begin()
 
     msc.mediaPresent(true);
 
-    if (!msc.begin(blockCount, BLOCK_SIZE))
+    if (!msc.begin(blockCount, blockSize))
     {
         Serial.println("MassStorageESP32: MSC begin failed");
 
+        free(sectorBuffer);
+        sectorBuffer = nullptr;
+
         wl_unmount(wlHandle);
         wlHandle = WL_INVALID_HANDLE;
+        blockCount = 0;
+        blockSize = 0;
+        mediaSize = 0;
 
         return false;
     }
@@ -148,7 +191,7 @@ bool FatFSUSBClass::begin()
     Serial.printf(
         "MassStorageESP32: started, blocks=%lu, blockSize=%u\n",
         static_cast<unsigned long>(blockCount),
-        BLOCK_SIZE);
+        blockSize);
 
     return true;
 }
@@ -168,9 +211,14 @@ void FatFSUSBClass::end()
         wlHandle = WL_INVALID_HANDLE;
     }
 
+    free(sectorBuffer);
+    sectorBuffer = nullptr;
+
     mediaStarted = false;
     ejected = false;
     blockCount = 0;
+    blockSize = 0;
+    mediaSize = 0;
 
     Serial.println("MassStorageESP32: ended");
 }
@@ -204,9 +252,24 @@ int32_t FatFSUSBClass::readCallback(
         return -1;
     }
 
-    const size_t address = static_cast<size_t>(lba) * BLOCK_SIZE + offset;
+    if (blockSize == 0 || mediaSize == 0 || offset > blockSize)
+    {
+        return -1;
+    }
 
-    esp_err_t err = wl_read(wlHandle, address, buffer, bufsize);
+    const uint64_t address =
+        static_cast<uint64_t>(lba) * blockSize + offset;
+
+    if (address > mediaSize || bufsize > mediaSize - address)
+    {
+        return -1;
+    }
+
+    esp_err_t err = wl_read(
+        wlHandle,
+        static_cast<size_t>(address),
+        buffer,
+        bufsize);
 
     if (err != ESP_OK)
     {
@@ -227,13 +290,60 @@ int32_t FatFSUSBClass::writeCallback(
         return -1;
     }
 
-    const size_t address = static_cast<size_t>(lba) * BLOCK_SIZE + offset;
-
-    esp_err_t err = wl_write(wlHandle, address, buffer, bufsize);
-
-    if (err != ESP_OK)
+    if (blockSize == 0 ||
+        mediaSize == 0 ||
+        sectorBuffer == nullptr ||
+        offset > blockSize)
     {
         return -1;
+    }
+
+    const uint64_t startAddress =
+        static_cast<uint64_t>(lba) * blockSize + offset;
+
+    if (startAddress > mediaSize || bufsize > mediaSize - startAddress)
+    {
+        return -1;
+    }
+
+    uint32_t remaining = bufsize;
+    const uint8_t *source = buffer;
+    size_t address = static_cast<size_t>(startAddress);
+
+    while (remaining > 0)
+    {
+        const size_t sectorStart = (address / blockSize) * blockSize;
+        const size_t sectorOffset = address - sectorStart;
+        const size_t chunk = min(
+            static_cast<size_t>(remaining),
+            static_cast<size_t>(blockSize) - sectorOffset);
+
+        esp_err_t err = wl_read(wlHandle, sectorStart, sectorBuffer, blockSize);
+
+        if (err != ESP_OK)
+        {
+            return -1;
+        }
+
+        memcpy(sectorBuffer + sectorOffset, source, chunk);
+
+        err = wl_erase_range(wlHandle, sectorStart, blockSize);
+
+        if (err != ESP_OK)
+        {
+            return -1;
+        }
+
+        err = wl_write(wlHandle, sectorStart, sectorBuffer, blockSize);
+
+        if (err != ESP_OK)
+        {
+            return -1;
+        }
+
+        remaining -= static_cast<uint32_t>(chunk);
+        source += chunk;
+        address += chunk;
     }
 
     return static_cast<int32_t>(bufsize);

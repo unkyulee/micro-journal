@@ -42,16 +42,17 @@ private:
     );
 
 private:
-    static constexpr uint16_t BLOCK_SIZE = 512;
-
     static USBMSC msc;
     static wl_handle_t wlHandle;
+    static uint8_t *sectorBuffer;
 
     static bool usbStarted;
     static bool mediaStarted;
     static bool ejected;
 
     static uint32_t blockCount;
+    static uint16_t blockSize;
+    static size_t mediaSize;
 };
 
 extern FatFSUSBClass FatFSUSB;
