@@ -1,6 +1,13 @@
 #include "MassStorage.h"
 #include "app/app.h"
-#include "FatFSUSB.h"
+
+#ifdef BOARD_PICO
+#include "rp2040/MassStorageRP2040.h"
+#endif
+
+#ifdef BOARD_ESP32_S3
+#include "esp32/MassStorageESP32.h"
+#endif
 
 //
 void ms_setup()
@@ -12,56 +19,11 @@ void ms_setup()
 //
 void ms_loop()
 {
-    static unsigned int last = millis();
-    if (millis() - last > 1000)
-    {
-        last = millis();
+#ifdef BOARD_PICO
+    ms_rp2040_loop();
+#endif
 
-        // check if the flag is on
-        JsonDocument &app = status();
-
-        // check if it is requested to turn off
-        bool massStorageRequest = app["massStorage"].as<bool>();
-        // false means it is requested to turn off
-
-        // mass storage is on
-        if (massStorageRequest)
-        {
-            // start the device
-            if (app["massStorageStarted"].as<bool>() == false)
-            {
-                FatFSUSB.begin();
-
-                //
-                app["massStorageStarted"] = true;
-                _log("FatFSUSB begin\n");
-            }
-
-            // Check if is Ejected
-            if (FatFSUSB.isConnected() == 0)
-            {
-                //
-                _log("Mass Storage Ejected\n");
-                FatFSUSB.end();
-                //
-                app["massStorageStarted"] = false;
-                app["massStorage"] = false;
-
-                _log("FatFSUSB ejected\n");
-            }
-        }
-
-        else
-        {
-            if (app["massStorageStarted"].as<bool>() == true)
-            {
-                FatFSUSB.unplug();
-                FatFSUSB.end();
-
-                //
-                app["massStorageStarted"] = false;
-                _log("FatFSUSB end\n");
-            }
-        }
-    }
+#ifdef BOARD_ESP32_S3
+    ms_esp32_loop();
+#endif    
 }

@@ -9,6 +9,7 @@
 #include "Clear/Clear.h"
 #include "Layout/Layout.h"
 #include "Wifi/Wifi.h"
+#include "Storage/Storage.h"
 
 // state
 bool menu_clear = false;
@@ -104,6 +105,13 @@ void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
         Wifi_render(display, u8);
     }
+    else if (menu_state == MENU_STORAGE)
+    {
+        if (menu_state_prev != menu_state)
+            Storage_setup(display, u8);
+
+        Storage_render(display, u8);
+    }
 
     // save prev state
     menu_state_prev = menu_state;
@@ -144,6 +152,13 @@ void Menu_keyboard(char key)
     else if (menu_state == MENU_WIFI)
     {
         Wifi_keyboard(key);
+        return;
+    }
+
+    // Storage
+    else if (menu_state == MENU_STORAGE)
+    {
+        Storage_keyboard(key);
         return;
     }
 }

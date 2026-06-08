@@ -4,39 +4,39 @@
 
 //
 #include "service/WordCounter/WordCounter.h"
+#include "service/Send/Send.h"
 
 #ifdef SD_CS
 #include "app/FileSystem/FileSystemSD.h"
 #endif
 
-#ifdef USE_MSC
+#ifdef USE_FAT
 #include "app/FileSystem/FileSystemFAT.h"
-#endif
-
-#ifdef BOARD_ESP32_S3
-#include "service/Sync/Sync.h"
-#include "service/Send/Send.h"
 #endif
 
 #ifdef BOARD_PICO
 #include "app/FileSystem/FileSystemRP2040.h"
+#endif
+
+#ifdef USE_MSC
 #include "service/MassStorage/MassStorage.h"
-#include "service/Send/Send.h"
+#endif
+
+#ifdef BOARD_ESP32_S3
+#include "service/Sync/Sync.h"
 #endif
 
 #ifdef BATTERY
 #include "service/Battery/Battery.h"
 #endif
 
-#ifdef REV5
+#ifdef USE_BLESERVER
 #include "service/BLEServer/BLEServer.h"
 #endif
 
 #ifdef CARDPUTER
 #include "M5Cardputer.h"
-#include "service/BLEServer/BLEServer.h"
 #endif
-//
 
 // When app is not ready. Such as file system is not initialized
 // then no more operation should occur.
@@ -116,7 +116,7 @@ void app_setup()
         return;
     }
 
-#ifdef BOARD_PICO
+#ifdef USE_MSC
     // Mass Storage Setup
     ms_setup();
 #endif
@@ -146,36 +146,30 @@ void app_loop()
         return;
     }
 
+    // word count
     wordcounter_service();
 
-#ifdef CARDPUTER
-    // BLE Server Background Task
-    BLEServer_loop();
-#endif
-
-#ifdef BOARD_PICO
-    // Mass Storage Control Loop
-    ms_loop();
-
-    // SEND background task loop
+    // SEND feature
     send_loop();
+
+#ifdef USE_BLESERVER
+    // Pairing with BLE Keyboard Enabled
+    BLEServer_loop();
 #endif
 
 #ifdef BATTERY
     battery_loop();
 #endif
 
+#ifdef USE_MSC
+    // Mass Storage Control Loop
+    ms_loop();
+#endif
+
 #ifdef BOARD_ESP32_S3
-    sync_loop();
-
-    // SEND background task loop
-    send_loop();
+    sync_loop();    
 #endif
 
-#ifdef REV5
-    // BLE Server Background Task
-    BLEServer_loop();
-#endif
 }
 
 // status storage
