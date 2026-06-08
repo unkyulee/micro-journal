@@ -44,11 +44,13 @@ It's easy to assemble, satisfying to use. Most importantly, brings the AlphaSmar
 * [Hackaday](https://hackaday.com/2026/02/16/keebin-with-kristina-the-one-with-the-neo-with-the-typewriter-shell/)
 
 
-### Community
+## Community
 
-* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
-* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+* 
 
 ### Online Shop
 

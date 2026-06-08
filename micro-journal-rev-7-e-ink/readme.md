@@ -31,10 +31,12 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [YouTube Playlist of Micro Journal Rev.7](https://www.youtube.com/playlist?list=PLrUXYLEnAaNQYtCWPYrPkTAg8mMFm_gDZ)
 
 
-### Community
+## Community
 
-* [Reddit - Un Kyu Lee's Timeline](https://www.yesbut.it/)
-* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721922242110/)
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
 
 
 ### Press

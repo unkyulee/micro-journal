@@ -1,0 +1,1 @@
+Micro Journal Rev.8 Quick Start Guide Placeholder

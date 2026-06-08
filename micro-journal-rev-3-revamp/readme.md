@@ -23,11 +23,12 @@ The phone is a common device these days, and it is clearly capable of being a de
 * [QMK Vial Keyboard Firmware Source](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-3-revamp/QMK)
 
 
-### Community
+## Community
 
-* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
-* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
 
 ### Press
 

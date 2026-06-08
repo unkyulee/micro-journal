@@ -22,9 +22,10 @@ This is an enhanced version of [previous rev.5](../micro-journal-rev-5-esp32-usb
 
 ### Community
 
-* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
-* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart)
-
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
 
 ### Press
 

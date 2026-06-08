@@ -116,3 +116,11 @@ Micro Journal is an open source project built with curiosity, care, and a genuin
 * https://www.buymeacoffee.com/unkyulee
 
 Un Kyu Lee
+
+
+## Community
+
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)

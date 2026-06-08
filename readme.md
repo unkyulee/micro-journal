@@ -75,6 +75,6 @@ When Tindie is not available you can make an order request from the link below
 ## Community
 
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
-* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
-* [Reddit – Background\_Ad\_1810](https://www.reddit.com/user/Background_Ad_1810/)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)

@@ -105,4 +105,9 @@ This started as an idea to use the phone to build a focused writing device, that
 
 Since, the mechanical keyboard is quite an essential component when it comes to a writing device like this. Hand wiring seems like a great skill to have and use for such a build. It opens up large amount of options to choose from when you can create an hand-wired keyboard. It is not that difficult, in my opinion, and it really does provide great satisfaction to my tingling sense of diy. 
 
+## Community
+
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)

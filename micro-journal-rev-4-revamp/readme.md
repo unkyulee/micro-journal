@@ -40,8 +40,10 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 
 * [YouTube Playlist of Micro Journal Rev.4](https://www.youtube.com/playlist?list=PLrUXYLEnAaNRAbBpNLji7nE78z-edy8Na)
 * [Build Video](https://youtu.be/6Jh86PdquAY)
+  
+## Community
 
-### Community
-
-* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
-* [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)

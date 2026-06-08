@@ -1,6 +1,6 @@
 # Bill of Material
 
-* [FPC Adapter](https://ko.aliexpress.com/item/1005007617729176.html)
+* [FPC Adapter - 0.5-2.54MM, 24P](https://ko.aliexpress.com/item/1005007617729176.html)
 * [Display Module](https://ko.aliexpress.com/item/1005012114591531.html)
 
 
