@@ -4,6 +4,10 @@
 #include <Arduino.h>
 #include <FS.h>
 
+#ifdef BOARD_ESP32_S3
+#include <SD.h>
+#endif
+
 class FileSystem {
 public:
     virtual bool begin() = 0;
