@@ -173,9 +173,9 @@ extern "C" void tud_msc_inquiry_cb(uint8_t lun, uint8_t vendor_id[8], uint8_t pr
     const char pid[] = "Mass Storage";
     const char rev[] = "1.0";
 
-    memcpy(vendor_id, vid, strlen(vid));
-    memcpy(product_id, pid, strlen(pid));
-    memcpy(product_rev, rev, strlen(rev));
+    memcpy(vendor_id, vid, strnlen(vid, 8));
+    memcpy(product_id, pid, strnlen(pid, 16));
+    memcpy(product_rev, rev, strnlen(rev, 4));
 }
 
 // Invoked when received Test Unit Ready command.
