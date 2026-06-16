@@ -23,6 +23,8 @@ const int marginX = 5;
 //
 const int editY = cursorY - 6;
 
+#define WP_FONT u8g2_font_profont22_mf
+
 //
 void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
@@ -203,7 +205,7 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     JsonDocument &app = status();
 
     // SET FONT
-    u8->setFont(u8g2_font_profont22_tf);
+    u8->setFont(WP_FONT);
 
     // Cursor Information
     static int cursorLine_prev = 0;
@@ -220,7 +222,7 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     if (clear_background)
     {
         //
-        u8->setFont(u8g2_font_profont22_mf);
+        u8->setFont(WP_FONT);
 
         // start line
         int rows = Editor::getInstance().rows;

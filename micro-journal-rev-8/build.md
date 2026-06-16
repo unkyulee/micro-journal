@@ -31,14 +31,14 @@ Osptek Display
 GND to pin 17
 
 
-| DISPLAY      | ESP32 |
-| ------------ | ----- |
-| 16 - VCI     | 3.3V  |
-| 17 - GND     | GND   |
-| 13 - SCLK    | 12    |
-| 14 - SDI     | 11    |
-| 12 - CS      | 10    |
-| 11 - LCD DC  | 46    |
-| 10 - LCD_RES | 3     |
+| DISPLAY           | ESP32 |
+| ----------------- | ----- |
+| 16 (9) - VCI      | 3.3V  |
+| 17 (8) - GND      | GND   |
+| 13 (12) - SCLK    | 12    |
+| 14 (11) - SDI     | 11    |
+| 12 (13) - CS      | 10    |
+| 11 (14) - LCD DC  | 46    |
+| 10 (15) - LCD_RES | 3     |
 
                     
