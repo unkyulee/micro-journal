@@ -73,7 +73,7 @@ void display_RLCD_setup()
 void display_RLCD_loop()
 {
   static unsigned int last = millis();
-  if (millis() - last > 150)
+  if (millis() - last > 300)
   {
     last = millis();
 

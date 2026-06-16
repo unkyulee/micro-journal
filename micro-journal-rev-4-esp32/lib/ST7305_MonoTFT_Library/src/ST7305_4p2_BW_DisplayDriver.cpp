@@ -2,8 +2,6 @@
 #include <ST7305_4p2_BW_DisplayDriver.h>
 #include <stdlib.h>
 
-#define ABS_DIFF(x, y) (((x) > (y)) ? ((x) - (y)) : ((y) - (x)))
-
 ST7305_4p2_BW_DisplayDriver::ST7305_4p2_BW_DisplayDriver(
     int dcPin,
     int resPin,
@@ -63,36 +61,29 @@ static constexpr uint8_t ST7306_BLACK = 0x0F;
 
 void ST7305_4p2_BW_DisplayDriver::writePhysicalPoint(uint x, uint y, bool black)
 {
-    // handle rotation
     if (x >= LCD_HEIGHT || y >= LCD_WIDTH)
-    {
         return;
-    }
+
     uint px = LCD_WIDTH - 1 - y;
     uint py = x;
 
-    // convert to real byte location
     uint real_x = px / 2;
     uint real_y = py / 2;
 
     uint write_byte_index = real_y * LCD_DATA_WIDTH + real_x;
 
     if (write_byte_index >= DISPLAY_BUFFER_LENGTH)
-    {
         return;
-    }
 
     uint8_t color = black ? ST7306_BLACK : ST7306_WHITE;
 
-    if ((x & 1) == 0)
+    if ((px & 1) == 0) 
     {
-        // even x -> high nibble
         display_buffer[write_byte_index] =
             (display_buffer[write_byte_index] & 0x0F) | (color << 4);
     }
     else
     {
-        // odd x -> low nibble
         display_buffer[write_byte_index] =
             (display_buffer[write_byte_index] & 0xF0) | (color & 0x0F);
     }
@@ -106,6 +97,19 @@ void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, bool data)
 void ST7305_4p2_BW_DisplayDriver::writePoint(uint x, uint y, uint16_t data)
 {
     writePhysicalPoint(x, y, data != 0);
+}
+
+void ST7305_4p2_BW_DisplayDriver::address()
+{
+    Write_Register(0x2A);
+    Write_Parameter(0x05);
+    Write_Parameter(0x36);
+
+    Write_Register(0x2B);
+    Write_Parameter(0x00);
+    Write_Parameter(0xC7);
+
+    Write_Register(0x2C);
 }
 
 void ST7305_4p2_BW_DisplayDriver::display()
@@ -227,22 +231,19 @@ void ST7305_4p2_BW_DisplayDriver::Initial_ST7305()
     Write_Register(0x21); // Inverse
 
     // WRITE RAM 300*400
-    Write_Register(0x2A); // Column Address Setting
+    Write_Register(0x2A);
     Write_Parameter(0X12);
     Write_Parameter(0X2B);
 
-    Write_Register(0x2B); // Row Address Setting
+    Write_Register(0x2B);
     Write_Parameter(0X00);
     Write_Parameter(0XC7);
-    /*
-        Write_Register(0x72); //de-stress off
-        Write_Parameter(0X13);
-    */
-    Write_Register(0x35);  // TE
-    Write_Parameter(0X00); //
 
-    Write_Register(0xD0);  // Auto power dowb
-    Write_Parameter(0XFF); //
+    Write_Register(0x35);
+    Write_Parameter(0X00);
+
+    Write_Register(0xD0);
+    Write_Parameter(0XFF);
 
     Write_Register(0x39); // LPM
 
@@ -281,19 +282,6 @@ void ST7305_4p2_BW_DisplayDriver::display_Inversion(bool enabled)
     {
         Write_Register(0x20); // Display Inversion Off
     }
-}
-
-void ST7305_4p2_BW_DisplayDriver::address()
-{
-    Write_Register(0x2A);
-    Write_Parameter(0x05);
-    Write_Parameter(0x36);
-
-    Write_Register(0x2B);
-    Write_Parameter(0x00);
-    Write_Parameter(0xC7);
-
-    Write_Register(0x2C);
 }
 
 void ST7305_4p2_BW_DisplayDriver::Write_Register(uint8_t idat)
