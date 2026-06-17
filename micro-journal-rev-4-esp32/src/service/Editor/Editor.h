@@ -8,7 +8,7 @@
 #endif
 
 #ifdef BOARD_ESP32_S3
-#define BUFFER_SIZE 4000
+#define BUFFER_SIZE 8000
 #endif
 
 //

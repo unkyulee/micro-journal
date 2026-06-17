@@ -5,8 +5,12 @@
 //
 void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8);
 
-// 
+//
 void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8);
+
+// Whether anything visible changed during the last WP_render() call, so the
+// caller knows whether pushing the frame buffer over SPI is worth doing.
+bool WP_needsDisplay();
 
 //
 void WP_check_saved();

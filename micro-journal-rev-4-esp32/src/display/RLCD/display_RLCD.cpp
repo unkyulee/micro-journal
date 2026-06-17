@@ -73,7 +73,7 @@ void display_RLCD_setup()
 void display_RLCD_loop()
 {
   static unsigned int last = millis();
-  if (millis() - last > 200)
+  if (millis() - last > 100)
   {
     last = millis();
 
@@ -146,8 +146,16 @@ void display_RLCD_loop()
     //
     app["screen_prev"] = screen;
 
-    // 
-    display.display();
+    // The word processor screen tracks whether anything visible actually
+    // changed since the last push, since display() always transfers the
+    // whole 30KB frame buffer over SPI regardless of how much changed.
+    // Every other screen keeps refreshing unconditionally, as before.
+    bool shouldDisplay = true;
+    if (screen == WORDPROCESSOR && screen == screen_prev)
+      shouldDisplay = WP_needsDisplay();
+
+    if (shouldDisplay)
+      display.display();
   }
 }
 

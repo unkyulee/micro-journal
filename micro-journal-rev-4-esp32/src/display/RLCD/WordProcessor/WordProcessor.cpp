@@ -14,6 +14,12 @@ int screen_height = 300;
 bool clear_background = true;
 unsigned int last_sleep = millis();
 
+// Whether the last WP_render() actually changed anything visible - the
+// caller uses this to decide whether the (expensive, full 30KB SPI) panel
+// refresh is worth doing this tick.
+bool needsDisplay = true;
+bool WP_contentChanged();
+
 //
 const int font_width = 12;
 const int font_height = 22;
@@ -74,6 +80,9 @@ void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     // BLINK CURSOR
     WP_render_cursor(display, u8);
 
+    // decide whether the panel actually needs to be pushed over SPI this tick
+    needsDisplay = WP_contentChanged();
+
     //
     if (clear_background)
         clear_background = false;
@@ -81,6 +90,56 @@ void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     // Editor House Keeping Task
     Editor::getInstance().loop();
 
+}
+
+bool WP_needsDisplay()
+{
+    return needsDisplay;
+}
+
+// Compares the values that actually drive what's on screen against the
+// last time this was checked. The draw calls above always run (they just
+// write into the in-RAM frame buffer, which is cheap) - this only decides
+// whether the buffer is worth pushing over SPI to the physical panel.
+bool WP_contentChanged()
+{
+    static int cursorPos_prev = -1;
+    static int cursorLinePos_prev = -1;
+    static int bufferSize_prev = -1;
+    static bool saved_prev = true;
+    static int wordCount_prev = -1;
+    static int file_index_prev = -1;
+    static int blinkPhase_prev = -1;
+
+    JsonDocument &app = status();
+
+    int cursorPos = Editor::getInstance().cursorPos;
+    int cursorLinePos = Editor::getInstance().cursorLinePos;
+    int bufferSize = Editor::getInstance().getBufferSize();
+    bool saved = Editor::getInstance().saved;
+    int wordCount = Editor::getInstance().wordCountFile + Editor::getInstance().wordCountBuffer;
+    int file_index = app["config"]["file_index"].as<int>();
+    // flips every 500ms, matching WP_render_cursor()'s blink rate
+    int blinkPhase = (millis() / 500) % 2;
+
+    bool changed = clear_background ||
+                   cursorPos != cursorPos_prev ||
+                   cursorLinePos != cursorLinePos_prev ||
+                   bufferSize != bufferSize_prev ||
+                   saved != saved_prev ||
+                   wordCount != wordCount_prev ||
+                   file_index != file_index_prev ||
+                   blinkPhase != blinkPhase_prev;
+
+    cursorPos_prev = cursorPos;
+    cursorLinePos_prev = cursorLinePos;
+    bufferSize_prev = bufferSize;
+    saved_prev = saved;
+    wordCount_prev = wordCount;
+    file_index_prev = file_index;
+    blinkPhase_prev = blinkPhase;
+
+    return changed;
 }
 
 // Check if text is saved
