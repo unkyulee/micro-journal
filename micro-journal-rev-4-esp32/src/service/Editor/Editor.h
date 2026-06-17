@@ -8,7 +8,7 @@
 #endif
 
 #ifdef BOARD_ESP32_S3
-#define BUFFER_SIZE 8000
+#define BUFFER_SIZE 4000
 #endif
 
 //
@@ -30,6 +30,17 @@ public:
     // Last File Load Position
     // This is a place where save should occurs with current buffer
     size_t seekPos = 0;
+
+    // How many bytes of the current window came from disk at last load/save.
+    // Together with seekPos this defines the on-disk region [seekPos, seekPos+loadedLength)
+    // that the buffer mirrors, independent of in-memory edits that may have
+    // grown or shrunk the buffer since.
+    size_t loadedLength = 0;
+
+    // Set whenever the buffer is swapped to a different window of the file
+    // (paging, or the buffer filling up while typing) so display code knows
+    // to do a full redraw instead of an incremental one.
+    bool pageChanged = false;
 
     // Screen Size Definition
     int rows = 10;
@@ -63,8 +74,14 @@ public:
 
     // File Operation
     void loadFile(String fileName);
-    void saveFile();
+    bool saveFile();
     void clearFile();
+
+    // Paging: slide the in-memory window to a different part of the file
+    bool loadWindow(size_t offset, size_t length);
+    void pageBackward();
+    void pageForward();
+    void advanceWindow();
 
     //
     bool savingInProgress = false;

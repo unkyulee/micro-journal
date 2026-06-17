@@ -151,6 +151,10 @@ void Editor::loadFile(String fileName)
     }
     cursorPos = bufferSize;
 
+    // this window mirrors [seekPos, seekPos+bufferSize) on disk exactly
+    loadedLength = bufferSize;
+    pageChanged = true;
+
     //
     file.close();
     delay(100);
@@ -175,12 +179,31 @@ void Editor::loadFile(String fileName)
     config_save();
 }
 
-void Editor::saveFile()
+// Copy `count` bytes from the current position of `src` to `dst`.
+// Returns false if fewer than `count` bytes could be read.
+static bool copyFileChunk(File &src, File &dst, size_t count)
+{
+    const size_t chunkSize = 512;
+    uint8_t chunk[chunkSize];
+    size_t remaining = count;
+    while (remaining > 0)
+    {
+        size_t toRead = remaining < chunkSize ? remaining : chunkSize;
+        size_t readSize = src.read(chunk, toRead);
+        if (readSize == 0)
+            return false;
+        dst.write(chunk, readSize);
+        remaining -= readSize;
+    }
+    return true;
+}
+
+bool Editor::saveFile()
 {
     if (savingInProgress)
     {
         _log("Save already in progress, skipping.\n");
-        return;
+        return false;
     }
     savingInProgress = true;
 
@@ -198,61 +221,78 @@ void Editor::saveFile()
         _log(app["error"]);
 
         savingInProgress = false;
-        return;
+        return false;
     }
 
-    // if already save nothing to do
+    // if already saved nothing to do
     if (this->saved)
     {
         _log("File already saved. No operation required.\n");
         savingInProgress = false;
-        return;
+        return true;
     }
 
     //
     _log("Saving file %s\n", fileName.c_str());
-    File file = gfs()->open(fileName.c_str(), "r+"); // read/write, no truncate
-    if (!file)
-    {
-        // If file doesn't exist, create it
-        file = gfs()->open(fileName.c_str(), "w+"); // create + read/write
-    }
 
-    if (!file)
-    {
-        //
-        app["error"] = "Failed to open file for writing\n";
-        app["screen"] = ERRORSCREEN;
+    // The buffer is a window onto [seekPos, seekPos+loadedLength) on disk.
+    // Anything outside that window (before seekPos, after windowEnd) must
+    // survive the save untouched.
+    size_t newLength = getBufferSize();
+    size_t windowEnd = seekPos + loadedLength;
+    bool hasTrailingData = windowEnd < fileSize;
 
-        //
-        _log(app["error"]);
-        savingInProgress = false;
-        return;
-    }
-
-    // Seek to the last loaded offset
-    if (!file.seek(seekPos))
+    // FAST PATH: window is the tail of the file and isn't shrinking -
+    // just overwrite/extend in place, no rewrite of the rest of the file needed.
+    if (!hasTrailingData && newLength >= loadedLength)
     {
-        _log("Failed to seek file pointer\n");
+        File file = gfs()->open(fileName.c_str(), "r+"); // read/write, no truncate
+        if (!file)
+        {
+            // If file doesn't exist, create it
+            file = gfs()->open(fileName.c_str(), "w+"); // create + read/write
+        }
+
+        if (!file)
+        {
+            //
+            app["error"] = "Failed to open file for writing\n";
+            app["screen"] = ERRORSCREEN;
+
+            //
+            _log(app["error"]);
+            savingInProgress = false;
+            return false;
+        }
+
+        // Seek to the last loaded offset
+        if (!file.seek(seekPos))
+        {
+            _log("Failed to seek file pointer\n");
+            file.close();
+            delay(100);
+
+            savingInProgress = false;
+            return false;
+        }
+        _log("Writing file at: %d\n", seekPos);
+
+        // writing the file content
+        size_t length = file.print(buffer);
+        _log("File written: %d bytes\n", length);
+
         file.close();
         delay(100);
 
-        savingInProgress = false;
-        return;
+        fileSize = seekPos + length;
+        loadedLength = length;
     }
-    _log("Writing file at: %d\n", seekPos);
 
-    // writing the file content
-    size_t length = file.print(buffer);
-    _log("File written: %d bytes\n", length);
-
-    // If the new buffer is shorter than the old content, trim the file.
-    size_t newSize = seekPos + length;
-    if (newSize < fileSize)
+    // SPLICE PATH: either the tail is shrinking, or this window sits in the
+    // middle of the file and there is trailing data after it that must be
+    // preserved. Rewrite the file as [prefix][new window content][suffix].
+    else
     {
-        file.close();
-        delay(100);
-
         String tempFileName = format("%s.tmp", fileName.c_str());
         if (gfs()->exists(tempFileName.c_str()))
         {
@@ -261,77 +301,67 @@ void Editor::saveFile()
 
         if (!gfs()->rename(fileName.c_str(), tempFileName.c_str()))
         {
-            app["error"] = "Save failed (rename for trim)\n";
+            app["error"] = "Save failed (rename for splice)\n";
             app["screen"] = ERRORSCREEN;
             _log(app["error"].as<const char *>());
             savingInProgress = false;
-            return;
+            return false;
         }
 
         File src = gfs()->open(tempFileName.c_str(), "r");
         File dst = gfs()->open(fileName.c_str(), "w");
-        if (!src || !dst)
+        bool ok = src && dst;
+
+        if (ok)
+            ok = copyFileChunk(src, dst, seekPos); // prefix, unchanged
+
+        if (ok)
+            dst.print(buffer); // this window's edited content
+
+        if (ok && fileSize > windowEnd)
         {
-            app["error"] = "Save failed (trim open)\n";
+            // suffix, unchanged
+            ok = src.seek(windowEnd) && copyFileChunk(src, dst, fileSize - windowEnd);
+        }
+
+        if (src)
+            src.close();
+        if (dst)
+            dst.close();
+        delay(100);
+
+        if (!ok)
+        {
+            // Restore the original file so a transient I/O error never
+            // leaves the journal missing or half-written.
+            app["error"] = "Save failed (splice)\n";
             app["screen"] = ERRORSCREEN;
             _log(app["error"].as<const char *>());
-            if (src)
-                src.close();
-            if (dst)
-                dst.close();
+
+            gfs()->remove(fileName.c_str());
+            gfs()->rename(tempFileName.c_str(), fileName.c_str());
+
             savingInProgress = false;
-            return;
+            return false;
         }
 
-        const size_t chunkSize = 256;
-        uint8_t chunk[chunkSize];
-        size_t remaining = newSize;
-        while (remaining > 0)
-        {
-            size_t toRead = remaining < chunkSize ? remaining : chunkSize;
-            size_t readSize = src.read(chunk, toRead);
-            if (readSize == 0)
-                break;
-            dst.write(chunk, readSize);
-            remaining -= readSize;
-        }
-
-        src.close();
-        dst.close();
-        delay(100);
         gfs()->remove(tempFileName.c_str());
+
+        fileSize = fileSize + (newLength - loadedLength);
+        loadedLength = newLength;
     }
-
-    //
-    file.close();
-    delay(100);
-
-    // recalculate the file size
-    // calculate the file size
-    file = gfs()->open(fileName.c_str(), "r");
-    if (!file)
-    {
-        //
-        app["error"] = "Failed to open file for reading\n";
-        app["screen"] = ERRORSCREEN;
-
-        //
-        _log(app["error"]);
-
-        //
-        savingInProgress = false;
-        return;
-    }
-
-    //
-    fileSize = file.size();
-
-    //
-    file.close();
-    delay(100);
 
     // flag to save
     this->saved = true;
+
+    // Persist the word count alongside the file itself, instead of on a
+    // fixed timer (see wordcounter_service()) - that way writing config.json
+    // only ever happens at a moment a flash write was going to happen anyway,
+    // and never interrupts active typing.
+    wordCountBuffer = wordcounter_buffer(buffer);
+    int file_index = app["config"]["file_index"].as<int>();
+    app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
+    config_save();
 
     //
     savingInProgress = false;
@@ -339,6 +369,150 @@ void Editor::saveFile()
 #if defined(DEBUG) && defined(BOARD_PICO)
     printMemoryUsage();
 #endif
+
+    return true;
+}
+
+// Read `length` bytes starting at `offset` from disk into the buffer,
+// replacing whatever window was loaded before. Used by paging so the
+// in-memory buffer can slide to any part of the file, not just the tail.
+bool Editor::loadWindow(size_t offset, size_t length)
+{
+    JsonDocument &app = status();
+
+    File file = gfs()->open(fileName.c_str(), "r");
+    if (!file)
+    {
+        app["error"] = format("file open failed %s\n", fileName.c_str());
+        app["screen"] = ERRORSCREEN;
+        _debug(app["error"]);
+        return false;
+    }
+
+    if (!file.seek(offset))
+    {
+        file.close();
+        delay(100);
+
+        app["error"] = format("Failed to seek file pointer. offset: %d\n", offset);
+        app["screen"] = ERRORSCREEN;
+        _debug(app["error"].as<const char *>());
+        return false;
+    }
+
+    resetBuffer();
+    size_t bytesRead = 0;
+    while (bytesRead < length && file.available())
+    {
+        buffer[bytesRead++] = file.read();
+    }
+
+    file.close();
+    delay(100);
+
+    seekPos = offset;
+    loadedLength = bytesRead;
+    pageChanged = true;
+
+    _debug("Editor::loadWindow offset: %d length: %d read: %d\n", offset, length, bytesRead);
+
+    return true;
+}
+
+// Load the chunk of the file that ends exactly where the current window
+// starts, so the writer can keep scrolling back through earlier text.
+void Editor::pageBackward()
+{
+    if (seekPos == 0)
+    {
+        _log("pageBackward: already at the start of the file\n");
+        return;
+    }
+
+    if (!saved && !saveFile())
+    {
+        _log("pageBackward: flush failed, staying on current page\n");
+        return;
+    }
+
+    size_t windowEnd = seekPos;
+    size_t stepSize = BUFFER_SIZE / 2;
+    size_t newSeekPos = (windowEnd > stepSize) ? windowEnd - stepSize : 0;
+
+    if (!loadWindow(newSeekPos, windowEnd - newSeekPos))
+        return;
+
+    // land at the end, continuing the upward motion seamlessly
+    cursorPos = getBufferSize();
+    updateScreen();
+}
+
+// Load the chunk of the file that starts exactly where the current window
+// ends, so the writer can scroll forward again after paging backward.
+void Editor::pageForward()
+{
+    if (!saved && !saveFile())
+    {
+        _log("pageForward: flush failed, staying on current page\n");
+        return;
+    }
+
+    size_t windowEnd = seekPos + loadedLength;
+    if (windowEnd >= fileSize)
+    {
+        // already at the live tail - nothing further on disk
+        return;
+    }
+
+    size_t stepSize = BUFFER_SIZE / 2;
+    size_t remaining = fileSize - windowEnd;
+    size_t toLoad = (remaining <= stepSize) ? remaining : stepSize;
+
+    if (!loadWindow(windowEnd, toLoad))
+        return;
+
+    // land at the start, continuing the downward motion seamlessly
+    cursorPos = 0;
+    updateScreen();
+}
+
+// The buffer filled up while typing. Flush it, then keep going from
+// wherever this window ended - either a fresh empty tail window, or the
+// next chunk of on-disk content if this wasn't the tail. Replaces the old
+// behaviour of unconditionally jumping back to the tail, which would have
+// discarded the writer's place (and unsaved on-disk content past it) when
+// triggered on a non-tail window.
+void Editor::advanceWindow()
+{
+    if (!saveFile())
+    {
+        _log("advanceWindow: flush failed, buffer is full and can't advance\n");
+        return;
+    }
+
+    size_t windowEnd = seekPos + loadedLength;
+    if (windowEnd >= fileSize)
+    {
+        // was at the tail - open a fresh empty window to keep typing into
+        seekPos = windowEnd;
+        loadedLength = 0;
+        resetBuffer();
+        cursorPos = 0;
+        pageChanged = true;
+    }
+    else
+    {
+        size_t stepSize = BUFFER_SIZE / 2;
+        size_t remaining = fileSize - windowEnd;
+        size_t toLoad = (remaining <= stepSize) ? remaining : stepSize;
+
+        if (!loadWindow(windowEnd, toLoad))
+            return;
+
+        cursorPos = 0;
+    }
+
+    updateScreen();
 }
 
 // Make the current file empty
@@ -541,7 +715,8 @@ void Editor::keyboard(int key, bool pressed)
             {
                 if (cursorPos == 0)
                 {
-                    // load previous page
+                    // already at the start of the buffer - load the previous page
+                    pageBackward();
                 }
                 else
                 {
@@ -554,13 +729,21 @@ void Editor::keyboard(int key, bool pressed)
                 // cursor can't move outside the last text
                 if (cursorPos < getBufferSize())
                     ++cursorPos;
+                else
+                    // already at the end of the buffer - load the next page
+                    pageForward();
             }
 
             // UP
             else if (key == 20)
             {
                 // move the cursorPos to the start of the previous line
-                if (cursorLine > 0)
+                if (cursorLine == 0)
+                {
+                    // already at the top line - load the previous page
+                    pageBackward();
+                }
+                else if (cursorLine > 0)
                 {
                     // look at the previous line and move to the start of the cursor
                     int newCursorPos =
@@ -626,12 +809,19 @@ void Editor::keyboard(int key, bool pressed)
                 // when trying to go down at the last line, move the cursor to the end
                 else if (cursorLine == totalLine)
                 {
+                    // already at the end of the buffer - load the next page
+                    if (cursorPos == getBufferSize())
+                    {
+                        pageForward();
+                    }
+                    else
+                    {
+                        // if last line then move to the end of the buffer
+                        cursorPos = getBufferSize();
 
-                    // if last line then move to the end of the buffer
-                    cursorPos = getBufferSize();
-
-                    _debug("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
-                           cursorPos);
+                        _debug("Editor::keyboard::DOWN last line condition met cursorPos %d\n",
+                               cursorPos);
+                    }
                 }
             }
 
@@ -664,28 +854,44 @@ void Editor::keyboard(int key, bool pressed)
             // PAGE UP
             else if (key == 22)
             {
-                int newCursorLine = max(cursorLine - rows, 0);
-                int newCursorPos =
-                    linePositions[newCursorLine] - linePositions[0];
+                if (cursorLine == 0)
+                {
+                    // already at the top line - load the previous page
+                    pageBackward();
+                }
+                else
+                {
+                    int newCursorLine = max(cursorLine - rows, 0);
+                    int newCursorPos =
+                        linePositions[newCursorLine] - linePositions[0];
 
-                //
-                cursorPos = newCursorPos;
+                    //
+                    cursorPos = newCursorPos;
+                }
             }
 
             // PAGE DOWN
             else if (key == 23)
             {
-                int newCursorLine = min(cursorLine + rows, totalLine);
-                int lineLength = max(lineLengths[newCursorLine], 1);
-                int newCursorPos =
-                    linePositions[newCursorLine] - linePositions[0] + lineLength - 1;
+                if (cursorLine == totalLine && cursorPos == getBufferSize())
+                {
+                    // already at the end of the buffer - load the next page
+                    pageForward();
+                }
+                else
+                {
+                    int newCursorLine = min(cursorLine + rows, totalLine);
+                    int lineLength = max(lineLengths[newCursorLine], 1);
+                    int newCursorPos =
+                        linePositions[newCursorLine] - linePositions[0] + lineLength - 1;
 
-                // if last line then move to the end of the buffer
-                if (cursorLine == totalLine)
-                    newCursorPos = getBufferSize();
+                    // if last line then move to the end of the buffer
+                    if (cursorLine == totalLine)
+                        newCursorPos = getBufferSize();
 
-                //
-                cursorPos = newCursorPos;
+                    //
+                    cursorPos = newCursorPos;
+                }
             }
         }
 
@@ -700,10 +906,7 @@ void Editor::keyboard(int key, bool pressed)
                 _log("Text buffer full\n");
 
                 //
-                saveFile();
-
-                //
-                loadFile(fileName);
+                advanceWindow();
             }
 
             //

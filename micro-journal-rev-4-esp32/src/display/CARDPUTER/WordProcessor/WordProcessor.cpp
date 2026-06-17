@@ -63,6 +63,13 @@ void WP_setup()
 //
 void WP_render()
 {
+    // the editor swapped to a different window of the file - force a full redraw
+    if (Editor::getInstance().pageChanged)
+    {
+        Editor::getInstance().pageChanged = false;
+        clear_background = true;
+    }
+
     // timers
     WP_check_saved();
 

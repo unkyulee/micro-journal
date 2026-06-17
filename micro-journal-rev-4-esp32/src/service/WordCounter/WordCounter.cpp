@@ -26,15 +26,16 @@ void wordcounter_service()
             //
             _log("[wordcounter_service] word count buffer\n");
 
-            // update the word count
+            // update the word count in RAM only - this runs every 10s while
+            // typing, so writing it to flash here would stall every
+            // keystroke burst. Editor::saveFile() persists it to config.json
+            // whenever the file itself is actually flushed.
             Editor::getInstance().wordCountBuffer = wordcounter_buffer(Editor::getInstance().buffer);
 
-            // update the word count in config
+            // keep the in-memory config field current so any save that
+            // happens for any reason carries the latest number
             int file_index = app["config"]["file_index"].as<int>();
             app["config"][format("wordcount_buffer_%d", file_index)] = Editor::getInstance().wordCountBuffer;
-
-            //
-            config_save();
         }
     }
 }

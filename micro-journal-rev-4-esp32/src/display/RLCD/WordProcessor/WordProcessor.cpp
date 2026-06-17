@@ -50,6 +50,14 @@ void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 //
 void WP_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
+    // the editor swapped to a different window of the file (paging, or the
+    // buffer filling up while typing) - force a full redraw
+    if (Editor::getInstance().pageChanged)
+    {
+        Editor::getInstance().pageChanged = false;
+        display->clearDisplay();
+        clear_background = true;
+    }
 
     // timers
     WP_check_saved();

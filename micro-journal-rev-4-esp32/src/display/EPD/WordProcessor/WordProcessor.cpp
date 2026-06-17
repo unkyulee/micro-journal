@@ -63,6 +63,20 @@ void WP_setup()
 //
 void WP_render()
 {
+    // the editor swapped to a different window of the file (paging, or the
+    // buffer filling up while typing) - force a full redraw
+    if (Editor::getInstance().pageChanged)
+    {
+        Editor::getInstance().pageChanged = false;
+
+        epd_poweron();
+        epd_clear_quick(epd_full_screen(), 4, 50);
+        epd_poweroff_all();
+
+        startLine = -1;
+        clear_request = true; // status bar should be refreshed too
+    }
+
     // perform full screen clear routine
     if (clear_full)
     {

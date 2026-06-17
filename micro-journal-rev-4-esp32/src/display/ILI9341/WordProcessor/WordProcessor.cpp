@@ -49,6 +49,13 @@ void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void WP_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    // the editor swapped to a different window of the file - force a full redraw
+    if (Editor::getInstance().pageChanged)
+    {
+        Editor::getInstance().pageChanged = false;
+        clear_background = true;
+    }
+
     // timers
     WP_check_saved();
     WP_check_sleep();
