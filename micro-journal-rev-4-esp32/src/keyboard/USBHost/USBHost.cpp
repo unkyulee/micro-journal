@@ -66,7 +66,7 @@ bool usbHostReady = false;
 // this setup will be called at Rev.5 only
 void USBHost_setup()
 {
-#ifndef DEBUG
+#ifndef USE_SERIAL_KEYBOARD
     //
     usbHidQueue = xQueueCreate(10, sizeof(UsbHidReport));
     assert(usbHidQueue != nullptr);
@@ -77,7 +77,7 @@ void USBHost_setup()
     _log("USB Host Setup\n");
 #endif
 
-#ifdef DEBUG
+#ifdef USE_SERIAL_KEYBOARD
     _debug("USB Host is going to read keyboard input from Serial\n");
 #endif
 }
@@ -86,7 +86,7 @@ void USBHost_setup()
 void USBHost_loop()
 {
 
-#ifndef DEBUG
+#ifndef USE_SERIAL_KEYBOARD
     if (usbHostReady)
         usbHost.task();
 
@@ -132,7 +132,7 @@ void USBHost_loop()
 
 #endif
 
-#ifdef DEBUG
+#ifdef USE_SERIAL_KEYBOARD
     // receive SERIAL input and redirect to the display
     if (Serial.available())
     {

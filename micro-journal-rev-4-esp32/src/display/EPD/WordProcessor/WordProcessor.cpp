@@ -388,7 +388,7 @@ void WP_render_text()
                 //
                 epd_poweron();
                 writeln(display_EPD_font(), utf8, &cursorX, &cursorY, NULL);
-                epd_poweroff();
+                epd_poweroff_all();
             }
 
             
@@ -410,7 +410,7 @@ void WP_render_text()
             // clear background
             epd_poweron();
             epd_clear_quick(epd_full_screen(), 4, 50);
-            epd_poweroff();
+            epd_poweroff_all();
             clear_request = true;
 
             editing = false;
@@ -427,6 +427,42 @@ void WP_render_text()
 #define CURSOR_MARGIN 10
 #define CURSOR_THICKNESS 5
 #define CURSOR_DELAY 50
+#define CURSOR_BLINK_INTERVAL 600
+
+// fill a small buffer with solid black (nibble 0) and push only the
+// cursor's tiny area through the proven image waveform, instead of
+// a full-screen redraw or the unreliable raw pixel-push darken.
+static void WP_draw_cursor(Rect_t area)
+{
+    int32_t cursor_buf_width = area.width / 2 + area.width % 2;
+    uint8_t *cursor_buf = (uint8_t *)malloc(cursor_buf_width * area.height);
+    if (cursor_buf)
+    {
+        memset(cursor_buf, 0x00, cursor_buf_width * area.height);
+
+        epd_poweron();
+        epd_draw_image(area, cursor_buf, BLACK_ON_WHITE);
+        epd_poweroff_all();
+
+        free(cursor_buf);
+    }
+}
+
+// erase with a small padding margin so anti-aliased edges don't linger
+// across repeated blink cycles at the same spot.
+static void WP_erase_cursor(Rect_t area)
+{
+    Rect_t erase_area = display_rect(
+        area.x - 10,
+        area.y - 5,
+        area.width + 20,
+        area.height + 10);
+
+    epd_poweron();
+    epd_clear_quick(erase_area, 8, 50);
+    epd_poweroff_all();
+}
+
 void WP_render_cursor()
 {
     JsonDocument &app = status();
@@ -437,6 +473,7 @@ void WP_render_cursor()
 
     // Cursor information
     static int renderedCursorX = -1;
+    static bool cursorVisible = false;
     static int last = 0;
 
     static int cursorLinePos_prev = 0;
@@ -463,28 +500,17 @@ void WP_render_cursor()
         // _debug("WP_render_cursor::cursorX %d\n", cursorX);
     }
 
-    // Delete previous cursor line
+    // cursor moved: erase if currently visible and restart the show/blink cycle
     if (cursorPos != cursorPos_prev)
     {
-        if (renderedCursorX > 0)
+        if (cursorVisible)
         {
-            //
-            // _debug("Delete previous cursor line\n");
-
-            //
-            area = display_rect(
-                area.x - 10,
-                area.y - 5,
-                area.width + 20,
-                area.height + 10);
-
-            epd_poweron();
-            epd_clear_quick(area, 8, 50);
-            epd_poweroff_all();
-
-            // render the cursor
-            renderedCursorX = -1;
+            WP_erase_cursor(area);
+            cursorVisible = false;
         }
+
+        // render the cursor
+        renderedCursorX = -1;
 
         // reset the timer
         last = millis();
@@ -505,12 +531,31 @@ void WP_render_cursor()
             display_fontwidth() * abs(cursorLinePos - cursorLinePos_prev + 1),
             CURSOR_THICKNESS);
 
-        //
-        epd_fill_rect(area.x, area.y, area.width, area.height, 0, display_EPD_framebuffer());
-        display_draw_buffer();
+        WP_draw_cursor(area);
+        cursorVisible = true;
 
         //
         renderedCursorX = cursorX;
+
+        // start the blink cadence from the moment it first appears
+        last = millis();
+    }
+
+    // keep blinking on/off at a fixed interval while idle
+    else if (renderedCursorX != -1 && last + CURSOR_BLINK_INTERVAL < millis())
+    {
+        last = millis();
+
+        if (cursorVisible)
+        {
+            WP_erase_cursor(area);
+            cursorVisible = false;
+        }
+        else
+        {
+            WP_draw_cursor(area);
+            cursorVisible = true;
+        }
     }
 }
 
@@ -595,7 +640,7 @@ void WP_render_status()
         // FILE SIZE
         cursorX = 200;
         String filesizeFormatted = formatNumber(filesize);
-        writeln((GFXfont *)&systemFont, filesizeFormatted.c_str(), &cursorX, &cursorY, NULL);
+        writeln((GFXfont *)&systemFont, filesizeFormatted.c_str(), &cursorX, &cursorY, display_EPD_framebuffer());
         ////////////////////////////////////////
 
         ////////////////////////////////////////
