@@ -70,7 +70,7 @@ void send_start()
             send_func(c);
 
         // Small delay to prevent buffer overflow
-        delay(5); // You can tweak this as needed
+        delay(30); // You can tweak this as needed
         yield();
     }
     //

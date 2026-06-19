@@ -17,7 +17,7 @@ unsigned int last_sleep = millis();
 // Whether the last WP_render() actually changed anything visible - the
 // caller uses this to decide whether the (expensive, full 30KB SPI) panel
 // refresh is worth doing this tick.
-bool needsDisplay = true;
+static bool needsDisplay = true;
 bool WP_contentChanged();
 
 //

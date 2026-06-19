@@ -14,6 +14,11 @@
 // state
 bool menu_clear = false;
 
+// Whether the last Menu_render() actually changed anything visible - the
+// caller uses this to decide whether the (expensive, full 30KB SPI) panel
+// refresh is worth doing this tick.
+static bool needsDisplay = true;
+
 // 0 - home
 // 1 - sync
 // 2 - delete file confirm
@@ -54,8 +59,12 @@ void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     {
         // nothing is changed
         // skip this rendering cycle
+        needsDisplay = false;
         return;
     }
+
+    // decide whether the panel actually needs to be pushed over SPI this tick
+    needsDisplay = true;
 
     // clear screen
     {
@@ -115,6 +124,11 @@ void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // save prev state
     menu_state_prev = menu_state;
+}
+
+bool Menu_needsDisplay()
+{
+    return needsDisplay;
 }
 
 //

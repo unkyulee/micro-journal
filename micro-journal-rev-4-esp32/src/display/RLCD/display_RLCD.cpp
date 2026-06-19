@@ -146,13 +146,24 @@ void display_RLCD_loop()
     //
     app["screen_prev"] = screen;
 
-    // The word processor screen tracks whether anything visible actually
-    // changed since the last push, since display() always transfers the
-    // whole 30KB frame buffer over SPI regardless of how much changed.
-    // Every other screen keeps refreshing unconditionally, as before.
+    // Every screen tracks whether anything visible actually changed since
+    // the last push, since display() always transfers the whole 30KB frame
+    // buffer over SPI regardless of how much changed. The first tick after
+    // switching screens (setup) always pushes once to show the initial frame.
     bool shouldDisplay = true;
-    if (screen == WORDPROCESSOR && screen == screen_prev)
-      shouldDisplay = WP_needsDisplay();
+    if (screen == screen_prev)
+    {
+      if (screen == ERRORSCREEN)
+        shouldDisplay = ErrorScreen_needsDisplay();
+      else if (screen == WORDPROCESSOR)
+        shouldDisplay = WP_needsDisplay();
+      else if (screen == KEYBOARDSCREEN)
+        shouldDisplay = KeyboardScreen_needsDisplay();
+      else if (screen == MENUSCREEN)
+        shouldDisplay = Menu_needsDisplay();
+      else if (screen == UPDATESCREEN)
+        shouldDisplay = Update_needsDisplay();
+    }
 
     if (shouldDisplay)
       display.display();
