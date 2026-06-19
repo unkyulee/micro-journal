@@ -8,9 +8,25 @@
 #include "display/display.h"
 
 //
+#include "keyboard/Locale/locale.h"
+
+//
 #define LAYERS 4 // layers
 #define COLS 9   // columns
 #define ROWS 8   // rows
+
+// HID keycode (USB HID Usage Tables, Keyboard/Keypad page) for each physical
+// key, matching the layout of layers[0]. 0 marks keys that aren't translated
+// through the locale tables (control keys, Fn/Shift, MENU, etc).
+// prettier-ignore
+uint8_t key_hid[ROWS * COLS] = {
+    0,    0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x2d, 0x2e, 0,    0,
+    0x2c, 0x14, 0x1a, 0x08, 0x15, 0x17, 0x1c, 0x18, 0x0c, 0x12, 0x13, 0x2f, 0x30, 0,    0,
+    0,    0x04, 0x16, 0x07, 0x09, 0x0a, 0x0b, 0x0d, 0x0e, 0x0f, 0x33, 0x34, 0x31, 0,
+    0,    0x35, 0x1d, 0x1b, 0x06, 0x19, 0x05, 0x11, 0x10, 0x36, 0x37, 0x38, 0,    0,    0,
+    0,    0,    0,    0x2c, 0,    0,    0,    0,    0,    0,
+    0,
+};
 
 // layers
 // prettier-ignore
@@ -241,6 +257,24 @@ int keyboard_keypad_68_get_key(keypadEvent e)
     if (_shift_pressed)
         _layer += 1;
 
+    // value baked into the layer tables (hardcoded to the US layout)
+    key = layers[_layer][e.bit.KEY];
+
+    // when a non-US layout is configured, re-map character keys through
+    // the locale tables instead of returning the hardcoded US character
+    JsonDocument &app = status();
+    String locale = app["config"]["keyboard_layout"].as<String>();
+    if (locale.length() > 0 && locale != "US")
+    {
+        uint8_t hid = key_hid[e.bit.KEY];
+        if (hid != 0)
+        {
+            uint8_t ascii = keyboard_keycode_ascii(locale, hid, _shift_pressed, _fn_pressed, e.bit.EVENT == KEY_JUST_PRESSED);
+            if (ascii != 0)
+                key = ascii;
+        }
+    }
+
     // return the corresponding key
-    return layers[_layer][e.bit.KEY];
+    return key;
 }

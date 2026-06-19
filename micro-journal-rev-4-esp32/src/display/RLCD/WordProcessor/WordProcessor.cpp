@@ -337,6 +337,14 @@ void WP_render_status(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     String wordCountFormatted = formatNumber(wordCount);
     u8->printf("%s WORDS", wordCountFormatted);
 
+    // LOCALE
+    String locale = app["config"]["keyboard_layout"].as<String>();
+    if (locale.length() > 0 && locale != "US")
+    {
+        u8->setCursor(280, STATUSBAR_Y);
+        u8->printf(locale.c_str());
+    }
+
     // SAVE STATUS    
     if (Editor::getInstance().saved)
     {

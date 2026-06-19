@@ -93,6 +93,13 @@ void Menu_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
         Home_render(display, u8);
     }
+    else if (menu_state == MENU_LAYOUT)
+    {
+        if (menu_state_prev != menu_state)
+            Layout_setup(display, u8);
+
+        Layout_render(display, u8);
+    }
     else if (menu_state == MENU_SYNC)
     {
         if (menu_state_prev != menu_state)
@@ -145,6 +152,13 @@ void Menu_keyboard(char key)
     if (menu_state == MENU_HOME)
     {
         Home_keyboard(key);
+        return;
+    }
+
+    // LAYOUT MENU
+    else if (menu_state == MENU_LAYOUT)
+    {
+        Layout_keyboard(key);
         return;
     }
 

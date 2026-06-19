@@ -19,7 +19,7 @@ void Layout_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     JsonDocument &app = status();
     
-    u8->setCursor(0, 30);
+    u8->setCursor(0, 50);
 
     // Define layout options
     static const char *layout_options[] = {
