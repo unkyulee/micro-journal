@@ -1,7 +1,29 @@
+Detailed build guides will be added later, once the build has stabilized.
+
+For now, I will provide the bill of materials and wiring guides, so people who are comfortable figuring out the remaining details on their own can still build it at this stage.
+
 # Bill of Material
 
-* [FPC Adapter - 0.5-2.54MM, 24P](https://ko.aliexpress.com/item/1005007617729176.html)
-* [Display Module](https://ko.aliexpress.com/item/1005012114591531.html)
+- [Reflective LCD Display Module](https://ko.aliexpress.com/item/1005012114591531.html)
+- [FPC Adapter - 0.5-2.54MM, 24P](https://ko.aliexpress.com/item/1005007617729176.html)
+- ESP32 S3 N16R8
+- [LiPo Charger and Step Up Controller](https://www.aliexpress.com/item/1005006366996657.html)
+- [18650 Battery Holder](https://www.aliexpress.com/item/1005005084346241.html)
+- [2 Pin Round Snap Rocker Switch 19mm](https://it.aliexpress.com/item/1005008528747478.html)
+- [69 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-68-keys-keyboard-pcb.html)
+- Costar Stabilizer 6.25u
+
+
+- M3 Heated Inserts OD 4.5mm Length 3mm
+- M2 Heated Inserts OD 3.2mm Length 3mm
+- DIN 912 M3 Hex Screw Length 5mm
+- DIN 912 M3 Hex Screw Length 10mm
+- DIN 912 M3 Hex Screw Length 70mm
+- DIN 7046 M2 Machine Screw Length 5mm
+
+- [B-7000 Glue](https://www.aliexpress.com/item/1005005379063116.html)
+- You will need TORX T10H to handle Hex screws
+- Any typical wires for electronics would do. I use [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
 
 
 # Reference
@@ -30,6 +52,8 @@ Osptek Display
 3.3V from ESP32 to pin 16
 GND to pin 17
 
+Breakout board has different PIN number on the front and the back.
+I used the pin number marked inside the bracket in this build.
 
 | DISPLAY           | ESP32 |
 | ----------------- | ----- |

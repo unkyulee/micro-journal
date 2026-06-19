@@ -53,7 +53,7 @@ You can setup your own Google Drive then back up your files via Wifi. There is n
 ### Documents 
 
 * [Behind Story](./story.md)
-* [Introduction Video] TBD
+* [Introduction Video](https://youtu.be/VGHCE0Egx4Q)
 * [Quick Start Guide](./guide.md)
 * [Build Guide](./build.md)
 

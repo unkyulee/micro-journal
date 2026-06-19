@@ -115,9 +115,174 @@ As advertised, under the light, the letters appear very clearly and the contrast
 
 As a conclusion, there is a bit of pixelation due to the low resolution given the large surface area. It also can look a bit blurred when you look at it close up. Although, under decent light and with a bit of distance, this display works really well.
 
+Edit: Pixelation was due to my software bug. This is fixed, and it's looking clear.
 
 
-# To be continued.
+# 3D Model Design
 
-Next step will be designing an enclosure and some stories how I thought about it, will come. 
+<img src="./images/b009.webp" width=600 />
+
+Once the technical feasibility was resolved, I opened Fusion 360 and started designing the actual enclosure.
+
+My first goal was to make the device as thin as possible. The mechanical keyboard would naturally take up most of the thickness, but I was not going to use a thin keyboard for a writing machine. For me, the typing experience is too important. So, that part of the thickness was fixed from the beginning.
+
+Given that constraint, I decided to use a flat keyboard angle.
+
+Usually, I use a 7 to 9 degree angle on my keyboards to provide a more comfortable typing position. This time, I removed that angle entirely. By keeping the keyboard flat, I could reduce the overall thickness by around 1 cm.
+
+My 3D printer can print up to 23 cm, but this build is almost 40 cm across at its longest point. So, I used a trick that I have relied on before: splitting the enclosure into three pieces.
+
+The middle section remains large and solid, giving the build its main structure and stability. Then, the two side pieces work almost like wings. This makes the build look visually stable, but also physically stable.
+
+Technically, I could have split the enclosure into two halves. Half of 40 cm would still fit inside my printer. However, I prefer splitting it into three pieces because I want the center portion of the build to stay as one solid piece.
+
+Even with the most precise method of joining printed parts, split lines can create small cracks, skews, or alignment issues. When those imperfections happen near the outer edges, they are still acceptable because the main center body remains solid. But when a build is split directly in half, even a small skew starting from the middle can make the entire device feel unstable.
+
+That is why I find the three-piece split to be the best method for a build like this. It respects the limitation of my printer while still keeping the most important part of the structure strong.
+
+# I Didn't Like the Design...
+
+<img src="./images/b010.webp" width=600 />
+
+I don't know exactly how to describe it, but I did not like the initial design.
+
+At first, the display enclosure ended up being smaller than the keyboard area. My thought was that covering the entire keyboard would create too much empty space on both sides of the display. I was afraid that would make the proportions feel strange.
+
+So, my first design used a middle display section that only covered the screen area, a little like what I did with Rev.6.1. In this version, the display enclosure covered only about half of the keyboard width.
+
+At first, I thought this could be a good idea.
+
+But after finishing the design, it did not feel right.
+
+It looked unusual, but not in an interesting or artistic way. It felt too intentional. Too forced. The shape did not click with me.
+
+So, I uploaded the design to my subreddit and asked for feedback:
+
+https://www.reddit.com/r/unkyulee/comments/1u3qmux/drafting_rev8_what_should_i_change_here/
+
+At that time, my subreddit had very few members. But they were the real members. People who genuinely cared about Micro Journal and had been following the project closely.
+
+So, when I asked for their feedback, I knew it would be valuable. I explicitly asked for negative feedback if possible, because I wanted to fix the design. I knew something needed to change, but I did not yet have confidence in which direction to take.
+
+The feedback was much richer than I expected. macjsc93 and Hookmt both pointed me toward covering the entire keyboard, which became the most important direction for the final shape. That_Drummer_2795 gave a very practical reason for it: if the device goes into a bag, the keyboard should be protected as much as possible. That comment helped me realize I had been looking at the form too narrowly from the design side, and not enough from the carrying-and-using side.
+
+Other comments opened interesting doors too. goodspeak suggested thinking about a hinged lid with a light, which made me consider how a light could be attached or supported. Hookmt suggested a small shelf for a phone or tablet, and jiadarola mentioned the possibility of a MagSafe mount. amrithr10 imagined a second hinged area for post-its or a small whiteboard-like thinking space, and even a rolling keyboard cover, like opening a tiny shop before writing. VintageFender226 suggested a second screen for notes or comparison. Some ideas were practical, some were wild, and some may belong to future builds, but all of them helped me see Rev.8 from a wider angle.
+
+In the end, the most important change was clear: the enclosure should cover the full keyboard. It made the device look more complete, and more importantly, it made the clamshell design feel right. It was no longer just a screen holder. It became a protective shell for a portable writing machine.
+
+Getting that social confirmation gave me the confidence to move toward what I probably should have done from the beginning.
+
+So, I redesigned it to cover the entire keyboard area.
+
+That became the final direction.
+
+# Testing with Real Prints to Test the Real Form
+
+<img src="./images/b011.webp" width=600 />
+
+Once the design was finalized, I went ahead and printed it.
+
+Usually, or actually, always, the first print is not usable. Even when I feel confident that everything is perfectly designed, I have never been able to use the first print as the final version. Screws holes missing, dimensions were wrong... Every thing can go wrong, goes wrong in the first print.
+
+This step is essential. A 3D render can give me some idea of the shape, but seeing the build in the real world is completely different. Sometimes what looked great in the render does not feel right in real life. Sometimes the opposite happens too.
+
+<img src="./images/b012.webp" width=600 />
+
+When I printed the parts and taped them together into one piece, I was surprised.
+
+It was long.
+
+It felt really long. This is the point, where I decided the name for this build: Melodica.
+
+Of course, that makes sense, because it basically has the width of a full keyboard. But still, seeing that length in the real world made a very different impression from the render.
+
+Other than that, the real print felt very good. It opened and closed well, and the thickness was satisfying. The display enclosure was not too thin or flimsy. It felt sturdy enough.
+
+The mechanism I designed to hold the long display enclosure across three separate printed pieces also worked well.
+
+<img src="./images/b013.webp" width=600 />
+
+After three more print iterations, I finally reached a quality where I could start placing the internal components inside.
+
+# Assembling the Electronic Components for the First Time
+
+<img src="./images/b014.webp" width=600 />
+
+I took the electronic components out of the cardboard prototype and resoldered them into the new enclosure.
+
+It was not too difficult. Most of the work was just readjusting the wire lengths. The wires from the keyboard PCB needed to reach all the way to the display area, so they had to be quite long.
+
+After that, I glued and screwed the components into place.
+
+<img src="./images/b015.webp" width=600 />
+
+At this point, the build was mostly complete.
+
+There were still a few minor adjustments to make. I had to increase the size of the ESP32 USB port openings. I also moved the front panel grill to sit above the ESP32, so that the LED lights could be visible for activity signals, and so that the area could have some ventilation.
+
+Then, the build was done.
+
+I also needed a place to hold a book light, in case I wanted to use the device in a dark room, in bed, or anywhere without enough ambient light. The book light clip fit really well on the left-hand side.
+
+It felt very good when everything came together and clicked into place.
+
+<img src="./images/b016.webp" width=600 />
+
+At first, I was planning to use the Rev.6 screen for this build. In this photo, you can see that the new screen is almost twice as wide.
+
+Even with this larger screen, it still feels fairly compact. I can't imagine how small the display would have felt if I had used the Rev.6 screen instead.
+
+<img src="./images/b017.webp" width=600 />
+
+It also looks good when the enclosure is closed.
+
+It was definitely the right decision to make the display enclosure cover the keyboard fully. I feel lucky to have a community that was willing to give feedback so quickly and generously.
+
+# What Do I Do Now?
+
+After a build is complete, and after it reaches a quality where it can also be printed and assembled for others, there are still several things I need to do.
+
+* Put together a video to introduce the features and use cases.
+* Write a README page for Rev.8 in the GitHub repository.
+* List it in my Tindie store.
+* Start sharing it with communities that may be interested in this build.
+
+I made a release post in my subreddit first. Usually, the first batch goes quickly, and the follow-up batches come much later.
+
+I wanted to share this build first with the community that had helped me and watched the progress together. So, before uploading the video or posting in bigger communities, I let the news slip into my subreddit first.
+
+https://www.reddit.com/r/unkyulee
+
+The build also came with many different color option ideas. Now, I need to figure out how to make those colorways happen for Rev.8.
+
+Figuring out colorways is one of the fun parts. It feels like creating a new personality for Rev.8, again and again, through different versions.
+
+# What Happens Next?
+
+I should also write a detailed build guide, but usually I do that a little later.
+
+The reason is that early builds can still reveal critical mistakes. Sometimes, after using the device for a while, I may find something that needs to be changed. In some cases, I might even redesign a large part of the build, just like what happened with Rev.6.1.
+
+So, before writing a full step-by-step guide, I usually wait until the build feels more stable and settled.
+
+That said, I do not want to close off any important information. Even before the detailed guide is ready, I try to leave the essential notes available, such as the bill of materials and the pinout mapping table. That way, people who are comfortable figuring out the remaining details by themselves can still build it on their own.
+
+I genuinely do not intend to hide or withhold any information.
+
+Maybe part of it is just me being slow with documentation. Maybe part of it is me using 'waiting for the build to stabilize' as a very convenient excuse. But the intention is simple: I want the information to be open, while also avoiding a situation where I write a full guide too early and then discover that the build needs to change again.
+
+
+# Idea about the next build?
+
+Whenever a new build is completed, it feels like I can open the next door in my idea bank and start dreaming about how to make the next thing real.
+
+As always, when a new build is released, I get excited because I can finally jump into the next build.
+
+I already have one and many forming inside my head.
+
+I hope that one also finds its way out into the real world in a satisfying form.
+
+Thank you for reading this story!
+
+Un Kyu Lee
 
