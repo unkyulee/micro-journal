@@ -32,6 +32,8 @@
 
 ### Press
 
+* [Yanko Design - A Solo Korean Maker Just Built the Writing Device Your Phone Isn’t](https://www.yankodesign.com/2026/06/13/a-solo-korean-maker-just-built-the-writing-device-your-phone-isnt/)
+
 
 ### Online Shop
 
