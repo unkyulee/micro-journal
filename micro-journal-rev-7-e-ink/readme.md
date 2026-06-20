@@ -46,6 +46,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * [Keyboard Builders Digest - Micro Journal Rev.7: Kindred Gift](https://kbd.news/Micro-Journal-Rev.7-Kindred-Gift-2628.html)
 * [GoodEReader - Micro Journal Rev.7 DIY Typewriter Features an E Ink Display For the First Time](https://goodereader.com/blog/technology/micro-journal-rev-7-diy-typewriter-features-an-e-ink-display-for-the-first-time)
 * [Yanko Design - Micro Journal Rev. 7 is a DIY E Ink Typewriter That Lets You Focus on Your Craft](https://www.yankodesign.com/2025/03/26/micro-journal-rev-7-is-a-diy-e-ink-typewriter-that-lets-you-focus-on-your-craft/)
+* [MiniMachines - Micro Journal V7.0 : une nouvelle version magnifique](https://www.minimachines.net/actu/micro-journal-v7-0-une-nouvelle-version-magnifique-133070)
 
 
 ### Online Shop

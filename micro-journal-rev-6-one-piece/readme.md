@@ -53,7 +53,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Boing Boing: MicroJournal: a distraction-free writing device with knobs](https://boingboing.net/2024/06/17/microjournal-a-distraction-free-writing-device-with-knobs.html)
 * [Cassidy Williams: Building the Micro Journal](https://cassidoo.co/post/micro-journal/)
 * [Tindie Blog: Micro Journal DIY Kit](https://blog.tindie.com/2024/11/micro-journal-diy-kit/)
-
+* [MiniMachines - Micro Journal : une nouvelle machine à écrire 2.0](https://www.minimachines.net/actu/micro-journal-une-nouvelle-machine-a-ecrire-2-0-127833)
 
 
 ### Online Shop
