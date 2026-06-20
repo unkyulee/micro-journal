@@ -339,7 +339,7 @@ void WP_render_status(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // LOCALE
     String locale = app["config"]["keyboard_layout"].as<String>();
-    if (locale.length() > 0 && locale != "US")
+    if (locale.length() > 0 && locale != "US" && locale != "null")
     {
         u8->setCursor(280, STATUSBAR_Y);
         u8->printf(locale.c_str());

@@ -65,6 +65,17 @@ I used the pin number marked inside the bracket in this build.
 | 11 (14) - LCD DC  | 46    |
 | 10 (15) - LCD_RES | 3     |
 
+
+
+## Keyboard to ESP32
+
+Uses only the middle pin pad. Start from the squared pin and 17 pins are used.
+Starts from ROWS, and then COLS
+
+These are pins maps to ESP32 in order.
+byte rowPins[ROWS] = {8, 18, 17, 16, 15, 7, 6, 5};
+byte colPins[COLS] = {1, 2, 42, 41, 40, 39, 45, 48, 47};
+
                     
 
 ## Support
