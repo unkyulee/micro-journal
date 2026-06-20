@@ -111,11 +111,6 @@ Most users do not need to build the firmware manually. Flashing through M5Burner
 
 Issues, suggestions, and pull requests are welcome. If you find a problem or want to share how you are using Micro Journal, feel free to open an issue in this repository.
 
-Micro Journal is an open source project built with curiosity, care, and a genuine love for writing. If you enjoyed exploring the project or building your own writerDeck and would like to support the work, even a small gesture means a lot. Every contribution helps me continue improving Micro Journal and sharing it with the community.
-
-* https://www.buymeacoffee.com/unkyulee
-
-Un Kyu Lee
 
 
 ## Community
@@ -124,3 +119,13 @@ Un Kyu Lee
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
 * [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+
+
+## Support
+
+If Micro Journal helped you build something you love, consider buying me a coffee through the link below. It is a small gesture, but it helps keep the project alive, cared for, and open for everyone.
+
+* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)  
+
+
+Un Kyu Lee

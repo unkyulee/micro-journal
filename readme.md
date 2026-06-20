@@ -58,19 +58,6 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 * **[The PDA Terminal](https://github.com/unkyulee/phone-enclosure)** - Phone Enclosure with a keyboard for Boox Palma 2
 
 
-## Support
-
-Micro Journal is an open-source project, built and nurtured with curiosity, care, and a genuine love for writing. If you've enjoyed exploring the project or building your own writerDeck, and you'd like to show some support, even a small gesture goes a long way. Every contribution helps me continue improving Micro Journal and sharing it with the community.  
-
-* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)  
-
-Micro Journal is a DIY project, complete with build guides so you can source the components and assemble it yourself. You can also purchase a DIY kit from my shop, or have me assemble a complete device for you. Supporting the project this way helps it grow and ensures it keeps reaching more writers and makers like you.  
-
-* [Tindie – Online Shop](https://www.tindie.com/stores/unkyulee/)
-
-When Tindie is not available you can make an order request from the link below
-
-* [Micro Journal Order Request](https://forms.gle/obXzCUKWc8Fx6AD8A)
 
 
 ## Community
@@ -79,3 +66,13 @@ When Tindie is not available you can make an order request from the link below
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
 * [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+
+
+## Support
+
+If Micro Journal helped you build something you love, consider buying me a coffee through the link below. It is a small gesture, but it helps keep the project alive, cared for, and open for everyone.
+
+* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)  
+
+
+Un Kyu Lee

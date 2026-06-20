@@ -275,3 +275,14 @@ Then you should the smile face on the screen
 Setup the device following the guide here
 
 https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/quickstart.md
+
+
+
+## Support
+
+If Micro Journal helped you build something you love, consider buying me a coffee through the link below. It is a small gesture, but it helps keep the project alive, cared for, and open for everyone.
+
+* [Buy me a coffee](https://www.buymeacoffee.com/unkyulee)  
+
+
+Un Kyu Lee
