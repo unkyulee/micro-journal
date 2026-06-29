@@ -43,6 +43,7 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 - Raspberry Pi Pico (rp2040)
 - [69 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-68-keys-keyboard-pcb.html)
 - Micro SD card minimum 8 GB
+- [Rubber O-ring OD 10 ID 5.2 CS 2.4](https://ko.aliexpress.com/item/1005002753756030.html)
 
 - 12x M3 Heated Inserts OD 4.5mm Length 3mm
 - 4x DIN 912 M3 Hex Screw Length 20mm
