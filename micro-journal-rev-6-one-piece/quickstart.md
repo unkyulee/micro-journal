@@ -1,4 +1,4 @@
-# 📘 Micro Journal Rev.6 — User Manual
+# Micro Journal Rev.6 — User Manual
 
 Version 1.1  
 Prepared by Hook 
