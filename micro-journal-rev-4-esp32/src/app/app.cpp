@@ -167,9 +167,8 @@ void app_loop()
 #endif
 
 #ifdef BOARD_ESP32_S3
-    sync_loop();    
+    sync_loop();
 #endif
-
 }
 
 // status storage
@@ -185,10 +184,6 @@ FileSystem *gfs()
 {
     if (fileSystem == nullptr)
     {
-// Initialize the file system here
-#ifdef BOARD_PICO
-        fileSystem = new FileSystemRP2040();
-#endif
 
 // ESP32-S3 boards with SD configured use SD; otherwise use internal SPIFFS.
 #ifdef SD_CS
@@ -200,8 +195,16 @@ FileSystem *gfs()
 
 #ifdef USE_MSC
 
+// Initialize the file system here
+#ifdef BOARD_PICO
+        fileSystem = new FileSystemRP2040();
+#endif
+
+// Initialize the file system here
+#ifdef BOARD_ESP32_S3
         // file system in FAT
         fileSystem = new FileSystemFAT("storage");
+#endif
 
 #endif
 
