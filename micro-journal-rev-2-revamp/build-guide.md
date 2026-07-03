@@ -23,7 +23,7 @@ Rev.2. is a small computer. Process of the building rev.2. is very similar to bu
 
 ### A. Keyboard PCB
 
-This build utilized how swappable mechanical keyboard. Design files for the keyboard is in [this github repository](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB). You can use, PCB manufacturing services to get the PCB printed. Should be cheaper to buy from [my tindie store](https://www.tindie.com/stores/unkyulee) when you need just one or two PCBs.
+This build utilized how swappable mechanical keyboard. Design files for the keyboard is in [this github repository](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB). You can use, PCB manufacturing services to get the PCB printed. Should be cheaper to buy from [elecrow store](https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html) when you need just one or two PCBs.
 
 ### B. Keyboard Controller
 
@@ -49,7 +49,7 @@ Screen received mini HDMI interface. This display is almost exact the size of th
 - [Wisecoco 7.84 Inch 1280x400 LCD Display](https://www.aliexpress.com/item/1005004986951553.html)
 - Raspberry Pi Zero 2W
 - Raspberry Pi Pico (rp2040)
-- [48 Keyboard PCB](https://www.tindie.com/products/unkyulee/micro-journal-diy-kit-keyboard-pcb/)
+- [48 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html)
 - [O-ring 10x5.2x2.4](https://www.aliexpress.com/item/1005002753756030.html)
 
 - [MICRO USB Type-C Female To 2 X Mini USB USB-B Type-c Male General Splitter Y Extension](https://it.aliexpress.com/item/1005008089222432.html)

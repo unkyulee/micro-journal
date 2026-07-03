@@ -57,9 +57,9 @@ Credit to: Jay is an owl
 
 You can print and order the PCB using the PCB manufacturing services. Typically I use JLCPCB or PCBWay for the order. They will ask for minimum quantify of 5 PCBs. So you will have extra PCB. These PCBs can be reused for other projects that needs mini mechanical keyboard, so, it's not too bad to have some extra laying around.
 
-I think Keyboard PCB is the only component that can't be sourced from the market. Apart from the 3d printed materials. I have prepared a kit packed with PCB and diode and hotswappable sockets. If ordering from PCB manufacturer is found a bit difficult, you can use my tindie shop to order a PCB parts. 
+I think Keyboard PCB is the only component that can't be sourced from the market. Apart from the 3d printed materials. I have prepared a kit packed with PCB and diode and hotswappable sockets. If ordering from PCB manufacturer is found a bit difficult, you can use elecrow shop to order a PCB parts. 
 
-https://www.tindie.com/products/unkyulee/diy-kit-micro-journal/
+https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html
 
 In order to assemble the keyboard PCB. You will need 48 pieces of the following items.
 
