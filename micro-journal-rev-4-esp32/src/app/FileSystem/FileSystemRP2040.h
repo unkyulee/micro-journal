@@ -13,6 +13,10 @@ public:
     {
         return FatFS.begin();
     }
+    void end() override
+    {
+        FatFS.end();
+    }
     File open(const char *path, const char *mode) override
     {
         return FatFS.open(path, mode);

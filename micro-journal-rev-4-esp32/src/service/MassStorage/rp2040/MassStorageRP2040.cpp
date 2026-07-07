@@ -142,6 +142,15 @@ void ms_rp2040_loop()
             // start the device
             if (app["massStorageStarted"].as<bool>() == false)
             {
+                // Release the app's own FatFS mount first -- gfs() and the
+                // raw fatfs::disk_* calls below share the same underlying
+                // FatFS library instance/drive. Leaving it mounted while
+                // the host gets raw block-level write access underneath it
+                // is exactly how a stale directory/FAT cache in the app's
+                // own filesystem layer ends up clobbering whatever the
+                // host just wrote, corrupting or deleting files.
+                gfs()->end();
+
                 started = true;
                 usbConnected = true;
 

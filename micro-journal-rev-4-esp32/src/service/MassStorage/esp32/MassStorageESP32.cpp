@@ -359,10 +359,16 @@ bool FatFSUSBClass::startStopCallback(
 {
     (void)power_condition;
 
+    // Only flag the eject here -- do NOT clear mediaStarted. end()'s
+    // "if (!mediaStarted) return;" guard would otherwise see it already
+    // false (this runs from the USB callback, ahead of ms_esp32_loop()
+    // noticing isConnected() went false and calling end()) and skip its
+    // real cleanup entirely, most importantly wl_unmount(), leaving the
+    // wear-leveling layer's own mount state never cleanly released before
+    // the subsequent reboot.
     if (load_eject && !start)
     {
         ejected = true;
-        mediaStarted = false;
     }
 
     return true;
