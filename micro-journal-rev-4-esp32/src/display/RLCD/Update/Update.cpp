@@ -25,6 +25,7 @@ void Update_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 //
 void Update_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
+    u8->setFont(u8g2_font_profont17_tf);
     u8->setCursor(0, 30);
 
     //
