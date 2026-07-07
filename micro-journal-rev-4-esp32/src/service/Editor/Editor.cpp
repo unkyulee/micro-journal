@@ -494,6 +494,21 @@ void Editor::advanceWindow()
     if (windowEnd >= fileSize)
     {
         // was at the tail - open a fresh empty window to keep typing into
+
+        // The buffer saveFile() just flushed is now permanently on disk,
+        // outside the window we're about to load. Fold its count into the
+        // running file total now, before resetBuffer() below wipes it --
+        // otherwise it's silently dropped the moment wordcounter_service()
+        // next recomputes wordCountBuffer against the new, much smaller
+        // buffer, undercounting every page after the first.
+        wordCountFile += wordCountBuffer;
+        wordCountBuffer = 0;
+
+        JsonDocument &app = status();
+        int file_index = app["config"]["file_index"].as<int>();
+        app["config"][format("wordcount_file_%d", file_index)] = wordCountFile;
+        app["config"][format("wordcount_buffer_%d", file_index)] = wordCountBuffer;
+
         seekPos = windowEnd;
         loadedLength = 0;
         resetBuffer();

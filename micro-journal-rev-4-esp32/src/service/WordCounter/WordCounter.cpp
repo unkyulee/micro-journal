@@ -7,14 +7,19 @@
 
 void wordcounter_service()
 {
+    JsonDocument &app = status();
+
+    // only relevant while the document is actually on screen
+    if (app["screen"].as<int>() != WORDPROCESSOR)
+    {
+        return;
+    }
+
     static unsigned int last = 0;
     static unsigned int buffer_count_prev = 0;
     if (millis() > 10000 + last)
     {
         last = millis();
-
-        // check if the file is not saved then run the word count logic
-        JsonDocument &app = status();
 
         //
         unsigned int buffer_count = Editor::getInstance().getBufferSize();
