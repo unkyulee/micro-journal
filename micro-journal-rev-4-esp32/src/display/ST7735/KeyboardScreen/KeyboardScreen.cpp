@@ -4,7 +4,7 @@
 #include "service/GIF/GIF.h"
 #include "keyboard/keyboard.h"
 
-#include <Keyboard.h>
+#include "KeyboardTinyUSB.h"
 
 bool _keyboard_gif_loaded = false;
 unsigned int _keyboard_sleep = 0;

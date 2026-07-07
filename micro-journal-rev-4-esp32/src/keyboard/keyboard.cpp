@@ -38,7 +38,7 @@
 #endif
 
 #ifdef BOARD_PICO
-#include <Keyboard.h>
+#include "KeyboardTinyUSB.h"
 #endif
 
 #if defined(BOARD_ESP32_S3)
@@ -48,6 +48,24 @@
 //
 void keyboard_setup()
 {
+#if defined(BOARD_PICO)
+  // Register the boot-protocol HID interface at boot, not lazily when the
+  // on-screen keyboard first shows, so it's present for BIOS/UEFI POST.
+  Keyboard.begin();
+
+  // The arduino-pico core connects to the USB bus and the host may
+  // enumerate before setup() gets around to registering the HID
+  // keyboard/MSC interfaces above (display/filesystem init runs first
+  // and isn't instant) -- a host that already enumerated won't pick up
+  // interfaces added afterwards without a fresh attach cycle.
+  if (TinyUSBDevice.mounted())
+  {
+    TinyUSBDevice.detach();
+    delay(10);
+    TinyUSBDevice.attach();
+  }
+#endif
+
 #ifdef REV7
   // setup USB Host
   USBHost_setup();
@@ -59,7 +77,6 @@ void keyboard_setup()
 
 #if defined(KEYPAD_48) && defined(BOARD_PICO)
   keyboard_keypad_48_setup();
-
 #endif
 
 #ifdef KNOB

@@ -14,6 +14,10 @@ void ms_setup()
 {
     // Register callback for host ejection
     _log("Mass Storage Setup\n");
+
+#ifdef BOARD_PICO
+    ms_rp2040_setup();
+#endif
 }
 
 //

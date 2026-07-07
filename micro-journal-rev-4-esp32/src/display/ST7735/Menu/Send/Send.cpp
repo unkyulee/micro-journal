@@ -9,7 +9,7 @@
 #include "service/Send/Send.h"
 
 //
-#include <Keyboard.h>
+#include "KeyboardTinyUSB.h"
 
 // function reference used for SEND
 void _send_key(int key)
