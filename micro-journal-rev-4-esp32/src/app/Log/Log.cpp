@@ -53,7 +53,7 @@ void _log(const char *format, ...)
 //
 void _debug(const char *format, ...)
 {
-#if defined(DEBUG)
+#if defined(_DEBUG)
     // Buffer to hold the formatted message
     // Adjust the size according to your needs
     char message[1024];
