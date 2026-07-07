@@ -78,7 +78,6 @@ char keys[ROWS][COLS] = {
     {54, 55, 56, 57, 58, 59, 60, 61, 62},
     {63, 64, 65, 66, 67, 68, 69, 70, 71}};
 
-
 #ifdef BOARD_PICO
 byte rowPins[ROWS] = {0, 1, 2, 3, 4, 5, 6, 7};
 byte colPins[COLS] = {13, 14, 15, 16, 17, 18, 19, 20, 21};
@@ -264,7 +263,7 @@ int keyboard_keypad_68_get_key(keypadEvent e)
     // the locale tables instead of returning the hardcoded US character
     JsonDocument &app = status();
     String locale = app["config"]["keyboard_layout"].as<String>();
-    if (locale.length() > 0 && locale != "US")
+    if (locale.length() > 0 && locale != "US" && locale != "null")
     {
         uint8_t hid = key_hid[e.bit.KEY];
         if (hid != 0)
@@ -274,6 +273,9 @@ int keyboard_keypad_68_get_key(keypadEvent e)
                 key = ascii;
         }
     }
+
+    //
+    //_log("[keyboard_keypad_68_get_key] Layer: %d, Key: %d, HID: %d, ASCII: %d Locale: %s\n", _layer, e.bit.KEY, key_hid[e.bit.KEY], key, locale.c_str());
 
     // return the corresponding key
     return key;
