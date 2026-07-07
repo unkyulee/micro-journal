@@ -69,7 +69,7 @@ You can setup your own Google Drive then back up your files via Wifi. There is n
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
-* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+* [Micro Journal Rev.8 Discussion Forum](https://www.flickr.com/groups/alphasmart/discuss/72157721925271377/72157721925345415/)
 
 
 ### Online Shop
