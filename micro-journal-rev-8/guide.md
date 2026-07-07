@@ -24,9 +24,27 @@ At the moment, the documentation is still in preparation.
 
 
 ### Firmware Update
-1. Download latest firmware from [GitHub Releases](https://github.com/unkyulee/micro-journal/releases).  
-2. Copy `firmware_rev_8.bin` while connected to the PC with Drive Mode.
-3. Reboot device; it will auto-update.  
+
+Back up all the files inside the Drive. 
+Use "Drive Mode" and copy all the files before this process. 
+All files will be deleted during the firmware update.
+
+1) Download the firmware to your PC
+https://github.com/unkyulee/micro-journal/releases
+
+2) Go to the web flash tool:
+https://www.espboards.dev/tools/program/
+
+3) Connect the ESP32 port to your computer.
+When the screen is open, use the upper USB port.
+
+4) Click Connect in the web flash tool.
+
+5) Upload the file named firmware_rev_8.bin.
+
+6) Change the Flash Address to "0x0"
+
+7) Click Program to flash the firmware.
 
 
 
@@ -35,8 +53,7 @@ At the moment, the documentation is still in preparation.
 - Connect USB cable to the ESP32 (side of the display) bottom port to a PC. 
 - In Micro Journal Rev.8 menu, select "Drive Mode"
 - In PC, drive will show up and you can navigate text files inside the drive
-- Click on "Eject" from the PC
-- Press "ESC" from Micro Journal Rev.8
+- Click on "Eject" from the PC or Press "ESC" from Micro Journal Rev.8
 - USB cable can be disconnected
 
 
