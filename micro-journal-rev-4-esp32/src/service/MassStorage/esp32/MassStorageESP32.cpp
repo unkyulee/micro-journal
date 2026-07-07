@@ -40,7 +40,7 @@ void ms_esp32_loop()
         {
             // disactivate FAT file system before Mass Storage
             gfs()->end();
-            
+
             if (FatFSUSB.begin())
             {
                 app["massStorageStarted"] = true;
@@ -64,7 +64,10 @@ void ms_esp32_loop()
             app["massStorageStarted"] = false;
             app["massStorage"] = false;
 
-            _log("FatFSUSB ejected\n");
+            _log("Mass Storage ejected\n");
+
+            delay(3000);
+            ESP.restart();
         }
     }
     else

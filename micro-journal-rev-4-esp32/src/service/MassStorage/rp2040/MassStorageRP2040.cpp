@@ -67,7 +67,8 @@ namespace
 
     bool startStop(uint8_t power_condition, bool start, bool load_eject)
     {
-        (void)power_condition;
+        // TEMP DIAGNOSTIC: confirm whether the host ever sends this at all.
+        Serial.printf("MSC startStop: power_condition=%u start=%d load_eject=%d\n", power_condition, start, load_eject);
 
         // Host is ejecting or re-attaching the disk.
         if (!start && load_eject)
@@ -81,6 +82,28 @@ namespace
 
         return true;
     }
+}
+
+// Invoked on SCSI PREVENT/ALLOW MEDIUM REMOVAL (0x1E). Windows sends this
+// with prohibit_removal=0 as part of "Eject" -- observed to arrive instead
+// of, or before, START_STOP_UNIT depending on the driver, and Adafruit_USBD_MSC
+// doesn't wire this one up itself (its own tud_msc_scsi_cb is a separate,
+// unrelated fallback for SCSI opcodes core TinyUSB doesn't already handle,
+// and PREVENT_ALLOW_MEDIUM_REMOVAL is one of the ones it does), so it has to
+// be picked up here via the weak callback the core stack calls directly.
+extern "C" bool tud_msc_prevent_allow_medium_removal_cb(uint8_t lun, uint8_t prohibit_removal, uint8_t control)
+{
+    (void)lun;
+
+    // TEMP DIAGNOSTIC: confirm whether the host ever sends this at all.
+    Serial.printf("MSC preventAllowMediumRemoval: prohibit_removal=%u control=%u\n", prohibit_removal, control);
+
+    if (!prohibit_removal)
+    {
+        unplug();
+    }
+
+    return true;
 }
 
 //
@@ -148,6 +171,10 @@ void ms_rp2040_loop()
                 app["massStorage"] = false;
 
                 _log("Mass Storage ejected\n");
+
+                // reboot the device to ensure the filesystem is cleanly unmounted and the host sees it as ejected.
+                watchdog_reboot(0, 0, 3000);
+                delay(3000);
             }
         }
 
