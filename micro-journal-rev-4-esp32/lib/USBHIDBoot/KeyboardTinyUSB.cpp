@@ -163,6 +163,21 @@ void KeyboardTinyUSB_::end(void)
 
 void KeyboardTinyUSB_::sendReport(KeyReport *keys)
 {
+    // Wait (bounded) for the previous report to finish transmitting
+    // instead of silently dropping this one when the endpoint is
+    // momentarily still busy -- a single non-blocking ready() check was
+    // losing keystrokes typed faster than the HID poll interval (e.g.
+    // holding Shift then quickly tapping a letter fires two press() calls,
+    // and hence two sendReport() calls, close enough together to land in
+    // the same still-busy window). Mirrors the timeout/pump pattern the
+    // native arduino-pico Keyboard library uses in __USBHIDReady().
+    uint32_t start = millis();
+    const uint32_t timeout = 500;
+    while (((millis() - start) < timeout) && !_hid.ready())
+    {
+        tud_task();
+    }
+
     if (_hid.ready())
     {
         // Report ID 0: no leading ID byte, keeps the wire format identical
