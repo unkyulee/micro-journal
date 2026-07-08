@@ -11,35 +11,66 @@
 #include <u8g2_fonts.h>
 
 extern const uint8_t u8g2_font_profont22_tf[];
+extern const uint8_t u8g2_font_profont29_tf[];
 
 //
 int screen_width = 240;
 int screen_height = 135;
 
-//
-const int font_width = 14;
-const int font_height = 22;
+static const lgfx::U8g2font g_profont22(u8g2_font_profont22_tf);
+static const lgfx::U8g2font g_profont29(u8g2_font_profont29_tf);
+
+// Selectable word processor fonts. This backend advances the pen manually
+// by glyphWidth when drawing (see WP_render_line), so glyphWidth here is
+// the rendering grid (glyph width plus letter spacing), not the font's own
+// advance - it is used as declared and never re-measured.
+static EditorFont WP_FONTS[] = {
+    {"profont22", &g_profont22, 14, 22, nullptr},
+    {"profont29", &g_profont29, 18, 29, nullptr},
+};
+static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
+
+// active font, selected in WP_setup from config "font"
+static EditorFont *wp_font = &WP_FONTS[0];
 
 // Lines will be rendered at the bottom on the screen
 // need to calculate the Y position considering the status bar height
-const int editY = 90;
-const int cursorY = editY + font_height - 2;
+// layout derived from the active font metrics in WP_setup
+static int editY = 90;
+static int cursorY = 110;
 const int cursorHeight = 2;
 
 // Some flags
 bool clear_background = true;
 unsigned int last_sleep = millis();
 
-static const lgfx::U8g2font g_profont22(u8g2_font_profont22_tf);
-
 //
 void WP_setup()
 {
-    // Editor Init - setup screen size
-    Editor::getInstance().init(17, 4);
-
     // setup default color
     JsonDocument &app = status();
+
+    // pick the font from config ("font" is an index into WP_FONTS)
+    int fontIndex = app["config"]["font"].as<int>();
+    if (fontIndex < 0 || fontIndex >= WP_FONT_COUNT)
+        fontIndex = 0;
+    wp_font = &WP_FONTS[fontIndex];
+
+    // derive the layout from the font metrics:
+    // the status bar occupies the bottom 18 pixels, the edit line sits
+    // right above it and the history lines fill the rest
+    int statusbarY = screen_height - 18;
+    int rows = (statusbarY - 2 - wp_font->lineHeight) / wp_font->lineHeight;
+    int cols = screen_width / wp_font->glyphWidth;
+    editY = rows * wp_font->lineHeight + 2;
+    cursorY = editY + wp_font->lineHeight - 2;
+
+    //
+    _log("WP layout font: %s %dx%d cols: %d rows: %d editY: %d\n",
+         wp_font->id, wp_font->glyphWidth, wp_font->lineHeight, cols, rows, editY);
+
+    // Editor Init - setup screen size
+    Editor::getInstance().init(cols, rows, wp_font);
 
     // load file from the editor
     int file_index = app["config"]["file_index"].as<int>();
@@ -104,7 +135,7 @@ void WP_render_text()
     // SET FONT
     M5Cardputer.Display.setTextSize(1);
     M5Cardputer.Display.setTextColor(foreground_color, background_color);
-    M5Cardputer.Display.setFont(&g_profont22);
+    M5Cardputer.Display.setFont((const lgfx::IFont *)wp_font->fontData);
 
     // Cursor Information
     static int cursorLine_prev = 0;
@@ -131,7 +162,7 @@ void WP_render_text()
                 WP_render_line(i, y);
 
             // new line
-            y += font_height;
+            y += wp_font->lineHeight;
         }
     }
     else
@@ -161,13 +192,13 @@ void WP_render_line(int line_num, int y)
 
         String str = asciiToUnicode(value);
         if (str.length() == 0)
-            M5Cardputer.Display.drawChar((char)value, x, y+font_height-4);
+            M5Cardputer.Display.drawChar((char)value, x, y + wp_font->lineHeight - 4);
         else
             //
             M5Cardputer.Display.drawString(str, x, y);
 
-        //
-        x += font_width;
+        // advance the pen on the fixed rendering grid
+        x += wp_font->glyphWidth;
     }
 
     if (length > 0)
@@ -190,19 +221,19 @@ void WP_render_cursor()
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // Cursor information
-    static int cursorLinePos_prev = 0;
+    static int cursorLineCols_prev = 0;
     int cursorLinePos = Editor::getInstance().cursorLinePos;
-    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorLineCols = Editor::getInstance().cursorLineCols;
     int cursorPos = Editor::getInstance().cursorPos;
 
     // Calculate Cursor X position
     // reached the line where cursor is
-    // distance X is cursorPos - pos
+    // cursor offset is measured in display columns so it stays correct
+    // once double-width glyphs exist
     int cursorX = 0;
     if (Editor::getInstance().buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
     {
-        // font width 12
-        cursorX = cursorLinePos * font_width;
+        cursorX = cursorLineCols * wp_font->glyphWidth;
     }
 
     // Blink the cursor every 500 ms
@@ -215,20 +246,20 @@ void WP_render_cursor()
     }
 
     // Delete previous cursor line
-    if (cursorLinePos != cursorLinePos_prev)
+    if (cursorLineCols != cursorLineCols_prev)
     {
         //
-        M5Cardputer.Display.fillRect(cursorLinePos_prev * font_width, cursorY, font_width, cursorHeight, background_color);
+        M5Cardputer.Display.fillRect(cursorLineCols_prev * wp_font->glyphWidth, cursorY, wp_font->glyphWidth, cursorHeight, background_color);
 
         //
-        cursorLinePos_prev = cursorLinePos;
+        cursorLineCols_prev = cursorLineCols;
     }
 
     // Cursor Blink will be always at the bottom of the screen
     if (blink)
-        M5Cardputer.Display.fillRect(cursorX, cursorY, font_width, cursorHeight, foreground_color);
+        M5Cardputer.Display.fillRect(cursorX, cursorY, wp_font->glyphWidth, cursorHeight, foreground_color);
     else
-        M5Cardputer.Display.fillRect(cursorX, cursorY, font_width, cursorHeight, background_color);
+        M5Cardputer.Display.fillRect(cursorX, cursorY, wp_font->glyphWidth, cursorHeight, background_color);
 }
 
 //

@@ -14,26 +14,61 @@ int screen_height = 240;
 bool clear_background = true;
 unsigned int last_sleep = millis();
 
-//
-const int font_width = 12;
-const int font_height = 18;
-const int cursorY = 210;
+// Selectable word processor fonts. lineHeight is the u8g2 paragraph
+// advance (what print("\n") moves by), not the glyph height. Declared
+// glyph widths are corrected at setup by measuring the actual font.
+static EditorFont WP_FONTS[] = {
+    {"profont22", u8g2_font_profont22_mf, 12, 18, nullptr},
+    {"profont29", u8g2_font_profont29_mf, 16, 25, nullptr},
+};
+static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
+
+// active font, selected in WP_setup from config "font"
+static EditorFont *wp_font = &WP_FONTS[0];
+
+// layout derived from the active font metrics in WP_setup
+static int editY = 206;   // baseline of the edit line
+static int cursorY = 210; // top of the cursor band under the edit line
 const int cursorHeight = 2;
-//
-const int editY = cursorY - 4;
+const int cursorGap = 4; // space between edit line baseline and cursor band
 
 //
 void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
-    // editor instantiate
-    Editor::getInstance().init(26, 10);
-
     // setup default color
     JsonDocument &app = status();
     if (!app["config"]["foreground_color"].is<int>())
     {
         app["config"]["foreground_color"] = TFT_WHITE;
     }
+
+    // pick the font from config ("font" is an index into WP_FONTS)
+    int fontIndex = app["config"]["font"].as<int>();
+    if (fontIndex < 0 || fontIndex >= WP_FONT_COUNT)
+        fontIndex = 0;
+    wp_font = &WP_FONTS[fontIndex];
+
+    // measure the real glyph advance instead of trusting the declared value
+    pu8f->setFont((const uint8_t *)wp_font->fontData);
+    int16_t measured = pu8f->getUTF8Width("M");
+    if (measured > 0)
+        wp_font->glyphWidth = measured;
+
+    // derive the layout from the font metrics:
+    // the cursor band is anchored just above the status bar, and history
+    // lines start at 1.5 line heights (see WP_render_text)
+    cursorY = STATUSBAR_Y - 14;
+    editY = cursorY - cursorGap;
+    int textTop = wp_font->lineHeight * 3 / 2;
+    int rows = (editY - textTop) / wp_font->lineHeight + 1;
+    int cols = screen_width / wp_font->glyphWidth;
+
+    //
+    _log("WP layout font: %s %dx%d cols: %d rows: %d editY: %d\n",
+         wp_font->id, wp_font->glyphWidth, wp_font->lineHeight, cols, rows, editY);
+
+    // editor instantiate
+    Editor::getInstance().init(cols, rows, wp_font);
 
     // load file from the editor
     int file_index = app["config"]["file_index"].as<int>();
@@ -233,7 +268,7 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // SET FONT
-    pu8f->setFont(u8g2_font_profont22_tf);
+    pu8f->setFont((const uint8_t *)wp_font->fontData);
     pu8f->setForegroundColor(foreground_color);
     pu8f->setFontMode(1);
 
@@ -257,12 +292,12 @@ void WP_render_text(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
         //
         pu8f->begin(sprite);
-        pu8f->setFont(u8g2_font_profont22_mf);
+        pu8f->setFont((const uint8_t *)wp_font->fontData);
         pu8f->setForegroundColor(foreground_color);
         pu8f->setFontMode(1);
 
         //
-        pu8f->setCursor(0, font_height + font_height / 2);
+        pu8f->setCursor(0, wp_font->lineHeight + wp_font->lineHeight / 2);
 
         // start line
         int rows = Editor::getInstance().rows;
@@ -366,19 +401,19 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();
 
     // Cursor information
-    static int cursorLinePos_prev = 0;
+    static int cursorLineCols_prev = 0;
     int cursorLinePos = Editor::getInstance().cursorLinePos;
-    int cursorLine = Editor::getInstance().cursorLine;
+    int cursorLineCols = Editor::getInstance().cursorLineCols;
     int cursorPos = Editor::getInstance().cursorPos;
 
     // Calculate Cursor X position
     // reached the line where cursor is
-    // distance X is cursorPos - pos
+    // cursor offset is measured in display columns so it stays correct
+    // once double-width glyphs exist
     int cursorX = 0;
     if (Editor::getInstance().buffer[cursorPos - 1] != '\n' && cursorLinePos != 0)
     {
-        // font width 12
-        cursorX = cursorLinePos * font_width;
+        cursorX = cursorLineCols * wp_font->glyphWidth;
     }
 
     // Blink the cursor every 500 ms
@@ -391,20 +426,20 @@ void WP_render_cursor(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
     }
 
     // Delete previous cursor line
-    if (cursorLinePos != cursorLinePos_prev)
+    if (cursorLineCols != cursorLineCols_prev)
     {
         //
-        ptft->fillRect(cursorLinePos_prev * font_width, cursorY, font_width, cursorHeight, background_color);
+        ptft->fillRect(cursorLineCols_prev * wp_font->glyphWidth, cursorY, wp_font->glyphWidth, cursorHeight, background_color);
 
         //
-        cursorLinePos_prev = cursorLinePos;
+        cursorLineCols_prev = cursorLineCols;
     }
 
     // Cursor Blink will be always at the bottom of the screen
     if (blink)
-        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, foreground_color);
+        ptft->fillRect(cursorX, cursorY, wp_font->glyphWidth, cursorHeight, foreground_color);
     else
-        ptft->fillRect(cursorX, cursorY, font_width, cursorHeight, background_color);
+        ptft->fillRect(cursorX, cursorY, wp_font->glyphWidth, cursorHeight, background_color);
 }
 
 //

@@ -11,11 +11,14 @@
 
 //
 // Editor Initialization with column and row setup
-void Editor::init(int cols, int rows)
+void Editor::init(int cols, int rows, const EditorFont *font)
 {
     // Define Screen Size
     this->cols = cols;
     this->rows = rows;
+
+    // Active font (may be NULL for fixed-layout backends)
+    this->font = font;
 
     //
     resetBuffer();
@@ -25,7 +28,8 @@ void Editor::init(int cols, int rows)
     savingInProgress = false;
 
     // You can add any additional setup logic here
-    _log("Editor initialized with columns: %d, rows: %d\n", cols, rows);
+    _log("Editor initialized with columns: %d, rows: %d, font: %s\n",
+         cols, rows, font ? font->id : "(none)");
 }
 
 // Given the fileName, go through the loading process
@@ -951,6 +955,7 @@ void Editor::updateScreen()
         lineLengths[0] = 0;
         cursorLine = 0;
         cursorLinePos = 0;
+        cursorLineCols = 0;
         return;
     }
 
@@ -960,15 +965,22 @@ void Editor::updateScreen()
 
     //
     this->totalLine = 0;
-    int line_count = 0;
+    int line_count = 0; // bytes in the current line
+    int line_width = 0; // display columns in the current line
 
     // remember the last space position to use it for the word wrap
     int last_space_index = -1;
     int last_space_position = -1;
+    int last_space_width = -1;
 
     //
     // BUFFER -> SPLIT IN LINES
     //
+    // linePositions/lineLengths stay byte-based (renderers print bytes),
+    // but wrapping decisions are made in display columns via charColumns()
+    // so double-width glyphs wrap correctly once they exist. Today one
+    // byte is one character is one column, so this behaves exactly like
+    // the old byte-counting loop.
     for (int i = 0; i < BUFFER_SIZE; i++) // Fixed loop condition
     {
         // When reaching the end of text, break
@@ -981,18 +993,23 @@ void Editor::updateScreen()
             break;
         }
 
-        // Count total characters in a line
+        // Advance exactly one character: its bytes and its display width.
+        // This is the single point where the Korean step will swap in a
+        // UTF-8 decoder (one character = 1-3 bytes) without touching the
+        // rest of the loop.
         line_count++;
+        line_width += charColumns((uint8_t)buffer[i]);
 
         // Track the position of the last space
         if (buffer[i] == ' ')
         {
             last_space_index = i;
             last_space_position = line_count;
+            last_space_width = line_width;
         }
 
         // Handle words longer than `cols`
-        if (line_count == cols && last_space_index == -1)
+        if (line_width >= cols && last_space_index == -1)
         {
             // Register the line count
             lineLengths[totalLine] = line_count;
@@ -1002,13 +1019,15 @@ void Editor::updateScreen()
 
             // Reset counters
             line_count = 0;
+            line_width = 0;
             last_space_index = -1;
             last_space_position = -1;
+            last_space_width = -1;
 
             continue;
         }
         // When receiving a newline or max characters reached, start a new line
-        if (buffer[i] == '\n' || line_count == cols)
+        if (buffer[i] == '\n' || line_width >= cols)
         {
             // when ENTER key is found
             if (buffer[i] == '\n')
@@ -1021,6 +1040,7 @@ void Editor::updateScreen()
 
                 // reset counters
                 line_count = 0;
+                line_width = 0;
             }
 
             // This line requires word-wrap
@@ -1034,6 +1054,7 @@ void Editor::updateScreen()
 
                 // new line count starts from the wrapped word
                 line_count -= last_space_position;
+                line_width -= last_space_width;
             }
 
             // This line doesn't requrie word wrap
@@ -1047,11 +1068,13 @@ void Editor::updateScreen()
 
                 //
                 line_count = 0;
+                line_width = 0;
             }
 
             // reset the word wrap flags
             last_space_index = -1;
             last_space_position = -1;
+            last_space_width = -1;
         }
     }
 
@@ -1083,6 +1106,13 @@ void Editor::updateScreen()
             break;
         }
     }
+
+    // cursor offset within the line in display columns - what the display
+    // multiplies by the glyph width to place the cursor. Equal to
+    // cursorLinePos while every character is single-width.
+    cursorLineCols = 0;
+    for (char *p = linePositions[cursorLine]; p < pCursorPos; p++)
+        cursorLineCols += charColumns((uint8_t)*p);
 
     //
     _debug("Editor::updateScreen cursorPos: %d\n", cursorPos);

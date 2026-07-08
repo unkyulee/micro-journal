@@ -3,6 +3,9 @@
 //
 #include <Arduino.h>
 
+//
+#include "EditorFont.h"
+
 #ifdef BOARD_PICO
 #define BUFFER_SIZE 2000
 #endif
@@ -43,8 +46,24 @@ public:
     bool pageChanged = false;
 
     // Screen Size Definition
+    // cols is measured in display columns, not bytes: a single-width glyph
+    // occupies 1 column, a double-width glyph (e.g. Hangul) occupies 2
     int rows = 10;
     int cols = 26;
+
+    // Active font. Owned by the display backend that registered it;
+    // the editor only reads metrics and the charColumns hook from it.
+    const EditorFont *font = nullptr;
+
+    // Display columns occupied by one codepoint with the active font.
+    // This is the single point where double-width (Korean) support will
+    // plug in - everything that measures text goes through here.
+    uint8_t charColumns(uint32_t codepoint)
+    {
+        if (font && font->charColumns)
+            return font->charColumns(codepoint);
+        return 1;
+    }
 
     // Each line starting point is saved in this array
     char *linePositions[BUFFER_SIZE + 2];
@@ -61,15 +80,22 @@ public:
     // Which line the cursor is placed
     int cursorLine = 0;
 
-    // Cursor position within the line
+    // Cursor position within the line, in bytes
     int cursorLinePos = 0;
+
+    // Cursor position within the line, in display columns.
+    // Displays must use this (not cursorLinePos) for cursor x placement so
+    // the math stays correct once double-width glyphs exist.
+    int cursorLineCols = 0;
 
     // Word Counter File
     int wordCountFile = 0;
     int wordCountBuffer = 0;
 
-    // Initialize the editor with the number of columns and rows
-    void init(int cols, int rows);
+    // Initialize the editor with the number of columns and rows.
+    // font is optional so display backends that still use a fixed layout
+    // keep working; when provided, its charColumns hook drives line wrap.
+    void init(int cols, int rows, const EditorFont *font = nullptr);
     void loop(); // house keeping tasks
 
     // File Operation
