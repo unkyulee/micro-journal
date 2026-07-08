@@ -41,6 +41,10 @@ void ms_esp32_loop()
             // disactivate FAT file system before Mass Storage
             gfs()->end();
 
+            // full CPU speed for USB transfer
+            // device is powered over USB during mass storage anyway
+            setCpuFrequencyMhz(CPU_FREQUENCY_FULL);
+
             if (FatFSUSB.begin())
             {
                 app["massStorageStarted"] = true;
@@ -48,6 +52,8 @@ void ms_esp32_loop()
             }
             else
             {
+                setCpuFrequencyMhz(CPU_FREQUENCY_LOW);
+
                 app["massStorageStarted"] = false;
                 app["massStorage"] = false;
                 _log("FatFSUSB begin failed\n");
@@ -79,6 +85,10 @@ void ms_esp32_loop()
 
             app["massStorageStarted"] = false;
             _log("FatFSUSB end\n");
+
+            // back to the battery saving CPU speed
+            // the ejected path skips this since it restarts the device
+            setCpuFrequencyMhz(CPU_FREQUENCY_LOW);
         }
     }
 }

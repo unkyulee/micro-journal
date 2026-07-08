@@ -1,7 +1,7 @@
 #pragma once
 
 // app version
-#define VERSION "2.0.0708"
+#define VERSION "2.0.0709"
 
 // default utility headers
 #include <ArduinoJson.h>
@@ -12,7 +12,15 @@
 #include "service/Tools/Tools.h"
 #include <HardwareSerial.h>
 
-// 
+#ifdef BOARD_ESP32_S3
+// CPU runs at the low frequency to save battery
+// switch to full speed during WiFi sync and USB mass storage sessions
+// WiFi requires at least 80 MHz
+#define CPU_FREQUENCY_LOW 80
+#define CPU_FREQUENCY_FULL 240
+#endif
+
+//
 void app_setup();
 void app_loop();
 

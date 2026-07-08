@@ -74,6 +74,9 @@ void sync_start()
     app["sync_message"] = "Connecting to WiFi";
     app["clear"] = true;
 
+    // full CPU speed while WiFi is in use
+    setCpuFrequencyMhz(CPU_FREQUENCY_FULL);
+
     // Scan for available networks
     WiFi.mode(WIFI_STA);
     WiFi.setHostname("MICROJOURNAL");
@@ -162,7 +165,14 @@ void sync_start()
 
 void sync_stop()
 {
-    WiFi.disconnect();
+    // power down the WiFi radio entirely
+    // WiFi.disconnect alone leaves the radio on in STA mode draining the battery
+    // WiFi.begin re-enables STA mode so retrying another network still works
+    WiFi.disconnect(true);
+    WiFi.mode(WIFI_OFF);
+
+    // back to the battery saving CPU speed
+    setCpuFrequencyMhz(CPU_FREQUENCY_LOW);
 }
 
 bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password)
@@ -214,8 +224,10 @@ bool sync_connect_wifi(JsonDocument &app, const char *ssid, const char *password
         app["sync_state"] = SYNC_ERROR;
         app["clear"] = true;
 
-        //
-        sync_stop();
+        // drop the association only
+        // sync_start still retries the remaining saved networks
+        // the final sync_stop powers down the radio
+        WiFi.disconnect();
 
         return false; // Failed to connect
     }

@@ -130,6 +130,13 @@ void app_setup()
     BLEServer_init();
 #endif
 
+#ifdef BOARD_ESP32_S3
+    // lower the CPU clock to extend battery life
+    // sync and mass storage restore full speed while they run
+    setCpuFrequencyMhz(CPU_FREQUENCY_LOW);
+    _log("CPU frequency set to %d MHz\n", getCpuFrequencyMhz());
+#endif
+
     // app ready
     _ready = true;
     _log("App is ready\n");
