@@ -20,8 +20,6 @@ int keyboardConnectedPrev = -1;
 // refresh is worth doing this tick.
 static bool needsDisplay = true;
 
-
-
 #if defined(KEYPAD_68)
 #define TOTAL_KEYS 72
 #define KNOB_INDEX 69
@@ -119,6 +117,15 @@ void KeyboardScreen_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX 
 
     // load keyboard layout
     // Load Custom Keybaord Layout
+#if defined(KEYPAD_68)
+    const char *keys[] = {"main", "alt"};
+    keyboard_config_load(
+        "/keyboard_usb.json",
+        (int *)_usb_keyboard_layers,
+        TOTAL_KEYS,
+        keys,
+        2);
+#elif defined(KEYPAD_48)
     const char *keys[] = {"main", "lower", "raise"};
     keyboard_config_load(
         "/keyboard_usb.json",
@@ -126,6 +133,9 @@ void KeyboardScreen_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX 
         TOTAL_KEYS,
         keys,
         3);
+#endif
+
+    
 
     // Setup Bluetooth Keyboard
     bleKeyboard.setName("Micro Journal");
@@ -152,11 +162,11 @@ void KeyboardScreen_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX
         u8->setFont(u8g2_font_courB14_tf);
 
         // Title
-        u8->setCursor(20, 30);
+        u8->setCursor(10, 30);
         u8->print("BLUETOOTH KEYBOARD");
 
         // Status Box
-        u8->setCursor(20, 80);
+        u8->setCursor(10, 80);
         if (keyboardConnected)
         {
             u8->print("Status: Connected");
@@ -167,13 +177,13 @@ void KeyboardScreen_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX
         }
 
         // Instructions
-        u8->setCursor(20, 145);
+        u8->setCursor(10, 145);
         u8->print("Turn off device to end session.");
 
-        u8->setCursor(20, 175);
+        u8->setCursor(10, 175);
         u8->print("Press top-left and top-right keys");
 
-        u8->setCursor(20, 205);
+        u8->setCursor(10, 205);
         u8->print("simultaneously to SEND.");
 
         // decide whether the panel actually needs to be pushed over SPI this tick
@@ -302,6 +312,10 @@ void KeyboardScreen_keyboard(int key, bool pressed, int index)
 
 void KeyboardScreen_play(String macro)
 {
+    //
+    _log("KeyboardScreen_play: %s\n", macro.c_str());
+
+    // Split the macro string by commas and process each token
     int start = 0;
     while (start < macro.length())
     {

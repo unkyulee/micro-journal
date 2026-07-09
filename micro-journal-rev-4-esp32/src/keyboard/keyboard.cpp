@@ -217,7 +217,7 @@ void keyboard_config_load(
 
     // save the current key pos
     int pos = 0;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < keyCount; i++)
     {
       const char *key = keys[i];
       JsonArray keyArray = keyboardConfig[key].as<JsonArray>();
