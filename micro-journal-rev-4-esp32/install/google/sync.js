@@ -7,10 +7,9 @@ function doPost(e) {
     //
     var fileContent = e.postData.contents;
 
+    // the device sends the journal as base64-encoded UTF-8 bytes
     fileContent = Utilities.base64Decode(fileContent);
-    fileContent = Utilities.newBlob(fileContent).getDataAsString("ISO-8859-1"); // decode with extended ascii
-    fileContent = Utilities.newBlob(fileContent).getBytes(); // to byte array
-    fileContent = Utilities.newBlob(fileContent).getDataAsString("UTF-8"); // encode to utf-8
+    fileContent = Utilities.newBlob(fileContent).getDataAsString("UTF-8");
 
     //
     var fileName = getFormattedDate() + "_uJournal.txt";

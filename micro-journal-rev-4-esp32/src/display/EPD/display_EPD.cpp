@@ -165,7 +165,9 @@ void display_EPD_loop()
     }
 }
 
-void display_EPD_keyboard(char key, bool pressed, int index)
+// key is int: printable keys above 127 (UTF-8 codepoints) and virtual
+// keys like the 1000+ file-change requests must not be narrowed to char
+void display_EPD_keyboard(int key, bool pressed, int index)
 {
     JsonDocument &app = status();
     int screen = app["screen"].as<int>();

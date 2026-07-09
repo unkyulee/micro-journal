@@ -181,32 +181,38 @@ void WP_render_line(int line_num, int y)
     char *line = Editor::getInstance().linePositions[line_num];
     int length = Editor::getInstance().lineLengths[line_num];
 
-    // render
+    // render - this backend places every character on a fixed grid, so
+    // walk the UTF-8 buffer one whole character at a time
     int x = 0;
-    for (int i = 0; i < length; i++)
+    int i = 0;
+    while (i < length)
     {
-        // convert extended ascii into a streamlined string
-        uint8_t value = *(line + i);
-        if (value == '\n')
+        const char *p = line + i;
+        if (*p == '\n')
+        {
+            i++;
             continue;
+        }
 
-        String str = asciiToUnicode(value);
-        if (str.length() == 0)
-            M5Cardputer.Display.drawChar((char)value, x, y + wp_font->lineHeight - 4);
+        int charLen;
+        uint32_t codepoint = utf8_decode(p, &charLen);
+
+        if (charLen == 1)
+            M5Cardputer.Display.drawChar(*p, x, y + wp_font->lineHeight - 4);
         else
-            //
-            M5Cardputer.Display.drawString(str, x, y);
+        {
+            // hand the whole multi-byte character to the UTF-8-aware
+            // string renderer
+            char utf8Char[5];
+            memcpy(utf8Char, p, charLen);
+            utf8Char[charLen] = '\0';
+            M5Cardputer.Display.drawString(utf8Char, x, y);
+        }
 
-        // advance the pen on the fixed rendering grid
-        x += wp_font->glyphWidth;
-    }
-
-    if (length > 0)
-    {
-        // Create a temporary null-terminated buffer
-        char temp[length + 1];
-        memcpy(temp, line, length);
-        temp[length] = '\0';
+        // advance the pen on the fixed rendering grid by the character's
+        // display width (double-width glyphs take two cells)
+        x += Editor::getInstance().charColumns(codepoint) * wp_font->glyphWidth;
+        i += charLen;
     }
 }
 

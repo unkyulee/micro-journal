@@ -242,19 +242,15 @@ void WP_render_line(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f, int line_num)
     char *line = Editor::getInstance().linePositions[line_num];
     int length = Editor::getInstance().lineLengths[line_num];
 
-    // render
+    // render - the buffer holds UTF-8 and the u8g2 print pipeline decodes
+    // multi-byte characters itself, so bytes stream straight through
     for (int i = 0; i < length; i++)
     {
-        // convert extended ascii into a streamlined string
-        uint8_t value = *(line + i);
+        char value = *(line + i);
         if (value == '\n')
             continue;
 
-        String str = asciiToUnicode(value);
-        if (str.length() == 0)
-            pu8f->print((char)value);
-        else
-            pu8f->print(str);
+        pu8f->print(value);
     }
 }
 

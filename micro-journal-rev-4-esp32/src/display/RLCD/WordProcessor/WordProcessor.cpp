@@ -280,19 +280,15 @@ void WP_render_line(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8, i
     char *line = Editor::getInstance().linePositions[line_num];
     int length = Editor::getInstance().lineLengths[line_num];
 
-    // render
+    // render - the buffer holds UTF-8 and the u8g2 print pipeline decodes
+    // multi-byte characters itself, so bytes stream straight through
     for (int i = 0; i < length; i++)
     {
-        // convert extended ascii into a streamlined string
-        uint8_t value = *(line + i);
+        char value = *(line + i);
         if (value == '\n')
             continue;
 
-        String str = asciiToUnicode(value);
-        if (str.length() == 0)
-            u8->print((char)value);
-        else
-            u8->print(str);
+        u8->print(value);
     }
 }
 

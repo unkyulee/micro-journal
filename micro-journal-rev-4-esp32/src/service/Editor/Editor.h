@@ -5,6 +5,7 @@
 
 //
 #include "EditorFont.h"
+#include "Utf8.h"
 
 #ifdef BOARD_PICO
 #define BUFFER_SIZE 2000
@@ -114,7 +115,7 @@ public:
 
     // Handle Keyboard Inputs
     void keyboard(int key, bool pressed);
-    char lastKey = 0;
+    int lastKey = 0; // int: keys above 127 must not be narrowed
     unsigned long lastPressTime = 0;
     unsigned long repeatInterval = 80; // ms between repeats
     unsigned long repeatDelay = 300;   // ms before repeat starts
@@ -124,11 +125,18 @@ public:
     int getBufferSize() { return strlen(buffer); }
     void resetBuffer() { memset(buffer, '\0', sizeof(buffer)); }
 
-    //
+    // The buffer holds UTF-8: addChar takes a codepoint and encodes it,
+    // the remove operations always delete whole characters.
     void addChar(int c);
     void removeLastChar();
     void removeCharAtCursor();
     void removeLastWord();
+
+    // UTF-8 character navigation over the buffer. Positions passed in and
+    // returned are byte offsets that land on character boundaries.
+    int snapToCharStart(int pos); // back up to the lead byte at/before pos
+    int prevCharStart(int pos);   // start of the character before pos
+    int nextCharStart(int pos);   // start of the character after pos
 
     //
     void updateScreen();

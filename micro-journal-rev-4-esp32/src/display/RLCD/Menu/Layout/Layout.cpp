@@ -71,7 +71,7 @@ void Layout_keyboard(char key)
     else
     {
         // Log invalid key
-        Serial.println("Invalid key pressed. Defaulting to US layout.");
+        _log("Invalid key pressed. Defaulting to US layout. %c\n", key);
         app["config"]["keyboard_layout"] = "US";
     }
 

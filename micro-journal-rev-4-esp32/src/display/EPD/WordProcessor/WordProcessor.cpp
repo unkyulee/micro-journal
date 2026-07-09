@@ -177,16 +177,15 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
     // render
     if (line != NULL && length > 0)
     {
+        // the buffer holds UTF-8 and writeln() decodes it directly
         char row[256];
 
-        // Copy the line content to row, but not more than 255 characters
+        // Copy the line content to row, but not more than 255 bytes
         int copyLength = (length < 255) ? length : 255;
         strncpy(row, line, copyLength);
 
         // Null-terminate the string
         row[copyLength] = '\0';
-        char utf8[512];
-        convert_extended_ascii_to_utf8(row, utf8, 512);
 
         int cursorX = display_x();
         int cursorY = display_y();
@@ -195,7 +194,7 @@ void WP_render_text_line(int i, int cursorY, uint8_t *framebuffer)
         if (framebuffer == NULL)
             epd_poweron();
         //
-        writeln((GFXfont *)wp_font->fontData, utf8, &cursorX, &cursorY, framebuffer);
+        writeln((GFXfont *)wp_font->fontData, row, &cursorX, &cursorY, framebuffer);
 
         //
         if (framebuffer == NULL)
@@ -403,36 +402,45 @@ void WP_render_text()
         // Draw the new character entered
         else if (cursorPos != cursorPos_prev)
         {
+            char *line = Editor::getInstance().linePositions[cursorLine];
+            int line_length = Editor::getInstance().lineLengths[cursorLine];
+
+            // pixel offset of the byte at cursorLinePos_prev: count the
+            // display columns of the UTF-8 characters before it, since a
+            // byte offset alone no longer maps 1:1 to a screen position
+            int prefixCols = 0;
+            for (int j = 0; j < cursorLinePos_prev && j < line_length;)
+            {
+                int charLen;
+                uint32_t codepoint = utf8_decode(line + j, &charLen);
+                prefixCols += Editor::getInstance().charColumns(codepoint);
+                j += charLen;
+            }
+
             // render entire line
-            int cursorX = MARGIN_X + display_fontwidth() * cursorLinePos_prev;
+            int cursorX = MARGIN_X + display_fontwidth() * prefixCols;
             display_setline(cursorLine - startLine);
             int cursorY = display_y();
             _debug("cursorY: %d cursorLine: %d\n", cursorY, cursorLine);
-
-            char *line = Editor::getInstance().linePositions[cursorLine];
-            int line_length = Editor::getInstance().lineLengths[cursorLine];
 
             _debug("cursorLine: %d line: %d line_length: %d cursorLinePos_prev: %d\n", cursorLine, line, line_length, cursorLinePos_prev);
 
             // new character has been typed
             if (cursorLinePos_prev < line_length)
             {
-                // Copy the line content to row, but not more than 255 characters
+                // Copy the line tail from the previous cursor position,
+                // but not more than 255 bytes - it is already UTF-8
                 char row[256];
-                int copyLength = (line_length < 255) ? line_length : 255;
-                strncpy(row, line, copyLength);
+                int tailLength = line_length - cursorLinePos_prev;
+                int copyLength = (tailLength < 255) ? tailLength : 255;
+                strncpy(row, line + cursorLinePos_prev, copyLength);
                 row[copyLength] = '\0';
-
-                char utf8[512];
-                convert_extended_ascii_to_utf8(row + cursorLinePos_prev, utf8, 512);
 
                 //
                 epd_poweron();
-                writeln((GFXfont *)wp_font->fontData, utf8, &cursorX, &cursorY, NULL);
+                writeln((GFXfont *)wp_font->fontData, row, &cursorX, &cursorY, NULL);
                 epd_poweroff_all();
             }
-
-            
         }
     }
 
@@ -774,7 +782,7 @@ void WP_render_status()
 }
 
 //
-void WP_keyboard(char key, bool pressed, int index)
+void WP_keyboard(int key, bool pressed, int index)
 {
     // Every key stroke resets sleep timer
     last_sleep = millis();
@@ -849,36 +857,3 @@ void WP_keyboard(char key, bool pressed, int index)
     }
 }
 
-//
-void convert_extended_ascii_to_utf8(const char *input, char *output, size_t output_size)
-{
-    size_t out_index = 0;
-
-    for (size_t i = 0; input[i] != '\0' && out_index < output_size - 1; i++)
-    {
-        unsigned char ch = (unsigned char)input[i];
-
-        if (ch < 128)
-        {
-            // ASCII character, copy directly.
-            output[out_index++] = ch;
-        }
-        else
-        {
-            // Extended ASCII, encode in UTF-8 (2 bytes).
-            if (out_index + 2 < output_size)
-            {
-                output[out_index++] = 0xC0 | (ch >> 6);   // First byte: 110xxxxx
-                output[out_index++] = 0x80 | (ch & 0x3F); // Second byte: 10xxxxxx
-            }
-            else
-            {
-                // Not enough space for encoding.
-                break;
-            }
-        }
-    }
-
-    // Null-terminate the output.
-    output[out_index] = '\0';
-}

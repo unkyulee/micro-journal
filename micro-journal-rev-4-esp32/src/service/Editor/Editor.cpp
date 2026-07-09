@@ -9,6 +9,9 @@
 // EDITOR CLASS IMPLEMENTATION
 //
 
+// defined below - moves a file offset back to a UTF-8 character start
+static size_t alignToCharStart(File &file, size_t pos);
+
 //
 // Editor Initialization with column and row setup
 void Editor::init(int cols, int rows, const EditorFont *font)
@@ -127,6 +130,9 @@ void Editor::loadFile(String fileName)
             seekPos = 0;
     }
 
+    // never start the window in the middle of a UTF-8 character
+    seekPos = alignToCharStart(file, seekPos);
+
     _log("File seekPos: %d\n", seekPos);
 
     // move the file position to offset
@@ -181,6 +187,57 @@ void Editor::loadFile(String fileName)
 
     //
     config_save();
+}
+
+//
+// UTF-8 CHARACTER NAVIGATION
+//
+
+// back up to the lead byte of the character at/before pos
+int Editor::snapToCharStart(int pos)
+{
+    while (pos > 0 && utf8_is_continuation((uint8_t)buffer[pos]))
+        pos--;
+    return pos;
+}
+
+// start of the character before pos
+int Editor::prevCharStart(int pos)
+{
+    if (pos <= 0)
+        return 0;
+    return snapToCharStart(pos - 1);
+}
+
+// start of the character after pos
+int Editor::nextCharStart(int pos)
+{
+    int size = getBufferSize();
+    if (pos >= size)
+        return size;
+
+    pos += utf8_length((uint8_t)buffer[pos]);
+    if (pos > size)
+        pos = size;
+    return pos;
+}
+
+// Move a file offset back to the start of a UTF-8 character so a window
+// never begins in the middle of a multi-byte sequence.
+static size_t alignToCharStart(File &file, size_t pos)
+{
+    while (pos > 0)
+    {
+        if (!file.seek(pos))
+            break;
+
+        int b = file.read();
+        if (b < 0 || !utf8_is_continuation((uint8_t)b))
+            break;
+
+        pos--;
+    }
+    return pos;
 }
 
 // Copy `count` bytes from the current position of `src` to `dst`.
@@ -392,6 +449,12 @@ bool Editor::loadWindow(size_t offset, size_t length)
         _debug(app["error"]);
         return false;
     }
+
+    // never start the window in the middle of a UTF-8 character - widen
+    // the window backward so the split character is wholly included
+    size_t alignedOffset = alignToCharStart(file, offset);
+    length += offset - alignedOffset;
+    offset = alignedOffset;
 
     if (!file.seek(offset))
     {
@@ -739,15 +802,16 @@ void Editor::keyboard(int key, bool pressed)
                 }
                 else
                 {
-                    // left
-                    --cursorPos;
+                    // left - move over one whole character
+                    cursorPos = prevCharStart(cursorPos);
                 }
             }
             else if (key == 19)
             {
                 // cursor can't move outside the last text
                 if (cursorPos < getBufferSize())
-                    ++cursorPos;
+                    // right - move over one whole character
+                    cursorPos = nextCharStart(cursorPos);
                 else
                     // already at the end of the buffer - load the next page
                     pageForward();
@@ -786,8 +850,9 @@ void Editor::keyboard(int key, bool pressed)
                     if (newCursorPos < 0)
                         newCursorPos = 0;
 
-                    //
-                    cursorPos = newCursorPos;
+                    // land on a character boundary - byte-offset math can
+                    // fall inside a multi-byte character
+                    cursorPos = snapToCharStart(newCursorPos);
                 }
             }
 
@@ -820,8 +885,8 @@ void Editor::keyboard(int key, bool pressed)
                     if (newCursorPos > getBufferSize())
                         newCursorPos = getBufferSize();
 
-                    //
-                    cursorPos = newCursorPos;
+                    // land on a character boundary
+                    cursorPos = snapToCharStart(newCursorPos);
                     cursorLine += 1;
                 }
 
@@ -866,8 +931,8 @@ void Editor::keyboard(int key, bool pressed)
                 if (cursorLine == totalLine)
                     newCursorPos = getBufferSize();
 
-                //
-                cursorPos = newCursorPos;
+                // land on a character boundary
+                cursorPos = snapToCharStart(newCursorPos);
             }
 
             // PAGE UP
@@ -908,8 +973,8 @@ void Editor::keyboard(int key, bool pressed)
                     if (cursorLine == totalLine)
                         newCursorPos = getBufferSize();
 
-                    //
-                    cursorPos = newCursorPos;
+                    // land on a character boundary
+                    cursorPos = snapToCharStart(newCursorPos);
                 }
             }
         }
@@ -920,7 +985,9 @@ void Editor::keyboard(int key, bool pressed)
         else
         {
             // add to the edit buffer new character
-            if (getBufferSize() >= BUFFER_SIZE)
+            // (a character can be up to 4 UTF-8 bytes, so flush a little
+            // before the boundary so an insert never overruns it)
+            if (getBufferSize() + 4 >= BUFFER_SIZE)
             {
                 _log("Text buffer full\n");
 
@@ -976,12 +1043,12 @@ void Editor::updateScreen()
     //
     // BUFFER -> SPLIT IN LINES
     //
-    // linePositions/lineLengths stay byte-based (renderers print bytes),
-    // but wrapping decisions are made in display columns via charColumns()
-    // so double-width glyphs wrap correctly once they exist. Today one
-    // byte is one character is one column, so this behaves exactly like
-    // the old byte-counting loop.
-    for (int i = 0; i < BUFFER_SIZE; i++) // Fixed loop condition
+    // The buffer holds UTF-8. linePositions/lineLengths stay byte-based
+    // (renderers print bytes), but the loop advances one whole character
+    // at a time and makes wrapping decisions in display columns via
+    // charColumns(), so multi-byte and double-width glyphs wrap correctly.
+    int i = 0;
+    while (i < BUFFER_SIZE)
     {
         // When reaching the end of text, break
         if (buffer[i] == '\0')
@@ -993,15 +1060,14 @@ void Editor::updateScreen()
             break;
         }
 
-        // Advance exactly one character: its bytes and its display width.
-        // This is the single point where the Korean step will swap in a
-        // UTF-8 decoder (one character = 1-3 bytes) without touching the
-        // rest of the loop.
-        line_count++;
-        line_width += charColumns((uint8_t)buffer[i]);
+        // Advance exactly one character: its bytes and its display width
+        int charLen;
+        uint32_t codepoint = utf8_decode(&buffer[i], &charLen);
+        line_count += charLen;
+        line_width += charColumns(codepoint);
 
         // Track the position of the last space
-        if (buffer[i] == ' ')
+        if (codepoint == ' ')
         {
             last_space_index = i;
             last_space_position = line_count;
@@ -1015,7 +1081,7 @@ void Editor::updateScreen()
             lineLengths[totalLine] = line_count;
 
             // Start a new line
-            linePositions[++totalLine] = &buffer[i + 1];
+            linePositions[++totalLine] = &buffer[i + charLen];
 
             // Reset counters
             line_count = 0;
@@ -1024,19 +1090,20 @@ void Editor::updateScreen()
             last_space_position = -1;
             last_space_width = -1;
 
+            i += charLen;
             continue;
         }
         // When receiving a newline or max characters reached, start a new line
-        if (buffer[i] == '\n' || line_width >= cols)
+        if (codepoint == '\n' || line_width >= cols)
         {
             // when ENTER key is found
-            if (buffer[i] == '\n')
+            if (codepoint == '\n')
             {
                 // register the line count
                 lineLengths[totalLine] = line_count;
 
                 // start of the new line
-                linePositions[++totalLine] = &buffer[i + 1];
+                linePositions[++totalLine] = &buffer[i + charLen];
 
                 // reset counters
                 line_count = 0;
@@ -1044,7 +1111,7 @@ void Editor::updateScreen()
             }
 
             // This line requires word-wrap
-            else if (last_space_index != -1 && buffer[i] != '\n')
+            else if (last_space_index != -1)
             {
                 // register the line position as the last space position
                 lineLengths[totalLine] = last_space_position;
@@ -1064,7 +1131,7 @@ void Editor::updateScreen()
                 lineLengths[totalLine] = line_count;
 
                 //
-                linePositions[++totalLine] = &buffer[i + 1];
+                linePositions[++totalLine] = &buffer[i + charLen];
 
                 //
                 line_count = 0;
@@ -1076,12 +1143,14 @@ void Editor::updateScreen()
             last_space_position = -1;
             last_space_width = -1;
         }
+
+        i += charLen;
     }
 
     // Handle cursor position beyond buffer
     if (cursorPos >= BUFFER_SIZE)
     {
-        cursorPos = BUFFER_SIZE - 1;
+        cursorPos = snapToCharStart(BUFFER_SIZE - 1);
     }
 
     //
@@ -1108,11 +1177,16 @@ void Editor::updateScreen()
     }
 
     // cursor offset within the line in display columns - what the display
-    // multiplies by the glyph width to place the cursor. Equal to
-    // cursorLinePos while every character is single-width.
+    // multiplies by the glyph width to place the cursor. Counted per
+    // character, not per byte, so multi-byte glyphs occupy their true width.
     cursorLineCols = 0;
-    for (char *p = linePositions[cursorLine]; p < pCursorPos; p++)
-        cursorLineCols += charColumns((uint8_t)*p);
+    for (char *p = linePositions[cursorLine]; p < pCursorPos;)
+    {
+        int charLen;
+        uint32_t codepoint = utf8_decode(p, &charLen);
+        cursorLineCols += charColumns(codepoint);
+        p += charLen;
+    }
 
     //
     _debug("Editor::updateScreen cursorPos: %d\n", cursorPos);
@@ -1120,18 +1194,28 @@ void Editor::updateScreen()
 
 void Editor::addChar(int c)
 {
+    // encode the codepoint as UTF-8 (1 byte for ASCII, 2 for Latin-1
+    // accents, 3 for a Korean syllable)
+    char encoded[4];
+    int len = utf8_encode((uint32_t)c, encoded);
+
     int bufferSize = getBufferSize();
-    if (bufferSize < BUFFER_SIZE)
+
+    // the buffer has slack beyond BUFFER_SIZE so a multi-byte character
+    // arriving right at the boundary is never dropped - keyboard() flushes
+    // the window before the slack could ever be exceeded
+    if (bufferSize + len < (int)sizeof(buffer) - 1)
     {
         // shift the trailing texts
         if (bufferSize > cursorPos)
-            memmove(buffer + cursorPos + 1, buffer + cursorPos, bufferSize - cursorPos);
+            memmove(buffer + cursorPos + len, buffer + cursorPos, bufferSize - cursorPos);
 
         //
-        buffer[cursorPos++] = c;
-        buffer[++bufferSize] = '\0';
+        memcpy(buffer + cursorPos, encoded, len);
+        cursorPos += len;
+        buffer[bufferSize + len] = '\0';
 
-        _debug("FileBuffer::addChar::cursorPos %d %c\n", cursorPos, c);
+        _debug("FileBuffer::addChar::cursorPos %d %d (%d bytes)\n", cursorPos, c, len);
     }
 }
 
@@ -1144,15 +1228,19 @@ void Editor::removeLastChar()
 
     if (bufferSize > 0 && cursorPos > 0)
     {
-        // Shift the trailing texts left by one position
+        // delete the whole character before the cursor
+        int start = prevCharStart(cursorPos);
+        int len = cursorPos - start;
+
+        // Shift the trailing texts left
         if (bufferSize > cursorPos)
         {
-            memmove(buffer + cursorPos - 1, buffer + cursorPos, bufferSize - cursorPos);
+            memmove(buffer + start, buffer + cursorPos, bufferSize - cursorPos);
         }
 
         // Null terminate the buffer
-        buffer[bufferSize - 1] = 0;
-        cursorPos -= 1;
+        buffer[bufferSize - len] = 0;
+        cursorPos = start;
 
         bufferSize = getBufferSize();
         _debug("FileBuffer::removeLastChar After cusorPos: %d bufferSize: %d\n", cursorPos, bufferSize);
@@ -1164,17 +1252,18 @@ void Editor::removeCharAtCursor()
     int bufferSize = getBufferSize();
     if (bufferSize > 0 && cursorPos < bufferSize)
     {
-        // Shift the trailing text left by one position
-        if (bufferSize > cursorPos + 1)
+        // delete the whole character at the cursor
+        int end = nextCharStart(cursorPos);
+        int len = end - cursorPos;
+
+        // Shift the trailing text left
+        if (bufferSize > end)
         {
-            memmove(buffer + cursorPos, buffer + cursorPos + 1, bufferSize - cursorPos - 1);
+            memmove(buffer + cursorPos, buffer + end, bufferSize - end);
         }
 
-        // Decrease buffer size
-        --bufferSize;
-
         // Null terminate the buffer
-        buffer[bufferSize] = '\0';
+        buffer[bufferSize - len] = '\0';
     }
 }
 

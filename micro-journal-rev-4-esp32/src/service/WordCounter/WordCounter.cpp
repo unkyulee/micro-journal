@@ -49,6 +49,15 @@ void wordcounter_service()
 // Credit to one of the forks from "frankfurtsky"
 // https://github.com/frankfurtsky/micro-journal
 
+// A byte counts as part of a word when it is alphanumeric or part of a
+// UTF-8 multi-byte character (>= 0x80) - accented and CJK text is then
+// counted by space/punctuation separation just like plain words.
+static inline bool isWordByte(char c)
+{
+    uint8_t b = (uint8_t)c;
+    return b >= 0x80 || isAlphaNumeric(b);
+}
+
 // counts word count until the last buffer
 int wordcounter_file(const char *filename)
 {
@@ -98,7 +107,7 @@ int wordcounter_file(const char *filename)
         for (size_t i = 0; i < readNow; ++i)
         {
             char c = buffer[i];
-            if (isAlphaNumeric(c))
+            if (isWordByte(c))
             {
                 if (!inWord)
                 {
@@ -128,7 +137,7 @@ int wordcounter_buffer(const char *buffer)
         if (BUFFER_SIZE <= i)
             break;
 
-        if (std::isalnum(buffer[i]))
+        if (isWordByte(buffer[i]))
         {
             if (!inWord)
             {

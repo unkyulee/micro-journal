@@ -13,7 +13,7 @@ void display_EPD_loop();
 int display_EPD_core();
 
 //
-void display_EPD_keyboard(char key, bool pressed, int index);
+void display_EPD_keyboard(int key, bool pressed, int index);
 void display_EPD_keyboard_report(uint8_t modifier, uint8_t reserved, uint8_t* keycodes);
 
 //
