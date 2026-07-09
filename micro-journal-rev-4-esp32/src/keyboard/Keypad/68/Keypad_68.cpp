@@ -268,7 +268,7 @@ int keyboard_keypad_68_get_key(keypadEvent e)
         uint8_t hid = key_hid[e.bit.KEY];
         if (hid != 0)
         {
-            uint8_t ascii = keyboard_keycode_ascii(locale, hid, _shift_pressed, _fn_pressed, e.bit.EVENT == KEY_JUST_PRESSED);
+            int ascii = keyboard_keycode_ascii(locale, hid, _shift_pressed, _fn_pressed, e.bit.EVENT == KEY_JUST_PRESSED);
             if (ascii != 0)
                 key = ascii;
         }

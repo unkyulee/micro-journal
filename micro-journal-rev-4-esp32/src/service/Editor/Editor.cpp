@@ -25,6 +25,7 @@ void Editor::init(int cols, int rows, const EditorFont *font)
 
     //
     resetBuffer();
+    composer.reset();
     updateScreen();
 
     //
@@ -152,6 +153,7 @@ void Editor::loadFile(String fileName)
 
     // reset the buffer
     resetBuffer();
+    composer.reset();
 
     // Read file content into text buffer
     int bufferSize = 0;
@@ -468,6 +470,7 @@ bool Editor::loadWindow(size_t offset, size_t length)
     }
 
     resetBuffer();
+    composer.reset();
     size_t bytesRead = 0;
     while (bytesRead < length && file.available())
     {
@@ -695,7 +698,9 @@ void Editor::loop()
 void Editor::keyboard(int key, bool pressed)
 {
     // ignore non printable character
-    if (key == 0 || key == 27 || key == MENU)
+    // (1 is the "consumed" sentinel from the keyboard locale layer,
+    // e.g. the Hangul/English toggle key which must type nothing)
+    if (key == 0 || key == 1 || key == 27 || key == MENU)
         return;
 
     //
@@ -733,8 +738,25 @@ void Editor::keyboard(int key, bool pressed)
         //////////////////////////
         if (key == '\b')
         {
+            // during Hangul composition backspace removes one jamo,
+            // not the whole syllable: 간 -> 가 -> ㄱ -> (gone)
+            if (composer.isComposing())
+            {
+                uint32_t display = composer.backspace();
+                if (display)
+                    replaceCharBeforeCursor(display);
+                else
+                    removeLastChar();
+
+                // set saved flag to false
+                this->saved = false;
+
+                // set flag
+                this->backSpacePressed = true;
+            }
+
             // buffer has more than 1 character
-            if (getBufferSize() > 0)
+            else if (getBufferSize() > 0)
             {
                 //
                 removeLastChar();
@@ -756,6 +778,9 @@ void Editor::keyboard(int key, bool pressed)
         // DEL key deletes the word
         else if (key == 127)
         {
+            // deleting forward ends any composition
+            composer.reset();
+
             if (getBufferSize() > 0)
             {
                 // if editing at the end of the line then remove word
@@ -789,6 +814,10 @@ void Editor::keyboard(int key, bool pressed)
         //////////////////////////
         else if (key >= 18 && key <= 23 || key == 2 || key == 3)
         {
+            // moving the cursor ends any composition - the composed
+            // syllable simply stays in the buffer as normal text
+            composer.reset();
+
             // arrow keys
             // 18 - Left, 19 - Right, 20 - Up, 21 - Down
             // 22 - Page Up, 23 - Page Down
@@ -991,12 +1020,35 @@ void Editor::keyboard(int key, bool pressed)
             {
                 _log("Text buffer full\n");
 
+                // the window swap invalidates the composing character's
+                // position - commit the composition as-is
+                composer.reset();
+
                 //
                 advanceWindow();
             }
 
-            //
-            addChar(key);
+            // Hangul jamo go through the composer, which assembles them
+            // into syllables and updates the character before the cursor
+            // in place as the syllable evolves (ㄱ -> 가 -> 간)
+            if (HangulComposer::isJamo((uint32_t)key))
+            {
+                HangulComposer::Action action = composer.feed((uint32_t)key);
+
+                if (action.replaceComposing)
+                    replaceCharBeforeCursor(action.replaceComposing);
+
+                if (action.insert)
+                    addChar((int)action.insert);
+            }
+            else
+            {
+                // any other character ends the composition
+                composer.reset();
+
+                //
+                addChar(key);
+            }
 
             // set saved flag to false
             this->saved = false;
@@ -1265,6 +1317,18 @@ void Editor::removeCharAtCursor()
         // Null terminate the buffer
         buffer[bufferSize - len] = '\0';
     }
+}
+
+// Replace the character before the cursor (the composing Hangul syllable)
+// with another one, e.g. 가 -> 간. Sets charReplaced so displays repaint
+// the line - the new glyph doesn't necessarily cover the old one's pixels.
+void Editor::replaceCharBeforeCursor(uint32_t codepoint)
+{
+    removeLastChar();
+    addChar((int)codepoint);
+
+    //
+    charReplaced = true;
 }
 
 void Editor::removeLastWord()

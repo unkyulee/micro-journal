@@ -48,9 +48,13 @@ void WP_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         fontIndex = 0;
     wp_font = &WP_FONTS[fontIndex];
 
-    // measure the real glyph advance instead of trusting the declared value
+    // measure the real glyph advance instead of trusting the declared value.
+    // Measured as a difference: getUTF8Width() substitutes the LAST glyph's
+    // tight bitmap width for its advance, so a single "M" under-reports on
+    // fonts with trimmed glyph boxes - the difference cancels that and
+    // leaves exactly one true advance.
     pu8f->setFont((const uint8_t *)wp_font->fontData);
-    int16_t measured = pu8f->getUTF8Width("M");
+    int16_t measured = pu8f->getUTF8Width("MM") - pu8f->getUTF8Width("M");
     if (measured > 0)
         wp_font->glyphWidth = measured;
 
@@ -183,6 +187,14 @@ void WP_render_clear(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     //
     JsonDocument &app = status();
+
+    // the composing Hangul character was replaced in place - the new glyph
+    // doesn't necessarily cover the old one's pixels, so repaint fully
+    if (Editor::getInstance().charReplaced)
+    {
+        Editor::getInstance().charReplaced = false;
+        clear_background = true;
+    }
 
     // LOAD COLORS
     uint16_t background_color = app["config"]["background_color"].as<uint16_t>();

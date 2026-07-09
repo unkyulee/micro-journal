@@ -5,6 +5,7 @@
 
 //
 #include "EditorFont.h"
+#include "HangulComposer.h"
 #include "Utf8.h"
 
 #ifdef BOARD_PICO
@@ -45,6 +46,12 @@ public:
     // (paging, or the buffer filling up while typing) so display code knows
     // to do a full redraw instead of an incremental one.
     bool pageChanged = false;
+
+    // Set whenever the character before the cursor was replaced in place
+    // (Hangul composition: ㄱ -> 가 -> 간). Displays that only repaint
+    // appended text must do a full repaint of the line, because the new
+    // glyph doesn't cover the old one's pixels. Display code consumes it.
+    bool charReplaced = false;
 
     // Screen Size Definition
     // cols is measured in display columns, not bytes: a single-width glyph
@@ -131,6 +138,11 @@ public:
     void removeLastChar();
     void removeCharAtCursor();
     void removeLastWord();
+
+    // Hangul composition: jamo keystrokes are assembled into syllables and
+    // the character before the cursor is updated in place as it evolves
+    HangulComposer composer;
+    void replaceCharBeforeCursor(uint32_t codepoint);
 
     // UTF-8 character navigation over the buffer. Positions passed in and
     // returned are byte offsets that land on character boundaries.

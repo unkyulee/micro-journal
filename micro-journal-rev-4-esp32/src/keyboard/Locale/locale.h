@@ -3,8 +3,10 @@
 
 #include <Arduino.h>
 
-//
-uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt, bool pressed);
+// Returns the key value for the given HID keycode under the configured
+// layout. int, not uint8_t: the Korean layout produces jamo unicode
+// codepoints (0x3131-0x3163) that don't fit in a byte.
+int keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt, bool pressed);
 
 //
 uint8_t keyboard_precursor_filter(uint8_t ascii);

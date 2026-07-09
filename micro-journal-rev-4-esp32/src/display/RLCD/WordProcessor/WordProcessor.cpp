@@ -64,10 +64,14 @@ void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // measure the real glyph advance instead of trusting the declared value
     // (setScale after setFont - changing the font resets the scale, and the
-    // measurement comes back already scaled)
+    // measurement comes back already scaled).
+    // Measured as a difference: getUTF8Width() substitutes the LAST glyph's
+    // tight bitmap width for its advance, so a single "M" under-reports on
+    // fonts with trimmed glyph boxes - the difference cancels that and
+    // leaves exactly one true advance.
     u8->setFont((const uint8_t *)wp_font->fontData);
     u8->setScale(wp_font->scale);
-    int16_t measured = u8->getUTF8Width("M");
+    int16_t measured = u8->getUTF8Width("MM") - u8->getUTF8Width("M");
     if (measured > 0)
         wp_font->glyphWidth = measured;
 
@@ -229,6 +233,14 @@ void WP_render_clear(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     {
         // screen buffer will be pushed after
         return;
+    }
+
+    // the composing Hangul character was replaced in place - the new glyph
+    // doesn't necessarily cover the old one's pixels, so repaint fully
+    if (Editor::getInstance().charReplaced)
+    {
+        Editor::getInstance().charReplaced = false;
+        clear_background = true;
     }
 
     //

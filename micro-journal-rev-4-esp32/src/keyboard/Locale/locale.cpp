@@ -17,6 +17,7 @@
 #include "fr/fr.h"
 #include "ge/ge.h"
 #include "it/it.h"
+#include "ko/ko.h"
 #include "latin/latin.h"
 #include "swedish/swedish.h"
 #include "uk/uk.h"
@@ -31,10 +32,11 @@ struct StringHash
   }
 };
 
-// Define a type for the function pointers
-using KeycodeFunction = std::function<uint8_t(uint8_t, bool, bool, bool)>;
+// Define a type for the function pointers.
+// int, not uint8_t: the Korean layout returns jamo unicode codepoints.
+using KeycodeFunction = std::function<int(uint8_t, bool, bool, bool)>;
 
-uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt, bool pressed)
+int keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool alt, bool pressed)
 {
   // Use the custom hash function for String
   static const std::unordered_map<String, KeycodeFunction, StringHash> locale_map = {
@@ -54,6 +56,7 @@ uint8_t keyboard_keycode_ascii(String locale, uint8_t keycode, bool shift, bool 
       {"FR", keyboard_keycode_ascii_fr},
       {"GE", keyboard_keycode_ascii_ge},
       {"IT", keyboard_keycode_ascii_it},
+      {"KR", keyboard_keycode_ascii_ko},
       {"LAT", keyboard_keycode_ascii_latin},
       {"UK", keyboard_keycode_ascii_uk},
   };

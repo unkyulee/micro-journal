@@ -369,6 +369,14 @@ void WP_render_clear()
     //
     JsonDocument &app = status();
 
+    // the composing Hangul character was replaced in place - the new glyph
+    // doesn't necessarily cover the old one's pixels, so repaint fully
+    if (Editor::getInstance().charReplaced)
+    {
+        Editor::getInstance().charReplaced = false;
+        clear_background = true;
+    }
+
     // LOAD COLORS
     uint16_t background_color = app["config"]["background_color"].as<uint16_t>();
     uint16_t foreground_color = app["config"]["foreground_color"].as<uint16_t>();

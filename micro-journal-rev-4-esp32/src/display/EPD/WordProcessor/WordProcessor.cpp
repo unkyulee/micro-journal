@@ -331,11 +331,14 @@ void WP_render_text()
         display_draw_buffer();
     }
 
-    // handle backspace
-    else if (Editor::getInstance().backSpacePressed)
+    // handle backspace, and in-place replacement of the composing Hangul
+    // character (the new glyph doesn't cover the old one's pixels, so the
+    // row is cleared and redrawn the same way)
+    else if (Editor::getInstance().backSpacePressed || Editor::getInstance().charReplaced)
     {
         //
         Editor::getInstance().backSpacePressed = false;
+        Editor::getInstance().charReplaced = false;
 
         // clear the currentLine and the previousLine
         _debug("WP_render_text::Handle Backspace\n");
