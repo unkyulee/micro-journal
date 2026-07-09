@@ -20,20 +20,23 @@ unsigned int last_sleep = millis();
 static bool needsDisplay = true;
 bool WP_contentChanged();
 
-// Generated Korean fonts - see fonts/ and script/generate_u8g2_korean_font.py.
-// Dual-width Latin/Hangul metrics keep cursor movement and wrapping predictable.
-extern const uint8_t u8g2_font_nanum_22_t_korean[];
+// Generated Korean font - see fonts/ and script/generate_u8g2_korean_font.py.
+// Source: GalmuriMono11 (SIL OFL), a hand-designed pixel font that is
+// natively fixed-width with Hangul exactly 2x the Latin advance - unlike
+// scalable coding fonts (D2Coding, NanumGothicCoding), its stems are drawn
+// on an integer pixel grid, so every stroke rasterizes to a uniform
+// thickness instead of alternating 2px/3px depending on hinting rounding.
+extern const uint8_t u8g2_font_galmuri_24_t_korean[];
 
 // Selectable word processor fonts. Declared metrics are corrected at setup
 // by measuring the actual font, so nothing here has to be exact by hand.
 // The Korean fonts render Hangul full-width, hence the double-width
-// charColumns rule. "korean32" is GNU Unifont pixel-doubled (scale 2)
-// because its native 16px hairline strokes look faint and broken on this
-// panel - kept as an alternative to the generated NanumGothicCoding font.
+// charColumns rule. "korean32" is GNU Unifont pixel-doubled (scale 2) -
+// kept as a fallback alternative.
 static EditorFont WP_FONTS[] = {
     {"profont22", u8g2_font_profont22_mf, 12, 22, nullptr, 1},
     {"profont29", u8g2_font_profont29_mf, 16, 29, nullptr, 1},
-    {"korean22", u8g2_font_nanum_22_t_korean, 11, 25, editorfont_hangul_columns, 1},
+    {"korean24", u8g2_font_galmuri_24_t_korean, 12, 24, editorfont_hangul_columns, 1},
     {"korean32", u8g2_font_unifont_t_korean2, 16, 32, editorfont_hangul_columns, 2},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);

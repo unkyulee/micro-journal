@@ -84,13 +84,21 @@ int keyboard_keycode_ascii_ko(uint8_t keycode, bool shift, bool alt, bool presse
     if (app["screen"].as<int>() != WORDPROCESSOR)
         return ascii;
 
-    // Hangul <-> English toggle: alt
+    // Hangul <-> English toggle: the dedicated left-alt event, which the
+    // keyboard driver sends as alt with keycode 0 (see Keypad_68).
     static bool hangul = true;
     if (alt)
     {
-        if (pressed)
-            hangul = !hangul;
-        return KEY_CONSUMED; // the toggle itself types nothing
+        if (keycode == 0)
+        {
+            if (pressed)
+                hangul = !hangul;
+            return KEY_CONSUMED; // the toggle itself types nothing
+        }
+
+        // alt/Fn held with a real key: not ours - return "no mapping" so
+        // the driver's own layer value (file switching etc.) is used
+        return 0;
     }
 
     if (!hangul)

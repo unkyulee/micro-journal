@@ -227,11 +227,13 @@ int keyboard_keypad_68_get_key(keypadEvent e)
     String locale = app["config"]["keyboard_layout"].as<String>();
     bool use_locale = locale.length() > 0 && locale != "US" && locale != "null";
 
-    // Physical left Alt toggles Hangul/English in the Korean locale.
-    // It is consumed here so it does not also act as the Fn/layer key.
-    if (e.bit.KEY == LEFT_ALT_KEY_INDEX)
+    // Physical left Alt toggles Hangul/English in the Korean locale
+    // (sent as alt with keycode 0 - see keyboard_keycode_ascii_ko). It is
+    // consumed so it does not also act as the Fn/layer key. Under every
+    // other layout the key keeps its normal Fn/layer role.
+    if (e.bit.KEY == LEFT_ALT_KEY_INDEX && locale == "KR")
     {
-        if (use_locale && e.bit.EVENT == KEY_JUST_PRESSED)
+        if (e.bit.EVENT == KEY_JUST_PRESSED)
         {
             int ascii = keyboard_keycode_ascii(locale, 0, _shift_pressed, true, true);
             if (ascii != 0)

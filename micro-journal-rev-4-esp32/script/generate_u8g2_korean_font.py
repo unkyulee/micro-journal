@@ -65,7 +65,11 @@ def rasterize(font, ch, ascent, threshold=128):
     encoding = ord(ch)
     delta = round(font.getlength(ch))
 
-    mask, (dx, dy) = font.getmask2(ch, mode="L")
+    # mode "1" = FreeType monochrome hinting: stems snap to consistent
+    # integer pixel widths. Antialiased "L" + threshold makes identical
+    # stems come out 2px or 3px depending on their subpixel phase (e.g.
+    # the ㅏ stem thicker than the ㅣ stem at the same size).
+    mask, (dx, dy) = font.getmask2(ch, mode="1")
     w, h = mask.size
 
     if w == 0 or h == 0:
@@ -403,6 +407,70 @@ def verify(font_data, glyphs):
         assert dg.bitmap == g.bitmap, f"U+{g.encoding:04X} bitmap mismatch"
 
 
+def load_u8g2_c_array(src_path, array_name):
+    """Extract a `const uint8_t name[N] = "..." "...";` byte array from a
+    u8g2 C source file (handles octal/named escapes across concatenated
+    string literals, e.g. the fonts bundled in lib/ST7305_MonoTFT_Library).
+    """
+    with open(src_path, "r", encoding="latin-1") as f:
+        text = f.read()
+    i = text.index(f"const uint8_t {array_name}[")
+    i = text.index("=", i) + 1  # skip past U8G2_FONT_SECTION("...")
+
+    escapes = {"n": 10, "t": 9, "r": 13, "\\": 92, "'": 39, '"': 34,
+               "a": 7, "b": 8, "f": 12, "v": 11}
+    data = bytearray()
+    while True:
+        while text[i] in " \t\r\n":
+            i += 1
+        if text[i] == ";":
+            return bytes(data)
+        assert text[i] == '"', f"unexpected char {text[i]!r} at {i}"
+        i += 1
+        while text[i] != '"':
+            c = text[i]
+            if c == "\\":
+                i += 1
+                if text[i] in "01234567":
+                    j = i
+                    while j < len(text) and j < i + 3 and text[j] in "01234567":
+                        j += 1
+                    data.append(int(text[i:j], 8))
+                    i = j
+                else:
+                    data.append(escapes[text[i]])
+                    i += 1
+            else:
+                data.append(ord(c))
+                i += 1
+        i += 1  # closing quote
+
+
+def load_ascii_source(src_path, array_name):
+    """Load ASCII glyphs (0x20-0x7E) and header metrics from an existing,
+    already-baked u8g2 font (e.g. the bundled profont22_mf), for splicing
+    into a generated font as its Latin half. Uses the same decoder that
+    verifies every generated font, so the reused bitmaps are known-good."""
+    font = load_u8g2_c_array(src_path, array_name)
+    glyphs = []
+    for cp in range(0x20, 0x7F):
+        decoded = decode_glyph(font, cp)
+        if decoded is None:
+            continue
+        g, delta = decoded
+        g.delta = delta
+        glyphs.append(g)
+
+    metrics = {
+        "ascent_A": font[13] - 256 if font[13] > 127 else font[13],
+        "descent_g": font[14] - 256 if font[14] > 127 else font[14],
+        "ascent_para": font[15] - 256 if font[15] > 127 else font[15],
+        "descent_para": font[16] - 256 if font[16] > 127 else font[16],
+        "y_offset": font[12] - 256 if font[12] > 127 else font[12],
+    }
+    return glyphs, metrics
+
+
 def ascii_art(font_data, ch):
     decoded = decode_glyph(font_data, ord(ch))
     if decoded is None:
@@ -419,30 +487,60 @@ def ascii_art(font_data, ch):
 # ----------------------------------------------------------------------------
 
 def main():
-    ttf_path, size, out_path, font_name = \
-        sys.argv[1], int(sys.argv[2]), sys.argv[3], sys.argv[4]
+    args = sys.argv[1:]
+
+    # optional: --ascii-font <u8g2_src.c> <array_name> - reuse an existing,
+    # already-baked monospace bitmap font (e.g. profont22_mf) for ASCII
+    # instead of rasterizing Latin glyphs from the TTF. Use this when the
+    # TTF's own Latin glyphs are not fixed-width (many "pixel" fonts style
+    # Hangul as a uniform full-width cell but keep Latin proportional -
+    # incompatible with this project's fixed dual-width column model).
+    ascii_source = None
+    if "--ascii-font" in args:
+        idx = args.index("--ascii-font")
+        ascii_source = (args[idx + 1], args[idx + 2])
+        del args[idx:idx + 3]
+
+    ttf_path, size, out_path, font_name = args[0], int(args[1]), args[2], args[3]
     source_font = Path(ttf_path).name
 
     font = ImageFont.truetype(ttf_path, size)
     ascent, descent = font.getmetrics()
 
-    latin_adv = round(font.getlength("M"))
     hangul_adv = round(font.getlength("한"))
-    if hangul_adv != 2 * latin_adv:
-        sys.exit(f"font is not dual-width at size {size}: "
-                 f"latin {latin_adv}, hangul {hangul_adv}")
 
-    glyphs = [rasterize(font, ch, ascent) for ch in korean_charset()]
+    if ascii_source:
+        ascii_glyphs, ascii_metrics = load_ascii_source(*ascii_source)
+        latin_adv = ascii_glyphs[0].delta
+        for g in ascii_glyphs:
+            if g.delta != latin_adv:
+                sys.exit(f"--ascii-font is not monospace: U+{g.encoding:04X} "
+                         f"advance {g.delta} != {latin_adv}")
+        if hangul_adv != 2 * latin_adv:
+            sys.exit(f"hangul advance {hangul_adv} at size {size} is not "
+                     f"2x the ascii font's advance {latin_adv}")
 
-    a = rasterize(font, "A", ascent)
-    g_ = rasterize(font, "g", ascent)
-    metrics = {
-        "y_offset": -descent,
-        "ascent_A": a.height + a.y,
-        "descent_g": g_.y,
-        "ascent_para": ascent,
-        "descent_para": -descent,
-    }
+        hangul_charset = [c for c in korean_charset() if ord(c) > 0x7F]
+        hangul_glyphs = [rasterize(font, ch, ascent) for ch in hangul_charset]
+        glyphs = ascii_glyphs + hangul_glyphs
+        metrics = ascii_metrics
+    else:
+        latin_adv = round(font.getlength("M"))
+        if hangul_adv != 2 * latin_adv:
+            sys.exit(f"font is not dual-width at size {size}: "
+                     f"latin {latin_adv}, hangul {hangul_adv}")
+
+        glyphs = [rasterize(font, ch, ascent) for ch in korean_charset()]
+
+        a = rasterize(font, "A", ascent)
+        g_ = rasterize(font, "g", ascent)
+        metrics = {
+            "y_offset": -descent,
+            "ascent_A": a.height + a.y,
+            "descent_g": g_.y,
+            "ascent_para": ascent,
+            "descent_para": -descent,
+        }
 
     font_data, layout = build_font(glyphs, metrics)
     verify(font_data, glyphs)

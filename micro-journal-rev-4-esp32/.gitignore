@@ -4,3 +4,6 @@
 .vscode/launch.json
 .vscode/ipch
 data/config.json
+script/__pycache__/
+*.py[cod]
+*$py.class
