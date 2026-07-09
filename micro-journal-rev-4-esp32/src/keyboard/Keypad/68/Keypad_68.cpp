@@ -14,6 +14,7 @@
 #define LAYERS 4 // layers
 #define COLS 9   // columns
 #define ROWS 8   // rows
+#define LEFT_ALT_KEY_INDEX 63
 
 // HID keycode (USB HID Usage Tables, Keyboard/Keypad page) for each physical
 // key, matching the layout of layers[0]. 0 marks keys that aren't translated
@@ -221,6 +222,25 @@ int keyboard_keypad_68_get_key(keypadEvent e)
 
     //
     int key = layers[_layer][e.bit.KEY];
+
+    JsonDocument &app = status();
+    String locale = app["config"]["keyboard_layout"].as<String>();
+    bool use_locale = locale.length() > 0 && locale != "US" && locale != "null";
+
+    // Physical left Alt toggles Hangul/English in the Korean locale.
+    // It is consumed here so it does not also act as the Fn/layer key.
+    if (e.bit.KEY == LEFT_ALT_KEY_INDEX)
+    {
+        if (use_locale && e.bit.EVENT == KEY_JUST_PRESSED)
+        {
+            int ascii = keyboard_keycode_ascii(locale, 0, _shift_pressed, true, true);
+            if (ascii != 0)
+                return ascii;
+        }
+
+        return 0;
+    }
+
     if (key == 17)
     {
         if (e.bit.EVENT == KEY_JUST_PRESSED)
@@ -261,9 +281,7 @@ int keyboard_keypad_68_get_key(keypadEvent e)
 
     // when a non-US layout is configured, re-map character keys through
     // the locale tables instead of returning the hardcoded US character
-    JsonDocument &app = status();
-    String locale = app["config"]["keyboard_layout"].as<String>();
-    if (locale.length() > 0 && locale != "US" && locale != "null")
+    if (use_locale)
     {
         uint8_t hid = key_hid[e.bit.KEY];
         if (hid != 0)
@@ -275,7 +293,8 @@ int keyboard_keypad_68_get_key(keypadEvent e)
     }
 
     //
-    //_log("[keyboard_keypad_68_get_key] Layer: %d, Key: %d, HID: %d, ASCII: %d Locale: %s\n", _layer, e.bit.KEY, key_hid[e.bit.KEY], key, locale.c_str());
+    // _log("[keyboard_keypad_68_get_key] Layer: %d, Key: %d, HID: %d, ASCII: %d Locale: %s fn: %d shift: %d\n", 
+    //        _layer, e.bit.KEY, key_hid[e.bit.KEY], key, locale.c_str(), _fn_pressed, _shift_pressed);
 
     // return the corresponding key
     return key;
