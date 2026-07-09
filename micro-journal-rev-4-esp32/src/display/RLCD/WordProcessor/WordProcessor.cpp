@@ -20,11 +20,9 @@ unsigned int last_sleep = millis();
 static bool needsDisplay = true;
 bool WP_contentChanged();
 
-// NanumGothicCoding Bold rasterized at 24px - see fonts/ and
-// script/generate_u8g2_korean_font.py. Dual-width: 12px Latin,
-// 24px Hangul, with solid 2-3px strokes that stay readable on the
-// low-contrast reflective panel.
-extern const uint8_t u8g2_font_nanum_24_t_korean[];
+// Generated Korean fonts - see fonts/ and script/generate_u8g2_korean_font.py.
+// Dual-width Latin/Hangul metrics keep cursor movement and wrapping predictable.
+extern const uint8_t u8g2_font_nanum_22_t_korean[];
 
 // Selectable word processor fonts. Declared metrics are corrected at setup
 // by measuring the actual font, so nothing here has to be exact by hand.
@@ -35,7 +33,7 @@ extern const uint8_t u8g2_font_nanum_24_t_korean[];
 static EditorFont WP_FONTS[] = {
     {"profont22", u8g2_font_profont22_mf, 12, 22, nullptr, 1},
     {"profont29", u8g2_font_profont29_mf, 16, 29, nullptr, 1},
-    {"korean24", u8g2_font_nanum_24_t_korean, 12, 25, editorfont_hangul_columns, 1},
+    {"korean22", u8g2_font_nanum_22_t_korean, 11, 25, editorfont_hangul_columns, 1},
     {"korean32", u8g2_font_unifont_t_korean2, 16, 32, editorfont_hangul_columns, 2},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);

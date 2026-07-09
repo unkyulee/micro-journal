@@ -29,6 +29,7 @@ void Layout_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
         "[D] Dvorak",
         "[F] French",
         "[G] German",
+        "[H] Korean",
         "[I] Italian",
         "[K] UK",
         "[L] Latin America",
@@ -47,32 +48,44 @@ void Layout_keyboard(char key)
 {
     JsonDocument &app = status();
 
+    if (key >= 'A' && key <= 'Z')
+        key = key - 'A' + 'a';
+
     // Map keys to keyboard layouts
-    static const std::unordered_map<char, const char *> layout_map = {
-        {'a', "INT"}, // International
-        {'b', "BE"},  // Belgian
-        {'c', "CA"},  // Canadian
-        {'d', "DV"},  // Dvorak
-        {'f', "FR"},  // French
-        {'g', "GE"},  // German
-        {'i', "IT"},  // Italian
-        {'k', "UK"},  // UK
-        {'l', "LAT"}, // Latin America
-        {'s', "SWE"}, // Swedish
-        {'u', "US"}   // US (default)
+    struct LayoutOption
+    {
+        const char *layout;
+        int font;
+    };
+
+    static const std::unordered_map<char, LayoutOption> layout_map = {
+        {'a', {"INT", 0}}, // International
+        {'b', {"BE", 0}},  // Belgian
+        {'c', {"CA", 0}},  // Canadian
+        {'d', {"DV", 0}},  // Dvorak
+        {'f', {"FR", 0}},  // French
+        {'g', {"GE", 0}},  // German
+        {'h', {"KR", 2}},  // Korean
+        {'i', {"IT", 0}},  // Italian
+        {'k', {"UK", 0}},  // UK
+        {'l', {"LAT", 0}}, // Latin America
+        {'s', {"SWE", 0}}, // Swedish
+        {'u', {"US", 0}}   // US (default)
     };
 
     // Find the layout based on the key
     auto it = layout_map.find(key);
     if (it != layout_map.end())
     {
-        app["config"]["keyboard_layout"] = it->second;
+        app["config"]["keyboard_layout"] = it->second.layout;
+        app["config"]["font"] = it->second.font;
     }
     else
     {
         // Log invalid key
         _log("Invalid key pressed. Defaulting to US layout. %c\n", key);
         app["config"]["keyboard_layout"] = "US";
+        app["config"]["font"] = 0;
     }
 
     // Save configuration and update the screen
