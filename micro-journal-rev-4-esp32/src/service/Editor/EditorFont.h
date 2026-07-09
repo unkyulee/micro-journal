@@ -35,4 +35,25 @@ struct EditorFont
     // function returning 2 for Hangul codepoints so that line wrapping and
     // cursor placement stay correct for double-width glyphs.
     uint8_t (*charColumns)(uint32_t codepoint);
+
+    // Integer render scale for backends that support pixel doubling
+    // (0 or 1 = native size). glyphWidth/lineHeight above are declared for
+    // the SCALED glyphs. Used to thicken thin unicode fonts (unifont has
+    // 1px strokes that look faint and broken on the reflective panel).
+    uint8_t scale;
 };
+
+// charColumns implementation for Korean fonts: Hangul glyphs are rendered
+// full-width (two columns), everything else half-width. Shared here so
+// every display backend's font table can reference the same rule.
+inline uint8_t editorfont_hangul_columns(uint32_t codepoint)
+{
+    if ((codepoint >= 0xAC00 && codepoint <= 0xD7A3) || // Hangul syllables
+        (codepoint >= 0x1100 && codepoint <= 0x11FF) || // Hangul jamo
+        (codepoint >= 0x3130 && codepoint <= 0x318F) || // compatibility jamo
+        (codepoint >= 0xA960 && codepoint <= 0xA97F) || // jamo extended-A
+        (codepoint >= 0xD7B0 && codepoint <= 0xD7FB))   // jamo extended-B
+        return 2;
+
+    return 1;
+}

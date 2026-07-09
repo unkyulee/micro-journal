@@ -127,6 +127,11 @@ struct _u8g2_font_t
   //int8_t font_ref_descent;
 
   int8_t glyph_x_offset;    /* set by u8g2_GetGlyphWidth as a side effect */
+
+  uint8_t scale;            /* integer glyph scaling factor, 1 = native size.
+                               2 doubles every pixel (thin 16px unicode fonts
+                               become solid 32px on the low-contrast panel).
+                               reset to 1 whenever the font changes. */
 };
 typedef struct _u8g2_font_t u8g2_font_t;
 
@@ -156,7 +161,7 @@ class U8G2_FOR_ST73XX : public Print {
     int16_t getCursorX(void) { return tx; }
     int16_t getCursorY(void) { return ty; }
   
-    U8G2_FOR_ST73XX(void) {u8g2.font = NULL; u8g2.font_decode.fg_color = 1; u8g2.font_decode.is_transparent = 1; u8g2.font_decode.dir = 0; home(); } 
+    U8G2_FOR_ST73XX(void) {u8g2.font = NULL; u8g2.font_decode.fg_color = 1; u8g2.font_decode.is_transparent = 1; u8g2.font_decode.dir = 0; u8g2.scale = 1; home(); }
     // void begin(Adafruit_GFX &gfx) { u8g2.gfx = &gfx; }
     void begin(ST73XX_UI &dis) { u8g2.display = &dis; }
     void setFont(const uint8_t *font)             // set u8g2 font
@@ -165,6 +170,8 @@ class U8G2_FOR_ST73XX : public Print {
       { u8g2_SetFontMode(&u8g2, is_transparent); }
     void setFontDirection(uint8_t d)              // 0; 0 degree, 1: 90 degree, 2: 180 degree, 3: 270 degree
       { u8g2_SetFontDirection(&u8g2, d); }
+    void setScale(uint8_t s)                      // integer glyph scaling (2 = pixel doubling); setFont resets it to 1
+      { u8g2.scale = (s == 0) ? 1 : s; }
     void setForegroundColor(uint16_t fg)           // Use this color to draw the text
       { u8g2_SetForegroundColor(&u8g2, fg); }
     void setBackgroundColor(uint16_t bg)           // only used for setFontMode(0)

@@ -20,11 +20,23 @@ unsigned int last_sleep = millis();
 static bool needsDisplay = true;
 bool WP_contentChanged();
 
+// NanumGothicCoding Bold rasterized at 24px - see fonts/ and
+// script/generate_u8g2_korean_font.py. Dual-width: 12px Latin,
+// 24px Hangul, with solid 2-3px strokes that stay readable on the
+// low-contrast reflective panel.
+extern const uint8_t u8g2_font_nanum_24_t_korean[];
+
 // Selectable word processor fonts. Declared metrics are corrected at setup
 // by measuring the actual font, so nothing here has to be exact by hand.
+// The Korean fonts render Hangul full-width, hence the double-width
+// charColumns rule. "korean32" is GNU Unifont pixel-doubled (scale 2)
+// because its native 16px hairline strokes look faint and broken on this
+// panel - kept as an alternative to the generated NanumGothicCoding font.
 static EditorFont WP_FONTS[] = {
-    {"profont22", u8g2_font_profont22_mf, 12, 22, nullptr},
-    {"profont29", u8g2_font_profont29_mf, 16, 29, nullptr},
+    {"profont22", u8g2_font_profont22_mf, 12, 22, nullptr, 1},
+    {"profont29", u8g2_font_profont29_mf, 16, 29, nullptr, 1},
+    {"korean24", u8g2_font_nanum_24_t_korean, 12, 25, editorfont_hangul_columns, 1},
+    {"korean32", u8g2_font_unifont_t_korean2, 16, 32, editorfont_hangul_columns, 2},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
 
@@ -51,14 +63,18 @@ void WP_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     wp_font = &WP_FONTS[fontIndex];
 
     // measure the real glyph advance instead of trusting the declared value
+    // (setScale after setFont - changing the font resets the scale, and the
+    // measurement comes back already scaled)
     u8->setFont((const uint8_t *)wp_font->fontData);
+    u8->setScale(wp_font->scale);
     int16_t measured = u8->getUTF8Width("M");
     if (measured > 0)
         wp_font->glyphWidth = measured;
 
     // derive the layout from the font metrics:
-    // the text area ends at the status bar divider (STATUSBAR_Y - 16)
-    int rows = (STATUSBAR_Y - 16) / wp_font->lineHeight;
+    // the text area ends at the status bar divider (STATUSBAR_Y - 16),
+    // minus room for the cursor band that sits under the edit line
+    int rows = (STATUSBAR_Y - 16 - cursorGap - cursorHeight) / wp_font->lineHeight;
     int cols = (screen_width - 2 * marginX) / wp_font->glyphWidth;
     editY = rows * wp_font->lineHeight;
     cursorY = editY + cursorGap;
@@ -299,6 +315,7 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // SET FONT
     u8->setFont((const uint8_t *)wp_font->fontData);
+    u8->setScale(wp_font->scale);
 
     // Cursor Information
     static int cursorLine_prev = 0;
@@ -316,6 +333,7 @@ void WP_render_text(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
     {
         //
         u8->setFont((const uint8_t *)wp_font->fontData);
+        u8->setScale(wp_font->scale);
 
         // start line
         int rows = Editor::getInstance().rows;
@@ -353,6 +371,7 @@ void WP_render_status(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 
     // FILE INDEX
     u8->setFont(u8g2_font_profont17_tf);
+    u8->setScale(1);
     u8->setCursor(5, STATUSBAR_Y);
     u8->printf("FILE %d ", app["config"]["file_index"].as<int>());
 
