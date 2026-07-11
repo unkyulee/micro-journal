@@ -36,7 +36,7 @@ extern const uint8_t u8g2_font_galmuri_24_t_korean[];
 static EditorFont WP_FONTS[] = {
     {"profont22", u8g2_font_profont22_mf, 12, 22, nullptr, 1},
     {"profont29", u8g2_font_profont29_mf, 16, 29, nullptr, 1},
-    {"korean24", u8g2_font_galmuri_24_t_korean, 12, 24, editorfont_hangul_columns, 1},
+    {"korean24", u8g2_font_galmuri_24_t_korean, 12, 26, editorfont_hangul_columns, 1},
     {"korean32", u8g2_font_unifont_t_korean2, 16, 32, editorfont_hangul_columns, 2},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
