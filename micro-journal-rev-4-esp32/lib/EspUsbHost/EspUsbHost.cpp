@@ -582,11 +582,7 @@ void EspUsbHost::_onReceive(usb_transfer_t *transfer)
   {
     ESP_LOGI("EspUsbHost", "HID data (%d bytes) from ep 0x%02x:",
              transfer->actual_num_bytes, transfer->bEndpointAddress);
-    for (int i = 0; i < transfer->actual_num_bytes; i++)
-    {
-      Serial.printf("%02X ", transfer->data_buffer[i]);
-    }
-    Serial.println();
+
   }
 
 #if (ARDUHAL_LOG_LEVEL >= ARDUHAL_LOG_LEVEL_VERBOSE)

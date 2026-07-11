@@ -8,6 +8,9 @@
 #include "display/display.h"
 
 //
+#include "keyboard/Locale/locale.h"
+
+//
 #define LAYERS 6 // layers
 
 #if defined(BOARD_ESP32_S3)
@@ -91,6 +94,18 @@ char keys[ROWS][COLS] = {
     {12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23},
     {24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35},
     {36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47},
+};
+
+// HID keycode (USB HID Usage Tables) for each physical key, aligned to
+// layers[0]. Only the letter keys are populated - they are the ones the
+// locale tables remap (a Korean layout turns them into jamo); control and
+// punctuation keys stay 0 and keep their hardcoded layer value.
+// prettier-ignore
+uint8_t key_hid[ROWS * COLS] = {
+    0,    0x14, 0x1a, 0x08, 0x15, 0x17, 0x1c, 0x18, 0x0c, 0x12, 0x13, 0,    // MENU q w e r t y u i o p bksp
+    0,    0x04, 0x16, 0x07, 0x09, 0x0a, 0x0b, 0x0d, 0x0e, 0x0f, 0,    0,    // \ a s d f g h j k l ; '
+    0,    0x1d, 0x1b, 0x06, 0x19, 0x05, 0x11, 0x10, 0,    0,    0,    0,    // shift z x c v b n m , . / shift
+    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     // - = [ ] lower spc spc left down up right enter
 };
 
 #endif
@@ -285,6 +300,38 @@ int keyboard_keypad_48_get_key(keypadEvent e)
     if (_shift_pressed)
         _layer += 1;
 
+    // value baked into the layer tables (hardcoded to the US layout)
+    key = layers[_layer][e.bit.KEY];
+
+#if defined(BOARD_ESP32_S3)
+    JsonDocument &app = status();
+    String locale = app["config"]["keyboard_layout"].as<String>();
+
+    // Korean 한/영 toggle: LOWER + Space (this keypad has no dedicated Alt
+    // key). Routed through the locale's toggle path (alt + keycode 0),
+    // which flips Hangul/English and types nothing. Gated to KR so LOWER +
+    // Space stays a normal space under every other layout.
+    if (locale == "KR" && _lower_pressed && key == ' ')
+    {
+        return keyboard_keycode_ascii(locale, 0, _shift_pressed, true, e.bit.EVENT == KEY_JUST_PRESSED);
+    }
+
+    // when a non-US layout is configured, re-map character keys through
+    // the locale tables instead of returning the hardcoded US character
+    // (this is what enables the Korean layout - and every other locale -
+    // on the 48-key keypad; see Keypad_68 for the same pattern)
+    if (locale.length() > 0 && locale != "US" && locale != "null")
+    {
+        uint8_t hid = key_hid[e.bit.KEY];
+        if (hid != 0)
+        {
+            int ascii = keyboard_keycode_ascii(locale, hid, _shift_pressed, _raise_pressed, e.bit.EVENT == KEY_JUST_PRESSED);
+            if (ascii != 0)
+                key = ascii;
+        }
+    }
+#endif
+
     // return the corresponding key
-    return layers[_layer][e.bit.KEY];
+    return key;
 }
