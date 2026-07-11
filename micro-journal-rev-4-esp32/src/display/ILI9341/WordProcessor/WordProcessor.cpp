@@ -15,9 +15,9 @@ bool clear_background = true;
 unsigned int last_sleep = millis();
 
 // Generated Korean font - see script/generate_u8g2_korean_font.py. Same
-// u8g2 binary format (and byte-identical file) as the Rev.8 RLCD build;
-// GalmuriMono11 (SIL OFL) at 24px, dual-width 12/24px Latin/Hangul.
-extern const uint8_t u8g2_font_galmuri_24_t_korean[];
+// u8g2 binary format as the Rev.8 RLCD build (GalmuriMono11, SIL OFL),
+// rasterized smaller for this screen: 20px, dual-width 10/20px Latin/Hangul.
+extern const uint8_t u8g2_font_galmuri_20_t_korean[];
 
 // Selectable word processor fonts. lineHeight is the u8g2 paragraph
 // advance (what print("\n") moves by, = ascent_para - descent_para), not
@@ -27,7 +27,7 @@ extern const uint8_t u8g2_font_galmuri_24_t_korean[];
 static EditorFont WP_FONTS[] = {
     {"profont22", u8g2_font_profont22_mf, 12, 18, nullptr},
     {"profont29", u8g2_font_profont29_mf, 16, 25, nullptr},
-    {"korean24", u8g2_font_galmuri_24_t_korean, 12, 30, editorfont_hangul_columns},
+    {"korean20", u8g2_font_galmuri_20_t_korean, 10, 25, editorfont_hangul_columns},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
 
