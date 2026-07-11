@@ -9,6 +9,7 @@
 #include <esp_assert.h>
 #include <esp_heap_caps.h>
 #include <esp_log.h>
+#include <esp_timer.h>
 
 #include <stdint.h>
 #include <math.h>
@@ -82,6 +83,112 @@ static void get_char_bounds(const GFXfont *font,
 /******************************************************************************/
 /***        local variables                                                 ***/
 /******************************************************************************/
+
+/**
+ * @brief Decompressed shadow copies of compressed fonts.
+ *
+ * The generated font headers store zlib-compressed glyph bitmaps in flash.
+ * Historically every draw_char() call malloc'd a scratch buffer and inflated
+ * the glyph again - dozens of times per redrawn line. Instead, the first
+ * time a compressed font is drawn, all its glyphs are inflated once into a
+ * shadow bitmap (preferably in PSRAM) and reused from then on. Fully
+ * transparent to callers; if allocation or decompression fails, draw_char()
+ * falls back to the old per-glyph path.
+ */
+#define MAX_FONT_SHADOWS 4
+
+typedef struct
+{
+    const GFXfont *font;
+    uint8_t       *bitmap;
+    GFXglyph      *glyphs;
+} FontShadow;
+
+static FontShadow font_shadows[MAX_FONT_SHADOWS];
+static int32_t font_shadow_count = 0;
+
+static int32_t font_glyph_count(const GFXfont *font)
+{
+    int32_t count = 0;
+    for (uint32_t i = 0; i < font->interval_count; i++)
+    {
+        count += font->intervals[i].last - font->intervals[i].first + 1;
+    }
+    return count;
+}
+
+/**
+ * @brief Get (building on first use) the decompressed shadow of a font.
+ *
+ * Returns NULL when a shadow can't be built (out of memory, corrupt data,
+ * registry full) - the caller must fall back to per-glyph decompression.
+ * A failed build is cached too, so it isn't reattempted on every character.
+ */
+static FontShadow *get_font_shadow(const GFXfont *font)
+{
+    for (int32_t i = 0; i < font_shadow_count; i++)
+    {
+        if (font_shadows[i].font == font)
+            return font_shadows[i].bitmap != NULL ? &font_shadows[i] : NULL;
+    }
+
+    if (font_shadow_count >= MAX_FONT_SHADOWS)
+        return NULL;
+
+    FontShadow *shadow = &font_shadows[font_shadow_count++];
+    shadow->font = font;
+    shadow->bitmap = NULL;
+    shadow->glyphs = NULL;
+
+    int64_t build_start = esp_timer_get_time();
+
+    int32_t count = font_glyph_count(font);
+    size_t total = 0;
+    for (int32_t i = 0; i < count; i++)
+    {
+        GFXglyph *g = &font->glyph[i];
+        total += (size_t)(g->width / 2 + g->width % 2) * g->height;
+    }
+
+    GFXglyph *glyphs = (GFXglyph *)malloc(count * sizeof(GFXglyph));
+    uint8_t *bitmap = (uint8_t *)heap_caps_malloc(total, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
+    if (bitmap == NULL)
+        bitmap = (uint8_t *)malloc(total);
+    if (glyphs == NULL || bitmap == NULL)
+    {
+        free(glyphs);
+        free(bitmap);
+        ESP_LOGW("font.c", "no memory for font shadow (%u bytes), using per-glyph decompression",
+                 (unsigned)total);
+        return NULL;
+    }
+
+    size_t offset = 0;
+    for (int32_t i = 0; i < count; i++)
+    {
+        glyphs[i] = font->glyph[i];
+        unsigned long expected = (unsigned long)(glyphs[i].width / 2 + glyphs[i].width % 2)
+                                 * glyphs[i].height;
+        unsigned long size = expected;
+        if (expected > 0 &&
+            uncompress(&bitmap[offset], &size, &font->bitmap[glyphs[i].data_offset],
+                       glyphs[i].compressed_size) != Z_OK)
+        {
+            free(glyphs);
+            free(bitmap);
+            ESP_LOGW("font.c", "font shadow decompression failed, using per-glyph decompression");
+            return NULL;
+        }
+        glyphs[i].data_offset = offset;
+        offset += expected;
+    }
+
+    shadow->bitmap = bitmap;
+    shadow->glyphs = glyphs;
+    printf("[font] shadow built: %ld glyphs, %u bytes, %lld ms\n", (long)count, (unsigned)total,
+           (esp_timer_get_time() - build_start) / 1000);
+    return shadow;
+}
 
 /**
  * @brief UTF-8 decode inspired from rosetta code
@@ -197,8 +304,27 @@ void write_mode(const GFXfont *font,
     {
         buf_width = (w / 2 + w % 2);
         buf_height = h;
-        buffer = (uint8_t *)malloc(buf_width * buf_height);
-        memset(buffer, 255, buf_width * buf_height);
+        if (buf_width > 0 && buf_height > 0)
+        {
+            buffer = (uint8_t *)malloc(buf_width * buf_height);
+            if (buffer == NULL)
+            {
+                ESP_LOGE("font.c", "no memory for %dx%d draw buffer!", buf_width, buf_height);
+                return;
+            }
+            memset(buffer, 255, buf_width * buf_height);
+        }
+        else
+        {
+            // Nothing to draw - e.g. a run of only whitespace, which has a
+            // zero-size bounding box by design. draw_char() below still
+            // needs to run so the cursor advances by each glyph's width,
+            // but with buf_height <= 0 it never dereferences `buffer` (its
+            // row loop bound check always skips), so NULL is safe here.
+            // Skipping the epd_draw_image() push entirely avoids wasting a
+            // full ~300ms no-op waveform draw on every space typed.
+            buffer = NULL;
+        }
         local_cursor_y = buf_height - baseline_height;
     }
     else
@@ -235,7 +361,7 @@ void write_mode(const GFXfont *font,
     *cursor_x += local_cursor_x - cursor_x_init;
     *cursor_y += local_cursor_y - cursor_y_init;
 
-    if (framebuffer == NULL)
+    if (framebuffer == NULL && buffer != NULL)
     {
         Rect_t area = {
             .x = x1,
@@ -375,10 +501,26 @@ static void IRAM_ATTR draw_char(const GFXfont *font,
     int32_t byte_width = (width / 2 + width % 2);
     unsigned long bitmap_size = byte_width * height;
     uint8_t *bitmap = NULL;
+    bool bitmap_allocated = false;
     if (font->compressed)
     {
-        bitmap = (uint8_t *)malloc(bitmap_size);
-        uncompress(bitmap, &bitmap_size, &font->bitmap[offset], glyph->compressed_size);
+        FontShadow *shadow = get_font_shadow(font);
+        if (shadow != NULL)
+        {
+            // glyph points into font->glyph; the shadow glyph array is
+            // index-aligned with it
+            bitmap = &shadow->bitmap[shadow->glyphs[glyph - font->glyph].data_offset];
+        }
+        else
+        {
+            bitmap = (uint8_t *)malloc(bitmap_size);
+            if (bitmap == NULL)
+            {
+                return;
+            }
+            uncompress(bitmap, &bitmap_size, &font->bitmap[offset], glyph->compressed_size);
+            bitmap_allocated = true;
+        }
     }
     else
     {
@@ -429,7 +571,7 @@ static void IRAM_ATTR draw_char(const GFXfont *font,
             x++;
         }
     }
-    if (font->compressed)
+    if (bitmap_allocated)
     {
         free(bitmap);
     }

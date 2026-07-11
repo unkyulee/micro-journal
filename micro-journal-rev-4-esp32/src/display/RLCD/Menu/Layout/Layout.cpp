@@ -18,8 +18,6 @@ void Layout_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 void Layout_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
     JsonDocument &app = status();
-    
-    u8->setCursor(0, 50);
 
     // Define layout options
     static const char *layout_options[] = {
@@ -36,11 +34,20 @@ void Layout_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
         "[S] Swedish",
         "[U] US"
     };
+    const int count = sizeof(layout_options) / sizeof(layout_options[0]);
 
-    // Print each layout option
-    for (const char *option : layout_options)
+    // Two columns so the list fits the screen height as more layouts are
+    // added - a single column of 12+ entries runs past the bottom edge.
+    const int rowsPerCol = (count + 1) / 2;
+    const int lineHeight = 20;
+    const int col2X = 200;
+
+    for (int i = 0; i < count; i++)
     {
-        u8->println(option);
+        int col = i / rowsPerCol;
+        int row = i % rowsPerCol;
+        u8->setCursor(col == 0 ? 0 : col2X, 50 + row * lineHeight);
+        u8->print(layout_options[i]);
     }
 }
 

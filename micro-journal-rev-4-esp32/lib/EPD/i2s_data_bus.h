@@ -89,11 +89,6 @@ void IRAM_ATTR i2s_start_line_output();
  */
 bool IRAM_ATTR i2s_is_busy();
 
-/**
- * @brief Give up allocated resources.
- */
-void i2s_deinit();
-
 #ifdef __cplusplus
 }
 #endif

@@ -263,6 +263,9 @@ static bool copyFileChunk(File &src, File &dst, size_t count)
 
 bool Editor::saveFile()
 {
+    // TEMPORARY instrumentation for save-blocking-typing diagnosis
+    unsigned long saveTimingStart = millis();
+
     if (savingInProgress)
     {
         _log("Save already in progress, skipping.\n");
@@ -304,6 +307,9 @@ bool Editor::saveFile()
     size_t newLength = getBufferSize();
     size_t windowEnd = seekPos + loadedLength;
     bool hasTrailingData = windowEnd < fileSize;
+
+    // TEMPORARY instrumentation for save-blocking-typing diagnosis
+    bool tookSplicePath = hasTrailingData || newLength < loadedLength;
 
     // FAST PATH: window is the tail of the file and isn't shrinking -
     // just overwrite/extend in place, no rewrite of the rest of the file needed.
@@ -428,6 +434,12 @@ bool Editor::saveFile()
 
     //
     savingInProgress = false;
+
+    // TEMPORARY instrumentation for save-blocking-typing diagnosis
+    printf("[save] %s path, %d bytes buffer: %lu ms\n",
+           tookSplicePath ? "SPLICE" : "fast",
+           (int)newLength,
+           millis() - saveTimingStart);
 
 #if defined(DEBUG) && defined(BOARD_PICO)
     printMemoryUsage();
@@ -554,6 +566,11 @@ void Editor::pageForward()
 // triggered on a non-tail window.
 void Editor::advanceWindow()
 {
+    // TEMPORARY instrumentation for save-blocking-typing diagnosis: this
+    // save is NOT gated by the idle timer in WP_check_saved - it runs
+    // synchronously on the keystroke path itself whenever the buffer fills.
+    printf("[save] advanceWindow: buffer full, forced save starting\n");
+
     if (!saveFile())
     {
         _log("advanceWindow: flush failed, buffer is full and can't advance\n");

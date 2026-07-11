@@ -126,6 +126,16 @@ void USBHost_loop()
                 }
             }
 
+            // Physical Alt toggles Hangul/English in the Korean locale
+            // (see keyboard_keycode_ascii_ko). Held alone, Alt never shows
+            // up in the 6-key rollover array above - it only ever appears
+            // in the modifier byte - so it needs its own edge-detect here.
+            const uint8_t ALT_BITS = 0x04 | 0x40; // left + right alt
+            bool altPrev = prev.modifier & ALT_BITS;
+            bool altNow = report.modifier & ALT_BITS;
+            if (altNow != altPrev)
+                keyboard_HID2Ascii(0, report.modifier, altNow);
+
             memcpy(&prev, &report, sizeof(UsbHidReport));
         }
     }
@@ -148,6 +158,9 @@ void USBHost_loop()
                 if (c == 'd')
                     c = 19;
         */
+
+        if (c == 'r') c = 5; // emulate refresh key
+
         if (c == 13)
             return; // ignore /r key
         _debug("Serial keyboard input %c %d\n", c, c);

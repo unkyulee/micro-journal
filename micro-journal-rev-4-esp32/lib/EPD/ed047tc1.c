@@ -52,16 +52,24 @@ static epd_config_register_t config_reg;
 
 /*
  * Write bits directly using the registers.
- * Won't work for some pins (>= 32).
+ * Pins >= 32 live in the second GPIO bank (out1_*): shifting by the raw pin
+ * number there is undefined behavior that on Xtensa wraps around and pokes
+ * an unrelated pin in bank 0 (e.g. GPIO 40 -> GPIO 8, a data bus pin).
  */
 inline static void fast_gpio_set_hi(gpio_num_t gpio_num)
 {
-    GPIO.out_w1ts = (1 << gpio_num);
+    if (gpio_num < 32)
+        GPIO.out_w1ts = (1UL << gpio_num);
+    else
+        GPIO.out1_w1ts.val = (1UL << (gpio_num - 32));
 }
 
 inline static void fast_gpio_set_lo(gpio_num_t gpio_num)
 {
-    GPIO.out_w1tc = (1 << gpio_num);
+    if (gpio_num < 32)
+        GPIO.out_w1tc = (1UL << gpio_num);
+    else
+        GPIO.out1_w1tc.val = (1UL << (gpio_num - 32));
 }
 
 inline static void IRAM_ATTR push_cfg_bit(bool bit)

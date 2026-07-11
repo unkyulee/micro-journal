@@ -13,6 +13,7 @@
 #include <esp_assert.h>
 #include <esp_heap_caps.h>
 #include <esp_log.h>
+#include <esp_timer.h>
 #include <esp_types.h>
 #include <xtensa/core-macros.h>
 
@@ -46,7 +47,6 @@
 typedef struct
 {
     uint8_t *data_ptr;
-    SemaphoreHandle_t done_smphr;
     Rect_t area;
     int32_t frame;
     DrawMode_t mode;
@@ -86,6 +86,10 @@ static void IRAM_ATTR provide_out(OutputParams *params);
 
 static void IRAM_ATTR feed_display(OutputParams *params);
 
+static void IRAM_ATTR provide_out_task(void *arg);
+
+static void IRAM_ATTR feed_display_task(void *arg);
+
 static void epd_fill_circle_helper(int32_t x0, int32_t y0, int32_t r, int32_t corners, int32_t delta,
                             uint8_t color, uint8_t *framebuffer);
 
@@ -111,6 +115,17 @@ static const int32_t contrast_cycles_4_white[15] = {10, 10, 8, 8, 8, 8, 8, 10, 1
 // is calculated for each cycle.
 static uint8_t *conversion_lut;
 static QueueHandle_t output_queue;
+
+// Persistent worker tasks for frame output. Created once in epd_init() and
+// woken per frame via task notifications, instead of being created and
+// deleted per frame: task create/delete churn plus the idle-task delays it
+// required added ~85ms of latency to every draw call.
+static TaskHandle_t provide_task = NULL;
+static TaskHandle_t feed_task = NULL;
+static SemaphoreHandle_t fetch_sem = NULL;
+static SemaphoreHandle_t feed_sem = NULL;
+static OutputParams provide_params;
+static OutputParams feed_params;
 
 static const DRAM_ATTR uint32_t lut_1bpp[256] = {
     0x0000, 0x0001, 0x0004, 0x0005, 0x0010, 0x0011, 0x0014, 0x0015,
@@ -159,6 +174,14 @@ void epd_init()
     conversion_lut = (uint8_t *)heap_caps_malloc(1 << 16, MALLOC_CAP_8BIT);
     assert(conversion_lut != NULL);
     output_queue = xQueueCreate(64, EPD_WIDTH / 2);
+
+    // persistent frame workers, one per core (see epd_draw_image)
+    fetch_sem = xSemaphoreCreateBinary();
+    feed_sem = xSemaphoreCreateBinary();
+    xTaskCreatePinnedToCore(provide_out_task, "provide_out", 8192,
+                            NULL, 10, &provide_task, 0);
+    xTaskCreatePinnedToCore(feed_display_task, "render", 8192,
+                            NULL, 10, &feed_task, 1);
 }
 
 
@@ -213,7 +236,10 @@ void epd_push_pixels(Rect_t area, int16_t time, int32_t color)
 
 void epd_clear_area(Rect_t area)
 {
-    epd_clear_area_cycles(area, 4, 50);
+    // 2 cycles = 16 full flash passes (~1.4s full screen). The previous 4
+    // cycles (32 passes, ~2.7s measured) were very conservative; if faint
+    // ghosting shows up after a full refresh, bump this back toward 3-4.
+    epd_clear_area_cycles(area, 2, 50);
 }
 
 void epd_clear_quick(Rect_t area, int cycle, int time)
@@ -252,7 +278,10 @@ Rect_t epd_full_screen()
 
 void epd_clear()
 {
+    // TEMPORARY instrumentation for full-refresh slowness diagnosis
+    int64_t t0 = esp_timer_get_time();
     epd_clear_area(epd_full_screen());
+    printf("[epd] epd_clear: %lld ms\n", (esp_timer_get_time() - t0) / 1000);
 }
 
 
@@ -772,41 +801,31 @@ void IRAM_ATTR epd_draw_image(Rect_t area, uint8_t *data, DrawMode_t mode)
 {
     uint8_t frame_count = 15;
 
-    SemaphoreHandle_t fetch_sem = xSemaphoreCreateBinary();
-    SemaphoreHandle_t feed_sem = xSemaphoreCreateBinary();
-    vTaskDelay(10);
+    // TEMPORARY instrumentation for full-refresh slowness diagnosis
+    int64_t t0 = esp_timer_get_time();
+
     for (uint8_t k = 0; k < frame_count; k++)
     {
-        OutputParams p1 = {
-            .area = area,
-            .data_ptr = data,
-            .frame = k,
-            .mode = mode,
-            .done_smphr = fetch_sem,
-        };
-        OutputParams p2 = {
-            .area = area,
-            .data_ptr = data,
-            .frame = k,
-            .mode = mode,
-            .done_smphr = feed_sem,
-        };
+        provide_params.area = area;
+        provide_params.data_ptr = data;
+        provide_params.frame = k;
+        provide_params.mode = mode;
 
-        TaskHandle_t t1, t2;
-        xTaskCreatePinnedToCore((void (*)(void *))provide_out, "privide_out", 8192,
-                                &p1, 10, &t1, 0);
-        xTaskCreatePinnedToCore((void (*)(void *))feed_display, "render", 8192, &p2,
-                                10, &t2, 1);
+        feed_params.area = area;
+        feed_params.data_ptr = data;
+        feed_params.frame = k;
+        feed_params.mode = mode;
+
+        // wake the persistent workers for this frame
+        xTaskNotifyGive(provide_task);
+        xTaskNotifyGive(feed_task);
 
         xSemaphoreTake(fetch_sem, portMAX_DELAY);
         xSemaphoreTake(feed_sem, portMAX_DELAY);
-
-        vTaskDelete(t1);
-        vTaskDelete(t2);
-        vTaskDelay(5);
     }
-    vSemaphoreDelete(fetch_sem);
-    vSemaphoreDelete(feed_sem);
+
+    printf("[epd] draw_image %ldx%ld: %lld ms\n", (long)area.width, (long)area.height,
+           (esp_timer_get_time() - t0) / 1000);
 }
 
 /******************************************************************************/
@@ -1018,9 +1037,18 @@ static void IRAM_ATTR provide_out(OutputParams *params)
             memset(line, 255, EPD_WIDTH / 2);
         }
     }
+}
 
-    xSemaphoreGive(params->done_smphr);
-    vTaskDelay(portMAX_DELAY);
+// Persistent worker: waits for a frame notification from epd_draw_image,
+// renders it, signals completion, repeats.
+static void IRAM_ATTR provide_out_task(void *arg)
+{
+    while (true)
+    {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        provide_out(&provide_params);
+        xSemaphoreGive(fetch_sem);
+    }
 }
 
 
@@ -1059,9 +1087,18 @@ static void IRAM_ATTR feed_display(OutputParams *params)
         write_row(contrast_lut[params->frame]);
     }
     epd_end_frame();
+}
 
-    xSemaphoreGive(params->done_smphr);
-    vTaskDelay(portMAX_DELAY);
+// Persistent worker: waits for a frame notification from epd_draw_image,
+// feeds it to the display, signals completion, repeats.
+static void IRAM_ATTR feed_display_task(void *arg)
+{
+    while (true)
+    {
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        feed_display(&feed_params);
+        xSemaphoreGive(feed_sem);
+    }
 }
 
 /******************************************************************************/

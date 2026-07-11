@@ -7,6 +7,15 @@
 #include "keyboard/keyboard.h"
 #include "display/display.h"
 
+// Generated Korean font - see script/generate_gfxfont_korean_font.py.
+// GFXfont/4-bit-grayscale format (this backend's own, different from the
+// u8g2 fonts used by RLCD/ILI9341/ST7735/CARDPUTER). Source is the same
+// GalmuriMono11 (SIL OFL) used for Rev.8, rasterized larger (36px) for
+// this panel's bigger 960x540 canvas; only included here, so its ~1.3MB
+// of glyph data isn't duplicated into every other EPD screen's translation
+// unit (unlike monospace.h/system.h, which are small enough not to matter).
+#include "../fonts/galmuri_36_korean.h"
+
 //
 int last_sleep = millis();
 //
@@ -16,8 +25,11 @@ int last_sleep = millis();
 // Selectable word processor fonts. lineHeight is the hand-picked leading
 // (larger than the font's own advance_y for readability on the big panel).
 // Declared glyph widths are corrected at setup by reading the glyph table.
+// The Korean font renders Hangul full-width, hence the double-width
+// charColumns rule.
 static EditorFont WP_FONTS[] = {
     {"monospace", &monospace, 20, 60, nullptr},
+    {"korean36", &galmuri36Korean, 18, 40, editorfont_hangul_columns},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
 
@@ -479,7 +491,6 @@ void WP_render_text()
 #define CURSOR_MARGIN 10
 #define CURSOR_THICKNESS 5
 #define CURSOR_DELAY 50
-#define CURSOR_BLINK_INTERVAL 600
 
 // fill a small buffer with solid black (nibble 0) and push only the
 // cursor's tiny area through the proven image waveform, instead of
@@ -501,7 +512,7 @@ static void WP_draw_cursor(Rect_t area)
 }
 
 // erase with a small padding margin so anti-aliased edges don't linger
-// across repeated blink cycles at the same spot.
+// when the cursor is redrawn repeatedly at the same spot.
 static void WP_erase_cursor(Rect_t area)
 {
     Rect_t erase_area = display_rect(
@@ -554,7 +565,7 @@ void WP_render_cursor()
         // _debug("WP_render_cursor::cursorX %d\n", cursorX);
     }
 
-    // cursor moved: erase if currently visible and restart the show/blink cycle
+    // cursor moved: erase if currently visible and restart the idle timer
     if (cursorPos != cursorPos_prev)
     {
         if (cursorVisible)
@@ -590,27 +601,13 @@ void WP_render_cursor()
 
         //
         renderedCursorX = cursorX;
-
-        // start the blink cadence from the moment it first appears
-        last = millis();
     }
 
-    // keep blinking on/off at a fixed interval while idle
-    else if (renderedCursorX != -1 && last + CURSOR_BLINK_INTERVAL < millis())
-    {
-        last = millis();
-
-        if (cursorVisible)
-        {
-            WP_erase_cursor(area);
-            cursorVisible = false;
-        }
-        else
-        {
-            WP_draw_cursor(area);
-            cursorVisible = true;
-        }
-    }
+    // NOTE: no idle blinking. Each draw_image call costs ~275ms on this
+    // panel (15 waveform frames x full-height row scan, even for a tiny
+    // area), so a blinking cursor kept the display task busy roughly a
+    // third of the time and made everything else feel sluggish. The cursor
+    // appears after a short pause and stays solid until it moves.
 }
 
 // Check if text is saved
@@ -640,6 +637,7 @@ void WP_check_saved()
 
         if (!Editor::getInstance().saved)
         {
+            _log("saving file due in inactivity %d.txt\n", status()["config"]["file_index"].as<int>());
             Editor::getInstance().saveFile();
         }
     }
@@ -799,6 +797,7 @@ void WP_keyboard(int key, bool pressed, int index)
         if (!pressed)
         {
             // Save before transitioning to the menu
+            _log("WP_keyboard::Menu Key Pressed. Saving file %d.txt\n", status()["config"]["file_index"].as<int>());
             Editor::getInstance().saveFile();
 
             //
@@ -815,6 +814,7 @@ void WP_keyboard(int key, bool pressed, int index)
         if (!pressed)
         {
             clear_full = true;
+            _log("WP_keyboard::F5 Key Pressed. Saving file %d.txt\n", status()["config"]["file_index"].as<int>());
             Editor::getInstance().saveFile();
         }
     }
