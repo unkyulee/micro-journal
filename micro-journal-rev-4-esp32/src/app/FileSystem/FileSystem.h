@@ -4,9 +4,7 @@
 #include <Arduino.h>
 #include <FS.h>
 
-#ifdef BOARD_ESP32_S3
-#include <SD.h>
-#endif
+using fs::File;
 
 class FileSystem {
 public:

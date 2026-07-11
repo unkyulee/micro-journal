@@ -46,8 +46,7 @@ void Home_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
 #ifdef REV5
     ptft->println(" [K] KEY LAYOUT - " + keyboard_layout);
-    ptft->println(" [F] DEVICE BUTTON");
-    ptft->println(" [M, MENU] BLE KEYBOARD");
+    ptft->println(" [M] BLE KEYBOARD");
 #endif
 
 #ifdef REV6
