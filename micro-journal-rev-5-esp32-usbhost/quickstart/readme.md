@@ -21,14 +21,8 @@
   - [**⚠️ Important: USB Charging Limitations**](#️-important-usb-charging-limitations)
   - [**Step 2 — Prepare the SD Card**](#step-2--prepare-the-sd-card)
 - [**Google Drive Sync Setup**](#google-drive-sync-setup)
-  - [**1. Create a Folder in Google Drive**](#1-create-a-folder-in-google-drive)
-  - [**2. Create Google Apps Script**](#2-create-google-apps-script)
-  - [**3. Add the Sync Script**](#3-add-the-sync-script)
-  - [**6. Deploy the Apps Script**](#6-deploy-the-apps-script)
-  - [**8. Copy Your Web App URL**](#8-copy-your-web-app-url)
-  - [**9. Edit or Create `config.json` on the SD Card**](#9-edit-or-create-configjson-on-the-sd-card)
-    - [⚠ Wi-Fi Notes](#-wi-fi-notes)
   - [**10. WiFi Setup**](#10-wifi-setup)
+    - [⚠ Wi-Fi Notes](#-wi-fi-notes)
 - [**Firmware Update**](#firmware-update)
   - [**1. Check Current Version**](#1-check-current-version)
   - [**2. Download Latest Firmware**](#2-download-latest-firmware)
@@ -179,103 +173,8 @@ Insert the SD card into the writerDeck after formatting.
 
 This allows your writerDeck to back up files through Wi-Fi.
 
----
+Please, follow the [Google Drive Sync Setup Guide](../../micro-journal-rev-6-one-piece/googledrive.md) to complete this step.
 
-## **1. Create a Folder in Google Drive**
-
-1. Visit: [https://drive.google.com](https://drive.google.com)
-2. Create a folder named **uJournal**
-
-![drive1](./images/drive_001.png)
-![drive2](./images/drive_002.png)
-
----
-
-## **2. Create Google Apps Script**
-
-1. Enter the **uJournal** folder.
-2. Create a new **Google Apps Script** file.
-
-![drive3](./images/drive_003.png)
-
----
-
-## **3. Add the Sync Script**
-
-Open the latest script here:
-
-[https://raw.githubusercontent.com/unkyulee/micro-journal/main/micro-journal-rev-4-esp32/install/google/sync.js](https://raw.githubusercontent.com/unkyulee/micro-journal/main/micro-journal-rev-4-esp32/install/google/sync.js)
-
-Copy and paste into your Apps Script editor:
-
-![drive4](./images/drive_004.png)
-
-Save the project with any name.
-
----
-
-## **6. Deploy the Apps Script**
-
-1. Click **Deploy → New deployment**
-2. Select **Web app**
-
-![drive5](./images/drive_005.png)
-![drive6](./images/drive_006.png)
-
-3. Configure as follows:
-
-* **Execute as:** Me
-* **Who has access:** Anyone
-
-![drive7](./images/drive_007.png)
-
-4. Press **Deploy**, authorize the script, and accept the warning.
-
-![drive8](./images/drive_008.png)
-![drive9](./images/drive_009.png)
-![drive10](./images/drive_010.png)
-
----
-
-## **8. Copy Your Web App URL**
-
-![drive11](./images/drive_011.png)
-
-You will need this URL for your `config.json`.
-
----
-
-## **9. Edit or Create `config.json` on the SD Card**
-
-On your SD card, open or create a file named:
-
-```
-config.json
-```
-
-Use this template:
-
-```json
-{
-  "sync": {
-    "url": "PASTE YOUR WEB APP URL HERE"
-  }
-}
-```
-
-Be careful not to remove commas, quotes, or braces.
-
-Insert the SD card back into the writerDeck.
-
-To test sync:
-
-* Press **ESC**, then **S**
-* Ensure Wi-Fi is already configured.
-
-### ⚠ Wi-Fi Notes
-
-* Only **2.4 GHz** networks are supported.
-* 5 GHz Wi-Fi cannot connect.
 
 ---
 
@@ -290,6 +189,11 @@ To test sync:
 
 You may save up to **5 Wi-Fi networks**.
 
+### ⚠ Wi-Fi Notes
+
+* Only **2.4 GHz** networks are supported.
+* 5 GHz Wi-Fi cannot connect.
+
 ---
 
 # **Firmware Update**
@@ -302,11 +206,12 @@ Press **ESC** or **M** to open the menu.
 
 If you see:
 
-> **Version 1.0.0**
+> **Version 1.x**
 
-You *must* update.
+You need to use Web Flash Tool to update to version 2.x
+Please, have a look at 2.0 Release Note to update your firmware to 2.x
 
-![firmware](./images/firmware_001.jpg)
+https://github.com/unkyulee/micro-journal/releases/tag/2.0.0
 
 ---
 
