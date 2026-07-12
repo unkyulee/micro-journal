@@ -9,6 +9,7 @@
 
 //
 #include "keyboard/Locale/locale.h"
+#include "keyboard/Locale/ko/ko.h"
 
 //
 #define LAYERS 6 // layers
@@ -303,7 +304,6 @@ int keyboard_keypad_48_get_key(keypadEvent e)
     // value baked into the layer tables (hardcoded to the US layout)
     key = layers[_layer][e.bit.KEY];
 
-#if defined(BOARD_ESP32_S3)
     JsonDocument &app = status();
     String locale = app["config"]["keyboard_layout"].as<String>();
 
@@ -316,11 +316,20 @@ int keyboard_keypad_48_get_key(keypadEvent e)
         return keyboard_keycode_ascii(locale, 0, _shift_pressed, true, e.bit.EVENT == KEY_JUST_PRESSED);
     }
 
-    // when a non-US layout is configured, re-map character keys through
-    // the locale tables instead of returning the hardcoded US character
-    // (this is what enables the Korean layout - and every other locale -
-    // on the 48-key keypad; see Keypad_68 for the same pattern)
-    if (locale.length() > 0 && locale != "US" && locale != "null")
+    // Korean maps by the CHARACTER the layer table produced, not by the
+    // physical key: 'r' -> ㄱ, 'R' -> ㄲ, 'c' -> ㅊ ... This keypad is
+    // small and layouts are commonly customized via keyboard.json, so a
+    // physical-key (HID) mapping would break the moment a letter moves
+    // to a different key - the resolved character is the source of truth.
+    if (locale == "KR")
+    {
+        key = keyboard_ascii_ko(key, e.bit.EVENT == KEY_JUST_PRESSED);
+    }
+
+    // for other non-US layouts, re-map character keys through the locale
+    // tables instead of returning the hardcoded US character (see
+    // Keypad_68 for the same pattern)
+    else if (locale.length() > 0 && locale != "US" && locale != "null")
     {
         uint8_t hid = key_hid[e.bit.KEY];
         if (hid != 0)
@@ -330,7 +339,6 @@ int keyboard_keypad_48_get_key(keypadEvent e)
                 key = ascii;
         }
     }
-#endif
 
     // return the corresponding key
     return key;

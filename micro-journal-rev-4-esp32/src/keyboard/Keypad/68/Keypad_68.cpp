@@ -9,6 +9,7 @@
 
 //
 #include "keyboard/Locale/locale.h"
+#include "keyboard/Locale/ko/ko.h"
 
 //
 #define LAYERS 4 // layers
@@ -281,9 +282,19 @@ int keyboard_keypad_68_get_key(keypadEvent e)
     // value baked into the layer tables (hardcoded to the US layout)
     key = layers[_layer][e.bit.KEY];
 
-    // when a non-US layout is configured, re-map character keys through
-    // the locale tables instead of returning the hardcoded US character
-    if (use_locale)
+    // Korean maps by the CHARACTER the layer table produced, not by the
+    // physical key: 'r' -> ㄱ, 'R' -> ㄲ, 'c' -> ㅊ ... so layouts
+    // customized via keyboard.json keep working - the resolved character
+    // is the source of truth. Non-letter keys (file switching, controls)
+    // pass through unchanged.
+    if (locale == "KR")
+    {
+        key = keyboard_ascii_ko(key, e.bit.EVENT == KEY_JUST_PRESSED);
+    }
+
+    // for other non-US layouts, re-map character keys through the locale
+    // tables instead of returning the hardcoded US character
+    else if (use_locale)
     {
         uint8_t hid = key_hid[e.bit.KEY];
         if (hid != 0)

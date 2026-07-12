@@ -71,35 +71,21 @@ static uint16_t dubeolsik_shifted(char letter, uint16_t jamo)
 // value 1 travels the whole pipeline and is discarded by Editor::keyboard.
 #define KEY_CONSUMED 1
 
-int keyboard_keycode_ascii_ko(uint8_t keycode, bool shift, bool alt, bool pressed)
-{
-    // start from the US mapping; everything that is not a letter key
-    // (digits, punctuation, space, enter, backspace, arrows ...) passes
-    // through unchanged
-    int ascii = keyboard_keycode_ascii_us(keycode, shift);
+// current input mode, shared by both entry points below
+static bool hangul = true;
 
+// Map one already-resolved US-layout character to its dubeolsik jamo:
+// 'r' -> ㄱ, 'R' -> ㄲ, 'c' -> ㅊ ... The case of the letter selects the
+// shifted variant, so this works no matter which physical key produced
+// the character - keypads with custom keyboard.json layouts included.
+// Non-letter characters (and English mode) pass through unchanged.
+int keyboard_ascii_ko(int ascii, bool pressed)
+{
     // outside the word processor (menus, dialogs) keys must stay Latin
     // so the navigation shortcuts keep working
     JsonDocument &app = status();
     if (app["screen"].as<int>() != WORDPROCESSOR)
         return ascii;
-
-    // Hangul <-> English toggle: the dedicated left-alt event, which the
-    // keyboard driver sends as alt with keycode 0 (see Keypad_68).
-    static bool hangul = true;
-    if (alt)
-    {
-        if (keycode == 0)
-        {
-            if (pressed)
-                hangul = !hangul;
-            return KEY_CONSUMED; // the toggle itself types nothing
-        }
-
-        // alt/Fn held with a real key: not ours - return "no mapping" so
-        // the driver's own layer value (file switching etc.) is used
-        return 0;
-    }
 
     if (!hangul)
         return ascii;
@@ -115,8 +101,42 @@ int keyboard_keycode_ascii_ko(uint8_t keycode, bool shift, bool alt, bool presse
         return ascii;
 
     uint16_t jamo = dubeolsik[letter - 'a'];
-    if (shift)
+    if (ascii >= 'A' && ascii <= 'Z')
         jamo = dubeolsik_shifted(letter, jamo);
 
     return jamo;
+}
+
+int keyboard_keycode_ascii_ko(uint8_t keycode, bool shift, bool alt, bool pressed)
+{
+    // start from the US mapping; everything that is not a letter key
+    // (digits, punctuation, space, enter, backspace, arrows ...) passes
+    // through unchanged
+    int ascii = keyboard_keycode_ascii_us(keycode, shift);
+
+    // outside the word processor (menus, dialogs) keys must stay Latin
+    // so the navigation shortcuts keep working
+    JsonDocument &app = status();
+    if (app["screen"].as<int>() != WORDPROCESSOR)
+        return ascii;
+
+    // Hangul <-> English toggle: the dedicated toggle event, which the
+    // keyboard drivers send as alt with keycode 0 (see Keypad_68/48 and
+    // USBHost).
+    if (alt)
+    {
+        if (keycode == 0)
+        {
+            if (pressed)
+                hangul = !hangul;
+            return KEY_CONSUMED; // the toggle itself types nothing
+        }
+
+        // alt/Fn held with a real key: not ours - return "no mapping" so
+        // the driver's own layer value (file switching etc.) is used
+        return 0;
+    }
+
+    // the US mapping already resolved shift into the letter's case
+    return keyboard_ascii_ko(ascii, pressed);
 }
