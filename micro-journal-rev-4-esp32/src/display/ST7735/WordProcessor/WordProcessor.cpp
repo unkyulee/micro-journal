@@ -15,11 +15,20 @@
 int screen_width = 160;
 int screen_height = 80;
 
+// Generated Korean font - see script/generate_u8g2_korean_font.py. Same
+// u8g2 binary format as the other builds (GalmuriMono11, SIL OFL),
+// rasterized at its native 12px pixel size for this tiny 160x80 panel and
+// the RP2040's limited flash: dual-width 6/12px Latin/Hangul, ~59KB.
+extern const uint8_t u8g2_font_galmuri_12_t_korean[];
+
 // Selectable word processor fonts. lineHeight is the u8g2 paragraph
-// advance (what print("\n") moves by), not the glyph height. Declared
-// glyph widths are corrected at setup by measuring the actual font.
+// advance (what print("\n") moves by, = ascent_para - descent_para), not
+// the glyph height. Declared glyph widths are corrected at setup by
+// measuring the actual font. The Korean font renders Hangul full-width,
+// hence the double-width charColumns rule.
 static EditorFont WP_FONTS[] = {
     {"profont17", u8g2_font_profont17_tf, 9, 14, nullptr},
+    {"korean12", u8g2_font_galmuri_12_t_korean, 6, 14, editorfont_hangul_columns},
 };
 static const int WP_FONT_COUNT = sizeof(WP_FONTS) / sizeof(WP_FONTS[0]);
 

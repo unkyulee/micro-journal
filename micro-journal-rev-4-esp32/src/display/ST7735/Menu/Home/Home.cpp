@@ -18,6 +18,7 @@ const char *menu[] = {
     "Color Font",  // 7
     "FW Update",   // 8
     "Delete Text", // 9
+    "Language",    // 10
     "Exit"};
 
 //
@@ -204,6 +205,11 @@ void Home_keyboard(char key, bool pressed)
             app["menu"]["state"] = MENU_CLEAR;
         }
 
-        
+        // 10 - Language (English / Korean)
+        else if (selectedHome == 10)
+        {
+            _debug("Language Selected\n");
+            app["menu"]["state"] = MENU_LANGUAGE;
+        }
     }
 }

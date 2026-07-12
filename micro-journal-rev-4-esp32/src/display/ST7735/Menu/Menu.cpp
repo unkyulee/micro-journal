@@ -11,6 +11,7 @@
 #include "Clear/Clear.h"
 #include "Send/Send.h"
 #include "Info/Info.h"
+#include "Language/Language.h"
 
 // state
 bool menu_clear = false;
@@ -127,6 +128,14 @@ void Menu_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         Info_render(ptft, pu8f);
     }
 
+    else if (menu_state == MENU_LANGUAGE)
+    {
+        if (menu_state_prev != menu_state)
+            Language_setup(ptft, pu8f);
+
+        Language_render(ptft, pu8f);
+    }
+
     // save prev state
     menu_state_prev = menu_state;
 }
@@ -195,6 +204,13 @@ void Menu_keyboard(char key, bool pressed)
     else if (menu_state == MENU_INFO)
     {
         Info_keyboard(key, pressed);
+        return;
+    }
+
+    //
+    else if (menu_state == MENU_LANGUAGE)
+    {
+        Language_keyboard(key, pressed);
         return;
     }
 }
