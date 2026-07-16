@@ -60,6 +60,14 @@ bool cleared = true;
 //
 int startLine = -1;
 
+// The composing Hangul character is tracked separately from the cursor.
+// A composition can finish and immediately start again on the next jamo,
+// so composer.isComposing() alone is not enough to detect a commit: a move
+// of the composing character to another buffer position is also a commit.
+static bool composing_prev = false;
+static int composing_line_prev = -1;
+static int composing_char_start_prev = -1;
+
 //
 void WP_setup()
 {
@@ -111,6 +119,10 @@ void WP_setup()
 
     // reset startLine
     startLine = -1;
+
+    composing_prev = false;
+    composing_line_prev = -1;
+    composing_char_start_prev = -1;
 }
 
 //
@@ -235,6 +247,76 @@ void WP_clear_row(int row)
     epd_poweroff_all();
 }
 
+// Clear and redraw one visible editor line. This is used when a Hangul
+// composition is committed so any ghosting accumulated by the composing
+// cell is cleaned up at the line level.
+static void WP_refresh_text_line(int line)
+{
+    int row = line - startLine;
+    if (row < 0 || row > Editor::getInstance().rows)
+        return;
+
+    WP_clear_row(row);
+    display_setline(row);
+    WP_render_text_line(line, display_y(), NULL);
+}
+
+// Refresh exactly the display cell occupied by the active composing Hangul
+// character. Hangul and compatibility jamo use two editor columns, so the
+// rectangle follows charColumns() rather than assuming a fixed byte/width.
+static void WP_refresh_composing_cell(int line, int charStart)
+{
+    Editor &editor = Editor::getInstance();
+    int row = line - startLine;
+    if (row < 0 || row > editor.rows || line < 0 || line > editor.totalLine)
+        return;
+
+    char *linePtr = editor.linePositions[line];
+    if (linePtr == NULL)
+        return;
+
+    int lineStart = (int)(linePtr - editor.buffer);
+    int lineEnd = lineStart + editor.lineLengths[line];
+    if (charStart < lineStart || charStart >= lineEnd)
+        return;
+
+    int prefixCols = 0;
+    for (int pos = lineStart; pos < charStart;)
+    {
+        int charLen = 0;
+        uint32_t codepoint = utf8_decode(editor.buffer + pos, &charLen);
+        if (charLen <= 0)
+            return;
+        prefixCols += editor.charColumns(codepoint);
+        pos += charLen;
+    }
+
+    int charLen = 0;
+    uint32_t codepoint = utf8_decode(editor.buffer + charStart, &charLen);
+    if (charLen <= 0 || charStart + charLen > lineEnd || charLen > 4)
+        return;
+
+    int x = MARGIN_X + display_fontwidth() * prefixCols;
+    Rect_t area = display_rect(
+        x,
+        display_lineheight() * row,
+        display_fontwidth() * editor.charColumns(codepoint),
+        display_lineheight());
+
+    char glyph[5];
+    memcpy(glyph, editor.buffer + charStart, charLen);
+    glyph[charLen] = '\0';
+
+    display_setline(row);
+    int cursorX = x;
+    int cursorY = display_y();
+
+    epd_poweron();
+    epd_clear_quick(area, 4, 50);
+    writeln((GFXfont *)wp_font->fontData, glyph, &cursorX, &cursorY, NULL);
+    epd_poweroff_all();
+}
+
 //
 bool editing = false;
 void WP_render_text()
@@ -251,6 +333,14 @@ void WP_render_text()
     int cursorLine = Editor::getInstance().cursorLine;
     int cursorLinePos = Editor::getInstance().cursorLinePos;
     int bufferSize = Editor::getInstance().getBufferSize();
+
+    Editor &editor = Editor::getInstance();
+    bool composing = editor.composer.isComposing();
+    int composingCharStart = composing ? editor.prevCharStart(cursorPos) : -1;
+    bool compositionCommitted =
+        composing_prev &&
+        (!composing || cursorLine != composing_line_prev ||
+         composingCharStart != composing_char_start_prev);
 
     //
     int totalLine = Editor::getInstance().totalLine;
@@ -343,9 +433,35 @@ void WP_render_text()
         display_draw_buffer();
     }
 
-    // handle backspace, and in-place replacement of the composing Hangul
-    // character (the new glyph doesn't cover the old one's pixels, so the
-    // row is cleared and redrawn the same way)
+    // The active composition ended, or feed() committed it and immediately
+    // began the next Hangul cell. Clean up the completed line as one unit.
+    else if (compositionCommitted)
+    {
+        editor.charReplaced = false;
+        editor.backSpacePressed = false;
+
+        WP_refresh_text_line(composing_line_prev);
+
+        // Enter/wrapping can commit on the previous line and insert on a
+        // new one in the same editor update. Make that new text visible too.
+        if (cursorLine != composing_line_prev && bufferSize != bufferSize_prev)
+            WP_refresh_text_line(cursorLine);
+    }
+
+    // While the same Hangul character is being assembled (ㄱ -> 가 -> 간),
+    // restrict the EPD partial update to that character's display cell.
+    else if (composing &&
+             (editor.charReplaced || editor.backSpacePressed ||
+              bufferSize != bufferSize_prev || cursorPos != cursorPos_prev))
+    {
+        editor.charReplaced = false;
+        editor.backSpacePressed = false;
+        WP_refresh_composing_cell(cursorLine, composingCharStart);
+    }
+
+    // handle backspace (whole-character deletion), and the rare composing
+    // replace that crossed a line boundary - the row is cleared and
+    // redrawn whole
     else if (Editor::getInstance().backSpacePressed || Editor::getInstance().charReplaced)
     {
         //
@@ -463,6 +579,10 @@ void WP_render_text()
     cursorPos_prev = cursorPos;
     cursorLinePos_prev = cursorLinePos;
     bufferSize_prev = bufferSize;
+
+    composing_prev = composing;
+    composing_line_prev = composing ? cursorLine : -1;
+    composing_char_start_prev = composing ? composingCharStart : -1;
 
     // line changed
     if (cursorLine_prev != cursorLine)

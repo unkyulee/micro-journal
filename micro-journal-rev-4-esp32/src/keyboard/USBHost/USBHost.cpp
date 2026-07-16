@@ -149,41 +149,37 @@ void USBHost_loop()
     if (Serial.available())
     {
         char c = Serial.read();
-        /*
-                // simulate up, down, left, right
-                if (c == 'w')
-                    c = 20;
-                if (c == 'a')
-                    c = 18;
-                if (c == 's')
-                    c = 21;
-                if (c == 'd')
-                    c = 19;
-        */
 
-        if (c == 'r') c = 5; // emulate refresh key
+        //if (c == 'r') c = 5; // emulate refresh key
+        if (c == '`') c = 5; // emulate refresh key
+        if (c == 13) return; // ignore /r key
 
-        if (c == 13)
-            return; // ignore /r key
-        _debug("Serial keyboard input %c %d\n", c, c);
+         //
+        _log("Serial keyboard input %c %d\n", c, c);
 
-        // find the scan code based on the input received
-
-        // You can choose a key index, e.g., 0 for generic input
-        display_keyboard(c, true);  // Key press
-        display_keyboard(c, false); // Key release (optional, for GUI consistency)
-
-        // emulate hid report for alphabet
-        if (c >= 'a' && c <= 'z')
+        // Letters must travel the SAME path a real USB key does -
+        // HID keycode -> keyboard_HID2Ascii -> locale -> ascii - otherwise
+        // the layout (e.g. Korean) is bypassed and the raw latin letter is
+        // typed instead of the mapped jamo. Uppercase is expressed as the
+        // letter's keycode plus the left-shift modifier, exactly like real
+        // hardware, so 'R' -> ㄲ still works.
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
         {
-            uint8_t keycodes[6] = {};
-            keycodes[0] = HID_KEY_A + (c - 'a');
-            _debug("Serial keyboard input scancode %d\n", keycodes[0]);
+            bool upper = (c >= 'A' && c <= 'Z');
+            uint8_t keycode = HID_KEY_A + (upper ? c - 'A' : c - 'a');
+            uint8_t modifier = upper ? 0x02 : 0x00; // 0x02 = left shift
 
-            //
-            USBHost_report(0, 0, keycodes);
-            keycodes[0] = 0;
-            USBHost_report(0, 0, keycodes);
+            _log("Serial keyboard input scancode %d shift %d\n", keycode, upper);
+
+            keyboard_HID2Ascii(keycode, modifier, true);
+            keyboard_HID2Ascii(keycode, modifier, false);
+        }
+        else
+        {
+            // non-letter keys (arrows, backspace, enter, control codes)
+            // are not remapped by the locale - send them straight through
+            display_keyboard(c, true);  // Key press
+            display_keyboard(c, false); // Key release
         }
     }
 #endif
