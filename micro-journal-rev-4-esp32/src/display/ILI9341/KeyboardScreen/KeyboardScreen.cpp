@@ -15,6 +15,32 @@
 BleKeyboard bleKeyboard;
 int keyboardConnectedPrev = -1;
 
+// Holding ESC exits the persistent BLE keyboard mode. The timer is checked by
+// KeyboardScreen_render() so the device restarts without waiting for key-up.
+static constexpr uint32_t ESC_LONG_PRESS_MS = 3000;
+static volatile bool escPressed = false;
+static volatile uint32_t escPressedAt = 0;
+static bool bleKeyboardExitStarted = false;
+
+static void KeyboardScreen_exitBleKeyboardMode()
+{
+    if (bleKeyboardExitStarted)
+        return;
+
+    bleKeyboardExitStarted = true;
+    _log("ESC long press: disabling Bluetooth Keyboard mode\n");
+
+    if (bleKeyboard.isConnected())
+        bleKeyboard.releaseAll();
+
+    JsonDocument &app = status();
+    app["config"]["UsbKeyboard"] = false;
+    config_save();
+
+    delay(50); // allow the filesystem write and final BLE report to settle
+    ESP.restart();
+}
+
 /*
 Find the keycode from
 https://github.com/arduino-libraries/Keyboard/blob/master/src/Keyboard.h
@@ -78,6 +104,9 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 
     // reset flags
     keyboardConnectedPrev = -1;
+    escPressed = false;
+    escPressedAt = 0;
+    bleKeyboardExitStarted = false;
 
     // load keyboard layout
     // Load Custom Keybaord Layout
@@ -98,6 +127,12 @@ void KeyboardScreen_setup(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 //
 void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
 {
+    if (escPressed && millis() - escPressedAt >= ESC_LONG_PRESS_MS)
+    {
+        KeyboardScreen_exitBleKeyboardMode();
+        return;
+    }
+
     bool keyboardConnected = bleKeyboard.isConnected();
 
     // Only redraw screen when connection status changes
@@ -140,12 +175,48 @@ void KeyboardScreen_render(TFT_eSPI *ptft, U8g2_for_TFT_eSPI *pu8f)
         ptft->println("Press top-left and top-right keys");
         ptft->setCursor(40, 180);
         ptft->println("simultaneously to SEND.");
+        ptft->setCursor(40, 200);
+        ptft->println("Hold ESC for 2 seconds to exit.");
     }
 }
 
 // keyboard message will come from Rev.6 via this function.
 void KeyboardScreen_keyboard(int key, bool pressed, int index)
 {
+    // Handle ESC before checking the BLE connection. This makes it possible to
+    // leave keyboard mode even while the ESP32 is still waiting to be paired.
+    const bool isEscape = key == MENU || key == 27 || key == KEY_ESC;
+    if (isEscape)
+    {
+        if (pressed)
+        {
+            if (!escPressed)
+            {
+                escPressedAt = millis();
+                escPressed = true;
+            }
+        }
+        else if (escPressed)
+        {
+            const uint32_t heldFor = millis() - escPressedAt;
+            escPressed = false;
+
+            if (heldFor >= ESC_LONG_PRESS_MS)
+            {
+                KeyboardScreen_exitBleKeyboardMode();
+            }
+            else if (bleKeyboard.isConnected())
+            {
+                // Delay the normal ESC report until key-up so a long press does
+                // not also send ESC to the connected computer.
+                bleKeyboard.press(KEY_ESC);
+                bleKeyboard.release(KEY_ESC);
+            }
+        }
+
+        return;
+    }
+
     // no need any action when bluetooth keyboard is not connected
     if (!bleKeyboard.isConnected())
         return;

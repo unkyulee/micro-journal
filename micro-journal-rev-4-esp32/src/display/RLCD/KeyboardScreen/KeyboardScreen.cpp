@@ -15,6 +15,32 @@
 BleKeyboard bleKeyboard;
 int keyboardConnectedPrev = -1;
 
+// Holding ESC exits the persistent BLE keyboard mode. The timer is checked by
+// KeyboardScreen_render() so the device restarts without waiting for key-up.
+static constexpr uint32_t ESC_LONG_PRESS_MS = 2000;
+static volatile bool escPressed = false;
+static volatile uint32_t escPressedAt = 0;
+static bool bleKeyboardExitStarted = false;
+
+static void KeyboardScreen_exitBleKeyboardMode()
+{
+    if (bleKeyboardExitStarted)
+        return;
+
+    bleKeyboardExitStarted = true;
+    _log("ESC long press: disabling Bluetooth Keyboard mode\n");
+
+    if (bleKeyboard.isConnected())
+        bleKeyboard.releaseAll();
+
+    JsonDocument &app = status();
+    app["config"]["UsbKeyboard"] = false;
+    config_save();
+
+    delay(50);
+    ESP.restart();
+}
+
 // Whether the last KeyboardScreen_render() actually changed anything visible - the
 // caller uses this to decide whether the (expensive, full 30KB SPI) panel
 // refresh is worth doing this tick.
@@ -114,6 +140,9 @@ void KeyboardScreen_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX 
 
     // reset flags
     keyboardConnectedPrev = -1;
+    escPressed = false;
+    escPressedAt = 0;
+    bleKeyboardExitStarted = false;
 
     // load keyboard layout
     // Load Custom Keybaord Layout
@@ -146,6 +175,12 @@ void KeyboardScreen_setup(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX 
 //
 void KeyboardScreen_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX *u8)
 {
+    if (escPressed && millis() - escPressedAt >= ESC_LONG_PRESS_MS)
+    {
+        KeyboardScreen_exitBleKeyboardMode();
+        return;
+    }
+
     bool keyboardConnected = bleKeyboard.isConnected();
 
     // Only redraw screen when connection status changes
@@ -186,6 +221,9 @@ void KeyboardScreen_render(ST7305_4p2_BW_DisplayDriver *display, U8G2_FOR_ST73XX
         u8->setCursor(10, 205);
         u8->print("simultaneously to SEND.");
 
+        u8->setCursor(10, 235);
+        u8->print("Hold ESC for 2 seconds to exit.");
+
         // decide whether the panel actually needs to be pushed over SPI this tick
         needsDisplay = true;
     }
@@ -201,6 +239,38 @@ bool KeyboardScreen_needsDisplay()
 // keyboard message will come from Rev.6 via this function.
 void KeyboardScreen_keyboard(int key, bool pressed, int index)
 {
+    // Handle ESC before checking the BLE connection so keyboard mode can also
+    // be disabled while the ESP32 is waiting to be paired.
+    const bool isEscape = key == MENU || key == 27 || key == KEY_ESC;
+    if (isEscape)
+    {
+        if (pressed)
+        {
+            if (!escPressed)
+            {
+                escPressedAt = millis();
+                escPressed = true;
+            }
+        }
+        else if (escPressed)
+        {
+            const uint32_t heldFor = millis() - escPressedAt;
+            escPressed = false;
+
+            if (heldFor >= ESC_LONG_PRESS_MS)
+            {
+                KeyboardScreen_exitBleKeyboardMode();
+            }
+            else if (bleKeyboard.isConnected())
+            {
+                bleKeyboard.press(KEY_ESC);
+                bleKeyboard.release(KEY_ESC);
+            }
+        }
+
+        return;
+    }
+
     // no need any action when bluetooth keyboard is not connected
     if (!bleKeyboard.isConnected())
         return;

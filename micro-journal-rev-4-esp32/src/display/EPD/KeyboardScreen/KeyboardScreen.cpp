@@ -14,6 +14,31 @@
 BleKeyboard bleKeyboard;
 int keyboardConnectedPrev = -1;
 
+static constexpr uint8_t HID_KEY_ESCAPE = 0x29;
+static constexpr uint32_t ESC_LONG_PRESS_MS = 2000;
+static volatile bool escPressed = false;
+static volatile uint32_t escPressedAt = 0;
+static bool bleKeyboardExitStarted = false;
+
+static void KeyboardScreen_exitBleKeyboardMode()
+{
+    if (bleKeyboardExitStarted)
+        return;
+
+    bleKeyboardExitStarted = true;
+    _log("ESC long press: disabling Bluetooth Keyboard mode\n");
+
+    if (bleKeyboard.isConnected())
+        bleKeyboard.releaseAll();
+
+    JsonDocument &app = status();
+    app["config"]["UsbKeyboard"] = false;
+    config_save();
+
+    delay(50);
+    ESP.restart();
+}
+
 // function reference used for SEND
 void _send_key(int key)
 {
@@ -49,6 +74,9 @@ void KeyboardScreen_setup()
 
     //
     keyboardConnectedPrev = -1;
+    escPressed = false;
+    escPressedAt = 0;
+    bleKeyboardExitStarted = false;
 
     // Clear Screen
     epd_poweron();
@@ -64,6 +92,12 @@ void KeyboardScreen_setup()
 //
 void KeyboardScreen_render()
 {
+    if (escPressed && millis() - escPressedAt >= ESC_LONG_PRESS_MS)
+    {
+        KeyboardScreen_exitBleKeyboardMode();
+        return;
+    }
+
     // clear screen if status changed
     bool keyboardConnected = bleKeyboard.isConnected();
     if (keyboardConnected != keyboardConnectedPrev)
@@ -108,12 +142,58 @@ void KeyboardScreen_render()
     y += 15;
     write_string((GFXfont *)&systemFont, "Turn off the device to end the writing session", &x, &y, NULL);
 
+    x = 18;
+    y += 15;
+    write_string((GFXfont *)&systemFont, "Hold ESC for 2 seconds to exit", &x, &y, NULL);
+
     //
     epd_poweroff();
 }
 
 void KeyboardScreen_keyboard(uint8_t modifier, uint8_t reserved, uint8_t *keycodes)
 {
+    bool escapeInReport = false;
+    for (int i = 0; i < 6; i++)
+    {
+        if (keycodes[i] == HID_KEY_ESCAPE)
+        {
+            escapeInReport = true;
+            break;
+        }
+    }
+
+    // EPD receives raw HID reports rather than separate key events. Suppress
+    // the ESC-down report until its duration is known, then synthesize a normal
+    // short press or exit BLE keyboard mode for a long press.
+    if (escapeInReport)
+    {
+        if (!escPressed)
+        {
+            escPressedAt = millis();
+            escPressed = true;
+        }
+        return;
+    }
+
+    if (escPressed)
+    {
+        const uint32_t heldFor = millis() - escPressedAt;
+        escPressed = false;
+
+        if (heldFor >= ESC_LONG_PRESS_MS)
+        {
+            KeyboardScreen_exitBleKeyboardMode();
+            return;
+        }
+
+        if (bleKeyboard.isConnected())
+        {
+            KeyReport escapeReport = {};
+            escapeReport.keys[0] = HID_KEY_ESCAPE;
+            bleKeyboard.sendReport(&escapeReport);
+        }
+    }
+
     if (!bleKeyboard.isConnected())
         return;
 
