@@ -1,3 +1,11 @@
+# Firmware Source Code Location
+
+MCU firmware Source code move to separate repository
+
+https://github.com/unkyulee/micro-journal-mcu
+
+
+
 # Distraction-Free writing device: WriterDeck 
 
 This is a build guide for a writerDeck based on ESP32, and ILI9341 display with 30 keys hand wired keyboard. 
