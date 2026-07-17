@@ -68,6 +68,9 @@ Charge the battery fully before first use. The red LED indicates charging, and t
 
 If the `P` and `Backspace` keys do not work, first confirm that the battery is installed and that the cable is connected to the correct port. When powering the device by USB, use the upper USB-C port on the display side. The lower port is used for Drive Mode.
 
+You will need to remove four screws at the back of the bottom enclosure to find the battery holder. 
+
+
 ## 2. Turn On the Micro Journal and Start Writing
 
 Flip the power switch on the back of the device. The editor appears almost immediately.
