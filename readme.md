@@ -45,7 +45,9 @@ With Micro Journal, I'm exploring how to build such a device from the ground up.
 * **[Rev.6](/micro-journal-rev-6-one-piece/readme.md)** – An ESP32-based all-in-one unit combining both screen and keyboard. Portable and self-contained, this version brought the writerDeck concept closer to a dedicated, ready-to-use device with a clean design.
   * **[Rev.6.1](/micro-journal-rev-6.1-mini/readme.md)** - Clamshell version of Rev.6
 
-* **[Rev.7](/micro-journal-rev-2-revamp/readme.md)** – An ESP32-based an e-ink writing device with a built-in keyboard. Optimized for comfort, it offers an easy-on-the-eyes experience and works beautifully in bright environments thanks to its paper-like e-ink display.
+* **[Rev.7]/micro-journal-rev-7-e-ink/readme.md)** – An ESP32-based an e-ink writing device with a built-in keyboard. Optimized for comfort, it offers an easy-on-the-eyes experience and works beautifully in bright environments thanks to its paper-like e-ink display.
+
+* **[Rev.8](/micro-journal-rev-8/readme.md)** – An ESP32-based an Reflective LCD writing device.
 
 
 ## Extra Projects
