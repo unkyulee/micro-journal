@@ -88,6 +88,16 @@ The **Micro Journal Rev.6 requires a full-size SD card**, not a microSD card. If
 The Micro Journal does not support USB Power Delivery (PD). This means that PD chargers and USB-C to USB-C cables will not work and may prevent the device from powering on or charging. To ensure proper operation, please use a standard 5V USB-A charger (such as an older phone charger) together with a USB-A to USB-C cable. Using the correct charger type is essential for reliable power and safe operation of the device.
 
 
+### 한글 입력 사용법
+
+ESC키를 눌러 메뉴에 들어간 후. L을 눌러 Language 메뉴로 들어갑니다.
+H를 눌러 한글 입력 모드를 활성화 시키면 설정 완료 입니다.
+
+한영 전환은 LOWER (FN) + 스페이스 입니다. 
+
+
+
+
 ### Google Sync Setup
 
 If you have already set up Google Sync on another Micro Journal, you can reuse the same URL stored in the `config.json` file on your SD card. Otherwise, follow the steps below to configure Google Sync for the first time.
