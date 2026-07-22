@@ -168,6 +168,12 @@ Reducing brightness is a practical first step and often sufficient to stabilize 
 
 ### Installing Batteries
 
+**⚠️ REMOVE the charging cable while inserting batteries.**
+**⚠️ Do NOT connect the charging cable while inserting batteries.**
+**⚠️ Pay close attention to battery polarity.**
+**⚠️ Pay close attention to battery polarity.**
+
+
 The device can operate using up to **four 18650 lithium-ion batteries**.
 
 1. Remove the **two small screws under the screen** to access the battery compartment.
