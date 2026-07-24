@@ -38,8 +38,10 @@ Navigate inside the newly created **uJournal** folder. From within the folder, c
    - **Execute as:** *Me* (this allows the script to access your Google Drive).  
    - **Who has access:** *Anyone* (only those with the URL can access, so keep it private).  
  
- ![drive](./images/drive_005.png)
+![drive](./images/drive_005.png)
+
 ![drive](./images/drive_006.png)
+
 ![drive](./images/drive_007.png)
 
 ### 7. Authorize the Script
@@ -49,7 +51,9 @@ Navigate inside the newly created **uJournal** folder. From within the folder, c
 3. Confirm access when prompted.
 
 ![drive](./images/drive_008.png)
+
 ![drive](./images/drive_009.png)
+
 ![drive](./images/drive_010.png)
 
 

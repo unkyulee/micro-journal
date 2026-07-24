@@ -16,9 +16,6 @@ Prepared by Hook then Edited by Un Kyu Lee
     - [**Step 1: Open the Bottom Compartment**](#step-1-open-the-bottom-compartment)
     - [**Step 2: Charging the Battery**](#step-2-charging-the-battery)
   - [**4. Google Drive Sync**](#4-google-drive-sync)
-    - [**Step 1: Create Folder**](#step-1-create-folder)
-    - [**Step 2: Google Apps Script**](#step-2-google-apps-script)
-    - [**Step 3: Configure Micro Journal**](#step-3-configure-micro-journal)
   - [**5. Wifi Setup**](#5-wifi-setup)
   - [**6. Firmware Update**](#6-firmware-update)
   - [**7. Customizing Keyboard Layout**](#7-customizing-keyboard-layout)
@@ -104,45 +101,9 @@ Before using the **Micro Journal Rev.7**, you need a battery.
 
 ## **4. Google Drive Sync**
 
-### **Step 1: Create Folder**
+Please, refer to the following guide to complete the setup to enable Google Drive Sync.
 
-1. Go to [Google Drive](https://drive.google.com)
-2. Create folder `uJournal`
-
-<img src="../../micro-journal-rev-6-one-piece/images/drive_001.png" width="400" />  
-<img src="../../micro-journal-rev-6-one-piece/images/drive_002.png" width="400" />  
-
-### **Step 2: Google Apps Script**
-
-1. Inside `uJournal`, create a new Apps Script.
-2. Copy the latest sync script:
-   [Sync Script](https://raw.githubusercontent.com/unkyulee/micro-journal/main/micro-journal-rev-4-esp32/install/google/sync.js)
-3. Give the project a name and deploy as **Web App**:
-
-   * Execute as: Me
-   * Access: Anyone
-
-<img src="../../micro-journal-rev-6-one-piece/images/drive_003.png" width="400" />  
-<img src="../../micro-journal-rev-6-one-piece/images/drive_004.png" width="400" />  
-
-4. Authorize the app. Select your Google account. Click **Go to uJournal Sync** if warned.
-5. Copy the Web App URL.
-
-### **Step 3: Configure Micro Journal**
-
-1. Open SD card on PC.
-2. Create or edit `config.json`:
-
-```json
-{
-  "sync": {
-    "url": "!!!COPY YOUR WEB APP URL HERE!!!!!"
-  }
-}
-```
-
-3. Save and reinsert SD card.
-4. Press `MENU → S` on the Micro Journal to test sync.
+[Google Drive Sync Setup Guide](../../micro-journal-rev-6-one-piece/googledrive.md)
 
 ---
 
