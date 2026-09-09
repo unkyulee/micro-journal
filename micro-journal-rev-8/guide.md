@@ -14,6 +14,7 @@ This guide was developed using Windows. The same features should work on Linux a
   - [Table of Contents](#table-of-contents)
 - [Part I: Quick Start Guide](#part-i-quick-start-guide)
   - [1. Install the Battery](#1-install-the-battery)
+    - [Charging the Battery](#charging-the-battery)
   - [2. Turn On the Micro Journal and Start Writing](#2-turn-on-the-micro-journal-and-start-writing)
   - [3. Change Files](#3-change-files)
   - [4. Transfer or Back Up Your Writing](#4-transfer-or-back-up-your-writing)
@@ -54,21 +55,45 @@ This guide was developed using Windows. The same features should work on Linux a
 
 The battery is not included. The Micro Journal requires:
 
-- One flat-top 18650 lithium-ion battery
-- 3.7 V
-- Maximum capacity of 3300 mAh
-- A Torx T10H screwdriver to open the display lid
+* One flat-top 18650 lithium-ion battery
+* 3.7 V
+* Maximum capacity of 3300 mAh
+* A Torx T10H screwdriver to open the enclosure
 
 > **Warning:** Insert the battery with the correct polarity. Reversing the positive and negative ends can permanently damage the device and may cause a fire.
 
-Charge the battery fully before first use. The red LED indicates charging, and the blue LED indicates that charging is complete. Use a USB-A to USB-C cable and charger. Some USB-C Power Delivery chargers may not work.
+You will need to remove the four screws on the back of the bottom enclosure to access the battery holder.
 
-- [Battery buying guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/)
-- [Compatible flat-top battery example](https://www.18650batterystore.com/products/samsung-30q)
+### Charging the Battery
 
-If the `P` and `Backspace` keys do not work, first confirm that the battery is installed and that the cable is connected to the correct port. When powering the device by USB, use the upper USB-C port on the display side. The lower port is used for Drive Mode.
+The **charging port is located at the back of the enclosure**. There is only one charging port.
 
-You will need to remove four screws at the back of the bottom enclosure to find the battery holder. 
+Use a **USB-A to USB-C cable** to charge the device. The charging circuit does **not support USB-C Power Delivery (PD)**, so USB-C to USB-C cables and PD chargers may not work.
+
+The charging-status LEDs are located inside the enclosure and are not directly visible from the outside. To check the charging status, **look into the charging port opening** and you should be able to see the LED light inside.
+
+* **Red LED:** The battery is charging.
+* **Blue or Green LED:** Charging is complete.
+* **Red and Blue at the same time:** The battery is not connected or in fault.
+
+Because the LED is recessed inside the enclosure, you may need to look closely into the charging port to see it.
+
+Charge the battery fully before first use.
+
+> **Important:** The two USB-C ports next to the display are **not charging ports**.
+
+The USB-C ports next to the display are used for data functions, such as:
+
+* Using the Micro Journal as a USB drive
+* Flashing or updating the firmware
+
+Connecting a USB cable to one of these data ports will also turn on the device. This does not mean that the battery is being charged.
+
+* [Battery buying guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/)
+* [Compatible flat-top battery example](https://www.18650batterystore.com/products/samsung-30q)
+
+If the `P` and `Backspace` keys do not work, first confirm that the battery is installed correctly and that the appropriate USB port is being used.
+
 
 
 ## 2. Turn On the Micro Journal and Start Writing
