@@ -8,7 +8,6 @@ Internals of Rev.5.1. is the same as the previous Rev.5 build. Please, refer to 
 ## Bill of Material
 
 * [ESP32-S3 N16R8](https://www.amazon.com/Development-AYWHP-ESP32-S3-DevKitC-WROOM-1-N16R8-Compatible/dp/B0DG8L7MQ9)
-  – Any ESP32-S3 devkit will work (not limited to N16R8). The firmware also runs on ESP32 Wroom boards with less flash/PSRAM.
 
 * [ILI9341 2.8" TFT LCD (240x320)](https://ko.aliexpress.com/item/1005006323532762.html)
   – Includes a built-in SD card slot (used in this build). Variations exist, so double-check dimensions if using the provided STL files.
