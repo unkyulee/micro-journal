@@ -12,6 +12,7 @@ For now, I will provide the bill of materials and wiring guides, so people who a
 - [2 Pin Round Snap Rocker Switch 19mm](https://it.aliexpress.com/item/1005008528747478.html)
 - [69 Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-68-keys-keyboard-pcb.html)
 - Costar Stabilizer 6.25u
+- [2 Pin Round Snap Rocker Switch 19mm](https://it.aliexpress.com/item/1005008528747478.html)
 
 
 - M3 Heated Inserts OD 4.5mm Length 3mm
