@@ -10,7 +10,6 @@ Edited by Un Kyu Lee
 1. Introduction
 2. First Steps & Setup
    - Battery Installation
-   - SD Card Preparation
    - Firmware Update
    - Google Drive Sync
 3. Using the Micro Journal Rev.6
