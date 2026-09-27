@@ -73,6 +73,8 @@ The one real difference is that it uses an ortholinear keyboard, meaning it has 
 
 Do not disconnect the cable while files are being copied. Make sure to back up your files when editing files directly at Drive Mode. 
 
+* Note: Rev.6.x devices running firmware version 2.x or later do not use the SD card to store text files. Your files are saved directly to the ESP32's internal flash memory.Please make sure to keep the battery sufficiently charged. A sudden loss of power, particularly when the battery is completely depleted, may cause file system corruption and could result in the loss of saved files. 
+
 #### BLE Send
 
 Pair the Micro Journal with a computer or phone using **BLE Keyboard** in the menu. Open a document on the receiving device, then press the top-left and top-right keys together. With the default layout, these are `Esc` and `Del`. The current file will be typed into the open document.
