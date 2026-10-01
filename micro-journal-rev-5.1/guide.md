@@ -13,7 +13,6 @@ The only difference is access to the battery holder. To reach it, you need to re
 Before turning on the device for the first time, prepare:
 
 * **One 18650 Lithium-ion 3.7V battery**
-* **One SD card (1–32 GB recommended)**
 
 
 ## Battery Installation

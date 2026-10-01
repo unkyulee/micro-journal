@@ -55,7 +55,6 @@ This guide will walk you through the complete setup, from installing the battery
 Before turning on the device for the first time, prepare:
 
 * **One 18650 Lithium-ion 3.7V battery**
-* **One SD card (1–32 GB recommended)**
 * A **5V USB-A charger** (non-PD)
 * **USB-A to USB-C cable**
 
@@ -88,13 +87,11 @@ Incorrect battery type may damage the device or cause fire.
 
 ## **SD Card Requirements**
 
-![SD](./images/sd.jpg)
+Starting with firmware version 2.x, the SD card is no longer used for file storage.
 
-* Use **standard SD cards** (the larger size).
-* **MicroSD + adapter works fine**.
-* Prefer **low capacity (1–16 GB)**.
-  Larger cards (>32 GB) require manual partitioning.
-* Avoid ultra-high-speed cards — some SanDisk “Extreme” cards may not be recognized.
+All text files are now stored in the Micro Journal's internal flash memory and can be accessed through **Drive Mode**.
+
+Some sections of this manual may still refer to the SD card. When following those instructions, please use **Drive Mode** instead to access and manage your files.
 
 ---
 
