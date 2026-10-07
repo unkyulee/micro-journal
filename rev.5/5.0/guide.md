@@ -7,31 +7,22 @@
 - [**Micro Journal Rev.5 — Complete User Guide**](#micro-journal-rev5--complete-user-guide)
 - [**Table of Contents**](#table-of-contents)
 - [**Introduction**](#introduction)
-- [**First Steps**](#first-steps)
+- [**Quick Setup**](#quick-setup)
   - [**What You Need**](#what-you-need)
-  - [**Battery Requirements**](#battery-requirements)
-    - [✔ Good to know](#-good-to-know)
-    - [🔥 Safety Warning](#-safety-warning)
-    - [Recommended Battery](#recommended-battery)
-  - [**SD Card Requirements**](#sd-card-requirements)
-- [**Hardware Setup**](#hardware-setup)
-  - [**Step 1 — Install the Battery**](#step-1--install-the-battery)
-    - [⚠️ EXTREMELY IMPORTANT](#️-extremely-important)
-    - [Signs of low battery](#signs-of-low-battery)
-  - [**⚠️ Important: USB Charging Limitations**](#️-important-usb-charging-limitations)
-  - [**Step 2 — Prepare the SD Card**](#step-2--prepare-the-sd-card)
-- [**Google Drive Sync Setup**](#google-drive-sync-setup)
-  - [**10. WiFi Setup**](#10-wifi-setup)
-    - [⚠ Wi-Fi Notes](#-wi-fi-notes)
+  - [**Step 1 — Choose a Battery**](#step-1--choose-a-battery)
+  - [**Step 2 — Install the Battery**](#step-2--install-the-battery)
+  - [**Step 3 — Charge the Battery**](#step-3--charge-the-battery)
+  - [**Step 4 — Connect a Keyboard**](#step-4--connect-a-keyboard)
+  - [**Step 5 — Power On and Write**](#step-5--power-on-and-write)
+- [**WiFi Setup**](#wifi-setup)
+- [**Transfer or Back Up Your Writing**](#transfer-or-back-up-your-writing)
+  - [**Drive Mode**](#drive-mode)
+  - [**Google Drive Sync**](#google-drive-sync)
 - [**Firmware Update**](#firmware-update)
   - [**1. Check Current Version**](#1-check-current-version)
-  - [**2. Download Latest Firmware**](#2-download-latest-firmware)
-  - [**3. Install the Firmware**](#3-install-the-firmware)
-- [**Using External Keyboards**](#using-external-keyboards)
-    - [✔ Supported](#-supported)
-    - [✖ Not recommended / incompatible](#-not-recommended--incompatible)
+  - [**2. Regular Update (firmware 2.x)**](#2-regular-update-firmware-2x)
+  - [**3. Full Web Flash (coming from firmware 1.x)**](#3-full-web-flash-coming-from-firmware-1x)
 - [**Customizing Start and Sleep Animation**](#customizing-start-and-sleep-animation)
-    - [GIF Requirements](#gif-requirements)
 - [Using the Micro Journal Rev 5 - A Walkthrough](#using-the-micro-journal-rev-5---a-walkthrough)
   - [Introducing the Micro Journal Rev 5](#introducing-the-micro-journal-rev-5)
   - [Setting Up the Micro Journal Rev 5](#setting-up-the-micro-journal-rev-5)
@@ -44,222 +35,204 @@
 # **Introduction**
 
 Welcome to the **Micro Journal Rev.5**, a portable digital typewriter designed for distraction-free writing.
-This guide will walk you through the complete setup, from installing the battery to syncing your writing with Google Drive.
+
+The Rev.5 is a screen with a built-in editor. You add your own keyboard. This guide walks you through the complete setup, from installing the battery to backing up your writing.
 
 ---
 
-# **First Steps**
+# **Quick Setup**
 
 ## **What You Need**
 
 Before turning on the device for the first time, prepare:
 
-* **One 18650 Lithium-ion 3.7V battery**
+* **One 18650 Lithium-ion 3.7V battery.** The battery is not included.
 * A **5V USB-A charger** (non-PD)
-* **USB-A to USB-C cable**
+* A **USB-A to USB-C cable**
+* A **keyboard**. See [Step 4](#step-4--connect-a-keyboard) for which keyboards work.
+
+You do **not** need an SD card. Starting with firmware version 2.x, all text files are stored in the Micro Journal's internal flash memory. You reach them from your computer through [Drive Mode](#drive-mode).
 
 ---
 
-## **Battery Requirements**
+## **Step 1 — Choose a Battery**
 
 ![Battery](./images/quickstart/battery.png)
 
-The writerDeck requires a **single 18650 Lithium-ion 3.7V battery**.
-
-### ✔ Good to know
+The Micro Journal requires a **single 18650 Lithium-ion 3.7V battery**.
 
 * Both **flat-top** and **button-top** batteries work.
-* Choose **well-known brands only**.
-* **Maximum real capacity is ~3300 mAh** — anything advertised above this is fake.
-* Ensure the battery includes **short-circuit protection**.
-* If you don’t have a battery yet, the device can run temporarily via USB power.
+* Choose **well-known brands**.
+* **Maximum real capacity is ~3300 mAh.** Anything advertised above this is fake.
+* Make sure the battery includes **short-circuit protection**.
+* Recommended: [Flat-top, verified working (US)](https://www.18650batterystore.com/products/samsung-30q)
 
-### 🔥 Safety Warning
+If you don't have a battery yet, the device can run temporarily on USB power.
 
-**Never use AA or AAA batteries. Only 18650 Li-ion.**
-Incorrect battery type may damage the device or cause fire.
-
-### Recommended Battery
-
-* [Flat-top, verified working (US)](https://www.18650batterystore.com/products/samsung-30q)
+> **Safety warning:** Never use AA or AAA batteries. Use only an 18650 Li-ion battery. The wrong battery type may damage the device or cause a fire.
 
 ---
 
-## **SD Card Requirements**
+## **Step 2 — Install the Battery**
 
-Starting with firmware version 2.x, the SD card is no longer used for file storage.
-
-All text files are now stored in the Micro Journal's internal flash memory and can be accessed through **Drive Mode**.
-
-Some sections of this manual may still refer to the SD card. When following those instructions, please use **Drive Mode** instead to access and manage your files.
-
----
-
-# **Hardware Setup**
-
-## **Step 1 — Install the Battery**
+> **⚠️ EXTREMELY IMPORTANT: check the polarity.**
+> Double-check the battery polarity (+ and –) **before** inserting the battery. Reversed polarity can permanently damage the device.
 
 ![Unscrew](./images/quickstart/unscrew.jpg)
 
-### ⚠️ EXTREMELY IMPORTANT
-
-**Double-check battery polarity (+ and –) before inserting.
-Reversed polarity can permanently damage the device.**
-
-[How to Open Rev.5.1.](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5.1/guide.md)
-
-1. Open the enclosure by removing the screws.
-2. Locate the battery holder.
+1. Switch the device off.
+2. Open the enclosure by removing the screws. On the Rev.5.1 the battery is reached from the top cover instead. See [How to Open Rev.5.1](../5.1/guide.md).
+3. Locate the battery holder and identify its two ends:
 
    * **The spring = negative (-)**
    * **Flat metal = positive (+)**
-3. Insert the battery carefully.
-4. Before closing the case:
+4. Insert the battery carefully, with the end marked `+` against the flat metal contact.
+5. Before closing the case:
 
    * Toggle the power switch to confirm the screen turns on.
-   * Ensure **no cables are caught** when closing.
-5. Charge the battery **at least 4 hours before first use**.
+   * Make sure **no cables are caught** when closing.
+6. Close the enclosure and put the screws back.
 
-### Signs of low battery
+---
+
+## **Step 3 — Charge the Battery**
+
+Charge the battery for **at least 4 hours before first use**.
+
+The Micro Journal **does NOT support USB Power Delivery (PD)**. A PD charger may not charge or power the device at all.
+
+**Use:**
+
+* A **standard 5V USB-A charger**
+* A **USB-A to USB-C cable**
+
+**Do NOT use:**
+
+* USB-C to USB-C cables or PD chargers
+* USB-C laptop chargers
+* High-wattage PD power banks
+
+**Signs of a low battery:**
 
 * Screen flickering
 * Screen turning white
 
-Recharge if these occur.
+Recharge the battery if you see either of these. Keep the battery sufficiently charged: a sudden loss of power while the device is saving can corrupt the internal storage and cause the loss of saved files.
 
 ---
 
-## **⚠️ Important: USB Charging Limitations**
+## **Step 4 — Connect a Keyboard**
 
-The writerDeck **does NOT support USB Power Delivery (PD)**.
+The Rev.5 has no keyboard of its own, so it relies on the keyboard you connect.
 
-Do NOT use:
+**Supported:**
 
-* USB-C to USB-C PD chargers
-* USB-C laptop chargers
-* High-wattage PD power banks
+* Wired USB keyboards, connected to the USB port on the back
+* Wireless 2.4 GHz dongle keyboards
+* BLE (Bluetooth Low Energy) keyboards, paired through the BLE Keyboard option in the menu
 
-Must use:
+**Not recommended or incompatible:**
 
-* **Standard 5V USB-A charger**
-* **USB-A to USB-C cable**
+* Keyboards with built-in USB hubs
+* Keyboards that charge through USB (the power draw is too high)
+* RGB or gaming keyboards with a heavy LED load
+* Anything else that draws a high current
 
-Using PD chargers may prevent charging or powering the device.
+Do not put a USB hub between the Rev.5 and the keyboard.
 
----
-
-## **Step 2 — Prepare the SD Card**
-
-1. Insert SD card into your computer.
-2. Format using:
-
-**File System:** `FAT32`
-**Allocation size:** default
-
-![format](./images/quickstart/format.png)
-
-If FAT32 is not available:
-
-* Create a partition **smaller than 32 GB**.
-
-Insert the SD card into the writerDeck after formatting.
+> **Warning:** High-power keyboards may damage the Micro Journal.
 
 ---
 
-# **Google Drive Sync Setup**
+## **Step 5 — Power On and Write**
 
-This allows your writerDeck to back up files through Wi-Fi.
+1. Toggle the power switch. The editor is ready as soon as the device is on.
+2. Start typing. Your text is saved automatically whenever you pause.
+3. Press **ESC** on your keyboard, or the **M** button under the screen, to open the menu. From the menu you can change files and reach WiFi, Sync, Drive Mode and the other settings.
 
-Please, follow the [Google Drive Sync Setup Guide](../../shared/GoogleDriveSync/readme.md) to complete this step.
-
+That is everything you need to start writing. The rest of this guide covers backing up your writing, updating the firmware and customization.
 
 ---
 
-## **10. WiFi Setup**
+# **WiFi Setup**
 
-1. Press **ESC**
-2. Press **W**
-3. Select a profile number
-4. Enter SSID
-5. Enter password
-6. Connection will be tested automatically
+WiFi is needed for Drive Mode on your home network and for Google Drive Sync. Set it up once.
 
-You may save up to **5 Wi-Fi networks**.
+1. Press **ESC** to open the menu.
+2. Press **W**.
+3. Select a profile number.
+4. Enter the network name (SSID).
+5. Enter the password.
+6. The connection is tested automatically.
 
-### ⚠ Wi-Fi Notes
+You can save up to **5 Wi-Fi networks**.
+
+**Wi-Fi notes:**
 
 * Only **2.4 GHz** networks are supported.
 * 5 GHz Wi-Fi cannot connect.
 
 ---
 
+# **Transfer or Back Up Your Writing**
+
+## **Drive Mode**
+
+Drive Mode replaces the SD card. Use it to open, edit, download, upload and delete the files on your Micro Journal from a web browser, over WiFi. No cable or card reader is needed.
+
+1. Press **ESC** to open the menu.
+2. Select **Drive Mode**.
+3. Wait for the screen to show a web address. Open that address in a browser on a computer or phone connected to the same WiFi network.
+4. Click a file to open it. To back up a file, download it to your computer.
+5. To add files such as firmware, GIFs or `config.json`, click **Upload**.
+6. When you are done, leave Drive Mode on the Micro Journal to return to the editor.
+
+Keep Drive Mode open on the Micro Journal while you work in the browser, and close it when you are done, because WiFi uses extra battery.
+
+> **Note:** Later sections of this guide may still refer to the SD card. Wherever they do, use Drive Mode instead.
+
+## **Google Drive Sync**
+
+Google Drive Sync uploads the file you are working on to your own Google Drive over WiFi. Set up WiFi first.
+
+Please follow the [Google Drive Sync Setup Guide](../../shared/GoogleDriveSync/readme.md) to complete the setup. Once it is configured, open the menu and press **S** to sync the current file.
+
+---
+
 # **Firmware Update**
 
-Keeping firmware updated ensures stability and new features.
+Keeping the firmware updated gives you fixes and new features. How you update depends on the version your Micro Journal is running now.
 
 ## **1. Check Current Version**
 
-Press **ESC** or **M** to open the menu.
+Press **ESC** or **M** to open the menu. The firmware version is shown at the top of the screen.
 
-If you see:
+* **Version 2.x:** use the [Regular Update](#2-regular-update-firmware-2x).
+* **Version 1.x:** you must do a [Full Web Flash](#3-full-web-flash-coming-from-firmware-1x) once.
 
-> **Version 1.x**
+---
 
-You need to use Web Flash Tool to update to version 2.x
-Please, have a look at 2.0 Release Note to update your firmware to 2.x
+## **2. Regular Update (firmware 2.x)**
+
+1. Download `firmware_rev_5.bin` from the latest release:
+   [https://github.com/unkyulee/micro-journal/releases](https://github.com/unkyulee/micro-journal/releases)
+2. Open [Drive Mode](#drive-mode) and open the address shown on the screen in a web browser.
+3. Click **Upload** and choose `firmware_rev_5.bin`.
+4. Leave Drive Mode and restart the device.
+
+The screen turns white for ~10 seconds, then the device reboots with the new firmware.
+
+---
+
+## **3. Full Web Flash (coming from firmware 1.x)**
+
+If the menu shows **Version 1.x**, a regular update will not work. You need to use the Web Flash Tool once to move to version 2.x. Follow the instructions in the 2.0 release note:
 
 https://github.com/unkyulee/micro-journal/releases/tag/2.0.0
 
----
+> **Important:** From version 2.x the text files are stored in the internal flash memory instead of the SD card. Copy your text files and `config.json` from the SD card to your computer before you start.
 
-## **2. Download Latest Firmware**
-
-Get the newest version from:
-
-[https://github.com/unkyulee/micro-journal/releases](https://github.com/unkyulee/micro-journal/releases)
-
-Download:
-
-```
-firmware_rev_5.bin
-```
-
----
-
-## **3. Install the Firmware**
-
-1. Power off the device
-2. Remove SD card
-3. Copy the firmware file to the SD card
-4. Insert SD card back into the writerDeck
-5. Turn it on
-
-The screen will turn white for ~10 seconds, then reboot with the new firmware.
-
-If update does not trigger:
-
-* Rename file to `firmware.bin` and try again.
-
----
-
-# **Using External Keyboards**
-
-The Rev.5 relies heavily on your external keyboard.
-
-### ✔ Supported
-
-* Wired USB keyboards
-* Wireless 2.4 GHz dongle keyboards
-* Bluetooth keyboards (via BLE menu)
-
-### ✖ Not recommended / incompatible
-
-* Keyboards with USB hubs
-* Keyboards that charge through USB (power draw too high)
-* RGB/gaming keyboards with heavy LED load
-* Anything drawing high current
-
-**High-power keyboards may damage the Micro Journal.**
+After this one-time web flash, later updates use the regular update above.
 
 ---
 
@@ -270,12 +243,12 @@ You can replace the two animated GIFs:
 * **wakeup.gif** → plays at boot
 * **sleep.gif** → plays after 1 minute of inactivity
 
-### GIF Requirements
+**GIF requirements:**
 
 * **320 × 240 px**
 * **≤ 1 MB each**
 
-Place them directly on the SD card.
+Upload them through [Drive Mode](#drive-mode), using exactly these file names.
 
 Create or convert GIFs here:
 [https://ezgif.com/](https://ezgif.com/)
@@ -311,7 +284,7 @@ Before we dive in, **make sure you have the latest stable firmware for the Rev 5
 
 https://github.com/unkyulee/micro-journal/releases
 
-Then, just remove the SD card from the Rev 5 and use a card reader with your computer to transfer the firmware file to your SD card. Put the SD card back in the Rev 5. When you turn on the Rev 5, you will be asked to acknowledge loading the new firmware.  Then, after some screen flashing, you will be set to go.
+Then, open Drive Mode on the Rev 5 and upload the firmware file from your computer through the web browser (see the Firmware Update section above). When you next turn on the Rev 5, you will be asked to acknowledge loading the new firmware.  Then, after some screen flashing, you will be set to go.
 
 ## Using the Rev 5 Part 1: The Editor
 
