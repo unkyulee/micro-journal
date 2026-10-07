@@ -10,16 +10,17 @@ Prepared by Hook then Edited by Un Kyu Lee
 
 - [**Micro Journal Rev.7 — User Guide (v1.2)**](#micro-journal-rev7--user-guide-v12)
   - [**Table of Contents**](#table-of-contents)
-  - [**1. Things to Buy**](#1-things-to-buy)
+  - [**1. Buy a Battery**](#1-buy-a-battery)
   - [**2. Quick Instructions**](#2-quick-instructions)
   - [**3. Battery Installation**](#3-battery-installation)
     - [**Step 1: Open the Bottom Compartment**](#step-1-open-the-bottom-compartment)
     - [**Step 2: Charging the Battery**](#step-2-charging-the-battery)
-  - [**4. Google Drive Sync**](#4-google-drive-sync)
-  - [**5. Wifi Setup**](#5-wifi-setup)
-  - [**6. Firmware Update**](#6-firmware-update)
-  - [**7. Customizing Keyboard Layout**](#7-customizing-keyboard-layout)
-  - [**8. Trouble-shooting**](#8-trouble-shooting)
+  - [**4. Wifi Setup**](#4-wifi-setup)
+  - [**5. Google Drive Sync**](#5-google-drive-sync)
+  - [**6. Drive Mode**](#6-drive-mode)
+  - [**7. Firmware Update**](#7-firmware-update)
+  - [**8. Customizing Keyboard Layout**](#8-customizing-keyboard-layout)
+  - [**9. Trouble-shooting**](#9-trouble-shooting)
   - [Introducing the Micro Journal Rev 7](#introducing-the-micro-journal-rev-7)
   - [Using the Micro Journal Rev 7 - A Walkthrough](#using-the-micro-journal-rev-7---a-walkthrough)
     - [Setting Up the Micro Journal Rev 7](#setting-up-the-micro-journal-rev-7)
@@ -29,55 +30,73 @@ Prepared by Hook then Edited by Un Kyu Lee
 
 ---
 
-## **1. Things to Buy**
+## **1. Buy a Battery**
 
-Before using the **Micro Journal Rev.7**, you need a battery.
+The only thing you need to buy before using the **Micro Journal Rev.7** is a battery. The battery is not included, and the device will not power on without one.
 
-1. **Buy a 18650 Lithium-Ion battery**
-   Search for "LiPo 18650". Recommended links:
+You do **not** need an SD card. Your texts are saved in the internal flash memory of the device, and you reach them from your computer through [Drive Mode](#6-drive-mode).
+
+1. **Buy an 18650 lithium-ion battery**
+   Search for "18650 flat top". Recommended links:
 
    * [Battery Buying Guide](https://www.reddit.com/r/18650masterrace/comments/qp21o8/buying_18650_batteries_start_here/?share_id=RTqe02Hqv2l_VwJTwoIi1&utm_content=2&utm_medium=android_app&utm_name=androidcss&utm_source=share&utm_term=1)
    * [Flat-top battery (US)](https://www.18650batterystore.com/products/samsung-30q)
 
 2. **Install the battery**
-   The device will not power on without a battery.
+   See [Battery Installation](#3-battery-installation). Pay close attention to the polarity.
 
-3. **Power on**
-   Once installed, power on and start using your device.
+3. **Charge and power on**
+   Charge the battery fully, then switch the device on and start writing.
 
 ---
 
 ## **2. Quick Instructions**
 
-* **USB-C port** at the back: battery charging
+* **Power switch** at the back: switches the device on and off. The Micro Journal is ready to write as soon as it is on.
+
+* **USB-C port** at the back: battery charging only. Use a **USB-A to USB-C cable** with a **non-PD charger**.
 
   * **Red:** Charging
   * **Blue/Green:** Fully charged
+  * **Both lights on:** The battery is not installed correctly
+  * **No light:** The charger or cable is not compatible
+
+* **Menu key**: the left-most key on the top row, usually `Esc`. It opens the menu, where you change files and reach WiFi, Sync, Drive Mode and the other functions.
 
 * **Knobs**:
 
-  * Right knob click → Clear screen
-  * Left knob click → Sleep mode
+  * Turn either knob → Page up and page down
+  * Right knob click → Refresh the screen, which clears any marks left on the e-ink display
+  * Left knob click → Shut down. Switch the power off at the back afterwards.
 
 ---
 
 ## **3. Battery Installation**
 
+> **Warning: do not reverse the battery.**
+> Installing the battery the wrong way round, even for a moment, **breaks the charger board inside the Micro Journal**. A broken charger cannot be repaired and has to be replaced. It can also cause a short circuit or a fire. Check the polarity twice before the battery touches the contacts.
+
 ### **Step 1: Open the Bottom Compartment**
 
-1. Unscrew the two Philips screws on the battery cover.
+1. Switch the device off.
 
-2. Lift the lid to access the battery holder.
+2. Unscrew the two Philips screws on the battery cover.
 
-3. **Check polarity carefully:**
+3. Lift the lid to access the battery holder.
 
-   * Spring side = Negative (-)
-   * Flat side = Positive (+)
+4. **Check the polarity before inserting the battery:**
 
-4. Install the 18650 battery correctly.
+   * **Spring side of the holder = Negative (-).** The flat end of the battery goes here.
+   * **Flat side of the holder = Positive (+).** The end of the battery marked `+` goes here.
 
-   * Use tape around the battery for easy removal.
-   * Ensure no cables are pinched when closing the lid.
+   If you are not sure which end of the battery is positive, look for the `+` mark printed on the battery wrap. Do not guess.
+
+5. Insert the 18650 battery in the correct direction.
+
+   * Wrap a strip of tape around the battery and leave a tab sticking out. It makes the battery easy to pull out later.
+   * Make sure no cables are pinched when closing the lid.
+
+6. Close the lid and put the two screws back. Do not over-tighten them.
 
 <img src="./images/battery_001.jpg" width="400" />  
 <img src="./images/battery_002.jpg" width="400" />  
@@ -86,63 +105,119 @@ Before using the **Micro Journal Rev.7**, you need a battery.
 
 **Safety Notes:**
 
-* Fully charge before first use (at least 4 hours).
-* Avoid over-tightening screws or pinching cables to prevent short circuits or fire.
+* Fully charge the battery before first use. This takes at least 4 hours.
+* Avoid over-tightening screws or pinching cables, to prevent short circuits or fire.
 
 ---
 
 ### **Step 2: Charging the Battery**
 
-* Use **USB-A to USB-C cable**.
-* USB-C to USB-C or PD chargers may not work.
-* Red/Green light indicates charging; no light → incompatible charger.
+Charge through the USB-C port at the back of the device.
+
+* Use a **USB-A to USB-C cable**.
+* Use a **non-PD charger**, such as a standard 5V USB-A phone charger or a USB-A port on a computer.
+* **PD (Power Delivery) chargers will not charge the battery.** USB-C to USB-C cables do not work either. If you only have a PD charger, you need a different charger.
+
+The charger light tells you what is happening:
+
+| Light | Meaning |
+| ----- | ------- |
+| Red | The battery is charging. |
+| Blue or green | The battery is fully charged. |
+| Both lights on at the same time | The battery is not installed correctly. Unplug the cable, open the compartment, and check that the battery is seated firmly and the right way round. |
+| No light | The charger or cable is not compatible. Use a non-PD charger with a USB-A to USB-C cable. |
+
+If both lights stay on after you have corrected the battery, or the battery was inserted the wrong way round, the charger may be damaged and needs to be replaced. See [Trouble-shooting](#9-trouble-shooting).
 
 ---
 
-## **4. Google Drive Sync**
+## **4. Wifi Setup**
 
-Please, refer to the following guide to complete the setup to enable Google Drive Sync.
+WiFi is used for Google Drive Sync and for Drive Mode. It is switched on only while one of them is running.
+
+* The Micro Journal only supports **2.4 GHz Wi-Fi**. It cannot connect to a 5 GHz network.
+* Steps: `MENU → W` → Select a slot → Enter the network name (SSID) → Enter the password → The device tests the connection.
+
+You can save up to 5 networks, for example home and office.
+
+---
+
+## **5. Google Drive Sync**
+
+Sync uploads the file you are working on to a folder in your own Google Drive. It needs WiFi to be set up first.
+
+Please refer to the following guide to complete the setup:
 
 [Google Drive Sync Setup Guide](../../shared/GoogleDriveSync/readme.md)
 
----
-
-## **5. Wifi Setup**
-
-* ESP32 only supports **2.4 GHz Wi-Fi**.
-* Steps: `MENU → W` → Select slot → Enter SSID → Enter password → Test connection.
+Once it is set up, open the menu and press `S` to sync the current file.
 
 ---
 
-## **6. Firmware Update**
+## **6. Drive Mode**
 
-1. Check latest firmware: [Releases](https://github.com/unkyulee/micro-journal/releases)
-2. Download `firmware_rev_7.bin`
-3. Copy to SD card, reinsert, and power on.
-4. The device shows a white screen (~10s), then boots with updated firmware.
+Drive Mode replaces the SD card. It lets you open, download, upload and delete the files stored on the Micro Journal from a web browser, over WiFi. No cable or card reader is needed.
+
+Use Drive Mode to:
+
+* Copy your text files to your computer for backup or further editing
+* Upload a firmware file to update the device
+* Edit the `config.json` settings file
+
+Steps:
+
+1. Open the menu and select **Drive Mode**.
+2. Wait for the screen to show a web address.
+3. Open that address in a web browser on a computer or phone connected to the same WiFi network.
+4. Download, upload or delete files in the browser.
+5. When you are done, leave Drive Mode on the Micro Journal to return to the editor.
+
+Keep Drive Mode open on the Micro Journal while you work in the browser, and close it when you are done, because WiFi uses extra battery.
 
 ---
 
-## **7. Customizing Keyboard Layout**
+## **7. Firmware Update**
+
+To update the firmware, upload the `firmware_rev_7.bin` file through Drive Mode. The process is the same as before, except that Drive Mode takes the place of the SD card. No web flash is needed.
+
+1. Check the latest firmware: [Releases](https://github.com/unkyulee/micro-journal/releases)
+2. Download `firmware_rev_7.bin` to your computer.
+3. Open [Drive Mode](#6-drive-mode) and upload `firmware_rev_7.bin` in the browser.
+4. Leave Drive Mode and restart the device.
+5. The device shows a white screen (~10s), then boots with the updated firmware.
+
+Back up your text files through Drive Mode before updating, as a precaution.
+
+---
+
+## **8. Customizing Keyboard Layout**
 
 <img src="./images/keyboard_002.jpg" width="400" />  
 
-* Use **QMK-Vial** software: [https://get.vial.today/](https://get.vial.today/)
-* Steps:
+The keyboard has its own controller, which you can re-map with the **QMK-Vial** software: [https://get.vial.today/](https://get.vial.today/). This is optional. The default layout works without any changes.
 
-  1. Open battery cover.
-  2. Disconnect USB wires to controller PCB.
-  3. Connect USB to computer.
-  4. Launch Vial and edit keymap.
-  5. Reconnect wires, secure plate, power on.
+Steps:
+
+1. Switch the device off and open the battery cover.
+2. Disconnect the USB wires from the controller PCB.
+3. Connect the controller PCB to your computer with a USB cable.
+4. Launch Vial and edit the keymap. Changes are applied immediately.
+5. Reconnect the wires, secure the plate, and power on.
+
+A full walkthrough is in [Part 3](#using-the-rev-7-part-3-modifying-the-rev-7s-key-map-with-vial) of this guide.
 
 ---
 
-## **8. Trouble-shooting**
+## **9. Trouble-shooting**
 
+* **The device does not power on.** Check that a charged battery is installed the right way round.
+* **The battery does not charge and no light shows.** You are probably using a PD charger or a USB-C to USB-C cable. Use a non-PD charger with a USB-A to USB-C cable.
+* **Both charger lights are on.** The battery is not installed correctly. Check that it is seated firmly and the right way round.
+* **The battery was inserted the wrong way round.** The charger board is most likely broken and has to be replaced.
 * Micro Journal components are common; replacements are available.
-* Refer to [Build Guide](./build.md) for wiring and troubleshooting.
+* Refer to the [Build Guide](./build.md) for wiring and troubleshooting.
 * Report bugs: [GitHub Issues](https://github.com/unkyulee/micro-journal/issues)
+
 
 
 ## Introducing the Micro Journal Rev 7
@@ -160,7 +235,7 @@ Before we dive in, **make sure you have the latest stable firmware for the Rev 7
 
 https://github.com/unkyulee/micro-journal/releases
 
-Then, just remove the SD card from the Rev 7 and use a card reader with your computer to transfer the firmware file to your SD card. Put the SD card back in the Rev 7. When you turn on the Rev 7, you will be asked to acknowledge loading the new firmware.  Then, after some screen flashing, you will be set to go.
+Then, open Drive Mode on the Rev 7 and upload the firmware file from your computer through the web browser. No web flash is needed. When you next turn on the Rev 7, you will be asked to acknowledge loading the new firmware.  Then, after some screen flashing, you will be set to go.
 
 ## Using the Rev 7 Part 1: The Editor
 

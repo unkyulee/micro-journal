@@ -23,7 +23,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 * 
 ### Hook's Review
 
-* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+* [Hook's Review for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 
 ### Videos
