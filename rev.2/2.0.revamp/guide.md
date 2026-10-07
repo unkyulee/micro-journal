@@ -1,6 +1,6 @@
 # Quick Start Guide - Micro Journal Rev.2.ReVamp
 
-![Diagram](./quickstart/diagram.png)
+![Diagram](./images/quickstart/diagram.png)
 
 What you get out of the box is a writing device with a large screen, a mechanical keyboard that is well laid out for writers, a well-featured while still minimal text editor and a quick and easy method of sharing files with your PC. In other words, everything you need to write (and even edit if you want to, but your PC will always be better at that). You don't need any technical skills beyond following directions to set it up and you quickly have a Modern Dana. You should add an external battery to get longer life, but that's it.
 
@@ -10,7 +10,7 @@ What you get out of the box is a writing device with a large screen, a mechanica
 
 **Note: A pre-configured Micro SD card is included with the Micro Journal Rev.2. You do not need to buy or set it up. Refer to this guide only if you need to replace or reinstall the Micro SD card.**
 
-![SD](./quickstart/microsd.png)
+![SD](./images/quickstart/microsd.png)
 
 The Micro Journal Rev.2 uses a Micro SD card for its Raspberry Pi Zero 2W computer. The card should have a capacity of **at least 4GB**. Using a faster card will improve boot times and overall performance.
 
@@ -35,7 +35,7 @@ There is a USB port at the back of the device. You can connect to a phone charge
 * Use old(er) phone chargers
 * Per 1000 mAh of the battery it will provide additional 1 hour of usage. For example, 10,000 mAh battery bank should provide in the range of 10 hours of usage.   
 
-<img src="./quickstart/007.png" width="400" />
+<img src="./images/quickstart/007.png" width="400" />
 
 
 **Initial delay:**  Rev 2 is not instant on. It has to boot Linux first, since everything runs off that. If you haven't used Linux before, you will see a lot of incomprehensible text go whizzing by too fast to read. At first the text will fly by in the wrong direction on the screen and finally it will reorient. Just ignore everything until you are given the terminal dashboard.
@@ -43,7 +43,7 @@ There is a USB port at the back of the device. You can connect to a phone charge
 
 **Check the SD card:** If the screen remains blank for too long, check for a green light near the micro SD card slot. This light indicates that the system is booting. If no green light appears, the SD card may not be properly installed. 
 
-<img src="./quickstart/008.png" width="400" />
+<img src="./images/quickstart/008.png" width="400" />
 
 **When not booting** Power off, reinsert the SD card, and try again. If the issue persists, you may need to replace or reconfigure the SD card. 99% of the issues is related to SD card. Please, refer to this document when you need to setup the SD card.
 
@@ -58,7 +58,7 @@ After the device has fully booted up, you will be greeted with the **Dashboard**
 
 The dashboard is a kind of menu. It really is a crude file manager, but you have one folder (documents) and several scripts (files ending with .sh-- if you ever used DOS, think batch files) and you use the arrow keys to select among them, so it acts like a menu.
 
-<img src="./quickstart/009.png" width="400" />
+<img src="./images/quickstart/009.png" width="400" />
 
 The documents folder is obviously where your files will be stored. You use the right arrow to move to the list of file names in that folder and hit enter to open any file in WordGrinder. To create a new file, you arrow down from the documents folder to the script called newfile. We will get to WordGrinder in a moment.
 
@@ -98,7 +98,7 @@ To share or access files from the Micro Journal, follow these steps:
 1. Select **"share.sh"** from the dashboard and press **Enter**.
 2. Wait a few seconds, and once you see the **IP address**, enter it in the web browser of your PC.
 
-<img src="./quickstart/010.png" width="400" />
+<img src="./images/quickstart/010.png" width="400" />
 
 You will be greeted by a web interface where you can download, manage, and extract files stored in the **"documents"** folder on your Micro Journal.
 

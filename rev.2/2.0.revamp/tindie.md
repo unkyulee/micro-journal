@@ -128,8 +128,8 @@ Please, watch the use case video in order to understand the features and most im
 ### Documents 
 
 * [Micro Journal Rev.2.ReVamp Design Story](./story.md)
-* [Quick Start Guide](./quickstart.md)
-* [Build Guide](./build-guide.md)
+* [Quick Start Guide](./guide.md)
+* [Build Guide](./build.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 
 
@@ -139,7 +139,7 @@ Please, watch the use case video in order to understand the features and most im
 * [Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
 * [Design Files](./STL)
 * [Keyboard PCB](../../rev.6/6.0/PCB)
-* [Rev.2 QMK-Vial Source Code](./keyboard/)
+* [Rev.2 QMK-Vial Source Code](../2.1/keyboard/)
 
 
 ### Videos

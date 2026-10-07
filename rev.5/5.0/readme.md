@@ -15,9 +15,9 @@ If you're curious about the technical journey — including the exploration of U
 
 * [Behind Story](./story.md)
 * [Micro Journal Rev.5 Features and Use Cases](https://youtu.be/felg-JbUMr0)
-* [Build Guide](./build-guide.md)
+* [Build Guide](./build.md)
 * [Build Video](https://youtu.be/xDClC_4uQIw)
-* [Quick Start Guide](./quickstart/readme.md)
+* [Quick Start Guide](./guide.md)
 
 ## Resources
 

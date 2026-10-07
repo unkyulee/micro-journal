@@ -13,7 +13,7 @@ You'll also need access to 3D-printed parts to complete the build. Many 3D print
 
 # System Architecture
 
-<img src="build/000.png">
+<img src="./images/build/000.png">
 
 Rev.2. is a small computer. Process of the building rev.2. is very similar to building a PC. There is a computer at the center of it, the assembly consists of connecting a display, power supply and the keyboard.
 
@@ -87,25 +87,25 @@ Power is supplied externally from LIPO batteries. In this build 18650 batteries 
 
 Please, refer to the image below for placement of the prints. Vertical placements of the enclosure parts gave the best prints results, so far in my builds. This orientation gives the most coverage of the smooth surfaces.
 
-<img src="build/001.png" width="600">
+<img src="./images/build/001.png" width="600">
 
 Once the prints are done. Remove the support materials from the print.
 
 ### Installing Heat Inserts
 
-<img src="build/002.png" width="600">
+<img src="./images/build/002.png" width="600">
 
-<img src="build/003.png" width="600">
+<img src="./images/build/003.png" width="600">
 
-<img src="build/004.png" width="600">
+<img src="./images/build/004.png" width="600">
 
-<img src="build/005.png" width="600">
+<img src="./images/build/005.png" width="600">
 
 ### Display Preparation
 
 Use B-7000 glue to apply on the display rim. Then attach to the display body.
 
-<img src="build/010.png" width="600">
+<img src="./images/build/010.png" width="600">
 
 Make sure to apply some pressure on the display while glue is dried. Leave some heave book on top of it for an hour before using it for the assembly.
 
@@ -116,11 +116,11 @@ Cut fours wires in 15 cm (6 inches) length.
 Merge battery indicator and battery holder and solder it to the power supply module.
 Solder two wires on the Vout+ and Vout-. Preferrably, use different colored wires or place a label for each polarity. This can be useful to identify the wires to connect with the power switch.
 
-<img src="build/006.png" width="600">
+<img src="./images/build/006.png" width="600">
 
 Prepare the round switch. Attach wires, preferrably same color. Apply some hot glue one the leads if possible. This will prevent any shorts while moving around.
 
-<img src="build/007.png" width="600">
+<img src="./images/build/007.png" width="600">
 
 Pick up the middle enclosure. The order of the installation is important. If you place the battery holder first, then you can't push the battery indicator. So, make sure to follow the order
 
@@ -129,11 +129,11 @@ Pick up the middle enclosure. The order of the installation is important. If you
 3. Lastly, use a double sided tape or hot glue to place the battery holder
 4. Power switch can be pushed in from the outside.
 
-<img src="build/008.png" width="600">
+<img src="./images/build/008.png" width="600">
 
 Take one wire from the switch, and then take Vout+ wire from the power supply module. Merge these two wires. Insulate it with a tape or hot glue.
 
-<img src="build/009.png" width="600">
+<img src="./images/build/009.png" width="600">
 
 ### EC11 Rotary Encoder Preparation
 
@@ -141,11 +141,11 @@ EC11 rotary encode needs to be prep'd. You can use Wire Wrap Hand Tool to make t
 
 Cut 10x 30 cm wires. Make two with different colors to identify the GND pin if possible.
 
-<img src="build/011.png" width="600">
+<img src="./images/build/011.png" width="600">
 
 There are two holes in the tool. Pass through the wire into the hole closer to the surface. Then pass through the leg to the hole in the middle. That roll it. Afer some several roles. Wires are neatly wrapped on to the leg.
 
-<img src="build/012.png" width="600">
+<img src="./images/build/012.png" width="600">
 
 Wire up all 5 legs. Making one leg in the middle as a different color can be useful. This is GND point. The wires are pretty well stuck so, no need to do further actions. But, if you want to make sure then apply the solder in order to stick it permanently.
 
@@ -153,7 +153,7 @@ Wire up all 5 legs. Making one leg in the middle as a different color can be use
 
 Cut 22x 12 cm wires.
 
-<img src="build/013.png" width="600">
+<img src="./images/build/013.png" width="600">
 
 Make sure to flip the keyboard PCB to see the sockets. Then from the top is PIN 0, then pin number increments till the end.
 
@@ -196,14 +196,14 @@ First 5 pins are for the knob on the left hand side. Last 5 pins are for the kno
 | Pin 30           | Left Knob Switch     |
 | Pin 31           | Left Knob Switch GND |
 
-<img src="build/EC11webp.webp" width="600">
+<img src="./images/build/EC11webp.webp" width="600">
 
 
-<img src="build/014.jpg" width="600">
+<img src="./images/build/014.jpg" width="600">
 
 Before soldering on Raspberry Pi Pico, make sure to cover it with a tape. Without covering the board, there has been many cases that the board fails to work. Since, I have covered it up, it has never failed. I think there is some heat or solder spilling out and could cause some issues. Covering it will prevent some direct heat or solder spills to break the circuit. It's better safe than sorry approach. I do not know if there is any scientific explanations to this measure. 
 
-<img src="build/015.jpg" width="600">
+<img src="./images/build/015.jpg" width="600">
 
 Once the soldering is done. The board will looks like this. Apply some hot glue on the joints, and use some tapes to keeps the wires together. 
 
@@ -212,7 +212,7 @@ Once the soldering is done. The board will looks like this. Apply some hot glue 
 
 ### Connect Power Supply to the Keyboard Controller
 
-<img src="build/016.jpg" width="600">
+<img src="./images/build/016.jpg" width="600">
 
 There should be Red wire (+5V) and a Blue wire (GND) from the enclosure. Solder that to the raspberry pi pico VBus and GND respectively. 
 
@@ -232,30 +232,30 @@ You can download [Vial](https://get.vial.today/) to check if the firmware is cor
 
 ### Assembly the enclosure
 
-<img src="build/019.jpg" width="600">
+<img src="./images/build/019.jpg" width="600">
 
 You will need this shape of USB cable. It's USB type C male to male. One end is angled in such way as the picture. 
 
-<img src="build/020.png" width="600">
+<img src="./images/build/020.png" width="600">
 
 Assemble the display enclosure first. You will need to place the display module aligned with the display port. Do not push it hard. It's quite fragile and too much force can destory the display. 
 
 Attach the USB C cable as the picture above. Then place the back enclosure. Use m3 10mm screws to close up. Do not tighten it too hard. Be very gentle. Tightening it too hard can break the display module because the cable can bend when pressured too hard.
 
 
-<img src="build/017.jpg" width="600">
+<img src="./images/build/017.jpg" width="600">
 
 Make the knob wire go through the hole in the middle enclosure. Tighten them on each side. Make sure to place the back panel before tightening the screws. 
 
-<img src="build/019.png" width="600">
+<img src="./images/build/019.png" width="600">
 
 Assemble the left hand side enclosure. First tighten the keyboard PCB with m2 6mm, then use m3 70mm screws, and then m2 20mm. It's important to screw in with following the order. This is the order that I found that aligns the keyboard PCB. 
 
-<img src="build/021.jpg" width="600">
+<img src="./images/build/021.jpg" width="600">
 
 Place the assembled display. Make sure that the USB cable is passing through the internal hole and connect to the keyboard controller. 
 
-<img src="build/021.png" width="600">
+<img src="./images/build/021.png" width="600">
 
 While carefullly enclosing the wires. Place the screws in the order presented in the picture. First, keyboard PCB and then work on the enclosure. 
 
@@ -266,15 +266,15 @@ When you reach this point. Try to place a battery and one or two keyboard switch
 
 Installing keyboard switches and keycaps are going to be rather a standard procedure. One thing that is a bit difficult is how to place the stabilizer. 
 
-<img src="build/022.jpg" width="600">
+<img src="./images/build/022.jpg" width="600">
 
 Make sure to place the stabilzer as the picture above. Important to note that when those components are place it should not have tension and the wire should be moving up and down freely. 
 
-<img src="build/022.png" width="600">
+<img src="./images/build/022.png" width="600">
 
 Make sure to place the component in the orientation as the above picture. 
 
-<img src="build/023.png" width="600">
+<img src="./images/build/023.png" width="600">
 
 
 

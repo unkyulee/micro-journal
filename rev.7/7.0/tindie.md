@@ -107,8 +107,8 @@ Please, watch the use case video in order to understand the features and most im
 
 * [Behind Story](./story.md)
 * [Feature and Use Case of Rev.7](https://www.youtube.com/watch?v=lNPzFL1a6mI)
-* [Quick Start Guide](./quickstart/readme.md)
-* [Build Guide](./build-guide.md)
+* [Quick Start Guide](./guide.md)
+* [Build Guide](./build.md)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 * [Firmware Source Code](../../rev.4/4.0/)

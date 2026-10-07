@@ -10,7 +10,7 @@ https://github.com/unkyulee/micro-journal-mcu
 
 This is a build guide for a writerDeck based on ESP32, and ILI9341 display with 30 keys hand wired keyboard. 
 
-![Micro Journal Rev.4](/rev.4/4.0/doc/001.webp)
+![Micro Journal Rev.4](/rev.4/4.0/images/001.webp)
 
 > Turn on and type immediately. Sync with Google Drive. Simple. Let your draft kept always recorded.
 
@@ -37,7 +37,7 @@ Indeed, DIYing the WriterDeck would likely result in a significantly lower cost.
 
 Comparing costs alone, DIYing a WriterDeck can be much more economical than purchasing commercial products. However, it's important to note that commercial products typically offer higher quality management, better enclosure quality, and overall finished goods. DIY projects may not directly replace commercial products in terms of quality and finish, but they can still provide a cost-effective solution for those willing to trade off some polish for affordability.
 
-![Had it all](/rev.4/4.0/doc/002.jpg)
+![Had it all](/rev.4/4.0/images/002.jpg)
 
 > I had all the components to build this, so for me was 0 cost. But should be cheap overall, even buying all those parts.
 
@@ -58,7 +58,7 @@ I searched for an open-source solution that had previously developed a device si
 
 Consequently, I made the decision to develop an ESP32 firmware myself. This firmware would not only provide basic word processing capabilities but also include functionality for syncing files with Google Drive, enabling seamless integration with personal cloud storage.
 
-![word processor](/rev.4/4.0/doc/003.jpg)
+![word processor](/rev.4/4.0/images/003.jpg)
 
 > In order to transform the ESP32 into a WriterDeck, it required specialized software, which I couldn't find available. Therefore, I took it upon myself to develop the necessary software from scratch.
 
@@ -66,11 +66,11 @@ The most significant challenge of the project was developing the software. While
 
 # Step 1. Handwired Keyboard
 
-![Handwired Keyboard](/rev.4/4.0/doc/004.jpg)
+![Handwired Keyboard](/rev.4/4.0/images/004.jpg)
 
 DIY projects involving microcontrollers often require hands-on wiring and assembly. One aspect I tackled personally was building the keyboard from scratch. My vision was to split the keyboard and position the display in the center, which required careful manual construction.
 
-![Split Keyboard](/rev.4/4.0/doc/005.jpg)
+![Split Keyboard](/rev.4/4.0/images/005.jpg)
 
 I didn't even consider purchasing off-the-shelf options for the dimensions of the split keyboard and display. Instead, I relied on resources available on platforms like YouTube for guidance on building a hand-wired keyboard. For me, the simpler approach involved 3D printing the keyboard plate and installing the switches manually, while others might prefer the PCB method.
 
@@ -78,7 +78,7 @@ The key steps involve placing the switches and wiring each leg horizontally and 
 
 STL files for the keyboard can be found that the following folder in the repository
 
-[/micro-journal-rev-4-esp32/doc/stl](/rev.4/4.0/doc/stl)
+[/micro-journal-rev-4-esp32/doc/stl](/rev.4/4.0/STL)
 
 
 # Step 2. ESP32
@@ -109,7 +109,7 @@ I utilized a devkit with 38 pins for this project, but other ESP32 boards can al
 |  16  | CS - Keyboard Columns, O   |
 |  17  | CS - Keyboard Columns, P   |
 
-![ESP32](/rev.4/4.0/doc/006.jpg)
+![ESP32](/rev.4/4.0/images/006.jpg)
 
 I opted to use a breakout board to wire up the components and tested them before proceeding to the enclosure stage. Depending on the specific requirements of your project, you may need to rearrange some of the pins. In my case, I utilized nearly all the available pins allowed through the breakout board, which made it a tight fit for all the components. However, I observed that some pins remained available directly on the ESP32 board. This means there's still the possibility to utilize these additional pins for integrating extra sensors or enabling touchpad functionality for future enhancements to the project.
 
@@ -151,7 +151,7 @@ Feel free to modify the keyboard layout codes as needed to suit your preferences
 
 # Step 3. Power Supply
 
-![Power Supply](/rev.4/4.0/doc/007.jpg)
+![Power Supply](/rev.4/4.0/images/007.jpg)
 
 I salvaged an 18650 battery from an old laptop battery pack. Due to its age, I closely monitored it during charging. It reached a full charge of 4.2 volts and completed a single charge cycle, suggesting a capacity around 3000 mAh. Over the past week, I've been using it for one-hour sessions without needing to recharge, indicating its reliability. With this performance, I expect this battery system to provide a very decent writing time, likely around 5 hours or more, even with the aged battery.
 
@@ -164,17 +164,17 @@ I bought the charge module that provides 5V output.
 
 Once all the wires were soldered to each component, the next step was cramming all the components into the enclosure. I utilized a fair amount of hot glue to secure the display and ESP32 in place, along with some cable ties to prevent the display case from pressing down on the cables. Using 2.5mm threaded inserts and screws, I successfully closed them inside the enclosure, ensuring a secure fit.
 
-![Enclosure](/rev.4/4.0/doc/009.jpg)
-![ESP32](/rev.4/4.0/doc/008.jpg)
-![Enclosure](/rev.4/4.0/doc/010.jpg)
-![Enclosure](/rev.4/4.0/doc/011.jpg)
-![Enclosure](/rev.4/4.0/doc/012.jpg)
+![Enclosure](/rev.4/4.0/images/009.jpg)
+![ESP32](/rev.4/4.0/images/008.jpg)
+![Enclosure](/rev.4/4.0/images/010.jpg)
+![Enclosure](/rev.4/4.0/images/011.jpg)
+![Enclosure](/rev.4/4.0/images/012.jpg)
 
 
 
 # Typing Test Video
 
-[![Typing Test](/rev.4/4.0/doc/001.webp)](https://youtu.be/S1f8ps_NdyE)
+[![Typing Test](/rev.4/4.0/images/001.webp)](https://youtu.be/S1f8ps_NdyE)
 
 
 # Google Drive Sync

@@ -65,7 +65,7 @@ But it can do much more:
 * Personalize the **animations** on the screen.
 * And, of course—enjoy owning one of the most unique keyboards to show off to your friends and family.
 
-For more details, see the [User Manual](./quickstartguide.md) written by **Hook**.
+For more details, see the [User Manual](./guide.md) written by **Hook**.
 
 ---
 
@@ -73,7 +73,7 @@ For more details, see the [User Manual](./quickstartguide.md) written by **Hook*
 
 Micro Journal is made from readily available components. If something stops working or wears out, you can usually replace it with parts from common marketplaces.
 
-* For hardware reference, check the [Build Guide](./build-guide.md), which explains wiring and assembly.
+* For hardware reference, check the [Build Guide](./build.md), which explains wiring and assembly.
 * For software issues or bug reports, please use GitHub Issues:
   - [https://github.com/unkyulee/micro-journal/issues](https://github.com/unkyulee/micro-journal/issues)
 

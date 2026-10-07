@@ -9,8 +9,8 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 
 * [Behind Story](./story.md)
 * [Feature and Use Case of Rev.7](https://www.youtube.com/watch?v=lNPzFL1a6mI)
-* [Quick Start Guide](./quickstart/readme.md)
-* [Build Guide](./build-guide.md)
+* [Quick Start Guide](./guide.md)
+* [Build Guide](./build.md)
 
 
 ## Resources

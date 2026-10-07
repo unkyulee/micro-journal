@@ -54,7 +54,7 @@ You'll also need access to 3D-printed parts to complete the build. Many 3D print
 
 Please, refer to the image below for placement of the prints. Vertical placements of the enclosure parts gave the best prints results, so far in my builds. This orientation gives the most coverage of the smooth surfaces.
 
-<img src="./build/001.png" width="600">
+<img src="./images/build/001.png" width="600">
 
 Once the prints are done. Remove the support materials from the print.
 
@@ -65,11 +65,11 @@ EC11 rotary encode needs to be prep'd. You can use Wire Wrap Hand Tool to make t
 
 Cut 10x 30 cm wires. Make two with different colors to identify the GND pin if possible.
 
-<img src="build/011.png" width="600">
+<img src="./images/build/011.png" width="600">
 
 There are two holes in the tool. Pass through the wire into the hole closer to the surface. Then pass through the leg to the hole in the middle. That roll it. Afer some several roles. Wires are neatly wrapped on to the leg.
 
-<img src="build/012.png" width="600">
+<img src="./images/build/012.png" width="600">
 
 Wire up all 5 legs. Making one leg in the middle as a different color can be useful. This is GND point. The wires are pretty well stuck so, no need to do further actions. But, if you want to make sure then apply the solder in order to stick it permanently.
 
@@ -78,7 +78,7 @@ Wire up all 5 legs. Making one leg in the middle as a different color can be use
 
 Cut 20x 12 cm wires.
 
-<img src="build/PCB.png" width="600">
+<img src="./images/build/PCB.png" width="600">
 
 Make sure to flip the keyboard PCB to see the sockets. Then from the top is PIN 0, then pin number increments till the end.
 
@@ -113,9 +113,9 @@ Make sure to flip the keyboard PCB to see the sockets. Then from the top is PIN 
 | Pin 30           | Knob Switch     |
 | Pin 31           | Knob Switch GND |
 
-<img src="build/EC11webp.webp" width="600">
+<img src="./images/build/EC11webp.webp" width="600">
 
-<img src="build/002.png" width="600">
+<img src="./images/build/002.png" width="600">
 
 
 Raspberry Pico 27 goes to Battery Voltage Divider Measuring wire.
@@ -128,7 +128,7 @@ Voltage Diviver with two 1 M ohm resistor in series.
 One end of the divider goes to negative of battery holder. Other end goes to positive end of the switch when on. Middle of the voltage divider goes to PICO GPIO 27. 
 Battery holder positive goes to switch when off. 
 
-<img src="build/battery.png" width="600">
+<img src="./images/build/battery.png" width="600">
 
 Connect these NEGATIVE wires together:
 
@@ -149,44 +149,44 @@ Switch Connection:
 - One end with Battery Holder (+)
 - The other end with "One 10 cm Red Wire Extension"
 
-<img src="build/003.png" width="600">
+<img src="./images/build/003.png" width="600">
 
 
 
 ### Assemble the Enclosure
 
 
-<img src="build/004.png" width="600">
+<img src="./images/build/004.png" width="600">
 
 Snap in the display module to the display port.
 
 
 
-<img src="build/005.png" width="600">
+<img src="./images/build/005.png" width="600">
 
 Place the Keyboard PCB and screw it with m2 screws
 
 
 
-<img src="build/006.png" width="600">
+<img src="./images/build/006.png" width="600">
 
 Install EC11 Rotary encoder and place the knob handle
 
 
-<img src="build/007.png" width="600">
+<img src="./images/build/007.png" width="600">
 
 Assemble Left and Right enclosure and screw them with 70 mm m3 screws.
 
 
-<img src="build/008.png" width="600">
+<img src="./images/build/008.png" width="600">
 
 Use a double sided tape to hold down the battery holder on the left hand side
 
-<img src="build/009.png" width="600">
+<img src="./images/build/009.png" width="600">
 
 Use USB extension cable to connect the display module and extend it to the USB port
 
-<img src="build/010.png" width="600">
+<img src="./images/build/010.png" width="600">
 
 Use 10 mm m3 screws to hold down the front panels
 
@@ -210,15 +210,15 @@ Once assembly is complete, it’s time to flash the firmware.
 
 Installing keyboard switches and keycaps are going to be rather a standard procedure. One thing that is a bit difficult is how to place the stabilizer. 
 
-<img src="build/022.jpg" width="600">
+<img src="./images/build/022.jpg" width="600">
 
 Make sure to place the stabilzer as the picture above. Important to note that when those components are place it should not have tension and the wire should be moving up and down freely. 
 
-<img src="build/022.png" width="600">
+<img src="./images/build/022.png" width="600">
 
 Make sure to place the component in the orientation as the above picture. 
 
-<img src="build/023.png" width="600">
+<img src="./images/build/023.png" width="600">
 
 
 

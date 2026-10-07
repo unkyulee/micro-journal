@@ -30,7 +30,7 @@ It's easy to assemble, satisfying to use. Most importantly, brings the AlphaSmar
 ### Documents 
 
 * [Introduction Video](https://youtu.be/ckPTIjm1Qb4)
-* [Build Guide](./build-guide.md)
+* [Build Guide](./build.md)
 
 
 ### Resources

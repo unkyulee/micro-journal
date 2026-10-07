@@ -11,11 +11,11 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 
 ### Documents 
 
-* [Quick Start Guide](./quickstart.md)
+* [Quick Start Guide](./guide.md)
 
 * [Behind Story](./story.md)
 * [Features and Introduction of Micro Journal Rev.6](https://youtu.be/1ZP9wwYMaMY)
-* [Build Guide](./build-guide.md)
+* [Build Guide](./build.md)
 * [Build Video](https://youtu.be/6zRsx2ufwUU)
 
 ### Resources

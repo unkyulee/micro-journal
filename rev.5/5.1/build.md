@@ -2,7 +2,7 @@ DRAFT
 
 # Micro Journal Rev.5.1. Build Guide
 
-Internals of Rev.5.1. is the same as the previous Rev.5 build. Please, refer to the [Micro Journal Rev.5 Build Guide](../5.0/build-guide.md) for the detailed steps. Components used and 3D printed enclosure in the Rev.5.1. are slightly different.
+Internals of Rev.5.1. is the same as the previous Rev.5 build. Please, refer to the [Micro Journal Rev.5 Build Guide](../5.0/build.md) for the detailed steps. Components used and 3D printed enclosure in the Rev.5.1. are slightly different.
 
 
 ## Bill of Material

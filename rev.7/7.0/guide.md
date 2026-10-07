@@ -79,10 +79,10 @@ Before using the **Micro Journal Rev.7**, you need a battery.
    * Use tape around the battery for easy removal.
    * Ensure no cables are pinched when closing the lid.
 
-<img src="../images/battery_001.jpg" width="400" />  
-<img src="../images/battery_002.jpg" width="400" />  
-<img src="../images/battery_003.jpg" width="400" />  
-<img src="../images/battery_004.jpg" width="400" />  
+<img src="./images/battery_001.jpg" width="400" />  
+<img src="./images/battery_002.jpg" width="400" />  
+<img src="./images/battery_003.jpg" width="400" />  
+<img src="./images/battery_004.jpg" width="400" />  
 
 **Safety Notes:**
 
@@ -103,7 +103,7 @@ Before using the **Micro Journal Rev.7**, you need a battery.
 
 Please, refer to the following guide to complete the setup to enable Google Drive Sync.
 
-[Google Drive Sync Setup Guide](../../../rev.6/6.0/googledrive.md)
+[Google Drive Sync Setup Guide](../../rev.6/6.0/googledrive.md)
 
 ---
 
@@ -125,7 +125,7 @@ Please, refer to the following guide to complete the setup to enable Google Driv
 
 ## **7. Customizing Keyboard Layout**
 
-<img src="../images/keyboard_002.jpg" width="400" />  
+<img src="./images/keyboard_002.jpg" width="400" />  
 
 * Use **QMK-Vial** software: [https://get.vial.today/](https://get.vial.today/)
 * Steps:
@@ -141,7 +141,7 @@ Please, refer to the following guide to complete the setup to enable Google Driv
 ## **8. Trouble-shooting**
 
 * Micro Journal components are common; replacements are available.
-* Refer to [Build Guide](../build-guide.md) for wiring and troubleshooting.
+* Refer to [Build Guide](./build.md) for wiring and troubleshooting.
 * Report bugs: [GitHub Issues](https://github.com/unkyulee/micro-journal/issues)
 
 
@@ -231,11 +231,11 @@ the two screws from the plate that the screen folds down onto. Then slide the
 plate out. You  will see a small PCB in the area under where that plate was.
 You will see wires connected by a USB plug to that board. 
 
-<img src="../images/keyboard_002.jpg" width="400" />  
+<img src="./images/keyboard_002.jpg" width="400" />  
 
 Unplug the wires and connect one end of a USB cable (USB-c Male) to the board where the wires had been connected and the other end of the USB cord to your computer. Then launch Vial on your computer.  When it fully loads, you should see a screen like this:
 
-<img src="../images/Rev7-Vial1.jpg" width="400" />  
+<img src="./images/Rev7-Vial1.jpg" width="400" />  
 
 This screen roughly divides into 2 halves. The top half is your keyboard, showing the key assignments. Just above that keyboard to the left are the tabs for different layers 0, 1, 2 and 3. Because we have a full QWERTY keyboard, there's not much reason to get into layers. If you have keys you want to create on another layer, consult the Vial documentation.
 

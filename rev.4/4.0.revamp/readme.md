@@ -19,8 +19,8 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 
 * [Story behind the Rev.4](./story.md)
 * [Feature and Use Case of Rev.4.ReVamp](https://youtu.be/C-KRcLu5P9o)
-* [Quick Start Guide](./quickstartguide.md)
-* [Build Guide](./build-guide.md)
+* [Quick Start Guide](./guide.md)
+* [Build Guide](./build.md)
 
 
 ### Resources

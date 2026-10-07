@@ -11,7 +11,7 @@ Rev.5 is a distraction-free writing device powered by the ESP32-S3 with a 3-inch
 
 The earlier Rev.4 was something I personally enjoyed. It's an instant-on, minimalist device built around a fixed 30-key layout that matched *my* preferences perfectly. I loved it. But when I shared it, I quickly realized that what worked beautifully for me was actually a barrier for others. A hyper-personalized keyboard wasn't practical if I wanted this to be useful beyond my desk.
 
-<img src="../../rev.4/4.0/doc/001.webp" width=400>
+<img src="../../rev.4/4.0/images/001.webp" width=400>
 
 So I asked myself: what if the keyboard wasn't part of the device at all? What if Micro Journal could let people bring *their* favorite keyboard. Instead of forcing them to use mine? That thought became the spark for Rev.5.
 

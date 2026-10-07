@@ -62,7 +62,7 @@ Before turning on the device for the first time, prepare:
 
 ## **Battery Requirements**
 
-![Battery](./images/battery.png)
+![Battery](./images/quickstart/battery.png)
 
 The writerDeck requires a **single 18650 Lithium-ion 3.7V battery**.
 
@@ -99,7 +99,7 @@ Some sections of this manual may still refer to the SD card. When following thos
 
 ## **Step 1 — Install the Battery**
 
-![Unscrew](./images/unscrew.jpg)
+![Unscrew](./images/quickstart/unscrew.jpg)
 
 ### ⚠️ EXTREMELY IMPORTANT
 
@@ -156,7 +156,7 @@ Using PD chargers may prevent charging or powering the device.
 **File System:** `FAT32`
 **Allocation size:** default
 
-![format](./images/format.png)
+![format](./images/quickstart/format.png)
 
 If FAT32 is not available:
 
@@ -170,7 +170,7 @@ Insert the SD card into the writerDeck after formatting.
 
 This allows your writerDeck to back up files through Wi-Fi.
 
-Please, follow the [Google Drive Sync Setup Guide](../../../rev.6/6.0/googledrive.md) to complete this step.
+Please, follow the [Google Drive Sync Setup Guide](../../rev.6/6.0/googledrive.md) to complete this step.
 
 
 ---

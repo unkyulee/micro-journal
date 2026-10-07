@@ -75,9 +75,9 @@ Micro Journal Rev.5 perfect for capturing sudden bursts of inspiration or quickl
 
 * [Behind Story](./story.md)
 * [Micro Journal Rev.5 Features and Use Cases](https://youtu.be/felg-JbUMr0)
-* [Build Guide](./build-guide.md)
+* [Build Guide](./build.md)
 * [Build Video](https://youtu.be/xDClC_4uQIw)
-* [Quick Start Guide](./quickstart/readme.md)
+* [Quick Start Guide](./guide.md)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 * [Firmware Source Code](../../rev.4/4.0/)
 * [Design Files](./STL)

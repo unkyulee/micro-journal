@@ -4,7 +4,7 @@ The Micro Journal Rev.5.1 has the same internal hardware as the Micro Journal Re
 
 Please, visit the following link to get more information about how to use the software, and setup Google Drive Sync, and custom GIF startup animations and more.
 
-- [Rev.5 User Manual](../5.0/quickstart/readme.md)
+- [Rev.5 User Manual](../5.0/guide.md)
 
 The only difference is access to the battery holder. To reach it, you need to remove the four screws on the top cover. 
 
@@ -29,7 +29,7 @@ Install the battery then close it back up. Make sure, to check, double check, tr
 
 Also, place a tape around the battery to create a handle so that it can be easy to pull out. 
 
-To understand which batter to purchase, you can find more details on the [Rev.5 User Manual](../5.0/quickstart/readme.md).
+To understand which batter to purchase, you can find more details on the [Rev.5 User Manual](../5.0/guide.md).
 
 
 

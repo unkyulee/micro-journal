@@ -119,8 +119,8 @@ Please, watch the use case video in order to understand the features and most im
 
 * [Behind Story](./story.md)
 * [Features and Introduction of Micro Journal Rev.6](https://youtu.be/1ZP9wwYMaMY)
-* [Quick Start Guide](./quickstart.md)
-* [Build Guide](./build-guide.md)
+* [Quick Start Guide](./guide.md)
+* [Build Guide](./build.md)
 * [Build Video](https://youtu.be/6zRsx2ufwUU)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
