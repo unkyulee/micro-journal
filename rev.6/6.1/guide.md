@@ -8,4 +8,4 @@ The only difference is access to the battery holder. To reach it, you need to re
 
 Please refer to the Rev.6 user manual for all other instructions:
 
-[Rev.6 Quick Start Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-6-one-piece/quickstart.md)
+[Rev.6 Quick Start Guide](../6.0/guide.md)

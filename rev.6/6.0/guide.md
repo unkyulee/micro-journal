@@ -62,13 +62,13 @@ The one real difference is that it uses an ortholinear keyboard, meaning it has 
 
 ### Transfer or Back Up Your Writing
 
-#### Web Editor
+#### Drive Mode
 
-Use the **Web Editor** to open, edit, download, upload and delete the files on your Micro Journal from a web browser, over WiFi. No cable is needed.
+Use the **Drive Mode** to open, edit, download, upload and delete the files on your Micro Journal from a web browser, over WiFi. No cable is needed.
 
 1. Press `Esc` to open the menu.
-2. Select **Web Editor** or press `E`.
-3. Wait for the screen to show a web address, for example `http://192.168.1.48`. Open that address in a browser on a computer or phone connected to the same WiFi network. `http://microjournal.local` also works on most computers.
+2. Select **Drive Mode** or press `E`.
+3. Wait for the screen to show a web address. Open that address in a browser on a computer or phone connected to the same WiFi network. `http://microjournal.local` also works on most computers.
 4. Click a file to open it. Changes are saved automatically a few seconds after you stop typing. Click the arrow in the top-left corner to go back to the file list.
 5. To back up a file, click the download icon next to it. To add files such as GIFs or `.json` settings, click **Upload**.
 6. When you are done, press `Esc` on the Micro Journal. It returns to the editor, or restarts if you changed a settings file.
@@ -80,7 +80,7 @@ If none of your saved WiFi networks is nearby, the Micro Journal creates its own
 
 To use your home WiFi instead, add it under **WiFi** in the menu.
 
-Keep Web Editor mode open on the Micro Journal while you work in the browser. Press `Esc` to close it when you are done, because WiFi uses extra battery.
+Keep Drive Mode mode open on the Micro Journal while you work in the browser. Press `Esc` to close it when you are done, because WiFi uses extra battery.
 
 * Note: Rev.6.x devices running firmware version 2.x or later do not use the SD card to store text files. Your files are saved directly to the ESP32's internal flash memory. Please make sure to keep the battery sufficiently charged. A sudden loss of power, particularly when the battery is completely depleted, may cause file system corruption and could result in the loss of saved files. 
 
@@ -96,13 +96,27 @@ After Google Drive Sync is configured, select **Sync** from the menu to upload t
 
 ### Firmware Update
 
-1. Download latest firmware from [GitHub Releases](https://github.com/unkyulee/micro-journal/releases).  
-2. Copy `firmware_rev_6.bin` to SD card.  
-3. Reboot device; it will auto-update.  
+How you update depends on the firmware version your Micro Journal is running now.
 
-⚠️ If you are moving from v.1.x to v.2.x then you must perform a full web flash step once.
+#### Regular Update (firmware 2.x)
+
+Upload the firmware file through Drive Mode. Your files and settings are kept.
+
+1. Download the latest `firmware_rev_6.bin` from [GitHub Releases](https://github.com/unkyulee/micro-journal/releases).
+2. Press `Esc` to open the menu, then select **Drive Mode** or press `E`.
+3. Open the address shown on the screen in a web browser. See [Drive Mode](#drive-mode).
+4. Click **Upload** and choose `firmware_rev_6.bin`.
+5. Press `Esc` on the Micro Journal to leave Drive Mode, then reboot the device. It updates automatically when it starts.
+
+#### Full Web Flash (coming from firmware 1.x)
+
+⚠️ If your Micro Journal runs firmware 1.x, a regular update will not work. You must perform a full web flash once to move to 2.x. Follow the instructions on the 2.0.0 release page:
 
 https://github.com/unkyulee/micro-journal/releases/tag/2.0.0
+
+A web flash erases everything on the device, and from 2.x the text files are stored in the internal flash memory instead of the SD card. Copy your text files and `config.json` from the SD card to your computer before you start.
+
+After this one-time web flash, later updates use the regular update above.
 
 
 
@@ -122,6 +136,16 @@ H를 눌러 한글 입력 모드를 활성화 시키면 설정 완료 입니다.
 
 한영 전환은 LOWER (FN) + 스페이스 입니다. 
 
+
+### Trouble-shooting
+
+* **The device does not power on.** Check that a charged battery is installed the right way round.
+* **The battery does not charge and no light shows.** You are probably using a PD charger or a USB-C to USB-C cable. Use a non-PD charger with a USB-A to USB-C cable.
+* **Both charger lights are on.** The battery is not installed correctly. Check that it is seated firmly and the right way round.
+* **The battery was inserted the wrong way round.** The charger board is most likely broken and has to be replaced.
+* Micro Journal components are common; replacements are available.
+* Refer to the [Build Guide](./build.md) for wiring and troubleshooting.
+* Report bugs: [GitHub Issues](https://github.com/unkyulee/micro-journal/issues)
 
 
 
