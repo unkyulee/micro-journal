@@ -22,7 +22,7 @@ If you're curious about the technical journey — including the exploration of U
 ## Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../../rev.4/4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
 
 

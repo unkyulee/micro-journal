@@ -16,7 +16,7 @@
 
 * [Design Files](./STL)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../../rev.4/4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 
 
 ### Tips and Tricks

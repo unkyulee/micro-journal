@@ -186,7 +186,7 @@ Yes, it's spaghetti. Delicious, functional spaghetti.
 ## Step 7. Google Drive Sync
 
 1. Copy the Google Apps Script from:
-   `/micro-journal-rev-4-esp32/install/google/sync.js`
+   [shared/GoogleDriveSync/sync.js](../../shared/GoogleDriveSync/sync.js)
 2. In Google Drive, create a new Apps Script, paste the code, and deploy it as a **web app**.
 3. Copy the web app URL.
 4. Add it to `config.json` on your SD card (see next step).

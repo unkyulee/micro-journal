@@ -170,7 +170,7 @@ Insert the SD card into the writerDeck after formatting.
 
 This allows your writerDeck to back up files through Wi-Fi.
 
-Please, follow the [Google Drive Sync Setup Guide](../../rev.6/6.0/googledrive.md) to complete this step.
+Please, follow the [Google Drive Sync Setup Guide](../../shared/GoogleDriveSync/readme.md) to complete this step.
 
 
 ---

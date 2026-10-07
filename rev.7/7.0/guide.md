@@ -103,7 +103,7 @@ Before using the **Micro Journal Rev.7**, you need a battery.
 
 Please, refer to the following guide to complete the setup to enable Google Drive Sync.
 
-[Google Drive Sync Setup Guide](../../rev.6/6.0/googledrive.md)
+[Google Drive Sync Setup Guide](../../shared/GoogleDriveSync/readme.md)
 
 ---
 

@@ -16,7 +16,7 @@ This is a distraction-free writing device with a paper-like display and a keyboa
 ## Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../../rev.4/4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
 * [Keyboard PCB](./PCB)
 * [Rev.7 QMK-Vial Source Code](./keyboard/)

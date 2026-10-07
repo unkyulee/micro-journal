@@ -21,7 +21,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 ### Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../../rev.4/4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
 * [Keyboard PCB](./PCB)
 

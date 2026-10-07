@@ -22,6 +22,8 @@ This guide was developed using Windows. The same features should work on Linux a
     - [BLE Send](#ble-send)
     - [Google Drive Sync](#google-drive-sync)
   - [5. Update the Firmware](#5-update-the-firmware)
+    - [Regular Update (from version 2.1 onwards)](#regular-update-from-version-21-onwards)
+    - [Full Web Flash (coming from version 1.x)](#full-web-flash-coming-from-version-1x)
 - [Part II: Detailed User Guide](#part-ii-detailed-user-guide)
   - [Introducing the Micro Journal Rev.8](#introducing-the-micro-journal-rev8)
   - [Using the Micro Journal Rev.8](#using-the-micro-journal-rev8)
@@ -119,14 +121,23 @@ The Micro Journal provides ten file spaces, numbered 0 through 9.
 
 ### Drive Mode
 
-1. Connect the lower USB-C port on the display side to your computer.
-2. Press `Esc` to open the menu.
-3. Select **Drive Mode** or press `U`.
-4. Open the Micro Journal drive on your computer and copy the `.txt` files.
-5. Eject the drive from your computer, or press `Esc` on the Micro Journal and wait for the editor to return.
-6. Disconnect the USB cable.
+Use the **Drive Mode** to open, edit, download, upload and delete the files on your Micro Journal from a web browser, over WiFi. No cable is needed.
 
-Do not disconnect the cable while files are being copied. Make sure to back up your files when editing files directly at Drive Mode. 
+1. Press `Esc` to open the menu.
+2. Select **Drive Mode** or press `E`.
+3. Wait for the screen to show a web address, for example `http://192.168.1.48`. Open that address in a browser on a computer or phone connected to the same WiFi network. `http://microjournal.local` also works on most computers.
+4. Click a file to open it. Changes are saved automatically a few seconds after you stop typing. Click the arrow in the top-left corner to go back to the file list.
+5. To back up a file, click the download icon next to it. To add files such as GIFs or `.json` settings, click **Upload**.
+6. When you are done, press `Esc` on the Micro Journal. It returns to the editor, or restarts if you changed a settings file.
+
+If none of your saved WiFi networks is nearby, the Micro Journal creates its own WiFi network, and the screen tells you how to connect:
+
+1. On your computer or phone, join the WiFi network `MicroJournal` with the password `microjournal`.
+2. Open `http://192.168.4.1` in your browser.
+
+To use your home WiFi instead, add it under **WiFi** in the menu.
+
+Keep Drive Mode mode open on the Micro Journal while you work in the browser. Press `Esc` to close it when you are done, because WiFi uses extra battery.
 
 ### BLE Send
 
@@ -134,21 +145,42 @@ Pair the Micro Journal with a computer or phone using **BLE Keyboard** in the me
 
 ### Google Drive Sync
 
-After Google Drive Sync is configured, select **Sync** from the menu to upload the current file. See [How to Set Up Google Drive Sync](../../rev.6/6.0/googledrive.md).
+After Google Drive Sync is configured, select **Sync** from the menu to upload the current file. See [How to Set Up Google Drive Sync](../../shared/GoogleDriveSync/readme.md).
 
 ## 5. Update the Firmware
 
-> **Important:** A web flash erases every document and configuration file stored on the Micro Journal. Back up the entire drive before continuing.
+How you update depends on the firmware version your Micro Journal is running now:
 
-1. Enter Drive Mode and copy all files to your computer.
-2. Download the latest Rev.8 firmware from the [Micro Journal releases page](https://github.com/unkyulee/micro-journal/releases).
+- **Version 2.1 or later:** do a regular update. Your files and settings are kept.
+- **Version 1.x:** do a full web flash once to move to version 2.x. This erases everything on the device.
+
+### Regular Update (from version 2.1 onwards)
+
+1. Download the latest `firmware_rev_8.bin` from the [Micro Journal releases page](https://github.com/unkyulee/micro-journal/releases).
+2. On the Micro Journal, press `Esc` to open the menu and select **Drive Mode**.
+3. Open the address shown on the screen in a web browser. See [Drive Mode](#drive-mode).
+4. Click **Upload** and choose the firmware file.
+5. Press `Esc` on the Micro Journal to leave Drive Mode, then restart the device. It installs the new firmware when it starts.
+
+### Full Web Flash (coming from version 1.x)
+
+If your Micro Journal runs firmware version 1.x, a regular update will not work. You must fully flash the device once to migrate to version 2.x. Follow the web flash instructions on the [version 2.0.0 release page](https://github.com/unkyulee/micro-journal/releases/tag/2.0.0).
+
+> **Important:** A web flash WILL wipe out all data on the Micro Journal, including every text file and configuration file. Back up all of your text files and configurations to your computer before you start.
+
+1. Back up all text files and configuration files to your computer.
+2. Download the Rev.8 web flash file from the [version 2.0.0 release page](https://github.com/unkyulee/micro-journal/releases/tag/2.0.0).
 3. Open the [ESP Boards web flash tool](https://www.espboards.dev/tools/program/).
 4. Connect the upper USB-C port on the display side to your computer.
 5. Click **Connect** and choose the Micro Journal.
-6. Upload `firmware_rev_8.bin`.
+6. Upload `webflash_rev.8_type_2.bin`.
 7. Set the flash address to `0x0`.
 8. Click **Program** and wait until flashing is complete.
 9. Restore your documents and configuration files through Drive Mode.
+
+If the display shows nothing after flashing `webflash_rev.8_type_2.bin`, repeat steps 3 to 8 with `webflash_rev.8_type_1.bin` instead.
+
+After this one-time flash, later updates use the regular update above.
 
 You now know everything necessary to begin writing. The rest of this guide explains each feature and the optional customization tools in more detail.
 

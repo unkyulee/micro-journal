@@ -17,7 +17,7 @@ This is an enhanced version of [previous rev.5](../5.0/). With foldable design t
 ### Resources
 
 * [Design Files](./STL)
-* [Micro Journal ESP32 S3 Firmare Source Code](../../rev.4/4.0/)
+* [Micro Journal ESP32 S3 Firmare Source Code](https://github.com/unkyulee/micro-journal-mcu)
 
 
 ### Community

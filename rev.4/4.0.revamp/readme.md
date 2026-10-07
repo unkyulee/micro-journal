@@ -26,7 +26,7 @@ Rev.4 was designed as a bridge between everyday work and spontaneous writing. At
 ### Resources
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
 * [Keyboard PCB](../../rev.7/7.0/PCB/)  
 

@@ -79,7 +79,7 @@ Micro Journal Rev.5 perfect for capturing sudden bursts of inspiration or quickl
 * [Build Video](https://youtu.be/xDClC_4uQIw)
 * [Quick Start Guide](./guide.md)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../../rev.4/4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
 
 

@@ -124,7 +124,7 @@ Please, watch the use case video in order to understand the features and most im
 * [Build Video](https://youtu.be/6zRsx2ufwUU)
 * [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](../../rev.4/4.0/)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
 * [Keyboard PCB](./PCB)
 

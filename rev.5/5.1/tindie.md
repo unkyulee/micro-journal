@@ -81,7 +81,7 @@ Micro Journal Rev.5.1 perfect for capturing sudden bursts of inspiration or quic
 * [Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-5.1/build.md)
 
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-esp32)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 
 * [3D Design Files](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-5.1/STL)
 

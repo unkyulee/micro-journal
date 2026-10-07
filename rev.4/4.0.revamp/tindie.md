@@ -83,7 +83,7 @@ Here are color options that are already set by previous users
 * [Build Guide](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-4-revamp/build-guide.md)
 * [User Manual for the Micro Journal written by Hook](https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-4-revamp/user-manual.md)
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
-* [Firmware Source Code](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-esp32)
+* [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-4-revamp/STL)
 * [Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-7-e-ink/PCB)  
 

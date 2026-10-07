@@ -44,7 +44,7 @@ A new tab opens with the script editor.
 
 ### 3. Paste the sync script
 
-1. Open the sync script: [sync.js](https://raw.githubusercontent.com/unkyulee/micro-journal/main/shared/GoogleDriveSync/sync.js). The same file is stored next to this guide as [sync.js](./sync.js).
+1. Open the sync script: [sync.js](https://raw.githubusercontent.com/unkyulee/micro-journal/main/shared/GoogleDriveSync/sync.js).
 2. Select all of the text on that page and copy it.
 3. In the script editor, delete everything that is already there and paste the copied script.
 4. Click the project name at the top of the page, usually **Untitled project**, and rename it to `uJournal Sync`.
@@ -106,11 +106,8 @@ The Micro Journal reads the URL from a settings file named `config.json`.
 
 How you reach the file depends on your revision and firmware. Use the method described in the guide for your revision:
 
-- **Web Editor:** open **Web Editor** from the menu, then open `config.json` in your browser.
-- **Drive Mode:** open **Drive Mode** from the menu, connect the USB cable, then open `config.json` on the drive that appears on your computer.
-- **SD card:** switch off the Micro Journal, put the SD card in your computer, then open `config.json` on the card.
+- **Drive Mode:** open **Drive Mode** from the menu, then open `config.json` in your browser.
 
-Open the file with a plain text editor such as Notepad or TextEdit, not a word processor. If the file does not exist, create it.
 
 ### 2. Add the sync URL
 
@@ -120,15 +117,6 @@ If the file already has content, add the `sync` section next to the existing sec
 
 ```json
 {
-  "network": {
-    "type": "wifi",
-    "access_points": [
-      {
-        "ssid": "YOUR_WIFI_NAME",
-        "password": "YOUR_WIFI_PASSWORD"
-      }
-    ]
-  },
   "sync": {
     "url": "PASTE_YOUR_WEB_APP_URL_HERE"
   }
@@ -152,10 +140,11 @@ Check that every opening `{` has a closing `}`, that the URL is inside double qu
 ### 3. Save and restart
 
 1. Save the file.
-2. Close the connection the way you opened it: press `Esc` to leave Web Editor or Drive Mode (eject the drive on your computer first), or eject the SD card and put it back in the Micro Journal.
-3. Switch the Micro Journal off and on again so that it reads the new settings.
+2. Switch the Micro Journal off and on again so that it reads the new settings.
 
 ## Part 3. Run a Sync
+
+WiFi must be set up on the Micro Journal before you can sync. The **Sync** option does not appear in the menu until a WiFi network has been saved. If you do not see it, set up WiFi first, as described in the guide for your revision.
 
 1. Open the file you want to upload.
 2. Press `Esc` to open the menu.

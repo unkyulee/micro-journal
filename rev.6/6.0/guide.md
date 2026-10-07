@@ -90,7 +90,7 @@ Pair the Micro Journal with a computer or phone using **BLE Keyboard** in the me
 
 #### Google Drive Sync
 
-After Google Drive Sync is configured, select **Sync** from the menu to upload the current file. See [How to Set Up Google Drive Sync](./googledrive.md).
+After Google Drive Sync is configured, select **Sync** from the menu to upload the current file. See [How to Set Up Google Drive Sync](../../shared/GoogleDriveSync/readme.md).
 
 
 
