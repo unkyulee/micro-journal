@@ -25,7 +25,12 @@ For me, this build feels like a natural conclusion to the Micro Journal journey:
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
-* [Micro Journal Rev.8 Discussion Forum](https://www.flickr.com/groups/alphasmart/discuss/72157721925271377/72157721925345415/)
+* [Micro Journal Rev.8 Discussion Forum](https://www.flickr.com/groups/alphasmart/discuss/72157721925271377/)
+
+
+### Reviews
+
+* [Micro Journal Rev. 8 - Initial Review](https://www.reddit.com/r/writerDeck/comments/1w9fx0j/micro_journal_rev_8_initial_review/)
 
 
 ### Online Shop
