@@ -278,7 +278,10 @@ The power supply uses the LiPo charger and step up controller, the 18650 battery
 
 Wiring diagram: TBD
 
-Assembly steps: TBD
+You want to have the switch installed in the enclosure before soldering the wires. 
+Switch will be cutting of one of Vout wires, and after all the wiring is completed. You should have long + and long - wires coming out to be soldered to the ESP32.
+
+<img src="./images/007.jpeg" />
 
 ---
 
