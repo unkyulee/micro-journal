@@ -24,7 +24,7 @@ Here is what each revision represents:
 
 * **[Rev.4](/rev.4)** – A mechanical keyboard that can instantly transform from an everyday keyboard into a standalone writing device.
 
-* **[Rev.5.1](/rev.5)** – A compact ESP32 writing screen designed to work with your favorite external keyboard.
+* **[Rev.5](/rev.5)** – A compact ESP32 writing screen designed to work with your favorite external keyboard.
 
 * **[Rev.6](/rev.6)** – An ESP32-based all-in-one writing device combining the display and keyboard in a portable form.
 
