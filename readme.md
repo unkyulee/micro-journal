@@ -47,24 +47,43 @@ Here is what each revision represents:
 
 ## Timeline
 
-| Date       | Revision                                                                                         | Preview                                                                                                    |
-| ---------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| 2026-05-23 | **[Rev.8 Melodica](/rev.8/8.0/readme.md)**                                                       | <img src="./rev.8/8.0/images/001.png" width="200">                                                         |
-| 2026-05-23 | **[Rev.5.1 A Personal Journey](/rev.5/5.1/readme.md)**                                           | <img src="./rev.5/5.1/images/001.png" width="200">                                                         |
-| 2026-03-09 | **[Rev.6.1 Mini](/rev.6/6.1/readme.md)**                                                         | <img src="./rev.6/6.1/images/device.png" width="200">                                                      |
-| 2026-03-09 | **[Rev.3 Nadia](/rev.3/3.0.revamp/readme.md)**                                                   | <img src="./rev.3/3.0.revamp/images/001.png" width="200">                                                  |
-| 2025-12-02 | **[Cardputer](/extra/cardputer/readme.md)**                                                      | <img src="./extra/cardputer/images/001.png" width="200">                                                   |
-| 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** | <img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" width="200"> |
-| 2025-11-11 | **[Rev.2.1](/rev.2/2.1/readme.md)**                                                              | <img src="./rev.2/2.1/images/002.jpg" width="200">                                                         |
-| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/extra/neo2/readme.md)**                                  | <img src="./extra/neo2/images/001.jpg" width="200">                                                        |
-| 2025-07-26 | **[Rev.4 Revamp](/rev.4/4.0.revamp/readme.md)**                                                  | <img src="./rev.4/4.0.revamp/images/014.jpg" width="200">                                                  |
-| 2025-01-30 | **[Rev.7](/rev.7/7.0/readme.md)**                                                                | <img src="./rev.7/7.0/images/home.jpg" width="200">                                                        |
-| 2024-09-17 | **[Rev.2 Revamp](/rev.2/2.0.revamp/readme.md)**                                                  | <img src="./rev.2/2.0.revamp/images/home_001.jpg" width="200">                                             |
-| 2024-06-13 | **[Rev.6](/rev.6/6.0/readme.md)**                                                                | <img src="./rev.6/6.0/images/001.png" width="200">                                                         |
-| 2024-04-18 | **[Rev.5](/rev.5/5.0/readme.md)**                                                                | <img src="./rev.5/5.0/images/001.jpg" width="200">                                                         |
-| 2024-03-15 | **[Rev.4](/rev.4/4.0/readme.md)**                                                                | <img src="./rev.4/4.0/images/001.webp" width="200">                                                           |
-| 2024-03-15 | **[Rev.3](/rev.3/3.0/readme.md)**                                                                | <img src="./rev.3/3.0/images/009.jpg" width="200">                                                         |
-| 2024-03-04 | **[Rev.2](/rev.2/2.0/readme.md)**                                                                | <img src="./rev.2/2.0/images/rev1.jpg" width="200">                                                        |
+<p align="center">
+  <a href="/rev.8/8.0/readme.md"><img src="./rev.8/8.0/images/001.png" alt="Rev.8 Melodica" title="Rev.8 Melodica (2026-05-23)" height="110"></a>
+  <a href="/rev.5/5.1/readme.md"><img src="./rev.5/5.1/images/001.png" alt="Rev.5.1 A Personal Journey" title="Rev.5.1 A Personal Journey (2026-05-23)" height="110"></a>
+  <a href="/rev.6/6.1/readme.md"><img src="./rev.6/6.1/images/device.png" alt="Rev.6.1 Mini" title="Rev.6.1 Mini (2026-03-09)" height="110"></a>
+  <a href="/rev.3/3.0.revamp/readme.md"><img src="./rev.3/3.0.revamp/images/001.png" alt="Rev.3 Nadia" title="Rev.3 Nadia (2026-03-09)" height="110"></a>
+  <a href="/extra/cardputer/readme.md"><img src="./extra/cardputer/images/001.png" alt="Cardputer" title="Cardputer (2025-12-02)" height="110"></a>
+  <a href="https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md"><img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" alt="Micro Journal PC" title="Micro Journal PC (2025-11-17)" height="110"></a>
+  <a href="/rev.2/2.1/readme.md"><img src="./rev.2/2.1/images/002.jpg" alt="Rev.2.1" title="Rev.2.1 (2025-11-11)" height="110"></a>
+  <a href="/extra/neo2/readme.md"><img src="./extra/neo2/images/001.jpg" alt="AlphaSmart Neo2 Desktop TypeWriter" title="AlphaSmart Neo2 Desktop TypeWriter (2025-09-26)" height="110"></a>
+  <a href="/rev.4/4.0.revamp/readme.md"><img src="./rev.4/4.0.revamp/images/014.jpg" alt="Rev.4 Revamp" title="Rev.4 Revamp (2025-07-26)" height="110"></a>
+  <a href="/rev.7/7.0/readme.md"><img src="./rev.7/7.0/images/home.jpg" alt="Rev.7" title="Rev.7 (2025-01-30)" height="110"></a>
+  <a href="/rev.2/2.0.revamp/readme.md"><img src="./rev.2/2.0.revamp/images/home_001.jpg" alt="Rev.2 Revamp" title="Rev.2 Revamp (2024-09-17)" height="110"></a>
+  <a href="/rev.6/6.0/readme.md"><img src="./rev.6/6.0/images/001.png" alt="Rev.6" title="Rev.6 (2024-06-13)" height="110"></a>
+  <a href="/rev.5/5.0/readme.md"><img src="./rev.5/5.0/images/001.jpg" alt="Rev.5" title="Rev.5 (2024-04-18)" height="110"></a>
+  <a href="/rev.4/4.0/readme.md"><img src="./rev.4/4.0/images/001.webp" alt="Rev.4" title="Rev.4 (2024-03-15)" height="110"></a>
+  <a href="/rev.3/3.0/readme.md"><img src="./rev.3/3.0/images/009.jpg" alt="Rev.3" title="Rev.3 (2024-03-15)" height="110"></a>
+  <a href="/rev.2/2.0/readme.md"><img src="./rev.2/2.0/images/rev1.jpg" alt="Rev.2" title="Rev.2 (2024-03-04)" height="110"></a>
+</p>
+
+| Date       | Revision                                                                                         |
+| ---------- | ------------------------------------------------------------------------------------------------ |
+| 2026-05-23 | **[Rev.8 Melodica](/rev.8/8.0/readme.md)**                                                       |
+| 2026-05-23 | **[Rev.5.1 A Personal Journey](/rev.5/5.1/readme.md)**                                           |
+| 2026-03-09 | **[Rev.6.1 Mini](/rev.6/6.1/readme.md)**                                                         |
+| 2026-03-09 | **[Rev.3 Nadia](/rev.3/3.0.revamp/readme.md)**                                                   |
+| 2025-12-02 | **[Cardputer](/extra/cardputer/readme.md)**                                                      |
+| 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** |
+| 2025-11-11 | **[Rev.2.1](/rev.2/2.1/readme.md)**                                                              |
+| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/extra/neo2/readme.md)**                                  |
+| 2025-07-26 | **[Rev.4 Revamp](/rev.4/4.0.revamp/readme.md)**                                                  |
+| 2025-01-30 | **[Rev.7](/rev.7/7.0/readme.md)**                                                                |
+| 2024-09-17 | **[Rev.2 Revamp](/rev.2/2.0.revamp/readme.md)**                                                  |
+| 2024-06-13 | **[Rev.6](/rev.6/6.0/readme.md)**                                                                |
+| 2024-04-18 | **[Rev.5](/rev.5/5.0/readme.md)**                                                                |
+| 2024-03-15 | **[Rev.4](/rev.4/4.0/readme.md)**                                                                |
+| 2024-03-15 | **[Rev.3](/rev.3/3.0/readme.md)**                                                                |
+| 2024-03-04 | **[Rev.2](/rev.2/2.0/readme.md)**                                                                |
 
 
 
