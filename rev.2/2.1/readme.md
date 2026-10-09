@@ -17,7 +17,7 @@ Micro Journal Rev.2.1: cyberDeck blends the tactile joy of mechanical typing wit
 ### Resources
 
 * [Design Files](./STL)
-* [QMK Vial Keyboard Firmware Source](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2.1/keyboard)
+* [QMK Vial Keyboard Firmware Source](./keyboard/)
 * [Linux Image for the Micro Journal Rev.2.1](https://github.com/unkyulee/micro-journal-linux)
 
 ### Community
