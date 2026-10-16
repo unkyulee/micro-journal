@@ -60,6 +60,42 @@ But Micro Journal is about capturing flowing ideas. Not perfect texts. It's abou
 If no one else will see it, do you still need to be correct?
 
 
+### Edit: 2026.10.16 - Rediscovering an Inspiration: Orchid ORC-1
+
+Today, I rediscovered one of the major visual inspirations behind Micro Journal Rev.4.
+
+[Orchid ORC-1 by Telepathic Instruments](https://int.telepathicinstruments.com/products/orchid-orc-1)
+
+When I was designing Rev.4, I was wandering around Pinterest, looking for something that might spark an idea. Then I came across an image of this beautiful little instrument.
+
+At the time, I thought it was just a design mockup. One of those imaginary products someone had beautifully rendered, but never actually built.
+
+I liked it. Apparently, quite a lot.
+
+Because looking at it now, I realize just how much of its design found its way into Rev.4. I almost copied it without even knowing what it really was.
+
+Today, while searching for portable musical instruments, I came across that same image again. Only this time, I discovered something surprising.
+
+**It's a real product!**
+
+What a strange feeling. Encountering something for the second time, only to realize how much it had already influenced something I made.
+
+I went back to read my Rev.4 design story, wondering if I had mentioned it. Surprisingly, I hadn't.
+
+I had written about other inspirations, but somehow this one was missing.
+
+Perhaps because I believed it was just a mockup, I never gave much thought to where it came from. Or perhaps I simply didn't realize how deeply that image had settled into my imagination.
+
+Sometimes I consciously borrow ideas, knowing exactly what we are looking at. Other times, an image stays somewhere in my minds, and only much later I do recognize how much of it has found its way into my work.
+
+I don't want to rewrite the original story with something I only understand now. The thoughts and doubts I wrote back then were genuine. But I do want to acknowledge that the Orchid ORC-1 was a major visual inspiration behind Micro Journal Rev.4, and I failed to give it the credit it deserved.
+
+So here it is, a little late, but finally part of the story.
+
+Un Kyu Lee
+
+
+
 ---
 
 ## Evolution of the Idea
