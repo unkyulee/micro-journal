@@ -2,6 +2,8 @@
 
 Build video: [https://youtu.be/kK5mviicKP4](https://youtu.be/kK5mviicKP4)
 
+Prefer not to source the parts yourself? You can order the DIY Kit, or an assembled keyboard, from the [Tindie store](https://www.tindie.com/stores/unkyulee/).
+
 Rev.3 Nadia is a 48-key mechanical keyboard that sits next to a phone or tablet. A Raspberry Pi Pico inside the keyboard makes it appear as a standard USB keyboard on your PC or phone.
 
 ## Table of Contents
