@@ -11,16 +11,16 @@ The phone is a common device these days, and it is clearly capable of being a de
 
 ### Documents 
 
-* [Behind Story] TBD
 * [Introduction Video](https://youtu.be/GcJ9Ggf5daw)
 * [Quick Start Guide](./guide.md)
-* [Build Guide] TBD
+* [Build Guide](./build.md)
 * [Various Colorway](https://www.youtube.com/playlist?list=PLrUXYLEnAaNR1lVuNkHQ0WrtUofGpW3S8)
+
 
 ### Resources
 
 * [Design Files](./STL)
-* [QMK Vial Keyboard Firmware Source](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-3-revamp/QMK)
+* [QMK Vial Keyboard Firmware Source](./keyboard)
 
 
 ## Community
