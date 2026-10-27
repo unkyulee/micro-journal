@@ -126,7 +126,7 @@ Please, watch the use case video in order to understand the features and most im
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 * [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
-* [Keyboard PCB](./PCB)
+* [Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48)
 
 
 ### Tips and Tricks

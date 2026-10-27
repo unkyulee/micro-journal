@@ -23,7 +23,7 @@ I'm having some feelings that might be akin to love. I'm trying to deny this aff
 * [Firmware Release Page](https://github.com/unkyulee/micro-journal/releases)
 * [Firmware Source Code](https://github.com/unkyulee/micro-journal-mcu)
 * [Design Files](./STL)
-* [Keyboard PCB](./PCB)
+* [Keyboard PCB](../../shared/keyboard-48)
 
 ### Hook's Review
 

@@ -23,7 +23,7 @@ Rev.2. is a small computer. Process of the building rev.2. is very similar to bu
 
 ### A. Keyboard PCB
 
-This build utilized how swappable mechanical keyboard. Design files for the keyboard is in [this github repository](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB). You can use, PCB manufacturing services to get the PCB printed. Should be cheaper to buy from [elecrow store](https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html) when you need just one or two PCBs.
+This build utilized how swappable mechanical keyboard. Design files for the keyboard is in [this github repository](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48). You can use, PCB manufacturing services to get the PCB printed. Should be cheaper to buy from [elecrow store](https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html) when you need just one or two PCBs.
 
 ### B. Keyboard Controller
 
@@ -100,7 +100,7 @@ Once the prints are done. Remove the support materials from the print.
 
 # Keyboard PCB
 
-[Gerber File](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB) for the Keyboard PCB are available in the github.
+[Gerber File](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48) for the Keyboard PCB are available in the github.
 
 You can print and order the PCB using the PCB manufacturing services. Typically I use JLCPCB or PCBWay for the order. They will ask for minimum quantify of 5 PCBs. So you will have extra PCB. These PCBs can be reused for other projects that needs mini mechanical keyboard, so, it's not too bad to have some extra laying around.
 

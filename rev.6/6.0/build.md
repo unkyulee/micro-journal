@@ -53,7 +53,7 @@ Credit to: Jay is an owl
 
 # Keyboard PCB
 
-[Gerber File](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB) for the Keyboard PCB are available in the github.
+[Gerber File](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48) for the Keyboard PCB are available in the github.
 
 You can print and order the PCB using the PCB manufacturing services. Typically I use JLCPCB or PCBWay for the order. They will ask for minimum quantify of 5 PCBs. So you will have extra PCB. These PCBs can be reused for other projects that needs mini mechanical keyboard, so, it's not too bad to have some extra laying around.
 
