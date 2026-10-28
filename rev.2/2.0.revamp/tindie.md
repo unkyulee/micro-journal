@@ -1,3 +1,18 @@
+# **No More Assembly Services for Micro Journal Rev.2**
+
+The response to Micro Journal Rev.2 has been incredibly warm and overwhelming. I'm deeply grateful for all the love and support. As I move forward, it's time to officially close the assembly service for Rev.2 and free up my time to focus on new builds.
+
+A refined and updated version may arrive in the future. So if you're interested, please keep an eye on the shop or follow my YouTube channel for updates:
+
+* [https://www.youtube.com/@unkyulee](https://www.youtube.com/@unkyulee)
+
+The full build guide and bill of materials remain available on GitHub for anyone who wants to build their own:
+
+* [https://github.com/unkyulee/micro-journal](https://github.com/unkyulee/micro-journal)
+
+Thank you again for supporting this project and helping it grow.
+
+
 # Micro Journal Rev.2 Revamp: Mother of Twins
 
 Introducing the Distraction-Free Writing Device. A modern solution with a nostalgic twist, designed specifically for writers who crave focus and mobility. Inspired by the classic aesthetics of an old typewriter, this foldable device is a perfect blend of vintage charm and contemporary functionality. It features a compact, mini keyboard that allows you to write anywhere, anytime, without the constant buzz of notifications. 
@@ -50,6 +65,7 @@ A mother of energetic twin requested a foldable design to provide a crucial firs
   * Reduced finger fatigue during long typing sessions thanks to smooth travel.
 
 Here is a video comparing two different types of switches
+
 * [Silent Switch VS Clicky Switch Comparison (VIDEO)](https://youtu.be/9zu-tkawMV0)
 
 
@@ -59,27 +75,7 @@ You can request for custom colors. Please, contact the shop owner as soon as you
 
 Here are color options that are already set by previous users
 
-* [Retro: Beige Black Red](https://youtu.be/IFmGwKtGXtQ)
-* [Modern: Gray Orange](https://youtu.be/r53IbXQMz4E)
-* [Mother of Twins: Olive Green and Purple](https://youtu.be/KpQcjYtWgOk)
-* [Jurassic Park: Beige Green Red](https://youtu.be/W0N7lxFQ1l4)
-* [Olympia: Beige Black](https://youtu.be/RjJKwGWUi3o)
-* [Enchanted Meadow - Purple Mint Green](https://www.youtube.com/watch?v=1M8Vz6m5rXE)
-* [JiLeeSoo - Lila White](https://youtu.be/Sf0cDMH2o4Q)
-* [Dusk till Dawn - Yellow Purple Hot Pink](https://youtu.be/3oEZIA83Vws)
-* [Bumblebee - Yellow Black](https://youtu.be/pcaBwJhOwO8)
-* [Chocolate Tree - Brown Dark Green Beige](https://youtu.be/EAkzi4vUobg)
-* [Velvet Twilight - Black Lilla](https://youtu.be/0KAv-nCfYmE)
-* [Bondi Blue - Blue White](https://youtu.be/MGO-BhI_k1g)
-* [Magic Cherry Blossom - Hot Pink](https://youtu.be/zGxD9CvYEOg)
-* [Pastel Nostalgia - Beige Purple Pink Mint](https://youtu.be/qF97Xay0Noo)
-* [Coffee - Beige Brown](https://youtu.be/LYmtEDaqcFI)
-* [Koi - Red White](https://youtu.be/qtpsomPbJo4)
-* [Smith Corona - Green Beige](https://youtu.be/krhAplnznPc)
-* [It - Yellow Blue Red](https://youtu.be/t4_4VaO8zO8)
-* [Severance - Dark Blue White](https://youtu.be/rzjEMWxr6mc)
-* [Cinnamoroll - Teal Green Pink](https://youtu.be/FfQAVXgDkhw)
-* [Navy - Navy Blue and Grey](https://youtu.be/gBb4imwFxi8)
+* [Micro Journal Rev.2 Color List](https://www.youtube.com/playlist?list=PLrUXYLEnAaNT0CIosMtjWOvH9Gst3Qet7)
 
 
 
@@ -118,6 +114,8 @@ Micro Journal is designed to optimize your writing process and maximize creativi
 
 ## Resources
 
+* Dimension 25x 6 x 16 cm, 1 kg
+
 ### Usage Video 
 
 Please, watch the use case video in order to understand the features and most importantly, limitation of the device. This version of micro journal is focused on drafting. Also, the e-ink display presents delays and can be limiting for certain groups of people. Please, check the video to get the idea of the features.
@@ -127,19 +125,23 @@ Please, watch the use case video in order to understand the features and most im
 
 ### Documents 
 
-* [Micro Journal Rev.2.ReVamp Design Story](./story.md)
-* [Quick Start Guide](./guide.md)
-* [Build Guide](./build.md)
-* [Hook's User Manual for the Micro Journal](http://www.thewritekeys.com:8080/)
+* [Quick Start Guide](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/quickstart.md)
+* [Build Guide](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/build-guide.md)
+* [Micro Journal Rev.2.ReVamp Design Story](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/story.md)
+
+
+### Hook's Review
+
+* [Hook's User Review of the Micro Journal](http://www.thewritekeys.com:8080/)
 
 
 ## Resources
 
 * [Micro Journal Linux Image Download](https://github.com/unkyulee/micro-journal-linux/releases)
-* [Raspberry Pi SD Card Setup How-To](./raspberrypi/readme.md)
-* [Design Files](./STL)
-* [Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48)
-* [Rev.2 QMK-Vial Source Code](../2.1/keyboard/)
+* [Raspberry Pi SD Card Setup How-To](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/raspberrypi/readme.md)
+* [Design Files](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/STL)
+* [Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB)
+* [Rev.2 QMK-Vial Source Code](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/keyboard/)
 
 
 ### Videos
@@ -151,8 +153,8 @@ Please, watch the use case video in order to understand the features and most im
 
 ### Community
 
-* [Un Kyu Lee's Timeline](https://www.yesbut.it/)
 * [Flickr - AlphaSmart - Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721921914961/)
+* [Reddit - writerDeck](https://www.reddit.com/r/writerDeck/)
 
 
 ### Press
@@ -177,5 +179,3 @@ In case if your unit needs a repair, I can have a look and fix it and ship it ba
 ### Disclaimer
 
 I want to be clear so there is no misunderstanding. I design these writer decks for myself in my own search for the perfect writing and journaling device. I design the devices, print them, purchase and assemble the electronics and write the software. I share these designs and the software and provide parts in a kit for those who want such a device as a DIY (Do It Yourself) project. I also assemble these devices if people want, in which case you are also paying for my time, but they are still DIY. If problems occur, solutions may involve your tinkering under the hood. I enjoy sharing my designs and delight in people finding them useful. But I am not a manufacturer, I am hand crafting devices. There is no warranty and although I will try to help out when people run into problems, you are not purchasing any obligation for customer support. I have a job and a family, I take vacations, I have no staff that mans the phones or responds to emails while I am away. If you are not comfortable with my limits, then you may want consider some other mass manufactured device. I will always try to help, but within reasonable limits.
-
-
