@@ -48,6 +48,7 @@ Here is what each revision represents:
 ## Timeline
 
 <p align="center">
+  <a href="/rev.2/2.1.mini/readme.md"><img src="./rev.2/2.1.mini/images/001.png" alt="Rev.2.1.mini Baby Shark" title="Rev.2.1.mini Baby Shark (2026-10-23)" height="110"></a>
   <a href="/rev.8/8.0/readme.md"><img src="./rev.8/8.0/images/001.png" alt="Rev.8 Melodica" title="Rev.8 Melodica (2026-05-23)" height="110"></a>
   <a href="/rev.5/5.1/readme.md"><img src="./rev.5/5.1/images/001.png" alt="Rev.5.1 A Personal Journey" title="Rev.5.1 A Personal Journey (2026-05-23)" height="110"></a>
   <a href="/rev.6/6.1/readme.md"><img src="./rev.6/6.1/images/device.png" alt="Rev.6.1 Mini" title="Rev.6.1 Mini (2026-03-09)" height="110"></a>
@@ -68,6 +69,7 @@ Here is what each revision represents:
 
 | Date       | Revision                                                                                         |
 | ---------- | ------------------------------------------------------------------------------------------------ |
+| 2026-10-23 | **[Rev.2.1.mini Baby Shark](/rev.2/2.1.mini/readme.md)**                                                       |
 | 2026-05-23 | **[Rev.8 Melodica](/rev.8/8.0/readme.md)**                                                       |
 | 2026-05-23 | **[Rev.5.1 A Personal Journey](/rev.5/5.1/readme.md)**                                           |
 | 2026-03-09 | **[Rev.6.1 Mini](/rev.6/6.1/readme.md)**                                                         |

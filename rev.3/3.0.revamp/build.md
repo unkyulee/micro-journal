@@ -131,11 +131,11 @@ Solder one wire from each leg to the matching hole of the PCB. The **right** enc
 
 Tips:
 
-* The push button works the same way whichever of its two legs goes to hole 1 or hole 2.
+* The push button works the same way whichever of its two legs goes to hole 4 or hole 5 (hole 31 or hole 32 for the left encoder).
 * In the picture, the second push button leg is also labeled GND. On this PCB it is **not** ground. It goes to the keyboard matrix like the other push button leg.
 * Use a different color wire for the GND leg, so it is easy to identify.
 * The rotation signals reach the Pico through holes 23 and 24 (left knob) and holes 25 and 26 (right knob).
-* If a knob turns in the wrong direction, swap its Out A and Out B wires (holes 3 and 5 for the right knob, or holes 30 and 32 for the left knob).
+* If a knob turns in the wrong direction, swap its Out A and Out B wires (holes 3 and 1 for the right knob, or holes 30 and 28 for the left knob).
 
 
 ## 5. Firmware

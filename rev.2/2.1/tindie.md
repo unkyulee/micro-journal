@@ -201,5 +201,4 @@ If you are considering an order from Korea, please register your email at the si
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
-* [Reddit – writerDeck](https://www.reddit.com/r/writerDeck/)
 * [Micro Journal Rev.2.1 Discussion Forum](https://www.flickr.com/groups/alphasmart/discuss/72157721923133428/)
