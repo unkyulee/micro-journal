@@ -69,15 +69,15 @@ Here is what each revision represents:
 
 | Date       | Revision                                                                                         |
 | ---------- | ------------------------------------------------------------------------------------------------ |
-| 2026-10-23 | **[Rev.2.1.mini Baby Shark](/rev.2/2.1.mini/readme.md)**                                                       |
-| 2026-05-23 | **[Rev.8 Melodica](/rev.8/8.0/readme.md)**                                                       |
-| 2026-05-23 | **[Rev.5.1 A Personal Journey](/rev.5/5.1/readme.md)**                                           |
-| 2026-03-09 | **[Rev.6.1 Mini](/rev.6/6.1/readme.md)**                                                         |
-| 2026-03-09 | **[Rev.3 Nadia](/rev.3/3.0.revamp/readme.md)**                                                   |
+| 2026-10-23 | **[Rev.2.1.mini](/rev.2/2.1.mini/readme.md)**                                                       |
+| 2026-06-16 | **[Rev.8](/rev.8/8.0/readme.md)**                                                       |
+| 2026-05-23 | **[Rev.5.1](/rev.5/5.1/readme.md)**                                           |
+| 2026-03-09 | **[Rev.6.1.mini](/rev.6/6.1/readme.md)**                                                         |
+| 2026-03-09 | **[Rev.3](/rev.3/3.0.revamp/readme.md)**                                                   |
 | 2025-12-02 | **[Cardputer](/extra/cardputer/readme.md)**                                                      |
 | 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** |
 | 2025-11-11 | **[Rev.2.1](/rev.2/2.1/readme.md)**                                                              |
-| 2025-09-26 | **[AlphaSmart Neo2 Desktop TypeWriter](/extra/neo2/readme.md)**                                  |
+| 2025-09-26 | **[AlphaSmart Neo2](/extra/neo2/readme.md)**                                  |
 | 2025-07-26 | **[Rev.4 Revamp](/rev.4/4.0.revamp/readme.md)**                                                  |
 | 2025-01-30 | **[Rev.7](/rev.7/7.0/readme.md)**                                                                |
 | 2024-09-17 | **[Rev.2 Revamp](/rev.2/2.0.revamp/readme.md)**                                                  |
