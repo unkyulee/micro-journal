@@ -34,24 +34,15 @@ Here is what each revision represents:
 
 
 
-## Community
-
-* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
-* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
-* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
-* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
-* [Hook's Web Site with Micro Journal Reviews](http://www.thewritekeys.com:8080/)
-
-
 
 
 ## Timeline
 
 <p align="center">
   <a href="/rev.2/2.1.mini/readme.md"><img src="./rev.2/2.1.mini/images/001.png" alt="Rev.2.1.mini Baby Shark" title="Rev.2.1.mini Baby Shark (2026-10-23)" height="110"></a>
-  <a href="/rev.8/8.0/readme.md"><img src="./rev.8/8.0/images/001.png" alt="Rev.8 Melodica" title="Rev.8 Melodica (2026-05-23)" height="110"></a>
+  <a href="/rev.8/8.0/readme.md"><img src="./rev.8/8.0/images/001.png" alt="Rev.8 Melodica" title="Rev.8 Melodica (2026-06-16)" height="110"></a>
   <a href="/rev.5/5.1/readme.md"><img src="./rev.5/5.1/images/001.png" alt="Rev.5.1 A Personal Journey" title="Rev.5.1 A Personal Journey (2026-05-23)" height="110"></a>
-  <a href="/rev.6/6.1/readme.md"><img src="./rev.6/6.1/images/device.png" alt="Rev.6.1 Mini" title="Rev.6.1 Mini (2026-03-09)" height="110"></a>
+  <a href="/rev.6/6.1/readme.md"><img src="./rev.6/6.1/images/device.png" alt="Rev.6.1 Mini" title="Rev.6.1 Mini (2026-03-21)" height="110"></a>
   <a href="/rev.3/3.0.revamp/readme.md"><img src="./rev.3/3.0.revamp/images/001.png" alt="Rev.3 Nadia" title="Rev.3 Nadia (2026-03-09)" height="110"></a>
   <a href="/extra/cardputer/readme.md"><img src="./extra/cardputer/images/001.png" alt="Cardputer" title="Cardputer (2025-12-02)" height="110"></a>
   <a href="https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md"><img src="https://github.com/unkyulee/micro-journal-linux/blob/main/images/002.webp?raw=true" alt="Micro Journal PC" title="Micro Journal PC (2025-11-17)" height="110"></a>
@@ -69,15 +60,15 @@ Here is what each revision represents:
 
 | Date       | Revision                                                                                         |
 | ---------- | ------------------------------------------------------------------------------------------------ |
-| 2026-10-23 | **[Rev.2.1.mini](/rev.2/2.1.mini/readme.md)**                                                       |
-| 2026-06-16 | **[Rev.8](/rev.8/8.0/readme.md)**                                                       |
-| 2026-05-23 | **[Rev.5.1](/rev.5/5.1/readme.md)**                                           |
+| 2026-10-23 | **[Rev.2.1.mini](/rev.2/2.1.mini/readme.md)**                                                    |
+| 2026-06-16 | **[Rev.8](/rev.8/8.0/readme.md)**                                                                |
+| 2026-05-23 | **[Rev.5.1](/rev.5/5.1/readme.md)**                                                              |
 | 2026-03-21 | **[Rev.6.1.mini](/rev.6/6.1/readme.md)**                                                         |
-| 2026-03-09 | **[Rev.3](/rev.3/3.0.revamp/readme.md)**                                                   |
+| 2026-03-09 | **[Rev.3](/rev.3/3.0.revamp/readme.md)**                                                         |
 | 2025-12-02 | **[Cardputer](/extra/cardputer/readme.md)**                                                      |
 | 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** |
 | 2025-11-11 | **[Rev.2.1](/rev.2/2.1/readme.md)**                                                              |
-| 2025-09-26 | **[AlphaSmart Neo2](/extra/neo2/readme.md)**                                  |
+| 2025-09-26 | **[AlphaSmart Neo2](/extra/neo2/readme.md)**                                                     |
 | 2025-07-26 | **[Rev.4 Revamp](/rev.4/4.0.revamp/readme.md)**                                                  |
 | 2025-01-30 | **[Rev.7](/rev.7/7.0/readme.md)**                                                                |
 | 2024-09-17 | **[Rev.2 Revamp](/rev.2/2.0.revamp/readme.md)**                                                  |
@@ -101,5 +92,14 @@ Your support helps me keep experimenting, documenting new revisions, and sharing
 
 
 
+## Community
 
-Un Kyu Lee
+Reddit is a place where I communicate latest news regarding micro journal. 
+* [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
+
+
+* [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
+* [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
+* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+* [Hook's Web Site with Micro Journal Reviews](http://www.thewritekeys.com:8080/)
+
