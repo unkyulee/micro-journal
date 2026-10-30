@@ -72,7 +72,7 @@ Here is what each revision represents:
 | 2026-10-23 | **[Rev.2.1.mini](/rev.2/2.1.mini/readme.md)**                                                       |
 | 2026-06-16 | **[Rev.8](/rev.8/8.0/readme.md)**                                                       |
 | 2026-05-23 | **[Rev.5.1](/rev.5/5.1/readme.md)**                                           |
-| 2026-03-09 | **[Rev.6.1.mini](/rev.6/6.1/readme.md)**                                                         |
+| 2026-03-21 | **[Rev.6.1.mini](/rev.6/6.1/readme.md)**                                                         |
 | 2026-03-09 | **[Rev.3](/rev.3/3.0.revamp/readme.md)**                                                   |
 | 2025-12-02 | **[Cardputer](/extra/cardputer/readme.md)**                                                      |
 | 2025-11-17 | **[Micro Journal PC](https://github.com/unkyulee/micro-journal-linux/blob/main/debian-live.md)** |
