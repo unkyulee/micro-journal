@@ -8,7 +8,7 @@ Micro Journal Rev.2.1: Baby Shark blends the tactile joy of mechanical typing wi
 ### Documents 
 
 * [Behind Story](./story.md)
-* [Introduction Video] TBD
+* [Introduction Video](https://youtu.be/Nw3Djnw7wN0)
 * [Quick Start Guide](./guide.md)
 * [Build Guide](./build.md)
 
