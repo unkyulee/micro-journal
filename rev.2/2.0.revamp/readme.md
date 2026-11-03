@@ -42,7 +42,8 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
-* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+* [Community about Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923581235/)
+
 
 ### Press
 
