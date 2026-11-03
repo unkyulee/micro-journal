@@ -3,6 +3,52 @@
 Build video: [https://youtu.be/kK5mviicKP4](https://youtu.be/kK5mviicKP4)
 
 
+## Bill of Materials
+
+The parts are the same as the [Micro Journal Rev.2.1](../2.1/build.md). The only difference is the keyboard PCB: the Rev.2.1.mini uses the 48 keys PCB instead of the 68 keys PCB.
+
+Most components are readily available from platforms such as Amazon or AliExpress. One component that may be slightly more difficult to source is the [48 keys keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html). You can purchase it directly from the supplier, even in small quantities. You can also order it from a PCB assembly service using the files in [shared/keyboard-48](../../shared/keyboard-48/readme.md).
+
+| # | Part | Qty |
+|---|------|-----|
+| 1 | [Wisecoco 7.84" 1280x400 LCD Display](https://www.amazon.com/wisecoco-Secondary-Stretched-Temperature-Monitoring/dp/B0BXL2Q53Y) | 1 |
+| 2 | [Rubber O-ring OD 18 ID 13.2 CS 2.4mm](https://www.amazon.com/uxcell-Rings-Nitrile-Rubber-Diameter/dp/B07JHNDXCX) | 1 |
+| 3 | [HDMI Cable 25cm](https://www.amazon.com/UVOOI-HDMI-Cable/dp/B0B5JM7Y4G) | 1 |
+| 4 | [Raspberry Pi Zero 2W](https://www.amazon.com/Raspberry-Zero-Bluetooth-RPi-2W/dp/B09LH5SBPS) | 1 |
+| 5 | [Raspberry Pi Pico (RP2040)](https://www.amazon.com/Raspberry-Pi-Pico/dp/B09KVB8LVR) | 1 |
+| 6 | [Micro SD Card (min 8GB)](https://www.amazon.com/SanDisk-microSD-High-Capacity-microSDHC/dp/B00488G6P8) | 1 |
+| 7 | [48 Keys Keyboard PCB](https://www.elecrow.com/micro-journal-diy-kit-48-keys-keyboard-pcb.html) | 1 |
+| 8 | [EC11 15mm Half Handle Rotary Encoder](https://www.amazon.com/Position-Degree-Rotary-Encoder-Button/dp/B0GRNSTXFC) | 2 |
+| 9 | [18650 Battery Shield w/ 4-Slot Holder](https://www.amazon.com/diymore-Battery-Holder-Charging-Holders/dp/B0CBMQ8PZH) | 1 |
+| 10 | Micro USB Hub with Power Input | 1 |
+| 11 | [Micro USB 2-PIN Male Pigtail Cable](https://www.amazon.com/Jienk-Micro-Male-Pigtail-Cable/dp/B0D9LJ1J4R) | 2 |
+| 12 | [USB 2-PIN Male Cable](https://www.amazon.com/Jienk-Micro-Male-Pigtail-Cable/dp/B0D9LJ1J4R) | 1 |
+| 13 | [SPST Snap-in Rocker Switch 2-Pin 19mm](https://www.amazon.com/YXQ-SPST-Rocker-Switch-5Pieces/dp/B01DZ8BHBE) | 1 |
+| 14 | [DIN 912 M3 Hex Socket Screw — 5mm](https://www.amazon.com/M3-3mm-0-50-Stainless-MonsterBolts/dp/B078L44PWY) | 4+ |
+| 15 | [DIN 912 M3 Hex Socket Screw — 10mm](https://www.amazon.com/Socket-Screw-M3-0-5-Metric-Quantity/dp/B07CPMTDPV) | 4+ |
+| 16 | [DIN 912 M3 Hex Socket Screw — 50mm](https://www.amazon.com/Socket-Screw-M3-0-5-Metric-Quantity/dp/B07CPGYJHG) | 4+ |
+| 17 | [DIN 7046 M2 Phillips Pan Head Screw — 5mm](https://www.amazon.com/M2-0-4X10-Metric-Phillips-Machine-Thread/dp/B01ILZX2VO) | 8+ |
+| 18 | [M3 Heated Inserts (OD 4.5mm, L 3mm)](https://www.amazon.com/Threaded-Inserts-Embedment-Printing-Automotive/dp/B0CH32W3W5) | 10+ |
+| 19 | [M2 Heated Inserts (OD 3.2mm, L 3mm)](https://www.amazon.com/uxcell-Knurled-Threaded-Insert-Embedment/dp/B07LBRL93N) | 10+ |
+| 20 | [TORX T10H Screwdriver](https://www.amazon.com/Torx-Screwdriver-Security-security-Screws/dp/B093DTBMNN) | 1 |
+| 21 | [Wires 30 AWG (assorted)](https://www.amazon.com/JESSINIE-8-Color-Electronic-DM-30-1000-Wrapping/dp/B0BJ86D1Q3) | 1 |
+| 22 | PLA+ Filament (for 3D-printed enclosure) | 1 |
+
+You will also need 48 Cherry MX compatible switches and 48 keycaps (see [Keyboard parts](#1-keyboard-parts)).
+
+The same parts on AliExpress:
+
+- [Wisecoco 7.84 Inch 1280x400 LCD Display](https://www.aliexpress.com/item/1005004986951553.html)
+- [Rubber O-ring 18x13.2x2.4mm](https://www.aliexpress.com/item/1005002753756030.html)
+- [HDMI Cable 25 cm](https://www.aliexpress.com/item/1005007721692972.html)
+- 2x [EC11 15mm Half handle](https://it.aliexpress.com/item/1005005983134515.html)
+- [18650 Lithium Battery Shield with 4 Battery Holder](https://www.aliexpress.com/item/1005007581124399.html)
+- [Micro USB Hub with Power Input](https://www.aliexpress.com/item/1005006750076510.html)
+- [2x Micro USB 2 PIN Male Cable](https://www.aliexpress.com/item/1005008243661710.html)
+- [USB 2 PIN Male Cable](https://www.aliexpress.com/item/1005008243661710.html)
+- [Wires 30 AWG](https://it.aliexpress.com/item/1005007081117235.html)
+
+
 ## Table of Contents
 
 1. Keyboard parts
