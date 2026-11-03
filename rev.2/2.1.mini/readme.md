@@ -25,7 +25,7 @@ Micro Journal Rev.2.1: Baby Shark blends the tactile joy of mechanical typing wi
 * [Un Kyu Lee's Design Gallery](https://www.yesbut.it/)
 * [YouTube – @unkyulee](https://www.youtube.com/@unkyulee)
 * [Reddit – Un Kyu Lee](https://www.reddit.com/r/unkyulee/)
-* [Focused Writing Device Forum](https://www.flickr.com/groups/alphasmart/discuss/)
+* [Community about Writing Tools](https://www.flickr.com/groups/alphasmart/discuss/72157721923581235/)
 
 
 ### Press
