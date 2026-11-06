@@ -95,7 +95,7 @@ Hold the PCB with the hot-swap sockets facing up. Along the top edge there are 3
 
 Holes 6 to 27 are the 22-pin connection to the microcontroller. Solder one wire from each of these holes to the matching pin of the Raspberry Pi Pico. Solder the wires on the side where the hot-swap sockets are.
 
-Use the table below. The "Signal" column comes from the PCB schematic, and the GPIO numbers come from the keyboard firmware ([keyboard.json](./keyboard/qmk-vial/keyboard.json)).
+Use the table below. The "Signal" column comes from the PCB schematic, and the GPIO numbers come from the keyboard firmware ([keyboard.json](../../shared/keyboard-48/rp2040/qmk-vial/keyboard.json)).
 
 | PCB hole | Signal       | Pico GPIO |
 | -------- | ------------ | --------- |
@@ -156,13 +156,13 @@ Tips:
 
 ## 4. Keyboard firmware
 
-The keyboard runs QMK with Vial. The source code is in the [keyboard/qmk-vial](./keyboard/qmk-vial) folder.
+The keyboard runs QMK with Vial. The source code is in the [shared/keyboard-48/rp2040](../../shared/keyboard-48/rp2040) folder.
 
 1. Hold the **BOOTSEL** button on the Raspberry Pi Pico and connect it to your computer with a USB cable. It appears as a drive named `RPI-RP2`.
-2. Copy [unkyulee_ortho_48_vial.uf2](./keyboard/unkyulee_ortho_48_vial.uf2) onto that drive.
+2. Copy [unkyulee_vial.uf2](../../shared/keyboard-48/rp2040/unkyulee_vial.uf2) onto that drive.
 3. The Pico restarts by itself and is now a keyboard.
 
-If you want to build the firmware yourself, set up the QMK build environment, then follow the instructions in the [keyboard readme](./keyboard/qmk-vial/readme.md).
+If you want to build the firmware yourself, set up the QMK build environment, then follow the instructions in the [keyboard readme](../../shared/keyboard-48/rp2040/qmk-vial/readme.md).
 
 To change the keys, use Vial: [https://get.vial.today/](https://get.vial.today/)
 

@@ -158,7 +158,7 @@ You can also have the board made yourself. The manufacturing files are in the [4
 * [Build guide](https://github.com/unkyulee/micro-journal/blob/main/rev.3/3.0.revamp/build.md)
 * [Build video: DIY Build Guide](https://youtu.be/kK5mviicKP4)
 * [Design files (STL)](https://github.com/unkyulee/micro-journal/tree/main/rev.3/3.0.revamp/STL)
-* [QMK Vial keyboard firmware source](https://github.com/unkyulee/micro-journal/tree/main/rev.3/3.0.revamp/keyboard)
+* [QMK Vial keyboard firmware source](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48/rp2040)
 * [48 keys keyboard PCB design files](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48)
 * [Vial, to change your keys](https://get.vial.today/)
 

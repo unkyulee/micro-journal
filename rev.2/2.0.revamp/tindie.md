@@ -141,7 +141,7 @@ Please, watch the use case video in order to understand the features and most im
 * [Raspberry Pi SD Card Setup How-To](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/raspberrypi/readme.md)
 * [Design Files](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/STL)
 * [Keyboard PCB](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-6-one-piece/PCB)
-* [Rev.2 QMK-Vial Source Code](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/keyboard/)
+* [Rev.2 QMK-Vial Source Code](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48/rp2040)
 
 
 ### Videos

@@ -16,7 +16,7 @@ Micro Journal Rev.2.1: Baby Shark blends the tactile joy of mechanical typing wi
 ### Resources
 
 * [Design Files](./STL)
-* [QMK Vial Keyboard Firmware Source](./keyboard/)
+* [QMK Vial Keyboard Firmware Source](../../shared/keyboard-48/rp2040)
 * [Linux Image for the Micro Journal Rev.2.1](https://github.com/unkyulee/micro-journal-linux)
 
 

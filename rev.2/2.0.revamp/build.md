@@ -218,7 +218,7 @@ Solder a Micro USB Connector
 
 # Flash QMK-Vial Firmare on the Keyboard controller
 
-Connect the keyboard controller to the PC. If everything went well... Keyboard controller will be recognized as a thumb drive. [Download](https://github.com/unkyulee/micro-journal/tree/main/micro-journal-rev-2-revamp/keyboard) the firmware from the github repository. Default firmware is "unkyulee_ortho_48_vial.uf2". Depending on the language configuration you may need to flash different firmware. Copy the file to the drive and the drive will disappear after few seconds. This means, the firmware has been successfully flashed. You can test the keyboard by re-plug the cable.
+Connect the keyboard controller to the PC. If everything went well... Keyboard controller will be recognized as a thumb drive. [Download](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48/rp2040) the firmware from the github repository. Default firmware is "unkyulee_vial.uf2". Depending on the language configuration you may need to flash different firmware. Copy the file to the drive and the drive will disappear after few seconds. This means, the firmware has been successfully flashed. You can test the keyboard by re-plug the cable.
 
 If the keyboard controller doesn't show up as a thumb drive, connect to the PC WHILE pressing down the reset button on the controller.
 

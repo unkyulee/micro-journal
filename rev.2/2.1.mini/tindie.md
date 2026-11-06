@@ -178,7 +178,7 @@ The exception is the keyboard PCB, which can be a bit harder to source. To make 
 * [Build guide](https://github.com/unkyulee/micro-journal/blob/main/rev.2/2.1.mini/build.md)
 * [Design files (STL)](https://github.com/unkyulee/micro-journal/tree/main/rev.2/2.1.mini/STL)
 * [Keyboard PCB design files](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48)
-* [QMK-Vial keyboard firmware source code](https://github.com/unkyulee/micro-journal/tree/main/rev.2/2.1.mini/keyboard)
+* [QMK-Vial keyboard firmware source code](https://github.com/unkyulee/micro-journal/tree/main/shared/keyboard-48/rp2040)
 * [Micro Journal Linux image download](https://github.com/unkyulee/micro-journal-linux/releases)
 * [Raspberry Pi SD card setup how-to](https://github.com/unkyulee/micro-journal-linux)
 * [Micro Journal Rev.2.1.mini documentation](https://github.com/unkyulee/micro-journal/tree/main/rev.2/2.1.mini)

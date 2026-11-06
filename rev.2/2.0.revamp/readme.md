@@ -22,7 +22,7 @@ A mother of twins (five in total) challenged me to create a foldable design, whi
 * [Raspberry Pi SD Card Setup How-To](https://github.com/unkyulee/micro-journal-linux)
 * [Design Files](./STL)
 * [Keyboard PCB](../../shared/keyboard-48)
-* [Rev.2 QMK-Vial Source Code](../2.1/keyboard/)
+* [Rev.2 QMK-Vial Source Code](../../shared/keyboard-48/rp2040)
 
 
 ### Hook's Review

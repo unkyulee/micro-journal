@@ -8,6 +8,7 @@ This folder contains the design files for the 48 keys mechanical keyboard PCB us
 | ------ | -------- |
 | [GERBER](./GERBER) | The files a PCB manufacturer needs to produce the board: the Gerber files, the bill of materials (BOM) and the pick and place file |
 | [DESIGN](./DESIGN) | The schematic of the PCB, for when you need to dive deeper into how the board works |
+| [rp2040](./rp2040) | QMK Vial keyboard firmware for the Raspberry Pi Pico (RP2040) controller: the ready-to-flash `unkyulee_vial.uf2` and its source in [qmk-vial](./rp2040/qmk-vial). Shared by Rev.2 2.0 Revamp, Rev.2 2.1 Mini and Rev.3 3.0 Revamp |
 
 ## How to Get the PCB
 

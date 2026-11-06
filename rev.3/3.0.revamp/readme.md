@@ -20,7 +20,7 @@ The phone is a common device these days, and it is clearly capable of being a de
 ### Resources
 
 * [Design Files](./STL)
-* [QMK Vial Keyboard Firmware Source](./keyboard)
+* [QMK Vial Keyboard Firmware Source](../../shared/keyboard-48/rp2040)
 
 
 ## Community
