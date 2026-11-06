@@ -160,7 +160,7 @@ https://www.reddit.com/r/writerDeck/comments/1jf4fqm/micro_journal_rev_2_with_ne
 
 Please refer to the PDF document written by Hook:
 
-https://github.com/unkyulee/micro-journal/blob/main/micro-journal-rev-2-revamp/keyboard/Hooks-Keymap-Guide.pdf
+[Hooks-Keymap-Guide.pdf](../../shared/keyboard-48/guide/Hooks-Keymap-Guide.pdf)
 
 
 ### AZERTY Layout information
