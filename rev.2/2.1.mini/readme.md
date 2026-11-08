@@ -30,7 +30,8 @@ Micro Journal Rev.2.1: Baby Shark blends the tactile joy of mechanical typing wi
 
 ### Press
 
-
+* [YANKO DESIGN - Micro Journal Rev.2.1.MINI Writing Laptop Pairs a Wide Screen With Just 48 Keys](https://www.yankodesign.com/2026/11/07/micro-journal-rev-2-1-mini-writing-laptop-pairs-a-wide-screen-with-just-48-keys)
+* [FUTURO PROSSIMO - The Micro Journal is a typing laptop with just 48 keys](https://en.futuroprossimo.it/2026/11/il-micro-journal-e-un-laptop-per-scrivere-con-soli-48-tasti/)
 
 ### Online Shop
 
