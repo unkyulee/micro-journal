@@ -11,6 +11,7 @@ Micro Journal Rev.2.1: Baby Shark blends the tactile joy of mechanical typing wi
 * [Introduction Video](https://youtu.be/Nw3Djnw7wN0)
 * [Quick Start Guide](./guide.md)
 * [Build Guide](./build.md)
+* [How to type numbers](https://github.com/unkyulee/micro-journal/blob/main/rev.2/2.1.mini/guide.pdf)
 
 
 ### Resources
